@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="75dp"
+    android:layout_height="75dp">
+
+    <ImageView
+        android:scaleType="fitXY"
+        android:id="@+id/iv_photo"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_margin="5dp"
+        android:src="@mipmap/launcher"
+        android:layout_marginRight="10dp"/>
+        android:src="@mipmap/logo" />
+
+</RelativeLayout>

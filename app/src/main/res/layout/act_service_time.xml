@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_start"
+    android:orientation="vertical">
+
+    <com.yxw.cn.carpenterrepair.view.TitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#F8F8F8"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/rl_place"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="#ffffff"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:gravity="center_vertical"
+                    android:layout_centerVertical="true"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="常驻"/>
+
+                    <TextView
+                        android:id="@+id/tv_place"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="20dp"
+                        android:hint="请选择常驻地点"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/arrow0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/arrow" />
+
+                <include layout="@layout/view_line_h" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_start"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="#ffffff"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="开始时间" />
+
+                <TextView
+                    android:id="@+id/tv_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:hint="请选择开始时间"
+                    android:layout_toRightOf="@+id/tv1"/>
+
+                <ImageView
+                    android:id="@+id/arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/arrow" />
+
+                <include layout="@layout/view_line_h" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_end"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="#ffffff"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="结束时间" />
+
+                <TextView
+                    android:id="@+id/tv_end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="请选择结束时间"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_toRightOf="@+id/tv2"/>
+
+                <ImageView
+                    android:id="@+id/arrow2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/arrow" />
+
+                <include layout="@layout/view_line_h" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="#ffffff"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="选择服务时间" />
+
+                <include layout="@layout/view_line_h" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl1"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="#ffffff"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/iv_check1"
+                    android:layout_width="wrap_content"
+                    android:padding="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/icon_unselect"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_toRightOf="@+id/iv_check1"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="周一" />
+
+                <include layout="@layout/view_line_h" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl2"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="#ffffff"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/iv_check2"
+                    android:layout_width="wrap_content"
+                    android:padding="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/icon_unselect"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_toRightOf="@+id/iv_check2"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="周二" />
+
+                <include layout="@layout/view_line_h" />
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl3"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="#ffffff"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/iv_check3"
+                    android:layout_width="wrap_content"
+                    android:padding="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/icon_unselect"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_toRightOf="@+id/iv_check3"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="周三" />
+
+                <include layout="@layout/view_line_h" />
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl4"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="#ffffff"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/iv_check4"
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:padding="10dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/icon_unselect"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_toRightOf="@+id/iv_check4"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="周四" />
+
+                <include layout="@layout/view_line_h" />
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl5"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="#ffffff"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/iv_check5"
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:padding="10dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/icon_unselect"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_toRightOf="@+id/iv_check5"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="周五" />
+
+                <include layout="@layout/view_line_h" />
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl6"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="#ffffff"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/iv_check6"
+                    android:layout_width="wrap_content"
+                    android:padding="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/icon_unselect"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_toRightOf="@+id/iv_check6"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="周六" />
+
+                <include layout="@layout/view_line_h" />
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl7"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="#ffffff"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/iv_check7"
+                    android:layout_width="wrap_content"
+                    android:padding="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/icon_unselect"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_toRightOf="@+id/iv_check7"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="周日" />
+
+                <include layout="@layout/view_line_h" />
+
+            </RelativeLayout>
+            <Button
+                android:id="@+id/tv_sure"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_margin="32dp"
+                android:background="@drawable/sel_bt"
+                android:text="确定"
+                android:textColor="#ffffff" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_start"
+    android:orientation="vertical">
+
+    <com.yxw.cn.carpenterrepair.view.TitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F8F8F8"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/rl_change_password"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginTop="10dp"
+            android:background="#ffffff"
+            android:orientation="horizontal">
+
+            <TextView
+                android:textColor="@color/text_black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:text="密码修改" />
+
+            <ImageView
+                android:id="@+id/arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/arrow" />
+
+            <include layout="@layout/view_line_h" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_about"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="#ffffff"
+            android:orientation="horizontal">
+
+            <TextView
+                android:textColor="@color/text_black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:text="关于匠修" />
+
+            <TextView
+                android:id="@+id/tv_version"
+                android:layout_toLeftOf="@+id/arrow2"
+                android:textColor="@color/text_gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"/>
+
+            <ImageView
+                android:id="@+id/arrow2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/arrow" />
+
+            <include layout="@layout/view_line_h" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/r3"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="#ffffff"
+            android:orientation="horizontal">
+
+            <TextView
+                android:textColor="@color/text_black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:text="喜欢我吗，投一票" />
+
+            <ImageView
+                android:id="@+id/arrow3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/arrow" />
+
+            <include layout="@layout/view_line_h" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_clear_chche"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="#ffffff"
+            android:orientation="horizontal">
+
+            <TextView
+                android:textColor="@color/text_black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:text="清理缓存" />
+
+            <TextView
+                android:textColor="@color/text_gray"
+                android:id="@+id/cache"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
+                android:text="11.22MB" />
+
+            <include layout="@layout/view_line_h" />
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/btn_logout"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_margin="32dp"
+            android:background="@drawable/sel_bt"
+            android:text="退出登录"
+            android:textColor="#ffffff" />
+    </LinearLayout>
+
+</LinearLayout>

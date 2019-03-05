@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_start"
+    android:orientation="vertical"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <com.yxw.cn.carpenterrepair.view.TitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:background="#F8F8F8"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:inputType="number"
+            android:maxLength="11"
+            android:id="@+id/et_tel"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:hint="请留下您的电话号码"
+            android:layout_marginTop="10dp"
+            android:textSize="14dp"
+            android:padding="16dp"
+            android:layout_height="wrap_content">
+
+        </EditText>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp">
+
+                <EditText
+                    android:id="@+id/et_remark"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:gravity="top"
+                    android:hint="您的评价会让匠修工程师做的更好"
+                    android:lines="3"
+                    android:maxLength="50"
+                    android:textSize="14dp" />
+
+                <TextView
+                    android:id="@+id/tv_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_gravity="bottom"
+                    android:text="0/50"
+                    android:textColor="@color/text_gray"
+                    android:textSize="14dp" />
+            </RelativeLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_upload"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:minHeight="70dp" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/confirm"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_margin="32dp"
+            android:background="@drawable/sel_bt"
+            android:text="提交"
+            android:textColor="#ffffff" />
+
+    </LinearLayout>
+</LinearLayout>

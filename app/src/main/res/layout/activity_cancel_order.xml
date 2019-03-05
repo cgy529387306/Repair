@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_start"
+    android:orientation="vertical">
+
+    <com.yxw.cn.carpenterrepair.view.TitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:background="#F8F8F8"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:padding="16dp"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:textSize="14dp"
+                android:textColor="@color/text_black"
+                android:text="选择取消订单原因（必选）"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:id="@+id/ll_reason1"
+                android:layout_width="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingLeft="16dp"
+                android:paddingTop="16dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/iv_reason1_select"
+                    android:layout_width="wrap_content"
+                    android:src="@drawable/icon_selected"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="订单信息填写错误"
+                    android:textColor="@color/text_black"
+                    android:textSize="12dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_reason2"
+                android:layout_width="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingLeft="16dp"
+                android:paddingTop="16dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/iv_reason2_select"
+                    android:layout_width="wrap_content"
+                    android:src="@drawable/icon_unselect"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="价格太贵"
+                    android:textColor="@color/text_black"
+                    android:textSize="12dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_reason3"
+                android:layout_width="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingLeft="16dp"
+                android:paddingBottom="16dp"
+                android:paddingTop="16dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/iv_reason3_select"
+                    android:layout_width="wrap_content"
+                    android:src="@drawable/icon_unselect"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="工作人员服务太差"
+                    android:textColor="@color/text_black"
+                    android:textSize="12dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp">
+
+                <EditText
+                    android:id="@+id/et_remark"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:gravity="top"
+                    android:hint="您的评价会让匠修工程师做的更好"
+                    android:lines="3"
+                    android:maxLength="50"
+                    android:textSize="14dp" />
+
+                <TextView
+                    android:id="@+id/tv_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_gravity="bottom"
+                    android:text="0/50"
+                    android:textColor="@color/text_gray"
+                    android:textSize="14dp" />
+            </RelativeLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_upload"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:minHeight="70dp" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/confirm"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_margin="32dp"
+            android:background="@drawable/sel_bt"
+            android:text="提交"
+            android:textColor="#ffffff" />
+
+    </LinearLayout>
+</LinearLayout>

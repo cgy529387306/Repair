@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_start"
+    android:orientation="vertical">
+
+    <com.yxw.cn.carpenterrepair.view.TitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F8F8F8"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginRight="16dp"
+            android:gravity="center_vertical">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp">
+
+                    <TextView
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:text="手机号"
+                        android:textColor="@color/text_black"
+                        android:textSize="14dp" />
+
+                    <EditText
+                        android:id="@+id/et_phone"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:hint="请输入您的手机号"
+                        android:inputType="phone"
+                        android:textSize="13dp" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/text_gray" />
+            </LinearLayout>
+
+            <com.yxw.cn.carpenterrepair.view.CountDownTextView
+                android:id="@+id/bt_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:background="@drawable/corner_gray"
+                android:paddingLeft="16dp"
+                android:paddingTop="8dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="8dp"
+                android:text="获取验证码"
+                android:textColor="@color/white"
+                android:textSize="12dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:text="验证码"
+                android:textColor="@color/text_black"
+                android:textSize="14dp" />
+
+            <EditText
+                android:id="@+id/et_code"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:inputType="number"
+                android:background="@null"
+                android:hint="请输入验证码"
+                android:textSize="13dp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/text_gray"
+            android:layout_marginLeft="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="16dp"
+            android:layout_height="1dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:gravity="center_vertical"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textSize="13dp"
+                android:textColor="@color/text_black"
+                android:text="密码"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/et_password"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:inputType="textPassword"
+                android:hint=" 请输入密码(6到16个字符或数字)"
+                android:textSize="13dp"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:id="@+id/iv_show"
+                android:layout_width="wrap_content"
+                android:src="@drawable/eyes_off"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/text_gray"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:layout_height="1dp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/ll_user"
+                android:layout_width="wrap_content"
+                android:gravity="center_vertical"
+                android:padding="16dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/iv_user"
+                    android:layout_width="wrap_content"
+                    android:src="@drawable/icon_selected"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="我是用户"
+                    android:textColor="@color/text_black"
+                    android:layout_marginLeft="8dp"
+                    android:textSize="14dp"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_worker"
+                android:layout_width="wrap_content"
+                android:padding="16dp"
+                android:gravity="center_vertical"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/iv_worker"
+                    android:layout_width="wrap_content"
+                    android:src="@drawable/icon_unselect"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:text="我是工人"
+                    android:textColor="@color/text_black"
+                    android:textSize="14dp"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/tv_register"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_below="@+id/r3"
+            android:layout_margin="16dp"
+            android:background="@drawable/sel_bt"
+            android:text="注册"
+            android:textColor="#ffffff" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:paddingTop="8dp"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="16dp"
+                android:text="同意"
+                android:textColor="@color/text_gray"
+                android:textSize="13dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="8dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="16dp"
+                android:text="《匠修用户协议》"
+                android:textColor="@color/text_red"
+                android:textSize="13dp" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:orientation="vertical"
+                android:layout_centerInParent="true"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:textColor="#E5E5E5"
+                    android:text="匠修"
+                    android:textSize="30dp"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:textColor="#E5E5E5"
+                    android:text="JIANGXIU"
+                    android:textSize="12dp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>

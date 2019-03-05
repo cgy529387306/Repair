@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_start"
+    android:orientation="vertical">
+
+    <com.yxw.cn.carpenterrepair.view.TitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="#F8F8F8" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:paddingLeft="16dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="身份审核被驳回，请重新提交信息。"
+            android:textColor="@color/text_red"
+            android:textSize="12dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:paddingLeft="16dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="真实姓名："
+                android:textColor="@color/text_gray"
+                android:textSize="12dp" />
+
+            <EditText
+                android:id="@+id/et_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="请输入真实姓名"
+                android:padding="10dp"
+                android:paddingLeft="8dp"
+                android:textSize="12dp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="16dp"
+            android:background="@color/bg_gray" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:paddingLeft="16dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="身份证号码："
+                android:textColor="@color/text_gray"
+                android:textSize="12dp" />
+
+            <EditText
+                android:id="@+id/et_id"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                android:hint="请输入身份证号码"
+                android:maxLength="18"
+                android:padding="10dp"
+                android:paddingLeft="8dp"
+                android:textSize="12dp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="16dp"
+            android:background="@color/bg_gray" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:paddingLeft="16dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="上传身份证照片"
+            android:textColor="@color/text_gray"
+            android:textSize="12dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="16dp"
+            android:background="@color/bg_gray" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/rl_card_1"
+                android:layout_width="120dp"
+                android:layout_height="70dp"
+                android:layout_margin="16dp"
+                android:background="#F6F3F3">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/icon_add_card" />
+
+                <ImageView
+                    android:id="@+id/iv_card1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY" />
+
+                <View
+                    android:id="@+id/view_add_card_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/rl_card_1"
+                android:layout_toRightOf="@+id/rl_card_1"
+                android:text="上传身份证人像面"
+                android:textColor="@color/text_black"
+                android:textSize="14dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/rl_card_1"
+                android:layout_marginRight="16dp"
+                android:layout_toRightOf="@+id/rl_card_1"
+                android:lineSpacingExtra="5dp"
+                android:text="请保持照片中身份证显示完整\n字体清晰可见，亮度均匀"
+                android:textColor="@color/text_gray"
+                android:textSize="12dp" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="16dp"
+            android:background="@color/bg_gray" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/rl_card_2"
+                android:layout_width="120dp"
+                android:layout_height="70dp"
+                android:layout_margin="16dp"
+                android:background="#F6F3F3">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/icon_add_card" />
+
+                <ImageView
+                    android:id="@+id/iv_card2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY" />
+
+                <View
+                    android:id="@+id/view_add_card_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/rl_card_2"
+                android:layout_toRightOf="@+id/rl_card_2"
+                android:text="上传身份证国徽面"
+                android:textColor="@color/text_black"
+                android:textSize="14dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/rl_card_2"
+                android:layout_marginRight="16dp"
+                android:layout_toRightOf="@+id/rl_card_2"
+                android:lineSpacingExtra="5dp"
+                android:text="请保持照片中身份证显示完整\n字体清晰可见，亮度均匀"
+                android:textColor="@color/text_gray"
+                android:textSize="12dp" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="16dp"
+            android:background="@color/bg_gray" />
+
+        <Button
+            android:id="@+id/confirm"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_margin="32dp"
+            android:background="@drawable/sel_bt"
+            android:text="提交审核"
+            android:textColor="#ffffff" />
+    </LinearLayout>
+
+</LinearLayout>

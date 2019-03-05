@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/shu"
+        android:layout_width="2dp"
+        android:layout_height="20dp"
+        android:layout_marginLeft="44dp"
+        android:background="@color/text_red" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp">
+
+        <View
+            android:id="@+id/circle1"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:background="@drawable/circle_red" />
+
+        <View
+            android:id="@+id/shu1"
+            android:layout_width="2dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/tv_time"
+            android:layout_below="@+id/circle1"
+            android:layout_marginLeft="4dp"
+            android:background="@color/text_red" />
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:text="客户下单成功"
+            android:textColor="@color/text_gray2" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_status"
+            android:layout_marginLeft="40dp"
+            android:text="2018-10-10 10:10:10"
+            android:textColor="@color/text_gray2"
+            android:textSize="12dp" />
+
+    </RelativeLayout>
+
+</LinearLayout>
