@@ -48,17 +48,9 @@ public class RegisterActivity extends BaseActivity {
     EditText mEtPassword;
     @BindView(R.id.iv_show)
     ImageView mIvShow;
-    @BindView(R.id.iv_user)
-    ImageView mIvUser;
-    @BindView(R.id.iv_worker)
-    ImageView mIvWorker;
     @BindView(R.id.bt_code)
     CountDownTextView mCountDownTextView;
     private int isWorkerFlag = 2;  //0普通用户 1兼职工程师 2专职工程师
-    @BindView(R.id.ll_user)
-    LinearLayout ll_user;
-    @BindView(R.id.ll_worker)
-    LinearLayout ll_worker;
 
     @Override
     protected int getLayoutResId() {
@@ -68,8 +60,6 @@ public class RegisterActivity extends BaseActivity {
     @Override
     public void initView() {
         titlebar.setTitle("注册");
-        ll_user.setVisibility(View.GONE);
-        ll_worker.setVisibility(View.GONE);
         mEtPhone.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -131,7 +121,7 @@ public class RegisterActivity extends BaseActivity {
                 });
     }
 
-    @OnClick({R.id.iv_show, R.id.ll_user, R.id.ll_worker, R.id.tv_register})
+    @OnClick({R.id.iv_show, R.id.tv_register})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_show:
@@ -144,28 +134,13 @@ public class RegisterActivity extends BaseActivity {
                 }
                 mEtPassword.setSelection(mEtPassword.getText().toString().length());
                 break;
-            case R.id.ll_user:
-                mIvUser.setImageResource(R.drawable.icon_selected);
-                mIvWorker.setImageResource(R.drawable.icon_unselect);
-                break;
-            case R.id.ll_worker:
-                mIvUser.setImageResource(R.drawable.icon_unselect);
-                mIvWorker.setImageResource(R.drawable.icon_selected);
-                break;
             case R.id.tv_register:
-//                if (mIvWorker.getDrawable().getCurrent().getConstantState().equals(getResources().getDrawable(R.drawable.icon_selected).getConstantState())) {
-//                    isWorkerFlag = 1;
-//                } else {
-//                    isWorkerFlag = 0;
-//                }
                 if (TextUtils.isEmpty(mEtPhone.getText().toString().trim())) {
                     toast("手机号不能为空！");
                 } else if (TextUtils.isEmpty(mEtCode.getText().toString().trim())) {
                     toast("验证码不能为空！");
                 } else if (TextUtils.isEmpty(mEtPassword.getText().toString().trim())) {
                     toast("密码不能为空！");
-      /*          } else if (!AppUtil.isphone(mEtPhone.getText().toString().trim())) {
-                    toast("请输入正确的手机号！");*/
                 } else if (mEtPassword.getText().toString().trim().length() < 6 || mEtPassword.getText().toString().trim().length() > 16) {
                     toast("新密码为6到16个字符或数字！");
                 } else {

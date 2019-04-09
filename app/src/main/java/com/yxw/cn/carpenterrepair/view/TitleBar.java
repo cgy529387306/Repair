@@ -81,7 +81,7 @@ public class TitleBar extends ViewGroup implements View.OnClickListener {
         mLeftText.setGravity(Gravity.CENTER_VERTICAL);
         mLeftText.setPadding(mOutPadding + mActionPadding, 0, mOutPadding, 0);
         mLeftText.setCompoundDrawablePadding(mOutPadding);
-        mLeftText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_back, 0, 0, 0);
+        mLeftText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_back_white, 0, 0, 0);
         mLeftText.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,7 +94,7 @@ public class TitleBar extends ViewGroup implements View.OnClickListener {
         mCenterLayout.addView(mSubTitleText);
 
         mCenterLayout.setGravity(Gravity.CENTER);
-        mCenterText.setTextColor(getResources().getColor(R.color.white));
+        mCenterText.setTextColor(getResources().getColor(R.color.black));
         mCenterText.setTextSize(DEFAULT_MAIN_TEXT_SIZE);
         mCenterText.setSingleLine();
         mCenterText.setGravity(Gravity.CENTER);
@@ -112,7 +112,8 @@ public class TitleBar extends ViewGroup implements View.OnClickListener {
         addView(mRightLayout, layoutParams);
         addView(mDividerView, new LayoutParams(LayoutParams.MATCH_PARENT, 1));
 
-//        setBackgroundResource(R.drawable.bg_start);
+        setBackgroundColor(context.getResources().getColor(R.color.white));
+        setDividerColor(context.getResources().getColor(R.color.text_gray));
     }
 
     public void setImmersive(boolean immersive) {

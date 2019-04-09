@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion '27'
+    buildToolsVersion '26.0.0'
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 23
@@ -31,10 +31,10 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'src/main/libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'src/main/libs')
     compile 'com.android.support:support-v4:26.0.0'
     compile 'com.android.support:exifinterface:26.0.0'
-    compile project (':IMLib')
+    compile project(':IMLib')
 }
 
 repositories {

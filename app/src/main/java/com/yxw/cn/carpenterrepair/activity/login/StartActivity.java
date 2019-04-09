@@ -9,8 +9,11 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
 import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
@@ -18,17 +21,29 @@ import com.yxw.cn.carpenterrepair.activity.main.UserMainActivity;
 import com.yxw.cn.carpenterrepair.activity.main.WorkerMainActivity;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.SpConstant;
+import com.yxw.cn.carpenterrepair.contast.UrlConstant;
+import com.yxw.cn.carpenterrepair.entity.LoginInfo;
 import com.yxw.cn.carpenterrepair.entity.MessageEvent;
+import com.yxw.cn.carpenterrepair.entity.ResponseData;
+import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.util.SpUtil;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import util.EventBusUtil;
 
 public class StartActivity extends BaseActivity {
 
-    @BindView(R.id.ll_bottom)
-    LinearLayout mLlBottom;
+
+    @BindView(R.id.et_tel)
+    EditText mEtTel;
+    @BindView(R.id.et_password)
+    EditText mEtPassword;
+
     private Handler handler = new Handler();
     private SweetAlertDialog dialog;
 
@@ -37,16 +52,67 @@ public class StartActivity extends BaseActivity {
         return R.layout.activity_start;
     }
 
-    @OnClick({R.id.tv_login, R.id.tv_register})
+    @OnClick({R.id.tv_login, R.id.tv_register,R.id.tv_forget_password,R.id.tv_quick_login})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_login:
-                startActivity(LoginActivity.class);
-//                startActivity(UserMainActivity.class);
+                doLogin();
                 break;
             case R.id.tv_register:
                 startActivity(RegisterActivity.class);
                 break;
+            case R.id.tv_forget_password:
+                startActivity(ForgetPasswordActivity.class);
+                break;
+            case R.id.tv_quick_login:
+                startActivity(QuickLoginActivity.class);
+                break;
+        }
+    }
+
+    private void doLogin(){
+        if (TextUtils.isEmpty(mEtTel.getText().toString().trim())) {
+            toast("手机号不能为空！");
+        } else if (mEtPassword.getText().toString().trim().isEmpty()) {
+            toast("密码不能为空！");
+        } else {
+            showLoading();
+            Map<String, String> map = new HashMap<>();
+            map.put("mobile", mEtTel.getText().toString().trim());
+            map.put("password", mEtPassword.getText().toString().trim());
+            OkGo.<ResponseData<LoginInfo>>post(UrlConstant.LOGIN)
+                    .upJson(gson.toJson(map))
+                    .execute(new JsonCallback<ResponseData<LoginInfo>>() {
+                                 @Override
+                                 public void onSuccess(ResponseData<LoginInfo> response) {
+                                     dismissLoading();
+                                     if (response.getCode() == 0) {
+                                         SpUtil.putStr(SpConstant.LOGIN_MOBILE, mEtTel.getText().toString().trim());
+                                         SpUtil.putStr(SpConstant.TOKEN, response.getData().getToken());
+                                         SpUtil.putStr(SpConstant.USERID, response.getData().getUserId());
+                                         SpUtil.putInt(SpConstant.ROLE, response.getData().getRole());
+                                         SpUtil.putStr(SpConstant.LOGIN_INFO, gson.toJson(response.getData()));
+                                         switch (response.getData().getRole()) {
+                                             case 0:
+                                                 startActivityFinish(UserMainActivity.class);
+                                                 break;
+                                             default:
+                                                 startActivityFinish(WorkerMainActivity.class);
+                                                 break;
+                                         }
+                                         EventBusUtil.post(MessageConstant.LOGIN);
+                                     }else {
+                                         toast(response.getMsg());
+                                     }
+                                 }
+
+                                 @Override
+                                 public void onError(Response<ResponseData<LoginInfo>> response) {
+                                     super.onError(response);
+                                     dismissLoading();
+                                 }
+                             }
+                    );
         }
     }
 
@@ -70,32 +136,24 @@ public class StartActivity extends BaseActivity {
     }
 
     public void init() {
-        if (TextUtils.isEmpty(SpUtil.getStr(SpConstant.LOGIN_MOBILE))
-//                || TextUtils.isEmpty(SpUtil.getStr(SpConstant.TOKEN))
-                || -1 == SpUtil.getInt(SpConstant.ROLE, -1)) {
-            mLlBottom.setVisibility(View.VISIBLE);
-        } else {
-            mLlBottom.setVisibility(View.GONE);
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    switch (SpUtil.getInt(SpConstant.ROLE)) {
-                        case 0:
-                            startActivityFinish(UserMainActivity.class);
-                            break;
-                        case 1:
-                            startActivityFinish(WorkerMainActivity.class);
-                            break;
-                        case 2:
-                            startActivityFinish(WorkerMainActivity.class);
-                            break;
-                        default:
-                            mLlBottom.setVisibility(View.VISIBLE);
-                            break;
-                    }
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                switch (SpUtil.getInt(SpConstant.ROLE)) {
+                    case 0:
+                        startActivityFinish(UserMainActivity.class);
+                        break;
+                    case 1:
+                        startActivityFinish(WorkerMainActivity.class);
+                        break;
+                    case 2:
+                        startActivityFinish(WorkerMainActivity.class);
+                        break;
+                    default:
+                        break;
                 }
-            }, 500);
-        }
+            }
+        }, 500);
     }
 
     private void requestPermission() {
@@ -190,9 +248,7 @@ public class StartActivity extends BaseActivity {
 
 
     public void getData() {
-     /*   AppUtil.initRegionTreeData();
-        AppUtil.initCategoryData();
-        AppUtil.initTimeData();*/
+
     }
 
     @Override

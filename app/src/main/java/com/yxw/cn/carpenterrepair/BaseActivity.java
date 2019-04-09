@@ -10,7 +10,6 @@ import android.widget.Toast;
 import com.android.tu.loadingdialog.LoadingDailog;
 import com.google.gson.Gson;
 import com.gyf.barlibrary.ImmersionBar;
-import com.jaeger.library.StatusBarUtil;
 import com.yxw.cn.carpenterrepair.activity.login.LoginActivity;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.entity.MessageEvent;
@@ -27,7 +26,7 @@ import util.EventBusUtil;
 public abstract class BaseActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
 
     private LoadingDailog loadDialog;
-    public Gson gson =new Gson();
+    public Gson gson = new Gson();
 
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +45,7 @@ public abstract class BaseActivity extends AppCompatActivity implements EasyPerm
     protected abstract int getLayoutResId();
 
     public void setStatusBar() {
-        StatusBarUtil.setTransparent(this);
+        ImmersionBar.with(this).fitsSystemWindows(true).statusBarColor(R.color.white).statusBarDarkFont(true).init();
     }
 
     public void initData() {
