@@ -81,7 +81,7 @@ public class TitleBar extends ViewGroup implements View.OnClickListener {
         mLeftText.setGravity(Gravity.CENTER_VERTICAL);
         mLeftText.setPadding(mOutPadding + mActionPadding, 0, mOutPadding, 0);
         mLeftText.setCompoundDrawablePadding(mOutPadding);
-        mLeftText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_back_white, 0, 0, 0);
+        mLeftText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_back_black, 0, 0, 0);
         mLeftText.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

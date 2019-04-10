@@ -61,7 +61,7 @@
             android:text="登录"
             android:layout_marginRight="30dp"
             android:layout_marginLeft="30dp"
-            android:background="@drawable/corner_red" />
+            android:background="@drawable/bg_btn_red" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -102,9 +102,9 @@
             android:layout_gravity="center_horizontal"
             android:textSize="@dimen/text_normal"
             android:gravity="center"
-            android:textColor="@color/white"
+            android:textColor="@color/text_red"
             android:text="注册"
-            android:background="@drawable/corner_red" />
+            android:background="@drawable/corner_red_round" />
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

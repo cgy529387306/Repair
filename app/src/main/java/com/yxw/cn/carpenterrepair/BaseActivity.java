@@ -30,8 +30,6 @@ public abstract class BaseActivity extends AppCompatActivity implements EasyPerm
 
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-//        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         setContentView(getLayoutResId());
         BaseApplication.getInstance().addActivity(this);
         EventBusUtil.register(this);
@@ -134,13 +132,6 @@ public abstract class BaseActivity extends AppCompatActivity implements EasyPerm
         }
     }
 
- /*   @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        // Forward results to EasyPermissions
-//        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
-    }*/
 
     public void showLoading() {
         if (loadDialog == null) {

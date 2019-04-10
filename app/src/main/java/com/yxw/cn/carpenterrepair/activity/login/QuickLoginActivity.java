@@ -49,7 +49,7 @@ public class QuickLoginActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        titlebar.setTitle("快捷登录");
+        titlebar.setTitle("验证码登录");
         mEtTel.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -96,8 +96,6 @@ public class QuickLoginActivity extends BaseActivity {
                     toast("手机号不能为空！");
                 } else if (TextUtils.isEmpty(mEtPassword.getText().toString().trim())) {
                     toast("验证码不能为空！");
-             /*   } else if (!AppUtil.isphone(mEtTel.getText().toString().trim())) {
-                    toast("请输入正确的手机号！");*/
                 } else {
                     showLoading();
                     Map<String, String> map = new HashMap<>();

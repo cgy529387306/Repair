@@ -8,18 +8,18 @@
     <com.yxw.cn.carpenterrepair.view.TitleBar
         android:id="@+id/titlebar"
         android:layout_width="match_parent"
-        android:layout_height="40dp" />
+        android:layout_height="48dp" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#F8F8F8">
+        android:background="@color/bg_color">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:background="#ffffff"
+            android:background="@color/white"
             android:orientation="horizontal"
             android:paddingTop="30dp"
             android:paddingBottom="30dp">
@@ -31,7 +31,7 @@
                 android:layout_centerHorizontal="true"
                 android:text="匠修已用空间"
                 android:textColor="@color/text_gray"
-                android:textSize="13sp" />
+                android:textSize="@dimen/text_small" />
 
             <View
                 android:id="@+id/tv2"
@@ -63,7 +63,7 @@
                 android:layout_marginTop="8dp"
                 android:text="占据手机0.1%存储空间"
                 android:textColor="@color/text_gray"
-                android:textSize="13sp" />
+                android:textSize="@dimen/text_small" />
 
 
             <Button
@@ -74,9 +74,9 @@
                 android:layout_marginLeft="60dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="60dp"
-                android:background="@drawable/sel_bt"
+                android:background="@drawable/bg_btn_red"
                 android:text="清理缓存"
-                android:textColor="#ffffff" />
+                android:textColor="@color/white" />
         </RelativeLayout>
     </RelativeLayout>
 </LinearLayout>

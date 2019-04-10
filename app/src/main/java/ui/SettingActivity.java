@@ -8,6 +8,7 @@ import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.activity.WebActivity;
 import com.yxw.cn.carpenterrepair.activity.login.LoginActivity;
+import com.yxw.cn.carpenterrepair.activity.login.StartActivity;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.SpConstant;
 import com.yxw.cn.carpenterrepair.util.AppUtil;
@@ -63,7 +64,7 @@ public class SettingActivity extends BaseActivity {
                 SpUtil.putStr(SpConstant.LOGIN_INFO,"");
                 Bundle bundle = new Bundle();
                 bundle.putBoolean("back",false);
-                startActivity(LoginActivity.class,bundle);
+                startActivity(StartActivity.class,bundle);
                 EventBusUtil.post(MessageConstant.LOGOUT);
                 break;
         }
