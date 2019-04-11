@@ -47,9 +47,9 @@
     <Button
         android:id="@+id/btn_perfect"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="46dp"
         android:layout_margin="32dp"
-        android:background="@drawable/sel_bt"
+        android:background="@drawable/bg_btn_red"
         android:text="完善基础认证资料"
         android:layout_above="@+id/tv_perfect_detail"
         android:textColor="#ffffff" />

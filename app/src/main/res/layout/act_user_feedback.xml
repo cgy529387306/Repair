@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_start"
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:orientation="vertical">
@@ -10,12 +9,12 @@
     <com.yxw.cn.carpenterrepair.view.TitleBar
         android:id="@+id/titlebar"
         android:layout_width="match_parent"
-        android:layout_height="40dp" />
+        android:layout_height="48dp" />
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#F8F8F8"
+        android:background="@color/bg_color"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -107,10 +106,13 @@
             android:id="@+id/confirm"
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:layout_margin="32dp"
-            android:background="@drawable/sel_bt"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/bg_btn_red"
+            android:textSize="16sp"
             android:text="提交"
-            android:textColor="#ffffff" />
+            android:textColor="@color/white" />
 
     </LinearLayout>
 
