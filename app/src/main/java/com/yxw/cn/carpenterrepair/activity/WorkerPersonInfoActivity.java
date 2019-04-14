@@ -56,30 +56,26 @@ import util.RegionPickerUtil;
 
 public class WorkerPersonInfoActivity extends BaseActivity {
 
-    @BindView(R.id.titlebar)
-    TitleBar titlebar;
     @BindView(R.id.iv_avatar)
     CircleImageView mIvAvatar;
     @BindView(R.id.tv_name)
     TextView mTvName;
     @BindView(R.id.tv_phone)
     TextView mTvPhone;
-    @BindView(R.id.tv_alipay)
-    TextView mTvAlipay;
+    @BindView(R.id.tv_idCardNo)
+    TextView mTvIdCardNo;
+    @BindView(R.id.tv_identificate)
+    TextView mTvIdentificate;
+    @BindView(R.id.tv_resident)
+    TextView mTvResident;
+    @BindView(R.id.tv_service_provider)
+    TextView mTvServiceProvider;
     @BindView(R.id.rv_category)
     RecyclerView mRv;
     @BindView(R.id.ll_good)
     LinearLayout mLlGood;
-    @BindView(R.id.tv_idCardNo)
-    TextView mTvIdCardNo;
-    @BindView(R.id.iv_idcard1)
-    ImageView ivIdcard1;
-    @BindView(R.id.iv_idcard2)
-    ImageView ivIdcard2;
-    @BindView(R.id.tv_resident)
-    TextView mTvResident;
-    @BindView(R.id.tv_time)
-    TextView mTvTime;
+    @BindView(R.id.img_back)
+    ImageView mImgBack;
 
     private List<BeGoodAtCategory> mList;
     private MyCategoryAdapter mAdapter;
@@ -92,7 +88,6 @@ public class WorkerPersonInfoActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        titlebar.setTitle("个人资料");
         mList = new ArrayList<>();
         mAdapter = new MyCategoryAdapter(mList);
         mRv.setNestedScrollingEnabled(false);
@@ -108,7 +103,6 @@ public class WorkerPersonInfoActivity extends BaseActivity {
                 loginInfo = gson.fromJson(SpUtil.getStr(SpConstant.LOGIN_INFO), LoginInfo.class);
                 mTvName.setText(loginInfo.getUserName());
                 mTvPhone.setText(loginInfo.getMobile());
-                mTvAlipay.setText(loginInfo.getAliplayAccount());
                 mTvIdCardNo.setText(loginInfo.getIdentityCard());
                 mTvResident.setText(loginInfo.getResidentName());
                 if (!TextUtils.isEmpty(loginInfo.getServiceDate()) && !TextUtils.isEmpty(loginInfo.getServiceTime())) {
@@ -142,12 +136,12 @@ public class WorkerPersonInfoActivity extends BaseActivity {
                     if (!TextUtils.isEmpty(date)) {
                         date = date.substring(0, date.length() - 1);
                     }
-                    mTvTime.setText(date + " " + loginInfo.getServiceTime());
+//                    mTvTime.setText(date + " " + loginInfo.getServiceTime());
                 }
-                if (ivIdcard1 != null && ivIdcard2 != null) {
-                    Glide.with(this).load(loginInfo.getIdentityCardFront()).into(ivIdcard1);
-                    Glide.with(this).load(loginInfo.getIdentityCardBack()).into(ivIdcard2);
-                }
+//                if (ivIdcard1 != null && ivIdcard2 != null) {
+//                    Glide.with(this).load(loginInfo.getIdentityCardFront()).into(ivIdcard1);
+//                    Glide.with(this).load(loginInfo.getIdentityCardBack()).into(ivIdcard2);
+//                }
                 avatarUrl = loginInfo.getAvatar();
                 List<BeGoodAtCategory> beGoodAtCategories = loginInfo.getTags();
                 if (beGoodAtCategories != null && beGoodAtCategories.size() > 0) {
@@ -172,21 +166,18 @@ public class WorkerPersonInfoActivity extends BaseActivity {
         return false;
     }
 
-    @OnClick({R.id.rl_photo, R.id.ll_name, R.id.ll_mobile, R.id.ll_time, R.id.ll_good,
-            R.id.ll_resident, R.id.ll_alipay, R.id.iv_idcard1, R.id.iv_idcard2})
+    @OnClick({R.id.iv_avatar, R.id.ll_name, R.id.ll_mobile, R.id.ll_good,
+            R.id.ll_resident, R.id.ll_identificate, R.id.ll_idCardNo,R.id.img_back})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.iv_idcard1:
-                Bundle webBundle = new Bundle();
-                webBundle.putString("path",loginInfo.getIdentityCardFront());
-                startActivity(LookImageActivity.class, webBundle);
+            case R.id.img_back:
+                finish();
                 break;
-            case R.id.iv_idcard2:
-                Bundle bundle = new Bundle();
-                bundle.putString("path",loginInfo.getIdentityCardBack());
-                startActivity(LookImageActivity.class, bundle);
+            case R.id.ll_idCardNo:// 身份证号码
                 break;
-            case R.id.rl_photo:
+            case R.id.ll_identificate: //身份证认证
+                break;
+            case R.id.iv_avatar:
                 PictureSelector.create(this)
                         .openGallery(PictureMimeType.ofImage())
                         .selectionMode(PictureConfig.SINGLE)// 多选 or 单选 PictureConfig.MULTIPLE or PictureConfig.SINGLE
@@ -205,12 +196,6 @@ public class WorkerPersonInfoActivity extends BaseActivity {
                 break;
             case R.id.ll_name:
 //                startActivity(UpdateNameActivity.class);
-                break;
-            case R.id.ll_alipay:
-                startActivity(UpdateAlipayActivity.class);
-                break;
-            case R.id.ll_time:
-                startActivity(ServiceTimeActivity.class);
                 break;
             case R.id.ll_good:
                 Intent intent = new Intent(this, MyCategoryActivity.class);
