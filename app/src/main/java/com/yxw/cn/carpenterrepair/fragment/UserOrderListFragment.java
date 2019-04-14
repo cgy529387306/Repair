@@ -57,7 +57,7 @@ public class UserOrderListFragment extends BaseRefreshFragment implements BaseQu
 
     @Override
     protected int getLayout() {
-        return R.layout.fragment_user_order_list;
+        return R.layout.common_recycleview;
     }
 
     @Override
@@ -81,7 +81,7 @@ public class UserOrderListFragment extends BaseRefreshFragment implements BaseQu
                 .execute(new JsonCallback<ResponseData<UserOrder>>() {
                     @Override
                     public void onSuccess(ResponseData<UserOrder> response) {
-                        mRefreshLayout.refreshComplete();
+                        mRefreshLayout.finishRefresh(true);
                         if (response.getCode() == 0) {
                             page = 2;
                             isNext = response.getData().isIsNext();
@@ -98,7 +98,7 @@ public class UserOrderListFragment extends BaseRefreshFragment implements BaseQu
                     @Override
                     public void onError(Response<ResponseData<UserOrder>> response) {
                         super.onError(response);
-                        mRefreshLayout.refreshComplete();
+                        mRefreshLayout.finishRefresh(false);
                     }
                 });
     }
@@ -149,16 +149,16 @@ public class UserOrderListFragment extends BaseRefreshFragment implements BaseQu
                             isNext = response.getData().isIsNext();
                             if (isNext) {
                                 page++;
-                                mRefreshLayout.loadMoreComplete();
+                                mRefreshLayout.finishLoadMore(true);
                             } else {
-                                mRefreshLayout.loadNothing();
+                                mRefreshLayout.finishLoadMoreWithNoMoreData();
                             }
                             if (response.getData() != null) {
                                 mList.addAll(response.getData().getList());
                             }
                             mAdapter.notifyDataSetChanged();
                         } else {
-                            mRefreshLayout.loadMoreFail();
+                            mRefreshLayout.finishLoadMore(false);
                             toast(response.getMsg());
                         }
                     }
@@ -166,7 +166,7 @@ public class UserOrderListFragment extends BaseRefreshFragment implements BaseQu
                     @Override
                     public void onError(Response<ResponseData<UserOrder>> response) {
                         super.onError(response);
-                        mRefreshLayout.loadMoreFail();
+                        mRefreshLayout.finishLoadMore(false);
                     }
                 });
     }

@@ -420,14 +420,14 @@ public class WorkerUnOrderFragment extends BaseRefreshFragment implements BaseQu
                             if (p == 1) {
                                 page = 2;
                                 mList.clear();
-                                mRefreshLayout.refreshComplete();
+                                mRefreshLayout.finishRefresh();
                             } else {
                                 isNext = response.getData().isIsNext();
                                 if (isNext) {
                                     page++;
-                                    mRefreshLayout.loadMoreComplete();
+                                    mRefreshLayout.finishLoadMore(true);
                                 } else {
-                                    mRefreshLayout.loadNothing();
+                                    mRefreshLayout.finishLoadMoreWithNoMoreData();
                                 }
                             }
                             mList.addAll(response.getData().getList());
@@ -435,9 +435,9 @@ public class WorkerUnOrderFragment extends BaseRefreshFragment implements BaseQu
                             EventBusUtil.post(MessageConstant.WORKER_UNORDER_COUNT, mList.size());
                         } else {
                             if (p == 1) {
-                                mRefreshLayout.refreshComplete();
+                                mRefreshLayout.finishRefresh();
                             } else {
-                                mRefreshLayout.loadMoreFail();
+                                mRefreshLayout.finishLoadMore(false);
                             }
                             toast(response.getMsg());
                         }
@@ -447,9 +447,9 @@ public class WorkerUnOrderFragment extends BaseRefreshFragment implements BaseQu
                     public void onError(Response<ResponseData<UserOrder>> response) {
                         super.onError(response);
                         if (p == 1) {
-                            mRefreshLayout.refreshComplete();
+                            mRefreshLayout.finishRefresh(false);
                         } else {
-                            mRefreshLayout.loadMoreFail();
+                            mRefreshLayout.finishLoadMore(false);
                         }
                     }
                 });
