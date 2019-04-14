@@ -148,5 +148,7 @@
         </activity>
         <activity android:name="ui.LookImageActivity">
         </activity>
+        <activity android:name="ui.WalletActivity">
+        </activity>
     </application>
 </manifest>

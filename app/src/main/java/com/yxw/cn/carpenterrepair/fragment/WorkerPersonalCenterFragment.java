@@ -35,6 +35,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 import ui.SettingActivity;
+import ui.WalletActivity;
 import ui.WithdrawalCashActivity;
 import ui.user.UserFeedBackActivity;
 
@@ -136,29 +137,37 @@ public class WorkerPersonalCenterFragment extends BaseFragment {
     }
 
 
-    @OnClick({R.id.iv_set, R.id.rl_info, R.id.ll_withdrawal, R.id.rl_contact, R.id.rl_help, R.id.r2})
+    @OnClick({R.id.ll_info, R.id.ll_withdrawal, R.id.tv_contact, R.id.tv_help, R.id.tv_feedback,R.id.tv_join})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.iv_set:
-                startActivity(SettingActivity.class);
-                break;
-            case R.id.rl_info:
+//            case R.id.iv_set:
+//                startActivity(SettingActivity.class);
+//                break;
+            case R.id.ll_info:
                 startActivity(WorkerPersonInfoActivity.class);
                 break;
             case R.id.ll_withdrawal:
-                startActivity(WithdrawalCashActivity.class, mTvCarryAmount.getText().toString());
+                Bundle walletBundle = new Bundle();
+                walletBundle.putString("title", "钱包");
+                walletBundle.putString("carryAmount",mTvCarryAmount.getText().toString());
+                walletBundle.putString("deposit",mTvDeposit.getText().toString());
+                walletBundle.putString("settlementAmount",mTvSettlementAmount.getText().toString());
+                startActivity(WalletActivity.class, walletBundle);
                 break;
-            case R.id.rl_contact:
-//                startActivity(ConversationActivity.class);
+            case R.id.tv_contact:
+                startActivity(ConversationActivity.class);
                 break;
-            case R.id.rl_help:
+            case R.id.tv_help:
                 Bundle webBundle = new Bundle();
                 webBundle.putString("url", "http://jx.bdelay.com/worker/system/help.html");
                 webBundle.putString("title", "帮助中心");
                 startActivity(WebActivity.class, webBundle);
                 break;
-            case R.id.r2:
+            case R.id.tv_feedback:
                 startActivity(UserFeedBackActivity.class);
+                break;
+            case R.id.tv_join:
+//                startActivity(UserFeedBackActivity.class);
                 break;
         }
     }
