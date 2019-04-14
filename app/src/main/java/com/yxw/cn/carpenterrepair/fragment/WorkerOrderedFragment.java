@@ -119,7 +119,6 @@ public class WorkerOrderedFragment extends BaseRefreshFragment implements BaseQu
     public void onLoad() {
         super.onLoad();
         getOrderData(page);
-
     }
 
     @Override

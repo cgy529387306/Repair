@@ -15,6 +15,7 @@ import com.yxw.cn.carpenterrepair.contast.SpConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.LoginInfo;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
+import com.yxw.cn.carpenterrepair.fragment.NewWorkAreaFragment;
 import com.yxw.cn.carpenterrepair.fragment.WebFragment;
 import com.yxw.cn.carpenterrepair.fragment.WorkAreaFragment;
 import com.yxw.cn.carpenterrepair.fragment.WorkerPersonalCenterFragment;
@@ -36,7 +37,7 @@ public class WorkerHomeActivity extends BaseActivity {
     TextView tv_mall;
     @BindView(R.id.tv_personal)
     TextView tv_personal;
-    private WorkAreaFragment workAreaFragment;
+    private NewWorkAreaFragment workAreaFragment;
     private WebFragment shoppingMallFragment;
     private WorkerPersonalCenterFragment personalCenterFragment;
     private FragmentManager fragmentManager;
@@ -86,7 +87,7 @@ public class WorkerHomeActivity extends BaseActivity {
                     ft.show(workAreaFragment);
                     // 否则添加fragment1，注意添加后是会显示出来的，replace方法也是先remove后add
                 else {
-                    workAreaFragment = new WorkAreaFragment();
+                    workAreaFragment = new NewWorkAreaFragment();
                     ft.add(R.id.main_container_content, workAreaFragment);
                 }
                 break;
