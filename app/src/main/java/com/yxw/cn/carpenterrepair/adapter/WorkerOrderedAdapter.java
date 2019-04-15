@@ -23,12 +23,11 @@ public class WorkerOrderedAdapter extends BaseQuickAdapter<UserOrder.ListBean, B
 
     @Override
     protected void convert(BaseViewHolder helper, UserOrder.ListBean item) {
-        helper.setText(R.id.name, item.getCategoryName())
-                .setText(R.id.price, "¥" + DoubleUtil.getTwoDecimal(item.getTotalPrice()))
-                .setText(R.id.time, item.getBookingDate() + " " + item.getBookingTime())
-                .setText(R.id.addr, AppUtil.getOrderDetailAddress(item))
-                .setText(R.id.remark, TextUtils.isEmpty(item.getRemark()) ? "无备注" : item.getRemark())
-                .setText(R.id.recive_order, item.getOrderStatusName())
-                .addOnClickListener(R.id.recive_order);
+        helper.setText(R.id.tv_ordre_name, item.getCategoryName())
+                .setText(R.id.tv_order_time, item.getBookingDate() + " " + item.getBookingTime())
+                .setText(R.id.tv_order_address, AppUtil.getOrderDetailAddress(item))
+                .setText(R.id.tv_order_content, TextUtils.isEmpty(item.getRemark()) ? "无备注" : item.getRemark())
+                .setText(R.id.tv_order_state, item.getOrderStatusName())
+                .addOnClickListener(R.id.tv_order_state);
     }
 }

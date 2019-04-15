@@ -1,10 +1,14 @@
 package com.yxw.cn.carpenterrepair.entity;
 
+import java.io.Serializable;
+
 /**
  * Created by cgy on 19/4/14.
  */
 
-public class OrderType {
+public class OrderType implements Serializable{
+
+    private int type;
 
     private int drawableId;
 
@@ -26,7 +30,8 @@ public class OrderType {
         this.name = name;
     }
 
-    public OrderType(int drawableId, String name) {
+    public OrderType(int type,int drawableId, String name) {
+        this.type = type;
         this.drawableId = drawableId;
         this.name = name;
     }

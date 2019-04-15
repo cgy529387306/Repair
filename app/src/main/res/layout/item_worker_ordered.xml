@@ -1,108 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="@color/white">
-
-    <RelativeLayout
+    android:background="#FFF6F6F6">
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp">
-
-        <TextView
-            android:layout_marginLeft="10dp"
-            android:layout_centerVertical="true"
-            android:textSize="14sp"
-            android:textColor="@color/text_black"
-            android:id="@+id/name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="手机维修/苹果"/>
-
-        <TextView
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/name"
-            android:layout_marginLeft="10dp"
-            android:textSize="14sp"
-            android:textColor="#ff0000"
-            android:id="@+id/price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="￥150"/>
-
-        <TextView
-            android:id="@+id/recive_order"
-            android:layout_marginRight="10dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:textSize="14sp"
-            android:padding="5dp"
-            android:textColor="#ff0000"
-            android:gravity="center"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:text="我要接单"/>
-
-        <include layout="@layout/view_line_h"/>
-
-    </RelativeLayout>
-
-    <TextView
-        android:id="@+id/time"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:drawableLeft="@drawable/time"
-        android:textSize="12sp"
-        android:drawablePadding="7dp"
-        android:textColor="@color/text_gray"
-        android:text="2018-1-20 15:00:00"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_marginTop="5dp"
-        android:gravity="center_vertical"
-        android:layout_height="wrap_content">
-
-        <View
-            android:layout_width="8dp"
-            android:layout_height="8dp"
-            android:layout_marginLeft="14dp"
-            android:background="@drawable/circle_gray" />
-
-        <TextView
-            android:id="@+id/addr"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="福州 晋安区 福州站小区"
-            android:textColor="@color/text_gray"
-            android:textSize="12sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="15dp"
-        android:gravity="center_vertical">
+        android:layout_margin="15dp"
+        android:padding="10dp"
+        android:orientation="vertical"
+        android:background="@drawable/corner_white">
 
-    <View
-        android:layout_width="8dp"
-        android:layout_height="8dp"
-        android:layout_marginLeft="14dp"
-        android:background="@drawable/circle_red" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="46dp">
+            <TextView
+                android:id="@+id/tv_ordre_name"
+                android:layout_marginLeft="10dp"
+                android:layout_centerVertical="true"
+                android:textSize="14sp"
+                android:textColor="#333333"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="手机维修/苹果"/>
 
-        <TextView
-            android:id="@+id/remark"
-            android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/tv_order_state"
+                android:layout_marginRight="10dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:textSize="14sp"
+                android:padding="5dp"
+                android:textColor="#E82B2D"
+                android:gravity="center"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text="待预约"/>
+
+            <include layout="@layout/view_line_h"/>
+
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="手机屏幕碎了，得换屏幕"
-            android:textColor="@color/text_gray"
-            android:textSize="12sp" />
-
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="订单编号"
+                android:textSize="13sp"
+                android:textColor="#999999" />
+            <TextView
+                android:id="@+id/tv_order_no"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:singleLine="true"
+                android:gravity="right"
+                android:layout_height="wrap_content"
+                android:text="387328759483"
+                android:textSize="13sp"
+                android:textColor="#333333" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="下单时间"
+                android:textSize="13sp"
+                android:textColor="#999999" />
+            <TextView
+                android:id="@+id/tv_order_time"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:singleLine="true"
+                android:gravity="right"
+                android:layout_height="wrap_content"
+                android:text="2010-4-2"
+                android:textSize="13sp"
+                android:textColor="#333333" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="客户地址"
+                android:textSize="13sp"
+                android:textColor="#999999" />
+            <TextView
+                android:id="@+id/tv_order_address"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:singleLine="true"
+                android:gravity="right"
+                android:layout_height="wrap_content"
+                android:text="福州度基督教"
+                android:textSize="13sp"
+                android:textColor="#333333" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="维修内容"
+                android:textSize="13sp"
+                android:textColor="#999999" />
+            <TextView
+                android:id="@+id/tv_order_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:singleLine="true"
+                android:gravity="right"
+                android:layout_height="wrap_content"
+                android:text="维修内容"
+                android:textSize="13sp"
+                android:textColor="#333333" />
+        </LinearLayout>
     </LinearLayout>
-
-</LinearLayout>
+</FrameLayout>

@@ -1,10 +1,12 @@
 package com.yxw.cn.carpenterrepair.fragment;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 
@@ -12,6 +14,7 @@ import com.youth.banner.Banner;
 import com.youth.banner.loader.ImageLoader;
 import com.yxw.cn.carpenterrepair.BaseRefreshFragment;
 import com.yxw.cn.carpenterrepair.R;
+import com.yxw.cn.carpenterrepair.activity.MyOrderActivity;
 import com.yxw.cn.carpenterrepair.adapter.HomeMsgAdapter;
 import com.yxw.cn.carpenterrepair.adapter.OrderTypeAdapter;
 import com.yxw.cn.carpenterrepair.entity.OrderType;
@@ -72,15 +75,24 @@ public class NewWorkAreaFragment extends BaseRefreshFragment {
         mBanner.setImageLoader(new GlideImageLoader());
         mBanner.setImages(getImageList());
         mBanner.start();
+
+        mGridCate.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("type",getOrderTypeList().get(i));
+                startActivity(MyOrderActivity.class,bundle);
+            }
+        });
     }
 
     private List<OrderType> getOrderTypeList(){
         List<OrderType> orderTypeList = new ArrayList<>();
-        orderTypeList.add(new OrderType(R.drawable.icon_orders,"订单池"));
-        orderTypeList.add(new OrderType(R.drawable.icon_order_waiting,"待预约"));
-        orderTypeList.add(new OrderType(R.drawable.icon_order_finishing,"待完成"));
-        orderTypeList.add(new OrderType(R.drawable.icon_order_coming,"带上门"));
-        orderTypeList.add(new OrderType(R.drawable.icon_order_finished,"已完成"));
+        orderTypeList.add(new OrderType(0,R.drawable.icon_orders,"订单池"));
+        orderTypeList.add(new OrderType(1,R.drawable.icon_order_waiting,"待预约"));
+        orderTypeList.add(new OrderType(2,R.drawable.icon_order_finishing,"待完成"));
+        orderTypeList.add(new OrderType(3,R.drawable.icon_order_coming,"带上门"));
+        orderTypeList.add(new OrderType(4,R.drawable.icon_order_finished,"已完成"));
         return orderTypeList;
     }
 

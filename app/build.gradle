@@ -81,7 +81,6 @@ dependencies {
     implementation 'cn.pedant.sweetalert:library:1.3'
     implementation 'com.android.support:multidex:1.0.3'
     implementation project(':IMKit')
-    implementation 'com.android.support:multidex:1.0.3'
     //轮播图
     implementation 'com.youth.banner:banner:1.4.9'
     //下拉刷新
