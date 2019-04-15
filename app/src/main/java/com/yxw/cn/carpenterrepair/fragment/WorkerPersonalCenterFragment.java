@@ -131,12 +131,12 @@ public class WorkerPersonalCenterFragment extends BaseFragment {
     }
 
 
-    @OnClick({R.id.ll_info, R.id.ll_withdrawal, R.id.tv_contact, R.id.tv_help, R.id.tv_feedback,R.id.tv_join})
+    @OnClick({R.id.ll_info, R.id.ll_withdrawal, R.id.tv_contact, R.id.tv_help, R.id.tv_feedback,R.id.tv_join,R.id.img_setting})
     public void onClick(View view) {
         switch (view.getId()) {
-//            case R.id.iv_set:
-//                startActivity(SettingActivity.class);
-//                break;
+            case R.id.img_setting:
+                startActivity(SettingActivity.class);
+                break;
             case R.id.ll_info:
                 startActivity(WorkerPersonInfoActivity.class);
                 break;
@@ -149,7 +149,7 @@ public class WorkerPersonalCenterFragment extends BaseFragment {
                 startActivity(WalletActivity.class, walletBundle);
                 break;
             case R.id.tv_contact:
-                startActivity(ConversationActivity.class);
+//                startActivity(ConversationActivity.class);
                 break;
             case R.id.tv_help:
                 Bundle webBundle = new Bundle();

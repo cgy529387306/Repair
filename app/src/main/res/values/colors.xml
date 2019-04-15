@@ -6,7 +6,7 @@
 
 
 
-    <color name="text_black">#000000</color>
+    <color name="text_black">#333333</color>
     <color name="text_red">#E93C3D</color>
     <color name="text_gray">#9E9E9E</color>
     <color name="text_gray2">#717171</color>
@@ -26,7 +26,7 @@
 
     <color name="text_color">#3f3a39</color>
     <color name="edit_color">#5a5655</color>
-    <color name="bg_color">#f4f4f4</color>
+    <color name="bg_color">#f6f6f6</color>
     <color name="gray_45">#454545</color>
     <color name="gray_f4">#f4f4f4</color>
     <color name="gray_4d">#4d4d4d</color>

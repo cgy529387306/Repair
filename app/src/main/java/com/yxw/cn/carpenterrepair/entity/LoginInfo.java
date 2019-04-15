@@ -1,5 +1,7 @@
 package com.yxw.cn.carpenterrepair.entity;
 
+import com.yxw.cn.carpenterrepair.util.Helper;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,7 +76,7 @@ public class LoginInfo {
     }
 
     public String getNickname() {
-        return nickname == null ? "" : nickname;
+        return Helper.isEmpty(nickname)?username:nickname;
     }
 
     public void setNickname(String nickname) {

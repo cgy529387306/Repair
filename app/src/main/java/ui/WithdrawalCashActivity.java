@@ -130,7 +130,7 @@ public class WithdrawalCashActivity extends BaseActivity {
                 }
                 break;
             case R.id.all:
-                cash1.setText(cash2.getText().toString());
+                cash1.setText("￥" + cash2.getText().toString());
                 break;
         }
     }

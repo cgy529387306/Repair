@@ -94,7 +94,7 @@ public class TitleBar extends ViewGroup implements View.OnClickListener {
         mCenterLayout.addView(mSubTitleText);
 
         mCenterLayout.setGravity(Gravity.CENTER);
-        mCenterText.setTextColor(getResources().getColor(R.color.black));
+        mCenterText.setTextColor(getResources().getColor(R.color.text_black));
         mCenterText.setTextSize(DEFAULT_MAIN_TEXT_SIZE);
         mCenterText.setSingleLine();
         mCenterText.setGravity(Gravity.CENTER);
@@ -113,7 +113,7 @@ public class TitleBar extends ViewGroup implements View.OnClickListener {
         addView(mDividerView, new LayoutParams(LayoutParams.MATCH_PARENT, 1));
 
         setBackgroundColor(context.getResources().getColor(R.color.white));
-        setDividerColor(context.getResources().getColor(R.color.text_gray));
+        setDividerColor(context.getResources().getColor(R.color.gray_divider));
     }
 
     public void setImmersive(boolean immersive) {

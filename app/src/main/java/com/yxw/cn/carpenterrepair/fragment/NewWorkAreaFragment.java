@@ -61,7 +61,7 @@ public class NewWorkAreaFragment extends BaseRefreshFragment {
         });
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView.addItemDecoration(new RecycleViewDivider(LinearLayoutManager.VERTICAL,1,R.color.gray_divider));
+        mRecyclerView.addItemDecoration(new RecycleViewDivider(LinearLayoutManager.VERTICAL,1,getResources().getColor(R.color.gray_divider)));
         mAdapter = new HomeMsgAdapter(getImageList());
         mRecyclerView.setAdapter(mAdapter);
 
