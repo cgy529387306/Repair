@@ -26,6 +26,7 @@ import com.yxw.cn.carpenterrepair.contast.SpConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.Abnormal;
 import com.yxw.cn.carpenterrepair.entity.Category;
+import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 import com.yxw.cn.carpenterrepair.entity.LoginInfo;
 import com.yxw.cn.carpenterrepair.entity.QueryListByMark;
 import com.yxw.cn.carpenterrepair.entity.RegionTree;
@@ -78,9 +79,8 @@ public class AppUtil {
     }
 
     public static void checkStatus(Context context){
-        LoginInfo loginInfo = gson.fromJson(SpUtil.getStr(SpConstant.LOGIN_INFO), LoginInfo.class);
+        LoginInfo loginInfo = CurrentUser.getInstance();
         Intent intent;
-//        if(loginInfo.getIdCardStatus() == 0){
         if(loginInfo.getIdCardStatus() == 0 || loginInfo.getIdCardStatus() == 2){
             intent = new Intent(context,IdCardInfoActivity.class);
             context.startActivity(intent);
@@ -88,7 +88,7 @@ public class AppUtil {
             intent = new Intent(context, ServiceTimeActivity.class);
             intent.putExtra("place",true);
             context.startActivity(intent);
-        }else if(loginInfo.getTags() == null ||loginInfo.getTags().size()==0){
+        }else if(loginInfo.getTags() == null || loginInfo.getTags().size()==0){
             intent = new Intent(context, MyCategoryActivity.class);
             intent.putExtra("force",true);
             context.startActivity(intent);

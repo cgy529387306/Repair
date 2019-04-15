@@ -16,6 +16,7 @@ import com.yxw.cn.carpenterrepair.activity.IdCardInfoActivity;
 import com.yxw.cn.carpenterrepair.activity.WorkerPersonInfoActivity;
 import com.yxw.cn.carpenterrepair.contast.SpConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
+import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 import com.yxw.cn.carpenterrepair.entity.LoginInfo;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.fragment.NewWorkAreaFragment;
@@ -69,7 +70,7 @@ public class WorkerMainActivity extends BaseActivity {
                              @Override
                              public void onSuccess(ResponseData<LoginInfo> response) {
                                  if (response.getCode() == 0) {
-                                     SpUtil.putStr(SpConstant.LOGIN_INFO, gson.toJson(response.getData()));
+                                     CurrentUser.getInstance().login(response.getData());
                                      AppUtil.checkStatus(WorkerMainActivity.this);
                                  }
                              }

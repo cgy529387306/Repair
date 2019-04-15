@@ -82,10 +82,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.login.StartActivity">
-        </activity>
-        <activity android:name=".activity.login.LoginActivity"
-            android:windowSoftInputMode="adjustPan">
+        <activity android:name=".activity.login.LoginActivity">
         </activity>
         <activity android:name=".activity.login.QuickLoginActivity">
         </activity>

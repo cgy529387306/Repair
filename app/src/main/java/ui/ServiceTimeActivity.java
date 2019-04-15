@@ -13,6 +13,7 @@ import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.SpConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
+import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 import com.yxw.cn.carpenterrepair.entity.LoginInfo;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
@@ -78,16 +79,13 @@ public class ServiceTimeActivity extends BaseActivity {
             mRlPlace.setVisibility(View.GONE);
             titleBar.setLeftVisible(true);
         }
-        if (!TextUtils.isEmpty(SpUtil.getStr(SpConstant.LOGIN_INFO))) {
-            try {
-                loginInfo = gson.fromJson(SpUtil.getStr(SpConstant.LOGIN_INFO), LoginInfo.class);
-                notifyData();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
+        if (CurrentUser.getInstance().isLogin()){
+            loginInfo = CurrentUser.getInstance();
+            notifyData();
+        }else{
             loginInfo = new LoginInfo();
         }
+
     }
 
     public void notifyData() {
@@ -214,27 +212,6 @@ public class ServiceTimeActivity extends BaseActivity {
                 }
 
 
-             /*   if (mIvCheck1.getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.icon_selected).getConstantState())) {
-                    date += 1 + ",";
-                }
-                if (mIvCheck2.getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.icon_selected).getConstantState())) {
-                    date += 2 + ",";
-                }
-                if (mIvCheck3.getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.icon_selected).getConstantState())) {
-                    date += 3 + ",";
-                }
-                if (mIvCheck4.getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.icon_selected).getConstantState())) {
-                    date += 4 + ",";
-                }
-                if (mIvCheck5.getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.icon_selected).getConstantState())) {
-                    date += 5 + ",";
-                }
-                if (mIvCheck6.getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.icon_selected).getConstantState())) {
-                    date += 6 + ",";
-                }
-                if (mIvCheck7.getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.icon_selected).getConstantState())) {
-                    date += 7 + ",";
-                }*/
                 Logger.d("date: " + date);
                 if (TextUtils.isEmpty(date)) {
                     toast("您还未选择服务日期");
@@ -321,7 +298,7 @@ public class ServiceTimeActivity extends BaseActivity {
                         if (response.getCode() == 0) {
                             loginInfo.setServiceTime(serviceTime);
                             loginInfo.setServiceDate(serviceDate);
-                            SpUtil.putStr(SpConstant.LOGIN_INFO, gson.toJson(loginInfo));
+                            CurrentUser.getInstance().login(loginInfo);
                             EventBusUtil.post(MessageConstant.NOTIFY_INFO);
                             AppUtil.checkStatus(ServiceTimeActivity.this);
                             finish();

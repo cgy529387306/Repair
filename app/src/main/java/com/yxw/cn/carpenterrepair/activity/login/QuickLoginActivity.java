@@ -16,6 +16,7 @@ import com.yxw.cn.carpenterrepair.activity.main.WorkerMainActivity;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.SpConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
+import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 import com.yxw.cn.carpenterrepair.entity.LoginInfo;
 import com.yxw.cn.carpenterrepair.entity.MessageEvent;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
@@ -109,10 +110,7 @@ public class QuickLoginActivity extends BaseActivity {
                                              dismissLoading();
                                              if (response.getCode() == 0) {
                                                  SpUtil.putStr(SpConstant.LOGIN_MOBILE, mEtTel.getText().toString().trim());
-                                                 SpUtil.putStr(SpConstant.TOKEN, response.getData().getToken());
-                                                 SpUtil.putStr(SpConstant.USERID, response.getData().getUserId());
-                                                 SpUtil.putInt(SpConstant.ROLE, response.getData().getRole());
-                                                 SpUtil.putStr(SpConstant.LOGIN_INFO, gson.toJson(response.getData()));
+                                                 CurrentUser.getInstance().login(response.getData());
                                                  switch (response.getData().getRole()) {
                                                      case 0:
                                                          startActivityFinish(UserMainActivity.class);

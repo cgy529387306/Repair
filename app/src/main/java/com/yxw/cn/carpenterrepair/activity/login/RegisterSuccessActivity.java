@@ -8,8 +8,7 @@ import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.activity.main.UserMainActivity;
 import com.yxw.cn.carpenterrepair.activity.main.WorkerMainActivity;
-import com.yxw.cn.carpenterrepair.contast.SpConstant;
-import com.yxw.cn.carpenterrepair.util.SpUtil;
+import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 
 import butterknife.OnClick;
 
@@ -45,7 +44,7 @@ public class RegisterSuccessActivity extends BaseActivity {
     public void gotoMainActivity(boolean perfect) {
         Bundle bundle = new Bundle();
         bundle.putBoolean("perfect", perfect);
-        switch (SpUtil.getInt(SpConstant.ROLE)) {
+        switch (CurrentUser.getInstance().getRole()) {
             case 0:
                 startActivityFinish(UserMainActivity.class,bundle);
                 break;

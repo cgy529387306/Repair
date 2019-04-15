@@ -19,6 +19,7 @@ import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.contast.SpConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
+import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 import com.yxw.cn.carpenterrepair.entity.IdCardInfo;
 import com.yxw.cn.carpenterrepair.entity.LoginInfo;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
@@ -61,11 +62,13 @@ public class IdCardInfoActivity extends BaseActivity {
     public void initView() {
         titlebar.setTitle("身份证信息");
         titlebar.setLeftVisible(false);
-        LoginInfo loginInfo = gson.fromJson(SpUtil.getStr(SpConstant.LOGIN_INFO), LoginInfo.class);
-        if(loginInfo.getIdCardStatus()==0){
-            tv_status.setVisibility(View.GONE);
-        }else if(loginInfo.getIdCardStatus()==2){
-            tv_status.setVisibility(View.VISIBLE);
+        if (CurrentUser.getInstance().isLogin()){
+            LoginInfo loginInfo = CurrentUser.getInstance();
+            if(loginInfo.getIdCardStatus()==0){
+                tv_status.setVisibility(View.GONE);
+            }else if(loginInfo.getIdCardStatus()==2){
+                tv_status.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -123,17 +126,13 @@ public class IdCardInfoActivity extends BaseActivity {
                                     toast(response.getMsg());
                                     dismissLoading();
                                     if (response.getCode() == 0) {
-                                        IdCardInfoActivity.this.finish();
-                                        HashMap<String, String> map = new HashMap<>();
-                                        map.put("idCardFront", response.getData().getIdCardFrontPath());
-                                        map.put("idCardBack", response.getData().getIdCardBackPath());
                                         try {
-                                            LoginInfo loginInfo = gson.fromJson(SpUtil.getStr(SpConstant.LOGIN_INFO), LoginInfo.class);
+                                            LoginInfo loginInfo = CurrentUser.getInstance();
                                             loginInfo.setIdentityCard(response.getData().getIdCardNo());
                                             loginInfo.setIdentityCardFront(response.getData().getIdCardFrontPath());
                                             loginInfo.setIdentityCardBack(response.getData().getIdCardBackPath());
                                             loginInfo.setIdCardStatus(1);
-                                            SpUtil.putStr(SpConstant.LOGIN_INFO, gson.toJson(loginInfo));
+                                            CurrentUser.getInstance().login(loginInfo);
                                         } catch (Exception e) {
                                             e.printStackTrace();
                                         }

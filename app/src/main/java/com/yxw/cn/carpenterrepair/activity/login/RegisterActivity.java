@@ -19,6 +19,7 @@ import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.SpConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
+import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 import com.yxw.cn.carpenterrepair.entity.MessageEvent;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
@@ -135,43 +136,41 @@ public class RegisterActivity extends BaseActivity {
                 mEtPassword.setSelection(mEtPassword.getText().toString().length());
                 break;
             case R.id.tv_register:
-                startActivity(ChooseCategoryActivity.class);
-//                if (TextUtils.isEmpty(mEtPhone.getText().toString().trim())) {
-//                    toast("手机号不能为空！");
-//                } else if (TextUtils.isEmpty(mEtCode.getText().toString().trim())) {
-//                    toast("验证码不能为空！");
-//                } else if (TextUtils.isEmpty(mEtPassword.getText().toString().trim())) {
-//                    toast("密码不能为空！");
-//                } else if (mEtPassword.getText().toString().trim().length() < 6 || mEtPassword.getText().toString().trim().length() > 16) {
-//                    toast("新密码为6到16个字符或数字！");
-//                } else {
-//                    Map<String, Object> map = new HashMap<>();
-//                    map.put("mobile", mEtPhone.getText().toString().trim());
-//                    map.put("password", mEtPassword.getText().toString().trim());
-//                    map.put("code", mEtCode.getText().toString().trim());
-//                    map.put("role", isWorkerFlag);
-//                    OkGo.<ResponseData<String>>post(UrlConstant.REGISTER)
-//                            .upJson(gson.toJson(map))
-//                            .execute(new JsonCallback<ResponseData<String>>() {
-//                                         @Override
-//                                         public void onSuccess(ResponseData<String> response) {
-//                                             toast(response.getMsg());
-//                                             if (response.getCode() == 0) {
-//                                                 if (isWorkerFlag==2){
-//                                                     SpUtil.putInt(SpConstant.ROLE, isWorkerFlag);
-//                                                     SpUtil.putStr(SpConstant.LOGIN_MOBILE, mEtPhone.getText().toString().trim());
-//                                                     startActivity(ChooseCategoryActivity.class);
-//                                                 }else{
-//                                                     SpUtil.putInt(SpConstant.ROLE, isWorkerFlag);
-//                                                     SpUtil.putStr(SpConstant.LOGIN_MOBILE, mEtPhone.getText().toString().trim());
-//                                                     EventBusUtil.post(MessageConstant.REGISTER);
-//                                                     startActivity(StartActivity.class);
-//                                                 }
-//                                             }
-//                                         }
-//                                     }
-//                            );
-//                }
+                if (TextUtils.isEmpty(mEtPhone.getText().toString().trim())) {
+                    toast("手机号不能为空！");
+                } else if (TextUtils.isEmpty(mEtCode.getText().toString().trim())) {
+                    toast("验证码不能为空！");
+                } else if (TextUtils.isEmpty(mEtPassword.getText().toString().trim())) {
+                    toast("密码不能为空！");
+                } else if (mEtPassword.getText().toString().trim().length() < 6 || mEtPassword.getText().toString().trim().length() > 16) {
+                    toast("新密码为6到16个字符或数字！");
+                } else {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("mobile", mEtPhone.getText().toString().trim());
+                    map.put("password", mEtPassword.getText().toString().trim());
+                    map.put("code", mEtCode.getText().toString().trim());
+                    map.put("role", isWorkerFlag);
+                    OkGo.<ResponseData<String>>post(UrlConstant.REGISTER)
+                            .upJson(gson.toJson(map))
+                            .execute(new JsonCallback<ResponseData<String>>() {
+                                         @Override
+                                         public void onSuccess(ResponseData<String> response) {
+                                             toast(response.getMsg());
+                                             if (response.getCode() == 0) {
+                                                 if (isWorkerFlag==2){
+                                                     SpUtil.putStr(SpConstant.LOGIN_MOBILE, mEtPhone.getText().toString().trim());
+                                                     EventBusUtil.post(MessageConstant.REGISTER);
+                                                     startActivity(ChooseCategoryActivity.class);
+                                                 }else{
+                                                     SpUtil.putStr(SpConstant.LOGIN_MOBILE, mEtPhone.getText().toString().trim());
+                                                     EventBusUtil.post(MessageConstant.REGISTER);
+                                                     startActivity(LoginActivity.class);
+                                                 }
+                                             }
+                                         }
+                                     }
+                            );
+                }
                 break;
         }
     }

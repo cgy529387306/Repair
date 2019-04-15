@@ -1,15 +1,9 @@
 package com.yxw.cn.carpenterrepair.okgo;
 
-import android.content.Intent;
-import android.os.Bundle;
-
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.lzy.okgo.callback.AbsCallback;
 import com.lzy.okgo.request.base.Request;
-import com.yxw.cn.carpenterrepair.BaseApplication;
-import com.yxw.cn.carpenterrepair.activity.login.LoginActivity;
-import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 
 import java.lang.reflect.ParameterizedType;
@@ -17,8 +11,6 @@ import java.lang.reflect.Type;
 
 import okhttp3.Response;
 import okhttp3.ResponseBody;
-import util.EventBusUtil;
-import util.ToastUtil;
 
 public abstract class JsonCallback<T> extends AbsCallback<T> {
 
@@ -89,16 +81,15 @@ public abstract class JsonCallback<T> extends AbsCallback<T> {
         if (response.body() instanceof ResponseData) {
             ResponseData responseData = (ResponseData) response.body();
             if (responseData.getCode() == 2001) {
-//            if (responseData.getCode() == 401) {
-                ToastUtil.show(responseData.getMsg());
-                if(BaseApplication.getInstance().getLastActivity() !=null){
-                    Bundle bundle = new Bundle();
-                    bundle.putBoolean("back",false);
-                    Intent intent =new Intent(BaseApplication.getInstance().getLastActivity(),LoginActivity.class);
-                    intent.putExtras(bundle);
-                    BaseApplication.getInstance().getLastActivity().startActivity(intent);
-                    EventBusUtil.post(MessageConstant.LOGOUT);
-                }
+//                ToastUtil.show(responseData.getMsg());
+//                if(BaseApplication.getInstance().getLastActivity() !=null){
+//                    Bundle bundle = new Bundle();
+//                    bundle.putBoolean("back",false);
+//                    Intent intent = new Intent(BaseApplication.getInstance().getLastActivity(),LoginActivity.class);
+//                    intent.putExtras(bundle);
+//                    BaseApplication.getInstance().getLastActivity().startActivity(intent);
+//                    EventBusUtil.post(MessageConstant.LOGOUT);
+//                }
             } else {
                 onSuccess(response.body());
             }

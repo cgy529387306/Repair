@@ -37,7 +37,7 @@
         android:id="@+id/confirm"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:background="@drawable/sel_bt_no_radius"
+        android:background="@drawable/bg_btn_rect_red"
         android:text="请至少选择一个项目哦~"
         android:textColor="#ffffff" />
 

@@ -26,6 +26,7 @@ import com.orhanobut.logger.Logger;
 import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.contast.SpConstant;
+import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 import com.yxw.cn.carpenterrepair.util.SpUtil;
 import com.yxw.cn.carpenterrepair.view.TitleBar;
 
@@ -115,8 +116,8 @@ public class WebActivity extends BaseActivity {
     public void getData() {
         if(getIntent().getBooleanExtra("header",false)){
             HashMap<String,String> headers=new HashMap<String,String>();
-            headers.put("userId",SpUtil.getStr(SpConstant.USERID));
-            headers.put("token",SpUtil.getStr(SpConstant.TOKEN));
+            headers.put("userId", CurrentUser.getInstance().getUserId());
+            headers.put("token",CurrentUser.getInstance().getToken());
             mWebView.loadUrl(url,headers);
         }else {
             mWebView.loadUrl(url);

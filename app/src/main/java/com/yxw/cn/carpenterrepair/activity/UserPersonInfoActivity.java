@@ -20,6 +20,7 @@ import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.SpConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
+import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 import com.yxw.cn.carpenterrepair.entity.FileDfs;
 import com.yxw.cn.carpenterrepair.entity.LoginInfo;
 import com.yxw.cn.carpenterrepair.entity.MessageEvent;
@@ -68,18 +69,12 @@ public class UserPersonInfoActivity extends BaseActivity {
     }
 
     public void notifyInfo() {
-        String avatarUrl = null;
-        if (!TextUtils.isEmpty(SpUtil.getStr(SpConstant.LOGIN_INFO))) {
-            try {
-                loginInfo = gson.fromJson(SpUtil.getStr(SpConstant.LOGIN_INFO), LoginInfo.class);
-                mTvName.setText(loginInfo.getNickname());
-                mTvPhone.setText(AppUtil.getStarPhone(loginInfo.getMobile()));
-                avatarUrl = loginInfo.getAvatar();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        if (CurrentUser.getInstance().isLogin()){
+            loginInfo = CurrentUser.getInstance();
+            mTvName.setText(loginInfo.getNickname());
+            mTvPhone.setText(AppUtil.getStarPhone(loginInfo.getMobile()));
+            AppUtil.showPic(this, mIvAvatar, loginInfo.getAvatar());
         }
-        AppUtil.showPic(this, mIvAvatar, avatarUrl);
     }
 
     @OnClick({R.id.ll_avatar, R.id.ll_name, R.id.ll_mobile})
@@ -134,7 +129,7 @@ public class UserPersonInfoActivity extends BaseActivity {
                                                  if (response.getCode() == 0) {
                                                      loginInfo.setAvatar(response.getData());
                                                      AppUtil.showPic(UserPersonInfoActivity.this, mIvAvatar, selectList.get(0).getCompressPath());
-                                                     SpUtil.putStr(SpConstant.LOGIN_INFO, gson.toJson(loginInfo));
+                                                     CurrentUser.getInstance().login(loginInfo);
                                                      EventBusUtil.post(MessageConstant.NOTIFY_INFO);
                                                  }
                                              }

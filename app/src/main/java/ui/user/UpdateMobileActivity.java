@@ -13,6 +13,7 @@ import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.SpConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
+import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 import com.yxw.cn.carpenterrepair.entity.LoginInfo;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
@@ -47,15 +48,11 @@ public class UpdateMobileActivity extends BaseActivity {
     @Override
     public void initView() {
         titleBar.setTitle("修改电话");
-        if (!TextUtils.isEmpty(SpUtil.getStr(SpConstant.LOGIN_INFO))) {
-            try {
-                loginInfo = gson.fromJson(SpUtil.getStr(SpConstant.LOGIN_INFO), LoginInfo.class);
-                if (!TextUtils.isEmpty(loginInfo.getMobile())) {
-                    mEtName.setText(loginInfo.getMobile());
-                    mEtName.setSelection(loginInfo.getMobile().length());
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+        if (CurrentUser.getInstance().isLogin()) {
+            loginInfo = CurrentUser.getInstance();
+            if (!TextUtils.isEmpty(loginInfo.getMobile())) {
+                mEtName.setText(loginInfo.getMobile());
+                mEtName.setSelection(loginInfo.getMobile().length());
             }
         } else {
             loginInfo = new LoginInfo();
@@ -86,7 +83,7 @@ public class UpdateMobileActivity extends BaseActivity {
                                          if (response.getCode() == 0) {
                                              loginInfo.setMobile(mEtName.getText().toString().trim());
                                              SpUtil.putStr(SpConstant.LOGIN_MOBILE, mEtName.getText().toString().trim());
-                                             SpUtil.putStr(SpConstant.LOGIN_INFO, gson.toJson(loginInfo));
+                                             CurrentUser.getInstance().login(loginInfo);
                                              EventBusUtil.post(MessageConstant.NOTIFY_INFO);
                                              finish();
                                          }

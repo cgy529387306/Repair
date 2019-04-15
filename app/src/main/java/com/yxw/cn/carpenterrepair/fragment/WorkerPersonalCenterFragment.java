@@ -18,6 +18,7 @@ import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.SpConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.Asset;
+import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 import com.yxw.cn.carpenterrepair.entity.LoginInfo;
 import com.yxw.cn.carpenterrepair.entity.MessageEvent;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
@@ -68,18 +69,12 @@ public class WorkerPersonalCenterFragment extends BaseFragment {
     }
 
     public void notifyInfo() {
-        String avatarUrl = "";
-        if (!TextUtils.isEmpty(SpUtil.getStr(SpConstant.LOGIN_INFO))) {
-            try {
-                LoginInfo loginInfo = gson.fromJson(SpUtil.getStr(SpConstant.LOGIN_INFO), LoginInfo.class);
-                mTvName.setText(loginInfo.getUserName());
-                mTvPhone.setText(AppUtil.getStarPhone(loginInfo.getMobile()));
-                avatarUrl = loginInfo.getAvatar();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        if (CurrentUser.getInstance().isLogin()){
+            LoginInfo loginInfo = CurrentUser.getInstance();
+            mTvName.setText(loginInfo.getNickname());
+            mTvPhone.setText(AppUtil.getStarPhone(loginInfo.getMobile()));
+            AppUtil.showPic(mContext, mIvAvatar, loginInfo.getAvatar());
         }
-        AppUtil.showPic(mContext, mIvAvatar, avatarUrl);
     }
 
     @Override
@@ -89,8 +84,7 @@ public class WorkerPersonalCenterFragment extends BaseFragment {
                              @Override
                              public void onSuccess(ResponseData<LoginInfo> response) {
                                  if (response.getCode() == 0) {
-                                     Gson gson = new Gson();
-                                     SpUtil.putStr(SpConstant.LOGIN_INFO, gson.toJson(response.getData()));
+                                     CurrentUser.getInstance().login(response.getData());
                                      notifyInfo();
                                  }
                              }

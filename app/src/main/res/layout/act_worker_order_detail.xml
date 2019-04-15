@@ -392,7 +392,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:background="@drawable/sel_bt_no_radius"
+                android:background="@drawable/bg_btn_rect_red"
                 android:text="预约时间"
                 android:textColor="#ffffff" />
         </LinearLayout>

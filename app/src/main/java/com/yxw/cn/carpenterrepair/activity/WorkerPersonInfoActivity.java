@@ -25,6 +25,7 @@ import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.SpConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.BeGoodAtCategory;
+import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 import com.yxw.cn.carpenterrepair.entity.LoginInfo;
 import com.yxw.cn.carpenterrepair.entity.MessageEvent;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
@@ -98,10 +99,10 @@ public class WorkerPersonInfoActivity extends BaseActivity {
 
     public void notifyInfo() {
         String avatarUrl = null;
-        if (!TextUtils.isEmpty(SpUtil.getStr(SpConstant.LOGIN_INFO))) {
+        if (CurrentUser.getInstance().isLogin()) {
             try {
-                loginInfo = gson.fromJson(SpUtil.getStr(SpConstant.LOGIN_INFO), LoginInfo.class);
-                mTvName.setText(loginInfo.getUserName());
+                loginInfo = CurrentUser.getInstance();
+                mTvName.setText(loginInfo.getUsername());
                 mTvPhone.setText(loginInfo.getMobile());
                 mTvIdCardNo.setText(loginInfo.getIdentityCard());
                 mTvResident.setText(loginInfo.getResidentName());
@@ -133,15 +134,7 @@ public class WorkerPersonInfoActivity extends BaseActivity {
                                 break;
                         }
                     }
-                    if (!TextUtils.isEmpty(date)) {
-                        date = date.substring(0, date.length() - 1);
-                    }
-//                    mTvTime.setText(date + " " + loginInfo.getServiceTime());
                 }
-//                if (ivIdcard1 != null && ivIdcard2 != null) {
-//                    Glide.with(this).load(loginInfo.getIdentityCardFront()).into(ivIdcard1);
-//                    Glide.with(this).load(loginInfo.getIdentityCardBack()).into(ivIdcard2);
-//                }
                 avatarUrl = loginInfo.getAvatar();
                 List<BeGoodAtCategory> beGoodAtCategories = loginInfo.getTags();
                 if (beGoodAtCategories != null && beGoodAtCategories.size() > 0) {
@@ -229,7 +222,7 @@ public class WorkerPersonInfoActivity extends BaseActivity {
                         if (response.getCode() == 0) {
                             loginInfo.setResident(resident);
                             loginInfo.setResidentName(city);
-                            SpUtil.putStr(SpConstant.LOGIN_INFO, gson.toJson(loginInfo));
+                            CurrentUser.getInstance().login(loginInfo);
                             notifyInfo();
                         }
                     }
@@ -264,7 +257,7 @@ public class WorkerPersonInfoActivity extends BaseActivity {
                                                  if (response.getCode() == 0) {
                                                      loginInfo.setAvatar(response.getData());
                                                      AppUtil.showPic(WorkerPersonInfoActivity.this, mIvAvatar, selectList.get(0).getCompressPath());
-                                                     SpUtil.putStr(SpConstant.LOGIN_INFO, gson.toJson(loginInfo));
+                                                     CurrentUser.getInstance().login(loginInfo);
                                                      EventBusUtil.post(MessageConstant.NOTIFY_INFO);
                                                  }
                                              }

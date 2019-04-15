@@ -1,5 +1,6 @@
 package com.yxw.cn.carpenterrepair.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LoginInfo {
@@ -24,16 +25,115 @@ public class LoginInfo {
     private int idCardStatus;//身份证状态 0未上传 1已上传 2审核未通过 3审核通过
     private String aliplayAccount;
 
-    public String getAliplayAccount() {
-        return aliplayAccount;
+    public String getToken() {
+        return token == null ? "" : token;
     }
 
-    public void setAliplayAccount(String aliplayAccount) {
-        this.aliplayAccount = aliplayAccount;
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getLastLoginTime() {
+        return lastLoginTime == null ? "" : lastLoginTime;
+    }
+
+    public void setLastLoginTime(String lastLoginTime) {
+        this.lastLoginTime = lastLoginTime;
+    }
+
+    public String getMobile() {
+        return mobile == null ? "" : mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getAvatar() {
+        return avatar == null ? "" : avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getUsername() {
+        return username == null ? "" : username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getUserId() {
+        return userId == null ? "" : userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getNickname() {
+        return nickname == null ? "" : nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public List<BeGoodAtCategory> getTags() {
+        if (tags == null) {
+            return new ArrayList<>();
+        }
+        return tags;
+    }
+
+    public void setTags(List<BeGoodAtCategory> tags) {
+        this.tags = tags;
+    }
+
+    public long getExpire() {
+        return expire;
+    }
+
+    public void setExpire(long expire) {
+        this.expire = expire;
+    }
+
+    public int getRole() {
+        return role;
+    }
+
+    public void setRole(int role) {
+        this.role = role;
+    }
+
+    public String getIdentityCard() {
+        return identityCard == null ? "" : identityCard;
+    }
+
+    public void setIdentityCard(String identityCard) {
+        this.identityCard = identityCard;
+    }
+
+    public String getIdentityCardFront() {
+        return identityCardFront == null ? "" : identityCardFront;
+    }
+
+    public void setIdentityCardFront(String identityCardFront) {
+        this.identityCardFront = identityCardFront;
+    }
+
+    public String getIdentityCardBack() {
+        return identityCardBack == null ? "" : identityCardBack;
+    }
+
+    public void setIdentityCardBack(String identityCardBack) {
+        this.identityCardBack = identityCardBack;
     }
 
     public String getResidentName() {
-        return residentName;
+        return residentName == null ? "" : residentName;
     }
 
     public void setResidentName(String residentName) {
@@ -41,7 +141,7 @@ public class LoginInfo {
     }
 
     public String getResident() {
-        return resident;
+        return resident == null ? "" : resident;
     }
 
     public void setResident(String resident) {
@@ -49,7 +149,7 @@ public class LoginInfo {
     }
 
     public String getServiceDate() {
-        return serviceDate;
+        return serviceDate == null ? "" : serviceDate;
     }
 
     public void setServiceDate(String serviceDate) {
@@ -57,7 +157,7 @@ public class LoginInfo {
     }
 
     public String getServiceTime() {
-        return serviceTime;
+        return serviceTime == null ? "" : serviceTime;
     }
 
     public void setServiceTime(String serviceTime) {
@@ -72,107 +172,11 @@ public class LoginInfo {
         this.idCardStatus = idCardStatus;
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getAliplayAccount() {
+        return aliplayAccount == null ? "" : aliplayAccount;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    public List<BeGoodAtCategory> getTags() {
-        return tags;
-    }
-
-    public void setTags(List<BeGoodAtCategory> tags) {
-        this.tags = tags;
-    }
-
-    public String getLastLoginTime() {
-        return lastLoginTime;
-    }
-
-    public void setLastLoginTime(String lastLoginTime) {
-        this.lastLoginTime = lastLoginTime;
-    }
-
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
-    public String getUserName() {
-        return username;
-    }
-
-    public void setUserName(String userName) {
-        this.username = userName;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public int getRole() {
-        return role;
-    }
-
-    public void setRole(int role) {
-        this.role = role;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public long getExpire() {
-        return expire;
-    }
-
-    public void setExpire(long expire) {
-        this.expire = expire;
-    }
-
-    public String getIdentityCard() {
-        return identityCard;
-    }
-
-    public void setIdentityCard(String identityCard) {
-        this.identityCard = identityCard;
-    }
-
-    public String getIdentityCardFront() {
-        return identityCardFront;
-    }
-
-    public void setIdentityCardFront(String identityCardFront) {
-        this.identityCardFront = identityCardFront;
-    }
-
-    public String getIdentityCardBack() {
-        return identityCardBack;
-    }
-
-    public void setIdentityCardBack(String identityCardBack) {
-        this.identityCardBack = identityCardBack;
+    public void setAliplayAccount(String aliplayAccount) {
+        this.aliplayAccount = aliplayAccount;
     }
 }

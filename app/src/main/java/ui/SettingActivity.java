@@ -6,20 +6,17 @@ import android.widget.TextView;
 
 import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
+import com.yxw.cn.carpenterrepair.activity.UpdatePasswordActivity;
 import com.yxw.cn.carpenterrepair.activity.WebActivity;
 import com.yxw.cn.carpenterrepair.activity.login.LoginActivity;
-import com.yxw.cn.carpenterrepair.activity.login.StartActivity;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
-import com.yxw.cn.carpenterrepair.contast.SpConstant;
+import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 import com.yxw.cn.carpenterrepair.util.AppUtil;
-import com.yxw.cn.carpenterrepair.util.SpUtil;
 import com.yxw.cn.carpenterrepair.view.TitleBar;
-import com.yxw.cn.carpenterrepair.activity.UpdatePasswordActivity;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import util.EventBusUtil;
-import util.ToastUtil;
 
 /**
  * Created by CY on 2018/11/24
@@ -58,13 +55,10 @@ public class SettingActivity extends BaseActivity {
                 startActivity(ClearCacheActivity.class);
                 break;
             case R.id.btn_logout:
-                SpUtil.putStr(SpConstant.TOKEN,"");
-                SpUtil.putStr(SpConstant.USERID,"");
-                SpUtil.putInt(SpConstant.ROLE,-1);
-                SpUtil.putStr(SpConstant.LOGIN_INFO,"");
+                CurrentUser.getInstance().loginOut();
                 Bundle bundle = new Bundle();
                 bundle.putBoolean("back",false);
-                startActivity(StartActivity.class,bundle);
+                startActivity(LoginActivity.class,bundle);
                 EventBusUtil.post(MessageConstant.LOGOUT);
                 break;
         }

@@ -10,16 +10,16 @@
             android:layout_marginTop="60dp"
             android:gravity="center"
             android:text="欢迎回来"
-            android:textColor="@color/text_red"
-            android:textSize="22sp"/>
+            android:textColor="#E82B2D"
+            android:textSize="24sp"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:gravity="center"
             android:text="精工巧匠的聚集地"
-            android:textColor="@color/text_gray"
-            android:textSize="14sp"/>
+            android:textColor="#999999"
+            android:textSize="12sp"/>
         <com.yxw.cn.carpenterrepair.view.ClearEditText
             android:id="@+id/et_tel"
             android:layout_width="match_parent"
@@ -33,8 +33,10 @@
             android:layout_marginRight="30dp"
             android:background="@drawable/edt_bt"
             android:inputType="phone"
-            android:hint="手机号"
-            android:textSize="@dimen/text_normal"  />
+            android:textColor="#666666"
+            android:textColorHint="#999999"
+            android:textSize="14sp"
+            android:hint="手机号"/>
         <com.yxw.cn.carpenterrepair.view.ClearEditText
             android:id="@+id/et_password"
             android:layout_width="match_parent"
@@ -49,18 +51,20 @@
             android:background="@drawable/edt_bt"
             android:inputType="phone"
             android:hint="密码"
-            android:textSize="@dimen/text_normal"  />
+            android:textColor="#666666"
+            android:textColorHint="#999999"
+            android:textSize="14sp" />
         <TextView
             android:id="@+id/tv_login"
             android:layout_width="match_parent"
             android:layout_height="46dp"
             android:layout_marginTop="20dp"
-            android:textSize="@dimen/text_normal"
+            android:textSize="16sp"
             android:gravity="center"
             android:textColor="@color/white"
             android:text="登录"
-            android:layout_marginRight="30dp"
-            android:layout_marginLeft="30dp"
+            android:layout_marginRight="46dp"
+            android:layout_marginLeft="46dp"
             android:background="@drawable/bg_btn_red" />
         <LinearLayout
             android:layout_width="match_parent"
@@ -75,8 +79,8 @@
                     android:layout_height="46dp"
                     android:padding="10dp"
                     android:gravity="center"
-                    android:textSize="@dimen/text_normal"
-                    android:textColor="@color/text_gray"
+                    android:textSize="12sp"
+                    android:textColor="#999999"
                     android:text="忘记密码？"
                     />
                 <View
@@ -89,20 +93,20 @@
                     android:layout_height="46dp"
                     android:padding="10dp"
                     android:gravity="center"
-                    android:textSize="@dimen/text_normal"
-                    android:textColor="@color/text_red"
+                    android:textSize="12sp"
+                    android:textColor="#E82B2D"
                     android:text="验证码登录"
                     />
         </LinearLayout>
         <TextView
             android:id="@+id/tv_register"
-            android:layout_width="160dp"
+            android:layout_width="130dp"
             android:layout_height="46dp"
             android:layout_marginTop="20dp"
             android:layout_gravity="center_horizontal"
             android:textSize="@dimen/text_normal"
             android:gravity="center"
-            android:textColor="@color/text_red"
+            android:textColor="#D84D63"
             android:text="注册"
             android:background="@drawable/corner_red_round" />
         <LinearLayout
@@ -115,14 +119,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="登录注册即同意"
-                    android:textColor="@color/text_gray"
-                    android:textSize="@dimen/text_small" />
+                    android:textColor="#999999"
+                    android:textSize="12sp" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="8dp"
                     android:text="《匠修用户协议》"
-                    android:textColor="@color/text_red"
-                    android:textSize="@dimen/text_small"/>
+                    android:textColor="#E82B2D"
+                    android:textSize="12sp"/>
         </LinearLayout>
 </LinearLayout>
