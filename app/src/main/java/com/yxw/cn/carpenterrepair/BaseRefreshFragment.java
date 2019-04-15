@@ -4,31 +4,30 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.ajguan.library.EasyRefreshLayout;
-import com.ajguan.library.LoadModel;
 import com.google.gson.Gson;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.yxw.cn.carpenterrepair.entity.MessageEvent;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.io.Serializable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import util.EventBusUtil;
 
-public abstract class BaseRefreshFragment extends BaseFragment {
+public abstract class BaseRefreshFragment extends BaseFragment implements OnRefreshListener, OnLoadMoreListener {
 
-    @BindView(R.id.easylayout)
-    public EasyRefreshLayout mRefreshLayout;
+    @BindView(R.id.refreshLayout)
+    public SmartRefreshLayout mRefreshLayout;
 
     public Context mContext;
     public Gson gson = new Gson();
@@ -45,18 +44,8 @@ public abstract class BaseRefreshFragment extends BaseFragment {
         initData();
         initView();
         getData();
-        mRefreshLayout.setLoadMoreModel(LoadModel.COMMON_MODEL);
-        mRefreshLayout.addEasyEvent(new EasyRefreshLayout.EasyEvent() {
-            @Override
-            public void onLoadMore() {
-                onLoad();
-            }
-
-            @Override
-            public void onRefreshing() {
-                onRefresh();
-            }
-        });
+        mRefreshLayout.setOnRefreshListener(this);
+        mRefreshLayout.setOnLoadMoreListener(this);
         return view;
     }
 
@@ -86,6 +75,17 @@ public abstract class BaseRefreshFragment extends BaseFragment {
 
     public void getData() {
     }
+
+    @Override
+    public void onLoadMore(RefreshLayout refreshLayout) {
+        onLoad();
+    }
+
+    @Override
+    public void onRefresh(RefreshLayout refreshLayout) {
+        onRefresh();
+    }
+
 
     public void onRefresh() {
 

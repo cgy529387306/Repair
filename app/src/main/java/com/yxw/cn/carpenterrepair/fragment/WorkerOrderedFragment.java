@@ -39,7 +39,7 @@ public class WorkerOrderedFragment extends BaseRefreshFragment implements BaseQu
 
     @Override
     protected int getLayout() {
-        return R.layout.fragment_worker_ordered;
+        return R.layout.common_recycleview;
     }
 
     @Override
@@ -73,26 +73,26 @@ public class WorkerOrderedFragment extends BaseRefreshFragment implements BaseQu
                             if (p == 1) {
                                 page=2;
                                 mList.clear();
-                                mRefreshLayout.refreshComplete();
+                                mRefreshLayout.finishRefresh(true);
                             } else {
                                 isNext = response.getData().isIsNext();
                                 if (isNext) {
                                     page++;
-                                    mRefreshLayout.loadMoreComplete();
+                                    mRefreshLayout.finishLoadMore(true);
                                 } else {
-                                    mRefreshLayout.loadNothing();
+                                    mRefreshLayout.finishLoadMoreWithNoMoreData();
                                 }
                             }
                             mList.addAll(response.getData().getList());
                             mAdapter.notifyDataSetChanged();
-                            mRefreshLayout.refreshComplete();
+                            mRefreshLayout.finishRefresh();
                             EventBusUtil.post(MessageConstant.WORKER_ORDERED_COUNT, mList.size());
                         } else {
                             toast(response.getMsg());
                             if (p == 1) {
-                                mRefreshLayout.refreshComplete();
+                                mRefreshLayout.finishRefresh(true);
                             } else {
-                                mRefreshLayout.loadMoreFail();
+                                mRefreshLayout.finishRefresh(false);
                             }
                         }
                     }
@@ -101,9 +101,9 @@ public class WorkerOrderedFragment extends BaseRefreshFragment implements BaseQu
                     public void onError(Response<ResponseData<UserOrder>> response) {
                         super.onError(response);
                         if (p == 1) {
-                            mRefreshLayout.refreshComplete();
+                            mRefreshLayout.finishRefresh(false);
                         } else {
-                            mRefreshLayout.loadMoreFail();
+                            mRefreshLayout.finishLoadMore(false);
                         }
                     }
                 });
@@ -119,16 +119,10 @@ public class WorkerOrderedFragment extends BaseRefreshFragment implements BaseQu
     public void onLoad() {
         super.onLoad();
         getOrderData(page);
-
     }
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-/*        Bundle webBundle = new Bundle();
-        webBundle.putString("url", "http://jx.bdelay.com/worker/order/detail/id/" + mList.get(position).getId() + ".html");
-        webBundle.putString("title", "订单详情");
-        webBundle.putBoolean("header", true);
-        startActivity(WebActivity.class, webBundle);*/
         startActivity(WorkerOrderDetailActivity.class, mList.get(position).getId());
     }
 
