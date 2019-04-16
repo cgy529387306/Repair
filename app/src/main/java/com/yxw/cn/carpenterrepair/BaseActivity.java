@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 import com.android.tu.loadingdialog.LoadingDailog;
 import com.google.gson.Gson;
-import com.gyf.barlibrary.ImmersionBar;
+import com.gyf.immersionbar.ImmersionBar;
 import com.yxw.cn.carpenterrepair.activity.login.LoginActivity;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.entity.MessageEvent;
@@ -43,7 +43,7 @@ public abstract class BaseActivity extends AppCompatActivity implements EasyPerm
     protected abstract int getLayoutResId();
 
     public void setStatusBar() {
-        ImmersionBar.with(this).fitsSystemWindows(true).statusBarColor(R.color.white).statusBarDarkFont(true).init();
+        ImmersionBar.with(this).fitsSystemWindows(true).statusBarColor(R.color.white).statusBarDarkFont(false).init();
     }
 
     public void initData() {
@@ -105,7 +105,6 @@ public abstract class BaseActivity extends AppCompatActivity implements EasyPerm
         super.onDestroy();
         dismissLoading();
         EventBusUtil.unregister(this);
-        ImmersionBar.with(this).destroy();
         BaseApplication.getInstance().removeActivity(this);
     }
 

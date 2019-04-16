@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.gyf.immersionbar.ImmersionBar;
+import com.gyf.immersionbar.components.SimpleImmersionFragment;
 import com.yxw.cn.carpenterrepair.entity.MessageEvent;
 
 import org.greenrobot.eventbus.Subscribe;

@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.gyf.immersionbar.ImmersionBar;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
@@ -81,6 +82,11 @@ public class WorkerPersonInfoActivity extends BaseActivity {
     private List<BeGoodAtCategory> mList;
     private MyCategoryAdapter mAdapter;
     private LoginInfo loginInfo;
+
+    @Override
+    public void setStatusBar() {
+        ImmersionBar.with(this).fitsSystemWindows(true).statusBarColor(R.color.bg_personal).statusBarDarkFont(false).init();
+    }
 
     @Override
     protected int getLayoutResId() {

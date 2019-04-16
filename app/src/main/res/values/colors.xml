@@ -12,6 +12,7 @@
     <color name="text_gray2">#717171</color>
     <color name="bg_gray">#E4E4E4</color>
     <color name="bg_gray2">#F8F8F8</color>
+    <color name="bg_personal">#F73753</color>
 
     <!-- 基本颜色 -->
     <color name="white">#ffffffff</color>

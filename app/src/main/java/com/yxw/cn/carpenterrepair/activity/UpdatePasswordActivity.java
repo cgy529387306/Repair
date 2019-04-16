@@ -33,19 +33,19 @@ public class UpdatePasswordActivity extends BaseActivity {
 
     @BindView(R.id.titlebar)
     TitleBar titlebar;
-    @BindView(R.id.tv_phone)
-    TextView mTvPhone;
-    @BindView(R.id.et1)
+    @BindView(R.id.et_phone)
+    EditText mTvPhone;
+    @BindView(R.id.et_password_old)
     EditText oldPassword;
-    @BindView(R.id.et2)
+    @BindView(R.id.et_password_new)
     EditText newPassword;
-    @BindView(R.id.et3)
+    @BindView(R.id.et_password_confirm)
     EditText newPassword2;
-    @BindView(R.id.eyes1)
+    @BindView(R.id.iv_show_old)
     ImageView eyes1;
-    @BindView(R.id.eyes2)
+    @BindView(R.id.iv_show_new)
     ImageView eyes2;
-    @BindView(R.id.eyes3)
+    @BindView(R.id.iv_show_confirm)
     ImageView eyes3;
     int flag1 = 0;
     int flag2 = 0;
@@ -66,10 +66,10 @@ public class UpdatePasswordActivity extends BaseActivity {
         newPassword2.setTransformationMethod(PasswordTransformationMethod.getInstance());
     }
 
-    @OnClick({R.id.eyes1, R.id.eyes2, R.id.eyes3, R.id.confirm})
+    @OnClick({R.id.iv_show_old, R.id.iv_show_new, R.id.iv_show_confirm, R.id.btn_confirm})
     public void click(View view) {
         switch (view.getId()) {
-            case R.id.confirm:
+            case R.id.btn_confirm:
                 if (TextUtils.isEmpty(oldPassword.getText().toString().trim())) {
                     toast("您还未输入旧密码！");
                 } else if (TextUtils.isEmpty(newPassword.getText().toString().trim())) {
@@ -107,7 +107,7 @@ public class UpdatePasswordActivity extends BaseActivity {
                             );
                 }
                 break;
-            case R.id.eyes1:
+            case R.id.iv_show_old:
                 if (flag1 == 0) {
                     flag1 = 1;
                     oldPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
@@ -118,7 +118,7 @@ public class UpdatePasswordActivity extends BaseActivity {
                     eyes1.setImageResource(R.drawable.eyes_off);
                 }
                 break;
-            case R.id.eyes2:
+            case R.id.iv_show_new:
                 if (flag2 == 0) {
                     flag2 = 1;
                     newPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
@@ -129,7 +129,7 @@ public class UpdatePasswordActivity extends BaseActivity {
                     eyes2.setImageResource(R.drawable.eyes_off);
                 }
                 break;
-            case R.id.eyes3:
+            case R.id.iv_show_confirm:
                 if (flag3 == 0) {
                     flag3 = 1;
                     newPassword2.setTransformationMethod(HideReturnsTransformationMethod.getInstance());

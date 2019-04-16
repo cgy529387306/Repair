@@ -3,7 +3,7 @@ package com.yxw.cn.carpenterrepair.activity.login;
 import android.os.Bundle;
 import android.view.View;
 
-import com.gyf.barlibrary.ImmersionBar;
+import com.gyf.immersionbar.ImmersionBar;
 import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.activity.main.UserMainActivity;

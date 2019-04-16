@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.gyf.immersionbar.ImmersionBar;
 import com.lzy.okgo.OkGo;
 import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
@@ -86,6 +87,7 @@ public class WorkerMainActivity extends BaseActivity {
         hideFragments(ft);
         switch (page) {
             case 1:
+                ImmersionBar.with(WorkerMainActivity.this).fitsSystemWindows(true).statusBarColor(R.color.white).statusBarDarkFont(true).init();
                 // 如果fragment1已经存在则将其显示出来
                 if (workAreaFragment != null)
                     ft.show(workAreaFragment);
@@ -96,6 +98,7 @@ public class WorkerMainActivity extends BaseActivity {
                 }
                 break;
             case 2:
+                ImmersionBar.with(WorkerMainActivity.this).fitsSystemWindows(true).statusBarColor(R.color.white).statusBarDarkFont(true).init();
                 if (shoppingMallFragment != null)
                     ft.show(shoppingMallFragment);
                 else {
@@ -104,6 +107,7 @@ public class WorkerMainActivity extends BaseActivity {
                 }
                 break;
             case 3:
+                ImmersionBar.with(WorkerMainActivity.this).fitsSystemWindows(true).statusBarColor(R.color.bg_personal).statusBarDarkFont(false).init();
                 if (personalCenterFragment != null) {
                     ft.show(personalCenterFragment);
                 } else {
