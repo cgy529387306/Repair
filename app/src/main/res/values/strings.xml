@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">匠修</string>
+    <string name="tv_money">￥</string>
 </resources>

@@ -31,7 +31,7 @@
             android:gravity="center"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:text="待预约"/>
+            android:text="待接单"/>
 
         <include layout="@layout/view_line_h"/>
 
@@ -136,4 +136,63 @@
             android:textSize="13sp"
             android:textColor="#333333" />
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="6dp"
+        android:paddingBottom="4dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="结算价："
+            android:textSize="12sp"
+            android:textColor="#999999" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tv_money"
+            android:textSize="12sp"
+            android:textColor="#E82B2D" />
+        <TextView
+            android:id="@+id/tv_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="150"
+            android:textSize="18sp"
+            android:textColor="#E82B2D" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/gray_divider" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingRight="15dp"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="0dp" />
+
+        <TextView
+            android:id="@+id/tv_receive"
+            android:layout_width="90dp"
+            android:layout_height="30dp"
+            android:text="我要接单"
+            android:background="@drawable/order_border"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:textColor="#E82B2D" />
+
+    </LinearLayout>
+
 </LinearLayout>
