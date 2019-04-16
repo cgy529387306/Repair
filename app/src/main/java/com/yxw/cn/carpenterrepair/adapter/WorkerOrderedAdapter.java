@@ -28,6 +28,7 @@ public class WorkerOrderedAdapter extends BaseQuickAdapter<UserOrder.ListBean, B
                 .setText(R.id.tv_order_address, AppUtil.getOrderDetailAddress(item))
                 .setText(R.id.tv_order_content, TextUtils.isEmpty(item.getRemark()) ? "无备注" : item.getRemark())
                 .setText(R.id.tv_order_state, item.getOrderStatusName())
+                .setText(R.id.tv_price,String.valueOf(item.getTotalPrice()))
                 .addOnClickListener(R.id.tv_order_state);
     }
 }
