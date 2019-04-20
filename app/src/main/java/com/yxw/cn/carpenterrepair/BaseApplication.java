@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.logging.Level;
 
 import okhttp3.OkHttpClient;
-import ui.LocationService;
+import com.yxw.cn.carpenterrepair.activity.LocationService;
 
 
 public class BaseApplication extends Application {

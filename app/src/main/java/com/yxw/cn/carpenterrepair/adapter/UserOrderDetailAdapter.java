@@ -7,7 +7,7 @@ import com.yxw.cn.carpenterrepair.entity.UserOrder;
 
 import java.util.List;
 
-import util.DoubleUtil;
+import com.yxw.cn.carpenterrepair.util.DoubleUtil;
 
 /**
  * Created by CY on 2018/11/25

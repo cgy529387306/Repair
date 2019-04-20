@@ -14,6 +14,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -291,7 +292,7 @@ public class Helper {
 			result = true;
 		} else {
 			if (object instanceof String){
-				result = ((String)object).equals("");
+				result = object.equals("");
 			}else if (object instanceof Date) {
 				result = ((Date) object).getTime() == 0;
 			}else if (object instanceof Long){
@@ -405,9 +406,7 @@ public class Helper {
 	public static <T extends Object> List<T> array2List(T[] array){
 		List<T> result = new ArrayList<T>();
 		if (!Helper.isEmpty(array)){
-			for(T entity : array){
-				result.add(entity);
-			}
+			Collections.addAll(result, array);
 		}
 		return result;
 	}

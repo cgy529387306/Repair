@@ -15,7 +15,7 @@ public class UrlConstant {
 //    public final static String BASE_URL = "http://8080.port.doublev.cn";
 //    public final static String BASE_URL2 = "http://47.98.53.48:8080";
     public final static String GET_CODE = BASE_URL + "/api/getCode";
-    public final static String LOGIN = BASE_URL + "/api/auth/login";
+    public final static String LOGIN = BASE_URL + "/api/auth/user";
     public final static String QUICK_LOGIN = BASE_URL + "/api/auth/loginByPhone";
     public final static String REGISTER = BASE_URL + "/api/register/register";
     public final static String FORGET_PASSWORD= BASE_URL + "/api/fix/shopUser/getBackPwd";//忘记密码

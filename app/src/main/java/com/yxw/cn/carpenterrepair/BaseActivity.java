@@ -10,7 +10,7 @@ import android.widget.Toast;
 import com.android.tu.loadingdialog.LoadingDailog;
 import com.google.gson.Gson;
 import com.gyf.immersionbar.ImmersionBar;
-import com.yxw.cn.carpenterrepair.activity.login.LoginActivity;
+import com.yxw.cn.carpenterrepair.activity.user.LoginActivity;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.entity.MessageEvent;
 
@@ -21,7 +21,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import pub.devrel.easypermissions.EasyPermissions;
-import util.EventBusUtil;
+import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 
 public abstract class BaseActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
 
@@ -43,7 +43,7 @@ public abstract class BaseActivity extends AppCompatActivity implements EasyPerm
     protected abstract int getLayoutResId();
 
     public void setStatusBar() {
-        ImmersionBar.with(this).fitsSystemWindows(true).statusBarColor(R.color.white).statusBarDarkFont(false).init();
+        ImmersionBar.with(this).fitsSystemWindows(true).statusBarColor(R.color.white).statusBarDarkFont(true).init();
     }
 
     public void initData() {

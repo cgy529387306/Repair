@@ -10,7 +10,6 @@ import java.lang.reflect.Type;
 
 import okhttp3.Response;
 import okhttp3.ResponseBody;
-import util.ToastUtil;
 
 public abstract class CustomJsonCallback<T> extends AbsCallback<T> {
 

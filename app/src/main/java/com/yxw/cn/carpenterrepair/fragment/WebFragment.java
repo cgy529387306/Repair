@@ -14,6 +14,9 @@ import com.yxw.cn.carpenterrepair.entity.MessageEvent;
 
 import butterknife.BindView;
 
+/**
+ * Web
+ */
 public class WebFragment extends BaseFragment {
 
     @BindView(R.id.webView)
@@ -33,7 +36,7 @@ public class WebFragment extends BaseFragment {
 
     @Override
     protected int getLayout() {
-        return R.layout.fragment_web;
+        return R.layout.frg_web;
     }
 
     @Override

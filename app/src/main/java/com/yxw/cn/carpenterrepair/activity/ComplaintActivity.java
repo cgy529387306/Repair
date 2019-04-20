@@ -8,7 +8,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -24,9 +23,7 @@ import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.adapter.OrderUploadAdapter;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.Complain;
-import com.yxw.cn.carpenterrepair.entity.Evaluation;
 import com.yxw.cn.carpenterrepair.entity.OrderUpload;
-import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.entity.ResponseData2;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.view.TitleBar;
@@ -37,6 +34,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+/**
+ * 投诉
+ */
 public class ComplaintActivity extends BaseActivity implements BaseQuickAdapter.OnItemChildClickListener {
 
     @BindView(R.id.titlebar)
@@ -56,7 +56,7 @@ public class ComplaintActivity extends BaseActivity implements BaseQuickAdapter.
 
     @Override
     protected int getLayoutResId() {
-        return R.layout.activity_complaint;
+        return R.layout.act_complaint;
     }
 
     @Override

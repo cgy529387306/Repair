@@ -7,14 +7,13 @@ import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.orhanobut.logger.Logger;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.entity.CategorySub;
 
 import java.util.List;
 
-import util.EventBusUtil;
+import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 
 public class DetailCategoryAdapter extends BaseQuickAdapter<CategorySub, BaseViewHolder> {
 

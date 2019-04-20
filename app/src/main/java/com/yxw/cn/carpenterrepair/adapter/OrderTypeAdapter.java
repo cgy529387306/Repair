@@ -47,8 +47,8 @@ public class OrderTypeAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_order_type, null);
             viewHolder = new ViewHolder();
-            viewHolder.ivCover = (ImageView) convertView.findViewById(R.id.iv_icon);
-            viewHolder.tvTitle = (TextView) convertView.findViewById(R.id.tv_order_type);
+            viewHolder.ivCover = convertView.findViewById(R.id.iv_icon);
+            viewHolder.tvTitle = convertView.findViewById(R.id.tv_order_type);
             convertView.setTag(viewHolder);
         }else{
             viewHolder = (ViewHolder) convertView.getTag();

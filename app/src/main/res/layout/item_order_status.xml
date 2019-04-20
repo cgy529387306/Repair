@@ -23,7 +23,6 @@
             android:background="@drawable/circle_red" />
 
         <View
-            android:id="@+id/shu1"
             android:layout_width="2dp"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/tv_time"

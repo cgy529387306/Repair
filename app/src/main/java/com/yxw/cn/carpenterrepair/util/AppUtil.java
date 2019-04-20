@@ -21,8 +21,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.yxw.cn.carpenterrepair.BaseApplication;
 import com.yxw.cn.carpenterrepair.R;
-import com.yxw.cn.carpenterrepair.activity.IdCardInfoActivity;
-import com.yxw.cn.carpenterrepair.contast.SpConstant;
+import com.yxw.cn.carpenterrepair.activity.user.IdCardInfoActivity;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.Abnormal;
 import com.yxw.cn.carpenterrepair.entity.Category;
@@ -43,9 +42,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import ui.MyCategoryActivity;
-import ui.ServiceTimeActivity;
-import util.RegionPickerUtil;
+import com.yxw.cn.carpenterrepair.activity.MyCategoryActivity;
+import com.yxw.cn.carpenterrepair.activity.ServiceTimeActivity;
 
 public class AppUtil {
 
@@ -251,11 +249,7 @@ public class AppUtil {
         }else {
             boolean menu = ViewConfiguration.get(context).hasPermanentMenuKey();
             boolean back = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK);
-            if(menu || back) {
-                return false;
-            }else {
-                return true;
-            }
+            return !(menu || back);
         }
     }
 

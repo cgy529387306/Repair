@@ -228,7 +228,7 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
             }
         }
     }
-    public static enum DrawType {
+    public enum DrawType {
         USEPAINT(1),//用画笔画
         USEDRAWABLE(2); //画特定的drawable
         private final int type;

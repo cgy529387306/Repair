@@ -52,7 +52,7 @@
 
         <!--会话界面-->
         <activity
-            android:name="com.yxw.cn.carpenterrepair.activity.ConversationActivity"
+            android:name="com.yxw.cn.carpenterrepair.activity.setting.ConversationActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize">
 
@@ -82,72 +82,64 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MyOrderActivity">
+        <activity android:name=".activity.order.MyOrderActivity">
         </activity>
-        <activity android:name=".activity.login.LoginActivity">
+        <activity android:name=".activity.user.LoginActivity">
         </activity>
-        <activity android:name=".activity.login.QuickLoginActivity">
+        <activity android:name=".activity.user.QuickLoginActivity">
         </activity>
-        <activity android:name=".activity.login.ForgetPasswordActivity">
+        <activity android:name=".activity.user.ForgetPasswordActivity">
         </activity>
-        <activity android:name=".activity.login.RegisterActivity">
+        <activity android:name=".activity.user.RegisterActivity">
         </activity>
-        <activity android:name=".activity.login.RegisterSuccessActivity">
+        <activity android:name=".activity.user.RegisterSuccessActivity">
         </activity>
-        <activity android:name=".activity.IdCardInfoActivity">
+        <activity android:name=".activity.user.IdCardInfoActivity">
         </activity>
-        <activity android:name=".activity.WorkerPersonInfoActivity">
+        <activity android:name=".activity.user.PersonInfoActivity">
         </activity>
-        <activity android:name="ui.OrderActivity">
+        <activity android:name=".activity.order.OrderActivity">
         </activity>
         <activity android:name=".activity.CustomerServiceActivity">
         </activity>
-        <activity android:name="ui.user.UpdateMobileActivity"/>
+        <activity android:name=".activity.user.UpdateMobileActivity"/>
         <activity android:name=".activity.WebActivity"/>
-        <activity android:name="ui.UpdateNameActivity"/>
-        <activity android:name="ui.ServiceTimeActivity">
+        <activity android:name=".activity.user.UpdateNameActivity"/>
+        <activity android:name=".activity.ServiceTimeActivity">
         </activity>
-        <activity android:name="ui.ClearCacheActivity">
+        <activity android:name=".activity.setting.ClearCacheActivity">
         </activity>
-        <activity android:name=".activity.UpdatePasswordActivity">
+        <activity android:name=".activity.user.UpdatePasswordActivity">
         </activity>
-        <activity android:name="ui.SettingActivity">
+        <activity android:name=".activity.setting.SettingActivity">
         </activity>
-        <activity android:name="ui.WithdrawalCashActivity">
+        <activity android:name=".activity.user.WithdrawalCashActivity">
         </activity>
-        <activity android:name="ui.MyCategoryActivity">
+        <activity android:name=".activity.MyCategoryActivity">
         </activity>
-        <activity android:name=".activity.login.ChooseCategoryActivity">
+        <activity android:name=".activity.user.ChooseCategoryActivity">
         </activity>
-        <activity android:name=".activity.main.WorkerMainActivity">
-        </activity>
-        <activity android:name=".activity.UserPersonInfoActivity" >
-        </activity>
-        <activity android:name=".activity.CancelOrderActivity">
+        <activity android:name=".activity.main.MainActivity">
         </activity>
         <activity android:name=".activity.ComplaintActivity">
         </activity>
-        <activity android:name=".activity.EvaluationActivity">
+        <activity android:name=".activity.setting.EvaluationActivity">
         </activity>
-        <activity android:name=".activity.main.UserMainActivity">
+        <activity android:name=".activity.LocationActivity">
         </activity>
-        <activity android:name="ui.user.OrderDetailActivity">
+        <activity android:name=".activity.setting.UserFeedBackActivity">
         </activity>
-        <activity android:name="ui.LocationActivity">
+        <activity android:name=".activity.order.OrderDetailActivity">
         </activity>
-        <activity android:name="ui.user.UserFeedBackActivity">
+        <activity android:name=".activity.user.UpdateAlipayActivity">
         </activity>
-        <activity android:name="ui.WorkerOrderDetailActivity">
+        <activity android:name=".activity.order.OrderAbnormalActivity">
         </activity>
-        <activity android:name="ui.UpdateAlipayActivity">
+        <activity android:name=".activity.order.OrderSignInActivity">
         </activity>
-        <activity android:name="ui.WorkerAbnormalActivity">
+        <activity android:name=".activity.LookImageActivity">
         </activity>
-        <activity android:name="ui.WorkerSignInActivity">
-        </activity>
-        <activity android:name="ui.LookImageActivity">
-        </activity>
-        <activity android:name="ui.WalletActivity">
+        <activity android:name=".activity.user.WalletActivity">
         </activity>
     </application>
 </manifest>

@@ -18,21 +18,10 @@
     <color name="white">#ffffffff</color>
     <color name="black">#ff000000</color>
     <color name="transparent">#00000000</color>
-    <color name="translucent">#88000000</color>
-    <color name="base_orange">#fcaa2d</color>
     <color name="base_red">#ff4543</color>
-    <color name="base_gray">#a5a5a5</color>
-    <color name="base_blue">#2aaeff</color>
-    <color name="base_green">#12c136</color>
 
     <color name="text_color">#3f3a39</color>
-    <color name="edit_color">#5a5655</color>
     <color name="bg_color">#f6f6f6</color>
-    <color name="gray_45">#454545</color>
-    <color name="gray_f4">#f4f4f4</color>
-    <color name="gray_4d">#4d4d4d</color>
-    <color name="gray_a5">#a5a5a5</color>
-    <color name="gray_dc">#dcdcdc</color>
     <color name="gray_divider">#E4E4E4</color>
     <color name="red_order">#E82B2D</color>
 </resources>

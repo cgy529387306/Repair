@@ -104,7 +104,6 @@
                 android:text="喜欢我吗，投一票" />
 
             <ImageView
-                android:id="@+id/arrow3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -135,7 +134,6 @@
 
             <TextView
                 android:textColor="@color/text_gray"
-                android:id="@+id/cache"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"

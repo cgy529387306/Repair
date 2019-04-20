@@ -180,7 +180,6 @@
                 android:text="本月免费提现次数剩余"/>
 
             <TextView
-                android:id="@+id/num"
                 android:textColor="#999999"
                 android:textSize="12sp"
                 android:layout_width="wrap_content"

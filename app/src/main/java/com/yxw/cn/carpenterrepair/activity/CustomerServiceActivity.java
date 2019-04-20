@@ -10,6 +10,9 @@ import com.yxw.cn.carpenterrepair.view.TitleBar;
 
 import butterknife.BindView;
 
+/**
+ * 客服
+ */
 public class CustomerServiceActivity extends BaseActivity {
 
     @BindView(R.id.titlebar)
@@ -21,7 +24,7 @@ public class CustomerServiceActivity extends BaseActivity {
 
     @Override
     protected int getLayoutResId() {
-        return R.layout.activity_customer_service;
+        return R.layout.act_customer_service;
     }
 
     @Override

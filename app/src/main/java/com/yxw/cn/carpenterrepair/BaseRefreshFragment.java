@@ -22,7 +22,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import util.EventBusUtil;
+import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 
 public abstract class BaseRefreshFragment extends BaseFragment implements OnRefreshListener, OnLoadMoreListener {
 

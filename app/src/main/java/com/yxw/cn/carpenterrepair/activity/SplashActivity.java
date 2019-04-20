@@ -13,9 +13,8 @@ import android.support.v4.content.ContextCompat;
 
 import com.orhanobut.logger.Logger;
 import com.yxw.cn.carpenterrepair.R;
-import com.yxw.cn.carpenterrepair.activity.login.LoginActivity;
-import com.yxw.cn.carpenterrepair.activity.main.UserMainActivity;
-import com.yxw.cn.carpenterrepair.activity.main.WorkerMainActivity;
+import com.yxw.cn.carpenterrepair.activity.user.LoginActivity;
+import com.yxw.cn.carpenterrepair.activity.main.MainActivity;
 import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -34,7 +33,7 @@ public class SplashActivity extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
+        setContentView(R.layout.act_splash);
     }
 
 
@@ -137,16 +136,8 @@ public class SplashActivity extends Activity{
     private void init(){
         handler.postDelayed(() -> {
             if (CurrentUser.getInstance().isLogin()){
-                switch (CurrentUser.getInstance().getRole()) {
-                    case 0:
-                        startActivity(new Intent(SplashActivity.this,UserMainActivity.class));
-                        finish();
-                        break;
-                    default:
-                        startActivity(new Intent(SplashActivity.this,WorkerMainActivity.class));
-                        finish();
-                        break;
-                }
+                startActivity(new Intent(SplashActivity.this,MainActivity.class));
+                finish();
             }else{
                 startActivity(new Intent(SplashActivity.this,LoginActivity.class));
                 finish();

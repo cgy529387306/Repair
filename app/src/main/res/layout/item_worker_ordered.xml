@@ -184,7 +184,6 @@
             android:layout_height="0dp" />
 
         <TextView
-            android:id="@+id/tv_receive"
             android:layout_width="90dp"
             android:layout_height="30dp"
             android:text="我要接单"
