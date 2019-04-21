@@ -31,32 +31,8 @@ public class CategoryAdapter extends BaseQuickAdapter<Category, BaseViewHolder> 
     @Override
     protected void convert(BaseViewHolder helper, Category item) {
         helper.setText(R.id.tv_name, item.getName());
-        switch (item.getId()) {
-            case 10:
-                helper.setImageResource(R.id.iv_category, R.drawable.icon_house_repair);
-                break;
-            case 11:
-                helper.setImageResource(R.id.iv_category, R.drawable.icon_home_application_repair);
-                break;
-            case 12:
-                helper.setImageResource(R.id.iv_category, R.drawable.icon_digital_computer);
-                break;
-            case 13:
-                helper.setImageResource(R.id.iv_category, R.drawable.icon_unlocking_lock);
-                break;
-            case 14:
-                helper.setImageResource(R.id.iv_category, R.drawable.icon_indoor_repair);
-                break;
-            case 15:
-                helper.setImageResource(R.id.iv_category, R.drawable.icon_housepeeking);
-                break;
-                default:
-                    helper.setImageResource(R.id.iv_category, R.drawable.icon_house_repair);
-                    break;
-        }
         RecyclerView rv = helper.getView(R.id.rv_sub);
         rv.setLayoutManager(new GridLayoutManager(mContext, 4));
-
         List<CategorySub> data = new ArrayList<>();
         if (item.getSub() != null) {
             data.addAll(item.getSub());

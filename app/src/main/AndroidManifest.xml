@@ -141,5 +141,7 @@
         </activity>
         <activity android:name=".activity.user.WalletActivity">
         </activity>
+        <activity android:name=".activity.user.WaitCheckActivity">
+        </activity>
     </application>
 </manifest>

@@ -8,14 +8,14 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:src="@drawable/icon_success_head" />
+        android:layout_marginTop="70dp"
+        android:src="@drawable/icon_register_success" />
 
     <TextView
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_margin="15dp"
-        android:text="恭喜您注册成功"
+        android:layout_marginTop="50dp"
+        android:text="审核信息已提交"
         android:textSize="24sp"
         android:textColor="#E82B2D" />
 
@@ -24,19 +24,20 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="36dp"
         android:layout_marginRight="36dp"
+        android:layout_marginTop="15dp"
         android:textColor="#666666"
         android:textSize="14sp"
         android:gravity="center"
-        android:text="成为匠修工程师还差最后一步，您还需上传身份证信息，等待审核通过之后才能接单哦。" />
+        android:text="请耐心等待" />
 
     <Button
-        android:id="@+id/btn_perfect"
+        android:id="@+id/btn_confirm"
         android:layout_width="match_parent"
         android:layout_height="46dp"
         android:layout_margin="70dp"
         android:background="@drawable/bg_btn_red"
         android:textSize="16sp"
-        android:text="上传身份证信息"
+        android:text="好的"
         android:layout_above="@+id/tv_perfect_detail"
         android:textColor="#ffffff" />
 

@@ -4,42 +4,20 @@
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
     android:orientation="vertical">
-
-    <LinearLayout
+    <TextView
+        android:id="@+id/tv_name"
         android:layout_width="wrap_content"
-        android:layout_marginTop="16dp"
-        android:gravity="center_vertical"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:id="@+id/iv_category"
-            android:layout_marginRight="8dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/tv_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textColor="@color/text_black"
-            android:textSize="14dp" />
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="我的的看法健康的减肥"
+        android:textColor="#333333"
+        android:textSize="14sp" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_sub"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_marginTop="16dp"
-        android:layerType="software"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:background="@drawable/line_dash"
-        android:layout_height="3dp"/>
-
 </LinearLayout>
