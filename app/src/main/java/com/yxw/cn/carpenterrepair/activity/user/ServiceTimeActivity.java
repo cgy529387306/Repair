@@ -1,4 +1,4 @@
-package com.yxw.cn.carpenterrepair.activity;
+package com.yxw.cn.carpenterrepair.activity.user;
 
 import android.text.TextUtils;
 import android.view.View;

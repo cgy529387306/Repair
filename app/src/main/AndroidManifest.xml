@@ -82,66 +82,42 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.order.MyOrderActivity">
-        </activity>
-        <activity android:name=".activity.user.LoginActivity">
-        </activity>
-        <activity android:name=".activity.user.QuickLoginActivity">
-        </activity>
-        <activity android:name=".activity.user.ForgetPasswordActivity">
-        </activity>
-        <activity android:name=".activity.user.RegisterActivity">
-        </activity>
-        <activity android:name=".activity.user.RegisterSuccessActivity">
-        </activity>
-        <activity android:name=".activity.user.IdCardInfoActivity">
-        </activity>
-        <activity android:name=".activity.user.PersonInfoActivity">
-        </activity>
-        <activity android:name=".activity.order.OrderActivity">
-        </activity>
-        <activity android:name=".activity.CustomerServiceActivity">
-        </activity>
+        <activity android:name=".activity.main.MainActivity"/>
+
+        <activity android:name=".activity.user.LoginActivity"/>
+        <activity android:name=".activity.user.QuickLoginActivity"/>
+        <activity android:name=".activity.user.ForgetPasswordActivity"/>
+        <activity android:name=".activity.user.RegisterActivity"/>
+        <activity android:name=".activity.user.RegisterSuccessActivity"/>
+        <activity android:name=".activity.user.IdCardInfoActivity"/>
+        <activity android:name=".activity.user.PersonInfoActivity"/>
+        <activity android:name=".activity.user.WalletActivity"/>
+        <activity android:name=".activity.user.WaitCheckActivity"/>
+        <activity android:name=".activity.user.UpdateSuccessActivity"/>
         <activity android:name=".activity.user.UpdateMobileActivity"/>
-        <activity android:name=".activity.WebActivity"/>
         <activity android:name=".activity.user.UpdateNameActivity"/>
-        <activity android:name=".activity.ServiceTimeActivity">
-        </activity>
-        <activity android:name=".activity.setting.ClearCacheActivity">
-        </activity>
-        <activity android:name=".activity.user.UpdatePasswordActivity">
-        </activity>
-        <activity android:name=".activity.setting.SettingActivity">
-        </activity>
-        <activity android:name=".activity.user.WithdrawalCashActivity">
-        </activity>
-        <activity android:name=".activity.MyCategoryActivity">
-        </activity>
-        <activity android:name=".activity.user.ChooseCategoryActivity">
-        </activity>
-        <activity android:name=".activity.main.MainActivity">
-        </activity>
-        <activity android:name=".activity.ComplaintActivity">
-        </activity>
-        <activity android:name=".activity.setting.EvaluationActivity">
-        </activity>
-        <activity android:name=".activity.LocationActivity">
-        </activity>
-        <activity android:name=".activity.setting.UserFeedBackActivity">
-        </activity>
-        <activity android:name=".activity.order.OrderDetailActivity">
-        </activity>
-        <activity android:name=".activity.user.UpdateAlipayActivity">
-        </activity>
-        <activity android:name=".activity.order.OrderAbnormalActivity">
-        </activity>
-        <activity android:name=".activity.order.OrderSignInActivity">
-        </activity>
-        <activity android:name=".activity.LookImageActivity">
-        </activity>
-        <activity android:name=".activity.user.WalletActivity">
-        </activity>
-        <activity android:name=".activity.user.WaitCheckActivity">
-        </activity>
+        <activity android:name=".activity.user.UpdatePasswordActivity"/>
+        <activity android:name=".activity.user.WithdrawalCashActivity"/>
+        <activity android:name=".activity.user.ChooseCategoryActivity"/>
+        <activity android:name=".activity.user.UpdateAlipayActivity"/>
+
+
+        <activity android:name=".activity.order.MyOrderActivity"/>
+        <activity android:name=".activity.order.OrderActivity"/>
+        <activity android:name=".activity.order.OrderAbnormalActivity"/>
+        <activity android:name=".activity.order.OrderSignInActivity"/>
+        <activity android:name=".activity.order.OrderDetailActivity"/>
+
+        <activity android:name=".activity.LocationActivity"/>
+        <activity android:name=".activity.setting.UserFeedBackActivity"/>
+        <activity android:name=".activity.setting.ClearCacheActivity"/>
+        <activity android:name=".activity.setting.SettingActivity"/>
+        <activity android:name=".activity.setting.EvaluationActivity"/>
+
+        <activity android:name=".activity.setting.CustomerServiceActivity"/>
+        <activity android:name=".activity.WebActivity"/>
+        <activity android:name=".activity.user.ServiceTimeActivity"/>
+        <activity android:name=".activity.setting.ComplaintActivity"/>
+        <activity android:name=".activity.LookImageActivity"/>
     </application>
 </manifest>

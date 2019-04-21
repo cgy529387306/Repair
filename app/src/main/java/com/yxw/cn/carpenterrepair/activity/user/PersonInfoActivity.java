@@ -41,7 +41,6 @@ import butterknife.OnClick;
 import butterknife.OnTouch;
 import de.hdodenhof.circleimageview.CircleImageView;
 import com.yxw.cn.carpenterrepair.listerner.OnChooseAddrListener;
-import com.yxw.cn.carpenterrepair.activity.MyCategoryActivity;
 import com.yxw.cn.carpenterrepair.util.Base64Util;
 import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 import com.yxw.cn.carpenterrepair.util.RegionPickerUtil;
@@ -190,7 +189,7 @@ public class PersonInfoActivity extends BaseActivity {
 //                startActivity(UpdateNameActivity.class);
                 break;
             case R.id.ll_good:
-                Intent intent = new Intent(this, MyCategoryActivity.class);
+                Intent intent = new Intent(this, ChooseCategoryActivity.class);
                 intent.putExtra("data", (Serializable) mList);
                 startActivity(intent);
                 break;

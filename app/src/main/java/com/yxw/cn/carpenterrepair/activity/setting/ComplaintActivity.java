@@ -1,4 +1,4 @@
-package com.yxw.cn.carpenterrepair.activity;
+package com.yxw.cn.carpenterrepair.activity.setting;
 
 import android.content.Intent;
 import android.os.Bundle;

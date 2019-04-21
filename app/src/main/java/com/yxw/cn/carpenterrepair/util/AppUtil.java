@@ -21,6 +21,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.yxw.cn.carpenterrepair.BaseApplication;
 import com.yxw.cn.carpenterrepair.R;
+import com.yxw.cn.carpenterrepair.activity.user.ChooseCategoryActivity;
 import com.yxw.cn.carpenterrepair.activity.user.IdCardInfoActivity;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.Abnormal;
@@ -42,8 +43,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.yxw.cn.carpenterrepair.activity.MyCategoryActivity;
-import com.yxw.cn.carpenterrepair.activity.ServiceTimeActivity;
+import com.yxw.cn.carpenterrepair.activity.user.ServiceTimeActivity;
 
 public class AppUtil {
 
@@ -87,7 +87,7 @@ public class AppUtil {
             intent.putExtra("place",true);
             context.startActivity(intent);
         }else if(loginInfo.getTags() == null || loginInfo.getTags().size()==0){
-            intent = new Intent(context, MyCategoryActivity.class);
+            intent = new Intent(context, ChooseCategoryActivity.class);
             intent.putExtra("force",true);
             context.startActivity(intent);
         }

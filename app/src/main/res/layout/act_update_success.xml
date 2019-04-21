@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:src="@drawable/icon_success_head" />
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_margin="15dp"
+        android:text="您的修改已经提交"
+        android:textSize="24sp"
+        android:textColor="#E82B2D" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="36dp"
+        android:layout_marginRight="36dp"
+        android:textColor="#666666"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:text="您的擅长项目将在匠修审核无误后修改" />
+
+    <Button
+        android:id="@+id/btn_perfect"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_margin="70dp"
+        android:background="@drawable/bg_btn_red"
+        android:textSize="16sp"
+        android:text="好的"
+        android:layout_above="@+id/tv_perfect_detail"
+        android:textColor="#ffffff" />
+
+
+</LinearLayout>

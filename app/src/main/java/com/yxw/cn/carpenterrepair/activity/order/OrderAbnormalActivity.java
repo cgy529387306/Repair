@@ -87,7 +87,7 @@ public class OrderAbnormalActivity extends BaseActivity implements BaseQuickAdap
                 });
     }
 
-    @OnClick({R.id.rl_time, R.id.no, R.id.ok})
+    @OnClick({R.id.rl_time, R.id.cancel, R.id.confirm})
     public void click(View view) {
         switch (view.getId()) {
             case R.id.rl_time:
@@ -99,7 +99,7 @@ public class OrderAbnormalActivity extends BaseActivity implements BaseQuickAdap
                     }
                 });
                 break;
-            case R.id.ok:
+            case R.id.confirm:
                 if (tv_time.getText().toString().isEmpty()) {
                     toast("请先选择再次预约时间！");
                 } else {
@@ -122,7 +122,7 @@ public class OrderAbnormalActivity extends BaseActivity implements BaseQuickAdap
                             });
                 }
                 break;
-            case R.id.no:
+            case R.id.cancel:
                 this.finish();
                 break;
         }

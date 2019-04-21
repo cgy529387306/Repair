@@ -52,9 +52,14 @@ import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.MessageEvent;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.entity.UserOrder;
+import com.yxw.cn.carpenterrepair.listerner.OnChooseDateListener;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.util.AppUtil;
-import com.yxw.cn.carpenterrepair.view.CountDownTextView;
+import com.yxw.cn.carpenterrepair.util.DoubleUtil;
+import com.yxw.cn.carpenterrepair.util.EventBusUtil;
+import com.yxw.cn.carpenterrepair.util.TimePickerUtil;
+import com.yxw.cn.carpenterrepair.util.TimeUtil;
+import com.yxw.cn.carpenterrepair.util.ToastUtil;
 import com.yxw.cn.carpenterrepair.view.TitleBar;
 
 import java.util.ArrayList;
@@ -71,12 +76,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
-import com.yxw.cn.carpenterrepair.listerner.OnChooseDateListener;
-import com.yxw.cn.carpenterrepair.util.DoubleUtil;
-import com.yxw.cn.carpenterrepair.util.EventBusUtil;
-import com.yxw.cn.carpenterrepair.util.TimePickerUtil;
-import com.yxw.cn.carpenterrepair.util.TimeUtil;
-import com.yxw.cn.carpenterrepair.util.ToastUtil;
 
 /**
  * 订单详情
@@ -85,24 +84,20 @@ public class OrderDetailActivity extends BaseActivity {
 
     @BindView(R.id.titlebar)
     TitleBar titleBar;
-    @BindView(R.id.tv_time)
-    TextView tv_time;
-    @BindView(R.id.tv_time2)
-    TextView tv_time2;
-    @BindView(R.id.tv_time3)
-    TextView tv_time3;
+    @BindView(R.id.tv_rest_time)
+    TextView tvRestTime;
     @BindView(R.id.tv_name)
     TextView tvName;
     @BindView(R.id.tv_tel)
     TextView tvTel;
-    @BindView(R.id.tv_addr)
-    TextView tvAddr;
+    @BindView(R.id.tv_address)
+    TextView tvAddress;
     @BindView(R.id.tv_title)
     TextView tvTitle;
     @BindView(R.id.tv_title2)
     TextView tvTitle2;
-    @BindView(R.id.tv_total)
-    TextView tvTotal;
+    @BindView(R.id.tv_total_price)
+    TextView tvTotalPrice;
     @BindView(R.id.tv_order_no)
     TextView tvOrderNo;
     @BindView(R.id.tv_create_time)
@@ -123,13 +118,23 @@ public class OrderDetailActivity extends BaseActivity {
     RecyclerView picRv;
     @BindView(R.id.mapView)
     MapView mMapView;
-    @BindView(R.id.bt_code)
-    CountDownTextView mCountDownTextView;
-    @BindView(R.id.t1)
-    TextView t1;
-    @BindView(R.id.t2)
-    TextView t2;
-    private BaiduMap mBaiduMap;
+
+    private int orderId;
+    private String orderStatus;
+    private String orderAddress;
+    private String city;
+    private List<UserOrder.ListBean.OrderItemsBean> orderList;
+    private UserOrderDetailAdapter orderAdapter;
+    private List<UserOrder.ListBean.PicListBean> picList;
+    private UserOrderPicAdapter picAdapter;
+    private List<UserOrder.ListBean.TimelineListBean> statusList;
+    private UserOrderStatusAdapter statusAdapter;
+    private UserOrder.ListBean listBean;
+    private boolean mStop;
+    private int connectFlag = 0;
+    private TitleBar.TextAction textAction;
+
+    private BaiduMap mBaiDuMap;
     private LocationClient mLocationClient;
     private MyLocationListener mLocationListener;
     private GeoCoder mSearch;
@@ -146,7 +151,7 @@ public class OrderDetailActivity extends BaseActivity {
                 OverlayOptions option = new MarkerOptions()
                         .position(point)
                         .icon(mCurrentMarker);
-                mBaiduMap.addOverlay(option);
+                mBaiDuMap.addOverlay(option);
             }
         }
 
@@ -164,20 +169,6 @@ public class OrderDetailActivity extends BaseActivity {
             //获取反向地理编码结果
         }
     };
-    private int orderId;
-    private String orderStatus;
-    private String orderAddr;
-    private String city;
-    private List<UserOrder.ListBean.OrderItemsBean> orderList;
-    private UserOrderDetailAdapter orderAdapter;
-    private List<UserOrder.ListBean.PicListBean> picList;
-    private UserOrderPicAdapter picAdapter;
-    private List<UserOrder.ListBean.TimelineListBean> statusList;
-    private UserOrderStatusAdapter statusAdapter;
-    private UserOrder.ListBean listBean;
-    private boolean mStop;
-    private int connectFlag = 0;
-    private TitleBar.TextAction textAction;
 
     @Override
     protected int getLayoutResId() {
@@ -208,8 +199,6 @@ public class OrderDetailActivity extends BaseActivity {
         };
         picRv.setLayoutManager(gridLayoutManager);
         picRv.setAdapter(picAdapter);
-
-
     }
 
     @Override
@@ -230,17 +219,17 @@ public class OrderDetailActivity extends BaseActivity {
                             city = response.getData().getCity();
                         }
                         if(response.getData().getAddress()!=null){
-                            orderAddr = response.getData().getAddress();
+                            orderAddress = response.getData().getAddress();
                         }
                         tvName.setText(response.getData().getName()==null?"":response.getData().getName());
                         tvTel.setText(response.getData().getMobile()==null?"":response.getData().getMobile());
-                        tvAddr.setText(response.getData().getProvince()==null?"":response.getData().getProvince()
+                        tvAddress.setText(response.getData().getProvince()==null?"":response.getData().getProvince()
                                 + response.getData().getCity()==null?"":response.getData().getCity()
                                 + response.getData().getDistrict()==null?"":response.getData().getDistrict()
                                 + response.getData().getAddress()==null?"":response.getData().getAddress());
                         tvTitle.setText(response.getData().getCategoryName()==null?"":response.getData().getCategoryName());
                         tvTitle2.setText(response.getData().getCategoryName()==null?"":response.getData().getCategoryName());
-                        tvTotal.setText("￥" + DoubleUtil.getTwoDecimal(response.getData().getTotalPrice()));
+                        tvTotalPrice.setText("￥" + DoubleUtil.getTwoDecimal(response.getData().getTotalPrice()));
                         tvOrderNo.setText(response.getData().getOrderSn()==null?"":response.getData().getOrderSn());
                         tvCreateTime.setText(response.getData().getCreateTime()==null?"":response.getData().getCreateTime());
                         tvBookingTime.setText(response.getData().getBookingDate() + " " + response.getData().getBookingTime());
@@ -267,9 +256,7 @@ public class OrderDetailActivity extends BaseActivity {
                         if (orderStatus.equals("未接单")) {
                             dissmissCancel();
                             connectFlag = -1;
-                            tv_time.setVisibility(View.VISIBLE);
-                            tv_time2.setVisibility(View.GONE);
-                            tv_time3.setVisibility(View.GONE);
+                            tvRestTime.setVisibility(View.VISIBLE);
                             if (TimeUtil.compareTime(response.getData().getBookingDate() + " " + response.getData().getBookingTime())) {
                                 Observable.interval(0, 1, TimeUnit.SECONDS)
                                         .takeWhile(new Predicate<Long>() {
@@ -283,7 +270,7 @@ public class OrderDetailActivity extends BaseActivity {
                                         .subscribe(new Consumer<Long>() {
                                             @Override
                                             public void accept(Long aLong) throws Exception {
-                                                tv_time.setText("接单倒计时：" + TimeUtil.reFreshTime(response.getData().getBookingDate() + " " + response.getData().getBookingTime()));
+                                                tvRestTime.setText("接单倒计时：" + TimeUtil.reFreshTime(response.getData().getBookingDate() + " " + response.getData().getBookingTime()));
                                             }
                                         });
                                 btConfirm.setText("我要接单");
@@ -291,17 +278,15 @@ public class OrderDetailActivity extends BaseActivity {
                             } else {
                                 btConfirm.setVisibility(View.GONE);
                                 btCancel.setVisibility(View.GONE);
-                                tv_time.setText("订单时间已过期");
+                                tvRestTime.setText("订单时间已过期");
                             }
                         } else if (orderStatus.equals("待预约")) {
                             cancelOrder();
-                            tv_time2.setVisibility(View.VISIBLE);
-                            tv_time.setVisibility(View.GONE);
-                            tv_time3.setVisibility(View.GONE);
+                            tvRestTime.setVisibility(View.GONE);
                             if(response.getData().getReceiveTime()==null){
                                 btConfirm.setVisibility(View.GONE);
                                 btCancel.setVisibility(View.VISIBLE);
-                                tv_time2.setText("预约时间异常");
+                                tvRestTime.setText("预约时间异常");
                             }else {
                                 if (TimeUtil.compareTime2(response.getData().getReceiveTime())) {
                                     Observable.interval(0, 1, TimeUnit.SECONDS)
@@ -316,7 +301,7 @@ public class OrderDetailActivity extends BaseActivity {
                                             .subscribe(new Consumer<Long>() {
                                                 @Override
                                                 public void accept(Long aLong) throws Exception {
-                                                    tv_time2.setText("预约倒计时：" + TimeUtil.reFreshTime2(response.getData().getReceiveTime()));
+                                                    tvRestTime.setText("预约倒计时：" + TimeUtil.reFreshTime2(response.getData().getReceiveTime()));
                                                 }
                                             });
                                     btConfirm.setText("预约时间");
@@ -325,14 +310,12 @@ public class OrderDetailActivity extends BaseActivity {
                                 } else {
                                     btConfirm.setVisibility(View.GONE);
                                     btCancel.setVisibility(View.VISIBLE);
-                                    tv_time2.setText("预约时间已过期");
+                                    tvRestTime.setText("预约时间已过期");
                                 }
                             }
                         } else if (orderStatus.equals("待服务")) {
                             cancelOrder();
-                            tv_time3.setVisibility(View.VISIBLE);
-                            tv_time.setVisibility(View.GONE);
-                            tv_time2.setVisibility(View.GONE);
+                            tvRestTime.setVisibility(View.VISIBLE);
                             if (TimeUtil.compareTime(response.getData().getBookingDate() + " " + response.getData().getBookingTime())) {
                                 Observable.interval(0, 1, TimeUnit.SECONDS)
                                         .takeWhile(new Predicate<Long>() {
@@ -346,7 +329,7 @@ public class OrderDetailActivity extends BaseActivity {
                                         .subscribe(new Consumer<Long>() {
                                             @Override
                                             public void accept(Long aLong) throws Exception {
-                                                tv_time3.setText("上门倒计时：" + TimeUtil.reFreshTime(response.getData().getBookingDate() + " " + response.getData().getBookingTime()));
+                                                tvRestTime.setText("上门倒计时：" + TimeUtil.reFreshTime(response.getData().getBookingDate() + " " + response.getData().getBookingTime()));
                                             }
                                         });
                                 btConfirm.setText("上门服务");
@@ -355,26 +338,19 @@ public class OrderDetailActivity extends BaseActivity {
                             } else {
                                 btConfirm.setVisibility(View.GONE);
                                 btCancel.setVisibility(View.VISIBLE);
-                                tv_time3.setText("服务时间已过期");
+                                tvRestTime.setText("服务时间已过期");
                             }
                         } else if (orderStatus.equals("进行中")) {
                             dissmissCancel();
-                            tv_time3.setVisibility(View.GONE);
-                            tv_time.setVisibility(View.VISIBLE);
-                            tv_time.setText("服务中");
-                            tv_time2.setVisibility(View.GONE);
+                            tvRestTime.setVisibility(View.GONE);
                             btConfirm.setText("完成服务");
                             btCancel.setVisibility(View.VISIBLE);
                         } else {
                             dissmissCancel();
-                            tv_time3.setVisibility(View.GONE);
-                            tv_time.setVisibility(View.VISIBLE);
-                            tv_time.setText("已完成");
-                            tv_time2.setVisibility(View.GONE);
+                            tvRestTime.setVisibility(View.GONE);
                             btConfirm.setVisibility(View.GONE);
                             btCancel.setVisibility(View.GONE);
                         }
-                        showTel();
                         initLocation();
 //                        else if (orderStatus.equals("待服务")) {
 //                            if (payStatus == 2) {
@@ -395,10 +371,10 @@ public class OrderDetailActivity extends BaseActivity {
                 });
     }
 
-    @OnClick({R.id.confirm, R.id.cancel, R.id.bt_copy, R.id.rl_call})
+    @OnClick({R.id.confirm, R.id.cancel, R.id.bt_copy, R.id.tv_call})
     public void click(View view) {
         switch (view.getId()) {
-            case R.id.rl_call:
+            case R.id.tv_call:
                 connectFlag = -1;
                 HashMap<String, Object> map = new HashMap<>();
                 map.put("orderId", orderId);
@@ -410,7 +386,7 @@ public class OrderDetailActivity extends BaseActivity {
                             public void onSuccess(ResponseData<String> response) {
                                 if (response.getCode() == 0) {
                                     Intent intent = new Intent(Intent.ACTION_DIAL);
-                                    Uri data = Uri.parse("tel:" + tvTel.getText().toString());
+                                    Uri data = Uri.parse("icon_call:" + tvTel.getText().toString());
                                     intent.setData(data);
                                     startActivity(intent);
                                 }
@@ -688,17 +664,19 @@ public class OrderDetailActivity extends BaseActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        mStop = true;
         // 停止定位
-        mBaiduMap.setMyLocationEnabled(false);
-        mLocationClient.stop();
+        if (mBaiDuMap!=null && mLocationClient!=null){
+            mStop = true;
+            mBaiDuMap.setMyLocationEnabled(false);
+            mLocationClient.stop();
+        }
     }
 
     private void initLocation() {
         mSearch = GeoCoder.newInstance();
         mSearch.setOnGetGeoCodeResultListener(geoCoderListener);
-        mBaiduMap = mMapView.getMap();
-        mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
+        mBaiDuMap = mMapView.getMap();
+        mBaiDuMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
         mLocationClient = new LocationClient(this);
         mLocationListener = new MyLocationListener();
         mLocationClient.registerLocationListener(mLocationListener);
@@ -721,7 +699,7 @@ public class OrderDetailActivity extends BaseActivity {
         option.setEnableSimulateGps(false);//可选，默认false，设置是否需要过滤GPS仿真结果，默认需要
         mLocationClient.setLocOption(option);
         // 开启定位
-        mBaiduMap.setMyLocationEnabled(true);
+        mBaiDuMap.setMyLocationEnabled(true);
         if (!mLocationClient.isStarted())
             mLocationClient.start();
     }
@@ -729,7 +707,7 @@ public class OrderDetailActivity extends BaseActivity {
     private void confirmLocation() {
         mSearch.geocode(new GeoCodeOption()
                 .city(city)
-                .address(orderAddr));
+                .address(orderAddress));
     }
 
     private void reservationTime(String bookingDate, String bookingTime) {
@@ -800,50 +778,6 @@ public class OrderDetailActivity extends BaseActivity {
         }
     }
 
-    private void showTel() {
-        if (connectFlag == 0) {
-            mCountDownTextView.setVisibility(View.VISIBLE);
-            t1.setVisibility(View.VISIBLE);
-            t2.setVisibility(View.VISIBLE);
-            mCountDownTextView.setNormalText("建议在5分钟内联系客户")
-                    .setCountDownText("", "")
-                    .setCloseKeepCountDown(false)//关闭页面保持倒计时开关
-                    .setCountDownClickable(false)//倒计时期间点击事件是否生效开关
-                    .setShowFormatTime(true)//是否格式化时间
-                    .setOnCountDownFinishListener(new CountDownTextView.OnCountDownFinishListener() {
-                        @Override
-                        public void onFinish() {
-                            mCountDownTextView.setVisibility(View.GONE);
-                            t1.setVisibility(View.GONE);
-                            t2.setVisibility(View.GONE);
-//                        Toast.makeText(OrderDetailActivity.this, "倒计时完毕", Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-//                        mCountDownTextView.setClickable(false);
-
-
-//                        HashMap<String, Object> map = new HashMap<>();
-//                        map.put("orderId", listBean.getId());
-//                        OkGo.<ResponseData<String>>post(UrlConstant.END_SERVICE_CODE)
-//                                .upJson(gson.toJson(map))
-//                                .execute(new JsonCallback<ResponseData<String>>() {
-//                                    @Override
-//                                    public void onSuccess(ResponseData<String> response) {
-//                                        ToastUtil.show(response.getMsg());
-//                                    }
-//                                });
-                        }
-                    });
-            mCountDownTextView.startCountDown(60 * 5);
-        } else {
-            mCountDownTextView.setVisibility(View.GONE);
-            t1.setVisibility(View.GONE);
-            t2.setVisibility(View.GONE);
-        }
-    }
 
     class MyLocationListener implements BDLocationListener {
         @Override
@@ -855,13 +789,13 @@ public class OrderDetailActivity extends BaseActivity {
                     .direction(0).latitude(location.getLatitude())
                     .longitude(location.getLongitude()).build();
             // 设置定位数据
-            mBaiduMap.setMyLocationData(locData);
+            mBaiDuMap.setMyLocationData(locData);
             // 设置自定义图标
             BitmapDescriptor mCurrentMarker = BitmapDescriptorFactory
                     .fromView(View.inflate(OrderDetailActivity.this, R.layout.view_location_icon_my, null));
             MyLocationConfiguration config = new MyLocationConfiguration(
                     MyLocationConfiguration.LocationMode.NORMAL, true, mCurrentMarker);
-            mBaiduMap.setMyLocationConfigeration(config);
+            mBaiDuMap.setMyLocationConfigeration(config);
 
             /**
              * 绘制圆形
@@ -885,7 +819,7 @@ public class OrderDetailActivity extends BaseActivity {
                     location.getLongitude());
             MapStatus.Builder builder = new MapStatus.Builder();
             builder.target(ll).zoom(12.0f);
-            mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
+            mBaiDuMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
             if (location.getLocType() == BDLocation.TypeGpsLocation) {
                 // GPS定位结果
 //                tv_location.setText(location.getProvince() + location.getCity() +  location.getDistrict()+location.getStreet());
