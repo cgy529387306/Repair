@@ -1,8 +1,11 @@
 package com.yxw.cn.carpenterrepair.fragment;
 
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.lzy.okgo.OkGo;
@@ -32,13 +35,29 @@ import butterknife.BindView;
  */
 public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapter.OnItemClickListener {
 
-    @BindView(R.id.rv)
-    RecyclerView mRv;
+    @BindView(R.id.recyclerView)
+    RecyclerView mRecyclerView;
 
-    private List<UserOrder.ListBean> mList;
+    private static final String KEY_STATE = "key_state";
+    private static final String KEY_TYPE = "key_type";
     private OrderAdapter mAdapter;
     private int page = 2;
     private boolean isNext = false;
+    private int state;
+    private int type;
+
+    /**
+     * @param state 0:今天 1:明天 2:全部
+     * @return
+     */
+    public static Fragment getInstance(int state,int type) {
+        Fragment fragment = new OrderFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(KEY_STATE, state);
+        bundle.putInt(KEY_TYPE, type);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
 
     @Override
     protected int getLayout() {
@@ -47,17 +66,22 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
 
     @Override
     protected void initView() {
-        mList = new ArrayList<>();
-        mAdapter = new OrderAdapter(mList);
+        mAdapter = new OrderAdapter(new ArrayList<>());
         mAdapter.setOnItemClickListener(this);
-        mRv.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRv.addItemDecoration(new SpaceItemDecoration(20));
-        mRv.setAdapter(mAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerView.addItemDecoration(new SpaceItemDecoration(20));
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override
     public void getData() {
-        getOrderData(1);
+        List<UserOrder.ListBean> dataList = new ArrayList<>();
+        for (int i=0;i<10;i++){
+            UserOrder.ListBean userOrder = new UserOrder.ListBean();
+            dataList.add(userOrder);
+        }
+        mAdapter.setNewData(dataList);
+//        getOrderData(1);
     }
 
     private void getOrderData(int p) {
@@ -74,28 +98,28 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
                     public void onSuccess(ResponseData<UserOrder> response) {
                         if (response.getCode() == 0) {
                             if (p == 1) {
-                                page=2;
-                                mList.clear();
-                                mRefreshLayout.finishRefresh(true);
+                                page = 2;
+                                mAdapter.setNewData(response.getData().getList());
+                                mRefreshLayout.finishRefresh();
                             } else {
+                                mAdapter.addData(response.getData().getList());
                                 isNext = response.getData().isIsNext();
                                 if (isNext) {
                                     page++;
-                                    mRefreshLayout.finishLoadMore(true);
+                                    mRefreshLayout.finishLoadMore();
                                 } else {
                                     mRefreshLayout.finishLoadMoreWithNoMoreData();
                                 }
                             }
-                            mList.addAll(response.getData().getList());
                             mAdapter.notifyDataSetChanged();
-                            mRefreshLayout.finishRefresh();
-                            EventBusUtil.post(MessageConstant.WORKER_ORDERED_COUNT, mList.size());
+                            mAdapter.setEmptyView(R.layout.empty_data, (ViewGroup) mRecyclerView.getParent());
+                            EventBusUtil.post(MessageConstant.WORKER_ORDERED_COUNT, mAdapter.getData().size());
                         } else {
                             toast(response.getMsg());
                             if (p == 1) {
-                                mRefreshLayout.finishRefresh(true);
-                            } else {
                                 mRefreshLayout.finishRefresh(false);
+                            } else {
+                                mRefreshLayout.finishLoadMore(false);
                             }
                         }
                     }
@@ -126,7 +150,9 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        startActivity(OrderDetailActivity.class, mList.get(position).getId());
+        if (mAdapter.getItem(position)!=null){
+            startActivity(OrderDetailActivity.class, mAdapter.getItem(position).getId());
+        }
     }
 
     @Override

@@ -35,7 +35,7 @@ public class HomeFragment extends BaseRefreshFragment {
 
     @BindView(R.id.titlebar)
     TitleBar titlebar;
-    @BindView(R.id.rv)
+    @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
 
     private GridView mGridCate;

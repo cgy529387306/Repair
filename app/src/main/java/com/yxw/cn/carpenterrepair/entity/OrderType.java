@@ -8,6 +8,9 @@ import java.io.Serializable;
 
 public class OrderType implements Serializable{
 
+    /**
+     * 0:待接单  1：待预约  2：待完成 3：待上门  4：已完成
+     */
     private int type;
 
     private int drawableId;
@@ -30,7 +33,15 @@ public class OrderType implements Serializable{
         this.name = name;
     }
 
-    public OrderType(int type,int drawableId, String name) {
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public OrderType(int type, int drawableId, String name) {
         this.type = type;
         this.drawableId = drawableId;
         this.name = name;

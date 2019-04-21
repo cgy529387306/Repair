@@ -21,12 +21,12 @@ public class OrderAdapter extends BaseQuickAdapter<UserOrder.ListBean, BaseViewH
 
     @Override
     protected void convert(BaseViewHolder helper, UserOrder.ListBean item) {
-        helper.setText(R.id.tv_ordre_name, item.getCategoryName())
-                .setText(R.id.tv_order_time, item.getBookingDate() + " " + item.getBookingTime())
-                .setText(R.id.tv_order_address, AppUtil.getOrderDetailAddress(item))
-                .setText(R.id.tv_order_content, TextUtils.isEmpty(item.getRemark()) ? "无备注" : item.getRemark())
-                .setText(R.id.tv_order_state, item.getOrderStatusName())
-                .setText(R.id.tv_price,String.valueOf(item.getTotalPrice()))
-                .addOnClickListener(R.id.tv_order_state);
+//        helper.setText(R.id.tv_ordre_name, item.getCategoryName())
+//                .setText(R.id.tv_order_time, item.getBookingDate() + " " + item.getBookingTime())
+//                .setText(R.id.tv_order_address, AppUtil.getOrderDetailAddress(item))
+//                .setText(R.id.tv_order_content, TextUtils.isEmpty(item.getRemark()) ? "无备注" : item.getRemark())
+//                .setText(R.id.tv_order_state, item.getOrderStatusName())
+//                .setText(R.id.tv_price,String.valueOf(item.getTotalPrice()))
+//                .addOnClickListener(R.id.tv_order_state);
     }
 }

@@ -57,12 +57,9 @@ public class UpdateAlipayActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.del, R.id.confirm})
+    @OnClick({R.id.confirm})
     public void click(View view) {
         switch (view.getId()) {
-            case R.id.del:
-                mEtName.setText("");
-                break;
             case R.id.confirm:
                 if (TextUtils.isEmpty(mEtName.getText().toString().trim())) {
                     toast("您还未输入支付宝账号！");
