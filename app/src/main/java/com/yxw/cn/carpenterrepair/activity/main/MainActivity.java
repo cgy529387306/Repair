@@ -55,7 +55,7 @@ public class MainActivity extends BaseActivity {
                 .execute(new JsonCallback<ResponseData<LoginInfo>>() {
                              @Override
                              public void onSuccess(ResponseData<LoginInfo> response) {
-                                 if (response.getCode() == 0) {
+                                 if (response.isSuccess()) {
                                      CurrentUser.getInstance().login(response.getData());
                                      AppUtil.checkStatus(MainActivity.this);
                                  }

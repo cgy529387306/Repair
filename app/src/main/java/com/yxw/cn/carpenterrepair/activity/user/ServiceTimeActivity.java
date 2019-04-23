@@ -293,7 +293,7 @@ public class ServiceTimeActivity extends BaseActivity {
                     @Override
                     public void onSuccess(ResponseData response) {
                         toast(response.getMsg());
-                        if (response.getCode() == 0) {
+                        if (response.isSuccess()) {
                             loginInfo.setServiceTime(serviceTime);
                             loginInfo.setServiceDate(serviceDate);
                             CurrentUser.getInstance().login(loginInfo);

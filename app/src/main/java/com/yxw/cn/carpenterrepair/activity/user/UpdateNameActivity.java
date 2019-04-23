@@ -75,7 +75,7 @@ public class UpdateNameActivity extends BaseActivity {
                                      public void onSuccess(ResponseData<String> response) {
                                          dismissLoading();
                                          toast(response.getMsg());
-                                         if (response.getCode() == 0) {
+                                         if (response.isSuccess()) {
                                              loginInfo.setNickname(mEtName.getText().toString().trim());
                                              CurrentUser.getInstance().login(loginInfo);
                                              EventBusUtil.post(MessageConstant.NOTIFY_INFO);

@@ -74,7 +74,7 @@ public class OrderAbnormalActivity extends BaseActivity implements BaseQuickAdap
                 .execute(new JsonCallback<ResponseData<List<Abnormal>>>() {
                     @Override
                     public void onSuccess(ResponseData<List<Abnormal>> response) {
-                        if (response.getCode() == 0) {
+                        if (response.isSuccess()) {
                             if (response.getData().size() > 0) {
                                 mList.addAll(response.getData());
                                 mAdapter.notifyDataSetChanged();
@@ -113,7 +113,7 @@ public class OrderAbnormalActivity extends BaseActivity implements BaseQuickAdap
                             .execute(new JsonCallback<ResponseData<String>>() {
                                 @Override
                                 public void onSuccess(ResponseData<String> response) {
-                                    if (response.getCode() == 0) {
+                                    if (response.isSuccess()) {
                                         OrderAbnormalActivity.this.finish();
                                         EventBusUtil.post(MessageConstant.NOTIFY_ORDER_DETAIL);
                                     }

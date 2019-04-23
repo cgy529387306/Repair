@@ -80,7 +80,7 @@ public abstract class JsonCallback<T> extends AbsCallback<T> {
     public void onSuccess(com.lzy.okgo.model.Response<T> response) {
         if (response.body() instanceof ResponseData) {
             ResponseData responseData = (ResponseData) response.body();
-            if (responseData.getCode() == 2001) {
+            if (responseData.getStatus()==200) {
 //                ToastUtil.show(responseData.getMsg());
 //                if(BaseApplication.getInstance().getLastActivity() !=null){
 //                    Bundle bundle = new Bundle();

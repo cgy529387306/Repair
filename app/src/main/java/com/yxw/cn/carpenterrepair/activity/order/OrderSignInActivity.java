@@ -202,7 +202,7 @@ public class OrderSignInActivity extends BaseActivity {
                                 @Override
                                 public void onSuccess(ResponseData<String> response) {
                                     ToastUtil.show(response.getMsg());
-                                    if (response.getCode() == 0) {
+                                    if (response.isSuccess()) {
                                         OrderSignInActivity.this.finish();
                                         EventBusUtil.post(MessageConstant.NOTIFY_ORDER_DETAIL);
                                     }
@@ -333,7 +333,7 @@ public class OrderSignInActivity extends BaseActivity {
                     @Override
                     public void onSuccess(ResponseData<String> response) {
                         ToastUtil.show(response.getMsg());
-                        if (response.getCode() == 0) {
+                        if (response.isSuccess()) {
                             OrderSignInActivity.this.finish();
                             EventBusUtil.post(MessageConstant.NOTIFY_ORDER_DETAIL);
                         }

@@ -2,6 +2,8 @@ package com.yxw.cn.carpenterrepair.contast;
 
 public class UrlConstant {
 
+    public final static int mRoleSign = 1;  // 1工程师端 3服务商端
+
     public final static String URL_SHOPPING = "http://47.98.53.48:8080/mall/index";
 
 //    public final static String BASE_URL = "http://result.eolinker.com/LXY3SzS37282f67e2e5a56f813e0030bf70d292f0f69e16?uri=";
@@ -19,10 +21,10 @@ public class UrlConstant {
     public final static String BASE_USER = "http://114.115.184.217:28010";
     public final static String BASE_SERVICE = "http://114.115.184.217:28020";
 
-    public final static String GET_CODE = BASE_SERVICE + "/ms20/api/validateCode/code/getCode";
-    public final static String LOGIN = BASE_USER + "/app/api/loginByPwd";
-    public final static String QUICK_LOGIN = BASE_USER + "/app/api/loginByCode";
-    public final static String REGISTER = BASE_USER + "/app/api/register";
+    public final static String GET_CODE = BASE_SERVICE + "/gateway/ms20/api/validateCode/code/getCode";
+    public final static String LOGIN = BASE_USER + "/gateway/app/api/loginByPwd";
+    public final static String QUICK_LOGIN = BASE_USER + "/gateway/app/api/loginByCode";
+    public final static String REGISTER = BASE_USER + "/gateway/app/api/register";
     public final static String FORGET_PASSWORD= BASE_URL + "/api/fix/shopUser/getBackPwd";//忘记密码
     public final static String GET_ALL_CATEGORY = BASE_URL + "/api/fix/category/all";
     public final static String GET_REGION_TREE = BASE_URL + "/api/region/tree";

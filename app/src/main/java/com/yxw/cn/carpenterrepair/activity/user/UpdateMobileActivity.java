@@ -77,7 +77,7 @@ public class UpdateMobileActivity extends BaseActivity {
                                      public void onSuccess(ResponseData<String> response) {
                                          dismissLoading();
                                          toast(response.getMsg());
-                                         if (response.getCode() == 0) {
+                                         if (response.isSuccess()) {
                                              loginInfo.setMobile(mEtName.getText().toString().trim());
                                              SpUtil.putStr(SpConstant.LOGIN_MOBILE, mEtName.getText().toString().trim());
                                              CurrentUser.getInstance().login(loginInfo);

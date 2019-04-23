@@ -10,7 +10,7 @@ public class LoginInfo {
     private String token;
     private String lastLoginTime;
     private String mobile;
-    private String avatar;
+    private String avatars;
     private String username;
     private String userId;
     private String nickname;
@@ -52,11 +52,11 @@ public class LoginInfo {
     }
 
     public String getAvatar() {
-        return avatar == null ? "" : avatar;
+        return avatars == null ? "" : avatars;
     }
 
     public void setAvatar(String avatar) {
-        this.avatar = avatar;
+        this.avatars = avatar;
     }
 
     public String getUsername() {

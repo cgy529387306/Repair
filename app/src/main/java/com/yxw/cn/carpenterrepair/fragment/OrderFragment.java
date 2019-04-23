@@ -96,7 +96,7 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
                 .execute(new JsonCallback<ResponseData<UserOrder>>() {
                     @Override
                     public void onSuccess(ResponseData<UserOrder> response) {
-                        if (response.getCode() == 0) {
+                        if (response.isSuccess()) {
                             if (p == 1) {
                                 page = 2;
                                 mAdapter.setNewData(response.getData().getList());

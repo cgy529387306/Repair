@@ -92,7 +92,7 @@ public class UpdatePasswordActivity extends BaseActivity {
                                          public void onSuccess(ResponseData<String> response) {
                                              dismissLoading();
                                              toast(response.getMsg());
-                                             if (response.getCode() == 0) {
+                                             if (response.isSuccess()) {
                                                  finish();
                                              }
                                          }

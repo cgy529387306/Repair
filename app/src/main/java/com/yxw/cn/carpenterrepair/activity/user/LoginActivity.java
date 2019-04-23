@@ -61,40 +61,40 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void doLogin(){
-        startActivityFinish(MainActivity.class);
-//        if (TextUtils.isEmpty(mEtTel.getText().toString().trim())) {
-//            toast("手机号不能为空！");
-//        } else if (mEtPassword.getText().toString().trim().isEmpty()) {
-//            toast("密码不能为空！");
-//        } else {
-//            showLoading();
-//            Map<String, String> map = new HashMap<>();
-//            map.put("mobile", mEtTel.getText().toString().trim());
-//            map.put("password", mEtPassword.getText().toString().trim());
-//            OkGo.<ResponseData<LoginInfo>>post(UrlConstant.LOGIN)
-//                    .upJson(gson.toJson(map))
-//                    .execute(new JsonCallback<ResponseData<LoginInfo>>() {
-//                                 @Override
-//                                 public void onSuccess(ResponseData<LoginInfo> response) {
-//                                     dismissLoading();
-//                                     if (response.getCode() == 0) {
-//                                         SpUtil.putStr(SpConstant.LOGIN_MOBILE, mEtTel.getText().toString().trim());
-//                                         CurrentUser.getInstance().login(response.getData());
-//                                         startActivityFinish(MainActivity.class);
-//                                         EventBusUtil.post(MessageConstant.LOGIN);
-//                                     }else {
-//                                         toast(response.getMsg());
-//                                     }
-//                                 }
-//
-//                                 @Override
-//                                 public void onError(Response<ResponseData<LoginInfo>> response) {
-//                                     super.onError(response);
-//                                     dismissLoading();
-//                                 }
-//                             }
-//                    );
-//        }
+        if (TextUtils.isEmpty(mEtTel.getText().toString().trim())) {
+            toast("手机号不能为空！");
+        } else if (mEtPassword.getText().toString().trim().isEmpty()) {
+            toast("密码不能为空！");
+        } else {
+            showLoading();
+            Map<String, Object> map = new HashMap<>();
+            map.put("userName", mEtTel.getText().toString().trim());
+            map.put("password", mEtPassword.getText().toString().trim());
+            map.put("roleSign", UrlConstant.mRoleSign);
+            OkGo.<ResponseData<LoginInfo>>post(UrlConstant.LOGIN)
+                    .upJson(gson.toJson(map))
+                    .execute(new JsonCallback<ResponseData<LoginInfo>>() {
+                                 @Override
+                                 public void onSuccess(ResponseData<LoginInfo> response) {
+                                     dismissLoading();
+                                     if (response.isSuccess()) {
+                                         SpUtil.putStr(SpConstant.LOGIN_MOBILE, mEtTel.getText().toString().trim());
+                                         CurrentUser.getInstance().login(response.getData());
+                                         startActivityFinish(MainActivity.class);
+                                         EventBusUtil.post(MessageConstant.LOGIN);
+                                     }else {
+                                         toast(response.getMsg());
+                                     }
+                                 }
+
+                                 @Override
+                                 public void onError(Response<ResponseData<LoginInfo>> response) {
+                                     super.onError(response);
+                                     dismissLoading();
+                                 }
+                             }
+                    );
+        }
     }
 
     @Override

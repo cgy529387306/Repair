@@ -307,7 +307,7 @@ public class OrderActivity extends BaseActivity implements OnChooseTimeListener,
                     @Override
                     public void onSuccess(ResponseData<String> response) {
                         dismissLoading();
-                        if (response.getCode() == 0) {
+                        if (response.isSuccess()) {
                             aliPay(response.getData());
                         } else {
                             toast(response.getMsg());
@@ -363,7 +363,7 @@ public class OrderActivity extends BaseActivity implements OnChooseTimeListener,
                 .execute(new JsonCallback<ResponseData<AliPayCheckInfo>>() {
                     @Override
                     public void onSuccess(ResponseData<AliPayCheckInfo> response) {
-                        if (response.getCode() == 0) {
+                        if (response.isSuccess()) {
                             if ("9000".equals(response.getData().getAlipay_trade_query_response().getCode())) {
                                 toast("下单成功");
                                 EventBusUtil.post(MessageConstant.NOTIFY_ORDER);

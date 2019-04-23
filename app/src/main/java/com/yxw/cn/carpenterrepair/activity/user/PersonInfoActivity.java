@@ -217,7 +217,7 @@ public class PersonInfoActivity extends BaseActivity {
                     @Override
                     public void onSuccess(ResponseData response) {
                         toast(response.getMsg());
-                        if (response.getCode() == 0) {
+                        if (response.isSuccess()) {
                             loginInfo.setResident(resident);
                             loginInfo.setResidentName(city);
                             CurrentUser.getInstance().login(loginInfo);
@@ -252,7 +252,7 @@ public class PersonInfoActivity extends BaseActivity {
                                              public void onSuccess(ResponseData<String> response) {
                                                  dismissLoading();
                                                  toast(response.getMsg());
-                                                 if (response.getCode() == 0) {
+                                                 if (response.isSuccess()) {
                                                      loginInfo.setAvatar(response.getData());
                                                      AppUtil.showPic(PersonInfoActivity.this, mIvAvatar, selectList.get(0).getCompressPath());
                                                      CurrentUser.getInstance().login(loginInfo);

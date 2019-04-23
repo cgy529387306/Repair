@@ -79,7 +79,7 @@ public class UserFragment extends BaseFragment {
                 .execute(new JsonCallback<ResponseData<LoginInfo>>() {
                              @Override
                              public void onSuccess(ResponseData<LoginInfo> response) {
-                                 if (response.getCode() == 0) {
+                                 if (response.isSuccess()) {
                                      CurrentUser.getInstance().login(response.getData());
                                      notifyInfo();
                                  }

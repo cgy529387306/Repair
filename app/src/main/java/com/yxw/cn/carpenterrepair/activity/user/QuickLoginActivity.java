@@ -101,16 +101,17 @@ public class QuickLoginActivity extends BaseActivity {
                     toast("验证码不能为空！");
                 } else {
                     showLoading();
-                    Map<String, String> map = new HashMap<>();
-                    map.put("mobile", mEtTel.getText().toString());
-                    map.put("code", mEtPassword.getText().toString().trim());
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("userName", mEtTel.getText().toString());
+                    map.put("smsCode", mEtPassword.getText().toString().trim());
+                    map.put("roleSign", UrlConstant.mRoleSign);
                     OkGo.<ResponseData<LoginInfo>>post(UrlConstant.QUICK_LOGIN)
                             .upJson(gson.toJson(map))
                             .execute(new JsonCallback<ResponseData<LoginInfo>>() {
                                          @Override
                                          public void onSuccess(ResponseData<LoginInfo> response) {
                                              dismissLoading();
-                                             if (response.getCode() == 0) {
+                                             if (response.isSuccess()) {
                                                  SpUtil.putStr(SpConstant.LOGIN_MOBILE, mEtTel.getText().toString().trim());
                                                  CurrentUser.getInstance().login(response.getData());
                                                  startActivityFinish(MainActivity.class);

@@ -384,7 +384,7 @@ public class OrderDetailActivity extends BaseActivity {
 
                             @Override
                             public void onSuccess(ResponseData<String> response) {
-                                if (response.getCode() == 0) {
+                                if (response.isSuccess()) {
                                     Intent intent = new Intent(Intent.ACTION_DIAL);
                                     Uri data = Uri.parse("icon_call:" + tvTel.getText().toString());
                                     intent.setData(data);
@@ -457,7 +457,7 @@ public class OrderDetailActivity extends BaseActivity {
                                                         @Override
                                                         public void onSuccess(ResponseData<String> response) {
                                                             ToastUtil.show(response.getMsg());
-                                                            if (response.getCode() == 0) {
+                                                            if (response.isSuccess()) {
                                                                 getData();
                                                             }
                                                         }
@@ -551,7 +551,7 @@ public class OrderDetailActivity extends BaseActivity {
                     @Override
                     public void onSuccess(ResponseData<String> response) {
                         ToastUtil.show(response.getMsg());
-                        if (response.getCode() == 0) {
+                        if (response.isSuccess()) {
                             DialogPlus dialogPlus = DialogPlus.newDialog(OrderDetailActivity.this)
                                     .setContentHolder(new ViewHolder(R.layout.dlg_confirm_arrival_code))
                                     .setGravity(Gravity.CENTER)
@@ -573,7 +573,7 @@ public class OrderDetailActivity extends BaseActivity {
                                                                 @Override
                                                                 public void onSuccess(ResponseData<String> response) {
                                                                     ToastUtil.show(response.getMsg());
-                                                                    if (response.getCode() == 0) {
+                                                                    if (response.isSuccess()) {
                                                                         dialog.dismiss();
                                                                         EventBusUtil.post(MessageConstant.NOTIFY_ORDER_DETAIL);
                                                                     }
@@ -600,7 +600,7 @@ public class OrderDetailActivity extends BaseActivity {
                     @Override
                     public void onSuccess(ResponseData<String> response) {
                         ToastUtil.show(response.getMsg());
-                        if (response.getCode() == 0) {
+                        if (response.isSuccess()) {
                             DialogPlus dialogPlus = DialogPlus.newDialog(OrderDetailActivity.this)
                                     .setContentHolder(new ViewHolder(R.layout.dlg_confirm_arrival_code))
                                     .setGravity(Gravity.CENTER)
@@ -622,7 +622,7 @@ public class OrderDetailActivity extends BaseActivity {
                                                                 @Override
                                                                 public void onSuccess(ResponseData<String> response) {
                                                                     ToastUtil.show(response.getMsg());
-                                                                    if (response.getCode() == 0) {
+                                                                    if (response.isSuccess()) {
                                                                         dialog.dismiss();
                                                                         EventBusUtil.post(MessageConstant.NOTIFY_ORDER_DETAIL);
                                                                     }
@@ -721,7 +721,7 @@ public class OrderDetailActivity extends BaseActivity {
                     @Override
                     public void onSuccess(ResponseData<String> response) {
                         ToastUtil.show(response.getMsg());
-                        if (response.getCode() == 0) {
+                        if (response.isSuccess()) {
                             getData();
                         }
                     }
@@ -751,7 +751,7 @@ public class OrderDetailActivity extends BaseActivity {
                                                         @Override
                                                         public void onSuccess(ResponseData<String> response) {
                                                             ToastUtil.show(response.getMsg());
-                                                            if (response.getCode() == 0) {
+                                                            if (response.isSuccess()) {
                                                                 EventBusUtil.post(MessageConstant.NOTIFY_ORDER);
                                                                 OrderDetailActivity.this.finish();
                                                             }

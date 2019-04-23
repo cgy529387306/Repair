@@ -114,7 +114,7 @@ public class WithdrawalCashActivity extends BaseActivity {
                             .execute(new JsonCallback<ResponseData<WithdrawalCash>>() {
                                          @Override
                                          public void onSuccess(ResponseData<WithdrawalCash> response) {
-                                             if (response.getCode() == 0) {
+                                             if (response.isSuccess()) {
                                                  if(response.getData().isIsExist()){
                                                      EventBusUtil.post(MessageConstant.NOTIFY_CARRY_AMONUT);
                                                      WithdrawalCashActivity.this.finish();

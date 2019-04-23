@@ -49,7 +49,6 @@ public class RegisterActivity extends BaseActivity {
     ImageView mIvShow;
     @BindView(R.id.bt_code)
     CountDownTextView mCountDownTextView;
-    private int isWorkerFlag = 2;  //0普通用户 1兼职工程师 2专职工程师
 
     @Override
     protected int getLayoutResId() {
@@ -143,10 +142,10 @@ public class RegisterActivity extends BaseActivity {
                     toast("新密码为6到16个字符或数字！");
                 } else {
                     Map<String, Object> map = new HashMap<>();
-                    map.put("mobile", mEtPhone.getText().toString().trim());
+                    map.put("userName", mEtPhone.getText().toString().trim());
                     map.put("password", mEtPassword.getText().toString().trim());
                     map.put("smsCode", mEtCode.getText().toString().trim());
-                    map.put("roleSign", isWorkerFlag);
+                    map.put("roleSign", UrlConstant.mRoleSign);
                     showLoading();
                     OkGo.<ResponseData<String>>post(UrlConstant.REGISTER)
                             .upJson(gson.toJson(map))
@@ -155,16 +154,10 @@ public class RegisterActivity extends BaseActivity {
                                          public void onSuccess(ResponseData<String> response) {
                                              dismissLoading();
                                              toast(response.getMsg());
-                                             if (response.getCode() == 0) {
-                                                 if (isWorkerFlag==2){
-                                                     SpUtil.putStr(SpConstant.LOGIN_MOBILE, mEtPhone.getText().toString().trim());
-                                                     EventBusUtil.post(MessageConstant.REGISTER);
-                                                     startActivity(ChooseCategoryActivity.class);
-                                                 }else{
-                                                     SpUtil.putStr(SpConstant.LOGIN_MOBILE, mEtPhone.getText().toString().trim());
-                                                     EventBusUtil.post(MessageConstant.REGISTER);
-                                                     startActivity(LoginActivity.class);
-                                                 }
+                                             if (response.isSuccess()) {
+                                                 SpUtil.putStr(SpConstant.LOGIN_MOBILE, mEtPhone.getText().toString().trim());
+                                                 EventBusUtil.post(MessageConstant.REGISTER);
+                                                 startActivity(ChooseCategoryActivity.class);
                                              }
 
                                          }

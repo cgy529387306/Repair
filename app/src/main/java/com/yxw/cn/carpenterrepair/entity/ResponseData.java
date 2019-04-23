@@ -3,23 +3,24 @@ package com.yxw.cn.carpenterrepair.entity;
 public class ResponseData<T> {
 
     private String msg;
-    private int code;
+    private int status;
     private T data;
+    private boolean success;
 
     public String getMsg() {
-        return msg;
+        return msg == null ? "" : msg;
     }
 
     public void setMsg(String msg) {
         this.msg = msg;
     }
 
-    public int getCode() {
-        return code;
+    public int getStatus() {
+        return status;
     }
 
-    public void setCode(int code) {
-        this.code = code;
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public T getData() {
@@ -28,5 +29,13 @@ public class ResponseData<T> {
 
     public void setData(T data) {
         this.data = data;
+    }
+
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public void setSuccess(boolean success) {
+        this.success = success;
     }
 }
