@@ -14,10 +14,15 @@ public class UrlConstant {
 //    public final static String BASE_URL = "http://47.98.53.48:8080";
 //    public final static String BASE_URL = "http://8080.port.doublev.cn";
 //    public final static String BASE_URL2 = "http://47.98.53.48:8080";
-    public final static String GET_CODE = BASE_URL + "/api/getCode";
-    public final static String LOGIN = BASE_URL + "/api/auth/user";
-    public final static String QUICK_LOGIN = BASE_URL + "/api/auth/loginByPhone";
-    public final static String REGISTER = BASE_URL + "/api/register/register";
+
+
+    public final static String BASE_USER = "http://114.115.184.217:28010";
+    public final static String BASE_SERVICE = "http://114.115.184.217:28020";
+
+    public final static String GET_CODE = BASE_SERVICE + "/ms20/api/validateCode/code/getCode";
+    public final static String LOGIN = BASE_USER + "/app/api/loginByPwd";
+    public final static String QUICK_LOGIN = BASE_USER + "/app/api/loginByCode";
+    public final static String REGISTER = BASE_USER + "/app/api/register";
     public final static String FORGET_PASSWORD= BASE_URL + "/api/fix/shopUser/getBackPwd";//忘记密码
     public final static String GET_ALL_CATEGORY = BASE_URL + "/api/fix/category/all";
     public final static String GET_REGION_TREE = BASE_URL + "/api/region/tree";
