@@ -21,6 +21,7 @@ import com.yxw.cn.carpenterrepair.entity.MessageEvent;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.util.AppUtil;
+import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 import com.yxw.cn.carpenterrepair.util.SpUtil;
 import com.yxw.cn.carpenterrepair.view.CountDownTextView;
 import com.yxw.cn.carpenterrepair.view.TitleBar;
@@ -30,7 +31,6 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 
 /**
  * 注册
@@ -100,8 +100,14 @@ public class RegisterActivity extends BaseActivity {
                                                  @Override
                                                  public void onSuccess(ResponseData<String> response) {
                                                      dismissLoading();
-                                                     mCountDownTextView.startCountDown(59);
-                                                     toast(response.getMsg());
+                                                     if (response!=null){
+                                                         if (response.isSuccess()){
+                                                             toast("短信发送成功");
+                                                             mCountDownTextView.startCountDown(59);
+                                                         }else{
+                                                             toast(response.getMsg());
+                                                         }
+                                                     }
                                                  }
 
                                                  @Override
@@ -153,13 +159,16 @@ public class RegisterActivity extends BaseActivity {
                                          @Override
                                          public void onSuccess(ResponseData<String> response) {
                                              dismissLoading();
-                                             toast(response.getMsg());
-                                             if (response.isSuccess()) {
-                                                 SpUtil.putStr(SpConstant.LOGIN_MOBILE, mEtPhone.getText().toString().trim());
-                                                 EventBusUtil.post(MessageConstant.REGISTER);
-                                                 startActivity(ChooseCategoryActivity.class);
+                                             if (response!=null){
+                                                 if (response.isSuccess()) {
+                                                     toast("注册成功");
+                                                     SpUtil.putStr(SpConstant.LOGIN_MOBILE, mEtPhone.getText().toString().trim());
+                                                     EventBusUtil.post(MessageConstant.REGISTER);
+                                                     startActivity(ChooseCategoryActivity.class);
+                                                 }else{
+                                                     toast(response.getMsg());
+                                                 }
                                              }
-
                                          }
 
                                          @Override

@@ -53,6 +53,8 @@ public class CurrentUser extends LoginInfo{
             me.setTags(entity.getTags());
             me.setExpire(entity.getExpire());
             me.setRole(entity.getRole());
+            me.setRefreshToken(entity.getRefreshToken());
+            me.setRegisterTime(entity.getRegisterTime());
 
             me.setIdentityCard(entity.getIdentityCard());
             me.setIdentityCardFront(entity.getIdentityCardFront());

@@ -77,13 +77,16 @@ public class LoginActivity extends BaseActivity {
                                  @Override
                                  public void onSuccess(ResponseData<LoginInfo> response) {
                                      dismissLoading();
-                                     if (response.isSuccess()) {
-                                         SpUtil.putStr(SpConstant.LOGIN_MOBILE, mEtTel.getText().toString().trim());
-                                         CurrentUser.getInstance().login(response.getData());
-                                         startActivityFinish(MainActivity.class);
-                                         EventBusUtil.post(MessageConstant.LOGIN);
-                                     }else {
-                                         toast(response.getMsg());
+                                     if (response!=null){
+                                         if (response.isSuccess()) {
+                                             toast("登录成功");
+                                             SpUtil.putStr(SpConstant.LOGIN_MOBILE, mEtTel.getText().toString().trim());
+                                             CurrentUser.getInstance().login(response.getData());
+                                             startActivityFinish(MainActivity.class);
+                                             EventBusUtil.post(MessageConstant.LOGIN);
+                                         }else {
+                                             toast(response.getMsg());
+                                         }
                                      }
                                  }
 

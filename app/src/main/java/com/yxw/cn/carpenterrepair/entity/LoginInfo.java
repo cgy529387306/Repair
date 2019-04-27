@@ -14,6 +14,8 @@ public class LoginInfo {
     private String username;
     private String userId;
     private String nickname;
+    private String refreshToken;
+    private String registerTime;
     private List<BeGoodAtCategory> tags;
     private long expire;
     private int role;  //角色 0用户 1兼职工程师 2专职工程师
@@ -180,5 +182,21 @@ public class LoginInfo {
 
     public void setAliplayAccount(String aliplayAccount) {
         this.aliplayAccount = aliplayAccount;
+    }
+
+    public String getRefreshToken() {
+        return refreshToken == null ? "" : refreshToken;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
+    public String getRegisterTime() {
+        return registerTime == null ? "" : registerTime;
+    }
+
+    public void setRegisterTime(String registerTime) {
+        this.registerTime = registerTime;
     }
 }

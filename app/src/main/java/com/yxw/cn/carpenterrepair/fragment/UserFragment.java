@@ -98,13 +98,15 @@ public class UserFragment extends BaseFragment {
                 .execute(new JsonCallback<ResponseData<Asset>>() {
                              @Override
                              public void onSuccess(ResponseData<Asset> response) {
-                                 mTvCarryAmount.setText(response.getData().getCarryAmount() + "");
-                                 mTvDeposit.setText(response.getData().getDeposit() + "");
-                                 mTvSettlementAmount.setText(response.getData().getSettlementAmount() + "");
-                                 Map<String, String> map = new HashMap<>();
-                                 map.put("userId", response.getData().getUserId() + "");
-                                 map.put("userName", response.getData().getUsername());
-                                 map.put("portrait", response.getData().getAvatar());
+                                 if (response!=null && response.isSuccess()){
+                                     mTvCarryAmount.setText(response.getData().getCarryAmount() + "");
+                                     mTvDeposit.setText(response.getData().getDeposit() + "");
+                                     mTvSettlementAmount.setText(response.getData().getSettlementAmount() + "");
+                                     Map<String, String> map = new HashMap<>();
+                                     map.put("userId", response.getData().getUserId() + "");
+                                     map.put("userName", response.getData().getUsername());
+                                     map.put("portrait", response.getData().getAvatar());
+                                 }
 //                                 getRongCloudToken(map);
                              }
                          }
