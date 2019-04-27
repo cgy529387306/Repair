@@ -6,11 +6,13 @@ import android.widget.TextView;
 
 import com.lzy.okgo.OkGo;
 import com.orhanobut.logger.Logger;
-import com.yxw.cn.carpenterrepair.BaseApplication;
 import com.yxw.cn.carpenterrepair.BaseFragment;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.activity.WebActivity;
+import com.yxw.cn.carpenterrepair.activity.setting.SettingActivity;
+import com.yxw.cn.carpenterrepair.activity.setting.UserFeedBackActivity;
 import com.yxw.cn.carpenterrepair.activity.user.PersonInfoActivity;
+import com.yxw.cn.carpenterrepair.activity.user.WalletActivity;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.Asset;
@@ -30,10 +32,6 @@ import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
-import com.yxw.cn.carpenterrepair.activity.setting.SettingActivity;
-import com.yxw.cn.carpenterrepair.activity.user.WalletActivity;
-
-import com.yxw.cn.carpenterrepair.activity.setting.UserFeedBackActivity;
 
 /**
  * 用户中心
@@ -194,7 +192,7 @@ public class UserFragment extends BaseFragment {
      */
     private void connect(String token) {
         Logger.d("connect");
-        if (getContext().getApplicationInfo().packageName.equals(BaseApplication.getCurProcessName(getContext().getApplicationContext()))) {
+        if (getContext().getApplicationInfo().packageName.equals(AppUtil.getCurProcessName(getContext().getApplicationContext()))) {
             Logger.d("RongIM connect");
 
             RongIM.connect(token, new RongIMClient.ConnectCallback() {

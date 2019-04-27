@@ -1,5 +1,6 @@
 package com.yxw.cn.carpenterrepair.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.text.TextUtils;
@@ -20,13 +21,11 @@ import com.yxw.cn.carpenterrepair.entity.RegionTreeList;
 import com.yxw.cn.carpenterrepair.entity.RegionTreeSub;
 import com.yxw.cn.carpenterrepair.entity.RegionTreeSubItem;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
+import com.yxw.cn.carpenterrepair.listerner.OnChooseAddrListener;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
-import com.yxw.cn.carpenterrepair.util.AppUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.yxw.cn.carpenterrepair.listerner.OnChooseAddrListener;
 
 /**
  * Created by CY on 2018/11/25
@@ -121,7 +120,7 @@ public class RegionPickerUtil {
                         final TextView tType = v.findViewById(R.id.tv_type);
                         View bottomView = v.findViewById(R.id.view_bottom);
                         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) bottomView.getLayoutParams();
-                        params.height = AppUtil.getNavigationBarHeight(v.getContext());
+                        params.height = AppUtil.getNavigationBarHeight((Activity) context);
                         bottomView.setLayoutParams(params);
                         tType.setText("城市选择");
                         tvSubmit.setOnClickListener(new View.OnClickListener() {
@@ -266,7 +265,7 @@ public class RegionPickerUtil {
                         final TextView tType = v.findViewById(R.id.tv_type);
                         View bottomView = v.findViewById(R.id.view_bottom);
                         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) bottomView.getLayoutParams();
-                        params.height = AppUtil.getNavigationBarHeight(v.getContext());
+                        params.height = AppUtil.getNavigationBarHeight((Activity) context);
                         bottomView.setLayoutParams(params);
                         tType.setText("城市选择");
                         tvSubmit.setOnClickListener(new View.OnClickListener() {
@@ -313,7 +312,7 @@ public class RegionPickerUtil {
                         final TextView tType = v.findViewById(R.id.tv_type);
                         View bottomView = v.findViewById(R.id.view_bottom);
                         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) bottomView.getLayoutParams();
-                        params.height = AppUtil.getNavigationBarHeight(v.getContext());
+                        params.height = AppUtil.getNavigationBarHeight((Activity) context);
                         bottomView.setLayoutParams(params);
                         tType.setText("城市选择");
                         tvSubmit.setOnClickListener(new View.OnClickListener() {
@@ -360,7 +359,7 @@ public class RegionPickerUtil {
                         final TextView tType = v.findViewById(R.id.tv_type);
                         View bottomView = v.findViewById(R.id.view_bottom);
                         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) bottomView.getLayoutParams();
-                        params.height = AppUtil.getNavigationBarHeight(v.getContext());
+                        params.height = AppUtil.getNavigationBarHeight((Activity) context);
                         bottomView.setLayoutParams(params);
                         tType.setText("城市选择");
                         tvSubmit.setOnClickListener(new View.OnClickListener() {

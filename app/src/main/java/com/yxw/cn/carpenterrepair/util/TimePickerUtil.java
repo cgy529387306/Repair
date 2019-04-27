@@ -1,5 +1,6 @@
 package com.yxw.cn.carpenterrepair.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.View;
@@ -14,14 +15,13 @@ import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.yxw.cn.carpenterrepair.R;
+import com.yxw.cn.carpenterrepair.listerner.OnChooseDateListener;
+import com.yxw.cn.carpenterrepair.listerner.OnChooseTimeListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
-import com.yxw.cn.carpenterrepair.listerner.OnChooseDateListener;
-import com.yxw.cn.carpenterrepair.listerner.OnChooseTimeListener;
 
 /**
  * Created by CY on 2018/11/29
@@ -64,7 +64,7 @@ public class TimePickerUtil {
                         final TextView tvCancel = v.findViewById(R.id.tv_cancel);
                         View bottomView = v.findViewById(R.id.view_bottom);
                         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) bottomView.getLayoutParams();
-                        params.height = AppUtil.getNavigationBarHeight(v.getContext());
+                        params.height = AppUtil.getNavigationBarHeight((Activity) context);
                         bottomView.setLayoutParams(params);
                         tvSubmit.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -117,7 +117,7 @@ public class TimePickerUtil {
                         final TextView tvCancel = v.findViewById(R.id.tv_cancel);
                         View bottomView = v.findViewById(R.id.view_bottom);
                         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) bottomView.getLayoutParams();
-                        params.height = AppUtil.getNavigationBarHeight(v.getContext());
+                        params.height = AppUtil.getNavigationBarHeight((Activity) context);
                         bottomView.setLayoutParams(params);
                         tvSubmit.setOnClickListener(new View.OnClickListener() {
                             @Override

@@ -1,6 +1,8 @@
 package com.yxw.cn.carpenterrepair.util;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -23,6 +25,7 @@ import com.yxw.cn.carpenterrepair.BaseApplication;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.activity.user.ChooseCategoryActivity;
 import com.yxw.cn.carpenterrepair.activity.user.IdCardInfoActivity;
+import com.yxw.cn.carpenterrepair.activity.user.ServiceTimeActivity;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.Abnormal;
 import com.yxw.cn.carpenterrepair.entity.Category;
@@ -42,8 +45,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import com.yxw.cn.carpenterrepair.activity.user.ServiceTimeActivity;
 
 public class AppUtil {
 
@@ -225,7 +226,7 @@ public class AppUtil {
     /**
      * Desc: 获取虚拟按键高度 放到工具类里面直接调用即可
      */
-    public static int getNavigationBarHeight(Context context) {
+    public static int getNavigationBarHeight(Activity context) {
         int result = 0;
         if (isNavigationBarShow(context)&&hasNavBar(context)) {
             Resources res = context.getResources();
@@ -237,9 +238,9 @@ public class AppUtil {
         return result;
     }
 
-    public static boolean isNavigationBarShow(Context context){
+    public static boolean isNavigationBarShow(Activity context){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            Display display = BaseApplication.getInstance().getLastActivity().getWindowManager().getDefaultDisplay();
+            Display display = context.getWindowManager().getDefaultDisplay();
             Point size = new Point();
             Point realSize = new Point();
             display.getSize(size);
@@ -295,6 +296,26 @@ public class AppUtil {
             }
         }
         return sNavBarOverride;
+    }
+
+
+    /**
+     * 获得当前进程的名字
+     *
+     * @param context
+     * @return 进程号
+     */
+    public static String getCurProcessName(Context context) {
+        int pid = android.os.Process.myPid();
+        android.app.ActivityManager activityManager = (android.app.ActivityManager) context
+                .getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningAppProcessInfo appProcess : activityManager
+                .getRunningAppProcesses()) {
+            if (appProcess.pid == pid) {
+                return appProcess.processName;
+            }
+        }
+        return null;
     }
 
 }

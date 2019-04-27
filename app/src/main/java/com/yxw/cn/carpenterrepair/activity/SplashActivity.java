@@ -10,11 +10,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.view.WindowManager;
 
 import com.orhanobut.logger.Logger;
 import com.yxw.cn.carpenterrepair.R;
-import com.yxw.cn.carpenterrepair.activity.user.LoginActivity;
 import com.yxw.cn.carpenterrepair.activity.main.MainActivity;
+import com.yxw.cn.carpenterrepair.activity.user.LoginActivity;
 import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -32,6 +33,8 @@ public class SplashActivity extends Activity{
     private Handler handler = new Handler();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_splash);
     }

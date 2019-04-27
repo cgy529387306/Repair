@@ -13,6 +13,8 @@ import com.gyf.immersionbar.ImmersionBar;
 import com.yxw.cn.carpenterrepair.activity.user.LoginActivity;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.entity.MessageEvent;
+import com.yxw.cn.carpenterrepair.util.ActivityManager;
+import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -21,7 +23,6 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import pub.devrel.easypermissions.EasyPermissions;
-import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 
 public abstract class BaseActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
 
@@ -31,7 +32,7 @@ public abstract class BaseActivity extends AppCompatActivity implements EasyPerm
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutResId());
-        BaseApplication.getInstance().addActivity(this);
+        ActivityManager.getInstance().putActivity(getClass().getName(), this);
         EventBusUtil.register(this);
         ButterKnife.bind(this);
         setStatusBar();
@@ -105,7 +106,7 @@ public abstract class BaseActivity extends AppCompatActivity implements EasyPerm
         super.onDestroy();
         dismissLoading();
         EventBusUtil.unregister(this);
-        BaseApplication.getInstance().removeActivity(this);
+        ActivityManager.getInstance().removeActivity(getClass().getName());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

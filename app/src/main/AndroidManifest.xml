@@ -76,7 +76,8 @@
 
         <service android:name="com.baidu.location.f" android:enabled="true" android:process=":remote"> </service>
 
-        <activity android:name=".activity.SplashActivity">
+        <activity android:name=".activity.SplashActivity"
+            android:theme="@style/StartTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -119,5 +120,9 @@
         <activity android:name=".activity.user.ServiceTimeActivity"/>
         <activity android:name=".activity.setting.ComplaintActivity"/>
         <activity android:name=".activity.LookImageActivity"/>
+
+        <service
+            android:name=".InitService"
+            android:exported="false" />
     </application>
 </manifest>
