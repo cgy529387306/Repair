@@ -73,7 +73,6 @@ public class ChooseCategoryActivity extends BaseActivity {
                         @Override
                         public void onError(Response<ResponseData<List<Category>>> response) {
                             super.onError(response);
-                            toast("网络异常");
                         }
                     });
         }

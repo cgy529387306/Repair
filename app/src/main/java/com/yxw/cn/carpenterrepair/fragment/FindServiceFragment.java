@@ -9,6 +9,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.yxw.cn.carpenterrepair.BaseFragment;
 import com.yxw.cn.carpenterrepair.R;
+import com.yxw.cn.carpenterrepair.activity.order.OrderActivity;
 import com.yxw.cn.carpenterrepair.adapter.CategoryTitleAdapter;
 import com.yxw.cn.carpenterrepair.adapter.DetailCategoryAdapter;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
@@ -26,8 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import com.yxw.cn.carpenterrepair.activity.order.OrderActivity;
-import com.yxw.cn.carpenterrepair.util.ToastUtil;
 
 /**
  * 找服务
@@ -109,7 +108,6 @@ public class FindServiceFragment extends BaseFragment {
                         @Override
                         public void onError(Response<ResponseData<List<Category>>> response) {
                             super.onError(response);
-                            ToastUtil.show("网络异常");
                         }
                     });
         }

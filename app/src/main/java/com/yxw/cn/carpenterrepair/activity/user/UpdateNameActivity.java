@@ -16,6 +16,7 @@ import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 import com.yxw.cn.carpenterrepair.entity.LoginInfo;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
+import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 import com.yxw.cn.carpenterrepair.view.TitleBar;
 
 import java.util.HashMap;
@@ -23,7 +24,6 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 
 /**
  * 修改姓名
@@ -86,7 +86,6 @@ public class UpdateNameActivity extends BaseActivity {
                                      @Override
                                      public void onError(Response<ResponseData<String>> response) {
                                          super.onError(response);
-                                         toastNetError();
                                          dismissLoading();
                                      }
                                  }

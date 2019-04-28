@@ -17,6 +17,7 @@ import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 import com.yxw.cn.carpenterrepair.entity.LoginInfo;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
+import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 import com.yxw.cn.carpenterrepair.util.SpUtil;
 import com.yxw.cn.carpenterrepair.view.TitleBar;
 
@@ -25,7 +26,6 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 
 /**
  * 修改电话
@@ -70,26 +70,29 @@ public class UpdateMobileActivity extends BaseActivity {
                 showLoading();
                 Map<String, String> map = new HashMap<>();
                 map.put("mobile", mEtName.getText().toString().trim());
-                OkGo.<ResponseData<String>>post(UrlConstant.CHANGE_MOBILE)
+                OkGo.<ResponseData<String>>post(UrlConstant.CHANGE_USERINFO)
                         .upJson(gson.toJson(map))
                         .execute(new JsonCallback<ResponseData<String>>() {
                                      @Override
                                      public void onSuccess(ResponseData<String> response) {
                                          dismissLoading();
-                                         toast(response.getMsg());
-                                         if (response.isSuccess()) {
-                                             loginInfo.setMobile(mEtName.getText().toString().trim());
-                                             SpUtil.putStr(SpConstant.LOGIN_MOBILE, mEtName.getText().toString().trim());
-                                             CurrentUser.getInstance().login(loginInfo);
-                                             EventBusUtil.post(MessageConstant.NOTIFY_INFO);
-                                             finish();
+                                         if (response!=null){
+                                             if (response.isSuccess()) {
+                                                 toast("修改成功");
+                                                 loginInfo.setMobile(mEtName.getText().toString().trim());
+                                                 SpUtil.putStr(SpConstant.LOGIN_MOBILE, mEtName.getText().toString().trim());
+                                                 CurrentUser.getInstance().login(loginInfo);
+                                                 EventBusUtil.post(MessageConstant.NOTIFY_INFO);
+                                                 finish();
+                                             }else{
+                                                 toast(response.getMsg());
+                                             }
                                          }
                                      }
 
                                      @Override
                                      public void onError(Response<ResponseData<String>> response) {
                                          super.onError(response);
-                                         toastNetError();
                                          dismissLoading();
                                      }
                                  }

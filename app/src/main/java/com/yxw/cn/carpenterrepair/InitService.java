@@ -79,16 +79,17 @@ public class InitService extends IntentService {
         SDKInitializer.setCoordType(CoordType.BD09LL);
 
         OkGo.getInstance().init(BaseApplication.getInstance());
+        //Builder
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.cookieJar(new CookieJarImpl(new SPCookieStore(BaseApplication.getInstance())));
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor("OkGo");
-        //log打印级别，决定了log显示的详细程度
         loggingInterceptor.setPrintLevel(HttpLoggingInterceptor.Level.BODY);
-        //log颜色级别，决定了log在控制台显示的颜色
         loggingInterceptor.setColorLevel(Level.INFO);
         builder.addInterceptor(loggingInterceptor);
+
         OkGo.getInstance().setOkHttpClient(builder.build());
         Logger.addLogAdapter(new AndroidLogAdapter());
+
         CrashHandler.getInstance().init(BaseApplication.getInstance());
         if (getApplicationInfo().packageName.equals(AppUtil.getCurProcessName(BaseApplication.getInstance())) ||
                 "io.rong.push".equals(AppUtil.getCurProcessName(BaseApplication.getInstance()))) {

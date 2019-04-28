@@ -86,7 +86,6 @@ public class UpdateAlipayActivity extends BaseActivity {
                                      @Override
                                      public void onError(Response<ResponseData<String>> response) {
                                          super.onError(response);
-                                         toastNetError();
                                          dismissLoading();
                                      }
                                  }

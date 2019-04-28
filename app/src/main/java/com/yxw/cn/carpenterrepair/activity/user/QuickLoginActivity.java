@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.lzy.okgo.OkGo;
+import com.lzy.okgo.model.HttpHeaders;
 import com.lzy.okgo.model.Response;
 import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
@@ -116,6 +117,9 @@ public class QuickLoginActivity extends BaseActivity {
                                                      toast("登录成功");
                                                      SpUtil.putStr(SpConstant.LOGIN_MOBILE, mEtTel.getText().toString().trim());
                                                      CurrentUser.getInstance().login(response.getData());
+                                                     HttpHeaders headers = new HttpHeaders();
+                                                     headers.put("Authorization", "Bearer "+response.getData().getToken());
+                                                     OkGo.getInstance().addCommonHeaders(headers);
                                                      startActivityFinish(MainActivity.class);
                                                      EventBusUtil.post(MessageConstant.LOGIN);
                                                  }else {

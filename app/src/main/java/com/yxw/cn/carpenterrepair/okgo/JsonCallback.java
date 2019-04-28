@@ -1,10 +1,16 @@
 package com.yxw.cn.carpenterrepair.okgo;
 
+import android.content.Intent;
+
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.lzy.okgo.callback.AbsCallback;
 import com.lzy.okgo.request.base.Request;
+import com.yxw.cn.carpenterrepair.BaseApplication;
+import com.yxw.cn.carpenterrepair.activity.user.LoginActivity;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
+import com.yxw.cn.carpenterrepair.util.ActivityManager;
+import com.yxw.cn.carpenterrepair.util.ToastUtil;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -31,14 +37,6 @@ public abstract class JsonCallback<T> extends AbsCallback<T> {
     @Override
     public void onStart(Request<T, ? extends Request> request) {
         super.onStart(request);
-        // 主要用于在所有请求之前添加公共的请求头或请求参数
-        // 例如登录授权的 token
-        // 使用的设备信息
-        // 可以随意添加,也可以什么都不传
-        // 还可以在这里对所有的参数进行加密，均在这里实现
-        //request.headers("header1", "HeaderValue1")//
-        //.params("params1", "ParamsValue1")//
-        //.params("token", "3215sdf13ad1f65asd4f3ads1f");
     }
 
     /**
@@ -74,22 +72,21 @@ public abstract class JsonCallback<T> extends AbsCallback<T> {
     @Override
     public void onError(com.lzy.okgo.model.Response<T> response) {
         super.onError(response);
+        ToastUtil.show("网络异常");
     }
 
     @Override
     public void onSuccess(com.lzy.okgo.model.Response<T> response) {
         if (response.body() instanceof ResponseData) {
             ResponseData responseData = (ResponseData) response.body();
-            if (responseData.getStatus()==200) {
-//                ToastUtil.show(responseData.getMsg());
-//                if(BaseApplication.getInstance().getLastActivity() !=null){
-//                    Bundle bundle = new Bundle();
-//                    bundle.putBoolean("back",false);
-//                    Intent intent = new Intent(BaseApplication.getInstance().getLastActivity(),LoginActivity.class);
-//                    intent.putExtras(bundle);
-//                    BaseApplication.getInstance().getLastActivity().startActivity(intent);
-//                    EventBusUtil.post(MessageConstant.LOGOUT);
-//                }
+            //token 问题
+            if (responseData.getStatus()==401) {
+                ToastUtil.show("Token 失效，请重新登录");
+                Intent intent = new Intent(BaseApplication.getInstance(), LoginActivity.class);
+                // Calling startActivity() from outside of an Activity  context requires the FLAG_ACTIVITY_NEW_TASK flag
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                BaseApplication.getInstance().startActivity(intent);
+                ActivityManager.getInstance().closeAllActivityExceptOne(LoginActivity.class.getName());
             } else {
                 onSuccess(response.body());
             }

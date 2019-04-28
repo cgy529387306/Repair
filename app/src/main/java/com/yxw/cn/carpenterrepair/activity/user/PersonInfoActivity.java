@@ -27,8 +27,12 @@ import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 import com.yxw.cn.carpenterrepair.entity.LoginInfo;
 import com.yxw.cn.carpenterrepair.entity.MessageEvent;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
+import com.yxw.cn.carpenterrepair.listerner.OnChooseAddrListener;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.util.AppUtil;
+import com.yxw.cn.carpenterrepair.util.Base64Util;
+import com.yxw.cn.carpenterrepair.util.EventBusUtil;
+import com.yxw.cn.carpenterrepair.util.RegionPickerUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -40,10 +44,6 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTouch;
 import de.hdodenhof.circleimageview.CircleImageView;
-import com.yxw.cn.carpenterrepair.listerner.OnChooseAddrListener;
-import com.yxw.cn.carpenterrepair.util.Base64Util;
-import com.yxw.cn.carpenterrepair.util.EventBusUtil;
-import com.yxw.cn.carpenterrepair.util.RegionPickerUtil;
 
 /**
  * 个人资料
@@ -263,7 +263,6 @@ public class PersonInfoActivity extends BaseActivity {
                                              @Override
                                              public void onError(Response<ResponseData<String>> response) {
                                                  super.onError(response);
-                                                 toastNetError();
                                                  dismissLoading();
                                              }
                                          }

@@ -23,6 +23,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
+import com.yxw.cn.carpenterrepair.activity.LocationActivity;
 import com.yxw.cn.carpenterrepair.adapter.OrderUploadAdapter;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
@@ -35,7 +36,13 @@ import com.yxw.cn.carpenterrepair.entity.Order;
 import com.yxw.cn.carpenterrepair.entity.OrderUpload;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.entity.WeChatPay;
+import com.yxw.cn.carpenterrepair.listerner.OnChooseTimeListener;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
+import com.yxw.cn.carpenterrepair.util.Base64Util;
+import com.yxw.cn.carpenterrepair.util.DateUtil;
+import com.yxw.cn.carpenterrepair.util.DoubleUtil;
+import com.yxw.cn.carpenterrepair.util.EventBusUtil;
+import com.yxw.cn.carpenterrepair.util.TimePickerUtil;
 import com.yxw.cn.carpenterrepair.view.TitleBar;
 
 import java.net.URLDecoder;
@@ -46,13 +53,6 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import com.yxw.cn.carpenterrepair.listerner.OnChooseTimeListener;
-import com.yxw.cn.carpenterrepair.activity.LocationActivity;
-import com.yxw.cn.carpenterrepair.util.Base64Util;
-import com.yxw.cn.carpenterrepair.util.DateUtil;
-import com.yxw.cn.carpenterrepair.util.DoubleUtil;
-import com.yxw.cn.carpenterrepair.util.EventBusUtil;
-import com.yxw.cn.carpenterrepair.util.TimePickerUtil;
 
 /**
  * Created by CY on 2018/11/25
@@ -316,8 +316,8 @@ public class OrderActivity extends BaseActivity implements OnChooseTimeListener,
 
                     @Override
                     public void onError(Response<ResponseData<String>> response) {
+                        super.onError(response);
                         dismissLoading();
-                        toastNetError();
                     }
                 });
     }
@@ -379,7 +379,6 @@ public class OrderActivity extends BaseActivity implements OnChooseTimeListener,
                     @Override
                     public void onError(Response<ResponseData<AliPayCheckInfo>> response) {
                         super.onError(response);
-                        toastNetError();
                     }
                 });
     }
@@ -399,7 +398,6 @@ public class OrderActivity extends BaseActivity implements OnChooseTimeListener,
                     public void onError(Response<ResponseData<WeChatPay>> response) {
                         super.onError(response);
                         dismissLoading();
-                        toastNetError();
                     }
                 });
     }

@@ -6,7 +6,6 @@ import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
@@ -83,7 +82,7 @@ public class UpdatePasswordActivity extends BaseActivity {
                 } else {
                     showLoading();
                     Map<String, String> map = new HashMap<>();
-                    map.put("password", oldPassword.getText().toString().trim());
+                    map.put("oldPassword", oldPassword.getText().toString().trim());
                     map.put("newPassword", newPassword.getText().toString().trim());
                     OkGo.<ResponseData<String>>post(UrlConstant.MODIFY_PASSWORD)
                             .upJson(gson.toJson(map))
@@ -91,9 +90,13 @@ public class UpdatePasswordActivity extends BaseActivity {
                                          @Override
                                          public void onSuccess(ResponseData<String> response) {
                                              dismissLoading();
-                                             toast(response.getMsg());
-                                             if (response.isSuccess()) {
-                                                 finish();
+                                             if (response!=null){
+                                                 if (response.isSuccess()){
+                                                     toast("修改成功");
+                                                     finish();
+                                                 }else{
+                                                     toast(response.getMsg());
+                                                 }
                                              }
                                          }
 
@@ -101,7 +104,6 @@ public class UpdatePasswordActivity extends BaseActivity {
                                          public void onError(Response<ResponseData<String>> response) {
                                              super.onError(response);
                                              dismissLoading();
-                                             toast("网络异常");
                                          }
                                      }
                             );
