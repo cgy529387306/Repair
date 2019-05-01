@@ -64,7 +64,7 @@ public class ForgetPasswordActivity extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (AppUtil.isphone(s.toString())) {
+                if (AppUtil.isPhone(s.toString())) {
                     mCountDownTextView.setBackgroundResource(R.drawable.corner_red);
                 } else {
                     mCountDownTextView.setBackgroundResource(R.drawable.corner_gray);
@@ -85,7 +85,7 @@ public class ForgetPasswordActivity extends BaseActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (AppUtil.isphone(mEtPhone.getText().toString())) {
+                        if (AppUtil.isPhone(mEtPhone.getText().toString())) {
                             showLoading();
                             Map<String, String> map = new HashMap<>();
                             map.put("mobile", mEtPhone.getText().toString());
@@ -139,7 +139,7 @@ public class ForgetPasswordActivity extends BaseActivity {
                     toast("验证码不能为空！");
                 } else if (TextUtils.isEmpty(mEtPassword.getText().toString())) {
                     toast("密码不能为空！");
-                } else if (!AppUtil.isphone(mEtPhone.getText().toString())) {
+                } else if (!AppUtil.isPhone(mEtPhone.getText().toString())) {
                     toast("请输入正确的手机号！");
                 } else if (mEtPassword.getText().toString().trim().length() < 6 || mEtPassword.getText().toString().trim().length() > 16) {
                     toast("新密码为6到16个字符或数字！");

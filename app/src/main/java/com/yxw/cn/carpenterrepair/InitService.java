@@ -11,6 +11,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cookie.CookieJarImpl;
 import com.lzy.okgo.cookie.store.SPCookieStore;
 import com.lzy.okgo.interceptor.HttpLoggingInterceptor;
+import com.lzy.okgo.model.HttpHeaders;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -23,6 +24,7 @@ import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.yxw.cn.carpenterrepair.activity.LocationService;
 import com.yxw.cn.carpenterrepair.crash.CrashHandler;
+import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 import com.yxw.cn.carpenterrepair.util.AppUtil;
 
 import java.util.logging.Level;
@@ -89,6 +91,12 @@ public class InitService extends IntentService {
 
         OkGo.getInstance().setOkHttpClient(builder.build());
         Logger.addLogAdapter(new AndroidLogAdapter());
+
+        if (CurrentUser.getInstance().isLogin()){
+            HttpHeaders headers = new HttpHeaders();
+            headers.put("Authorization", "Bearer "+CurrentUser.getInstance().getToken());
+            OkGo.getInstance().addCommonHeaders(headers);
+        }
 
         CrashHandler.getInstance().init(BaseApplication.getInstance());
         if (getApplicationInfo().packageName.equals(AppUtil.getCurProcessName(BaseApplication.getInstance())) ||

@@ -158,7 +158,7 @@ public class PersonInfoActivity extends BaseActivity {
     }
 
     @OnClick({R.id.iv_avatar, R.id.ll_name, R.id.ll_mobile, R.id.ll_good,
-            R.id.ll_resident, R.id.ll_identificate, R.id.ll_idCardNo,R.id.img_back})
+            R.id.ll_resident, R.id.ll_identificate, R.id.ll_idCardNo,R.id.img_back,R.id.ll_service_provider})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -183,10 +183,9 @@ public class PersonInfoActivity extends BaseActivity {
                 break;
             case R.id.ll_mobile:
                 startActivity(UpdateMobileActivity.class);
-//                startActivity(IdCardInfoActivity.class);
                 break;
             case R.id.ll_name:
-//                startActivity(UpdateNameActivity.class);
+                startActivity(UpdateNameActivity.class);
                 break;
             case R.id.ll_good:
                 Intent intent = new Intent(this, ChooseCategoryActivity.class);
@@ -202,6 +201,9 @@ public class PersonInfoActivity extends BaseActivity {
                         editTrait(AppUtil.regionTreeList.get(options1).getSub().get(options2).getAgency_id() + "", RegionPickerUtil.getCity(options1, options2));
                     }
                 });
+                break;
+            case R.id.ll_service_provider:
+                startActivity(UpdateNameActivity.class);
                 break;
         }
     }
@@ -235,11 +237,6 @@ public class PersonInfoActivity extends BaseActivity {
                 case 11:
                     // 图片、视频、音频选择结果回调
                     List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
-                    // 例如 LocalMedia 里面返回三种path
-                    // 1.media.getPath(); 为原图path
-                    // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true  注意：音视频除外
-                    // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true  注意：音视频除外
-                    // 如果裁剪并压缩了，以取压缩路径为准，因为是先裁剪后压缩的
                     if (selectList.size() > 0) {
                         showLoading();
                         HashMap<String, String> map = new HashMap<>();

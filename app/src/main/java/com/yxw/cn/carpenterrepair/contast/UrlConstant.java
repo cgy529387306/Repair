@@ -34,12 +34,17 @@ public class UrlConstant {
     public final static String CHANGE_AVATAR = BASE_WORKER + "/ms70/api/user/info/updateAvatar";
     public final static String CHANGE_USERINFO = BASE_WORKER + "/ms70/api/user/info/update";
     public final static String GET_WORKER_INFO = BASE_WORKER + "/ms70/api/user/info/view/"+ CurrentUser.getInstance().getUserId();
+    public final static String USER_FEEDBACK = BASE_WORKER + "/ms70/api/user/info/userFeedback";//用户反馈
+    public final static String UPLOAD_IDCARD = BASE_WORKER + "/ms70/api/user/info/uploadIdCard";//身份证上传
 
 
     public final static String GET_ALL_CATEGORY = BASE_URL + "/api/fix/category/all";
     public final static String GET_REGION_TREE = BASE_URL + "/api/region/tree";
     public final static String GET_SERVICE_FEE = BASE_URL + "/api/region/serviceFee";
     public final static String ORDER = BASE_URL + "/api/fix/order/submit";
+
+
+
 
     public final static String CHANGE_NAME = BASE_URL + "/api/fix/shopUser/editUeserNickname";
     public final static String CHANGE_MOBILE = BASE_URL + "/api/fix/shopUser/editUeserMobile";
@@ -48,14 +53,12 @@ public class UrlConstant {
     public final static String WORKER_WAIT_ORDER_LIST = BASE_URL + "/api/fix/order/wait/list";
     public final static String USER_EVALUATE = BASE_URL + "/api/fix/userOrder/evaluate";
     public final static String USER_COMPLAIN = BASE_URL + "/api/fix/userOrder/complain";
-    public final static String USER_FEEDBACK = BASE_URL + "/api/fix/shopUser/insertFixFeedBack";//用户反馈
     public final static String USER_ORDER_LIST = BASE_URL + "/api/fix/order/client/list";//用户下单列表
     public final static String ORDER_VIEW = BASE_URL + "/api/fix/order/view";//订单详情
     public final static String GET_ASSETS = BASE_URL + "/api/fix/shopUser/getAssets";//获取用户/工程师资产
     public final static String RECEIVE_ORDER = BASE_URL + "/api/fix/order/receive";//维修人员-接单
     public final static String CONFIRM_FEE = BASE_URL + "/api/fix/workerOrder/confirmFee";//维修人员 - 现场评估维修费用
     public final static String QUERT_LIST_BY_MARK = BASE_URL + "/api/dicts/queryListByMarkWithAll";//通用 - 根据标识mark,获取数据字典
-    public final static String UPLOAD_IDCARD = BASE_URL + "/api/fix/shopUser/uploadIdCard";//身份证上传
     public final static String EDIT_GOOD_CATEGORY = BASE_URL + "/api/fix/shopUser/editGoodCategory";//维修人员 - 修改擅长项目
     public final static String EDIT_TRAIT = BASE_URL + "/api/fix/shopUser/editTrait";//用户 - 个人资料-修改常驻地点和服务时间
     public final static String CANCEL_ORDER_ARRIVALED = BASE_URL + "/api/fix/userOrder/cancelOrderArrivaled";//1013 - 用户 - 取消订单,已上门

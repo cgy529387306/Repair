@@ -11,8 +11,9 @@ import com.lzy.okgo.OkGo;
 import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
-import com.yxw.cn.carpenterrepair.entity.ResponseData2;
+import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
+import com.yxw.cn.carpenterrepair.util.AppUtil;
 import com.yxw.cn.carpenterrepair.view.TitleBar;
 
 import java.util.HashMap;
@@ -31,10 +32,10 @@ public class UserFeedBackActivity extends BaseActivity {
     EditText etRemark;
     @BindView(R.id.tv_count)
     TextView tvCount;
-//    @BindView(R.id.et_email)
-//    EditText etEmail;
-//    @BindView(R.id.et_tel)
-//    EditText etTel;
+    @BindView(R.id.et_email)
+    EditText etEmail;
+    @BindView(R.id.et_tel)
+    EditText etTel;
 
     @Override
     protected int getLayoutResId() {
@@ -57,7 +58,7 @@ public class UserFeedBackActivity extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                tvCount.setText(editable.toString().length() + "/3000");
+                tvCount.setText(etRemark.toString().length()+"/3000");
             }
         });
     }
@@ -66,19 +67,39 @@ public class UserFeedBackActivity extends BaseActivity {
     public void click(View view) {
         switch (view.getId()) {
             case R.id.confirm:
-                if (etRemark.getText().toString().isEmpty()) {
-                    toast("填写内容不能为空!");
-                } else {
+                String remark = etRemark.getText().toString();
+                String tel = etTel.getText().toString();
+                String email = etEmail.getText().toString();
+                if (remark.isEmpty()) {
+                    toast("请输入反馈内容");
+                }else if (tel.isEmpty()){
+                    toast("请输入手机号码");
+                }else if (email.isEmpty()){
+                    toast("请输入邮箱");
+                }else if (!AppUtil.isPhone(tel)) {
+                    toast("请输入正确的手机号");
+                } else if (!AppUtil.isEmail(email)) {
+                    toast("请输入正确的邮箱地址");
+                }else{
                         Gson gson = new Gson();
-                        HashMap<String, String> map = new HashMap<>();
-                        map.put("content", etRemark.getText().toString().trim());
-                        OkGo.<ResponseData2>post(UrlConstant.USER_FEEDBACK)
+                        HashMap<String, Object> map = new HashMap<>();
+                        map.put("content", remark);
+                        map.put("email", email);
+                        map.put("mobile", tel);
+                        map.put("feedType", 0);
+                        OkGo.<ResponseData<String>>post(UrlConstant.USER_FEEDBACK)
                                 .upJson(gson.toJson(map))
-                                .execute(new JsonCallback<ResponseData2>() {
+                                .execute(new JsonCallback<ResponseData<String>>() {
                                     @Override
-                                    public void onSuccess(ResponseData2 response) {
-                                        toast(response.getMsg());
-                                        UserFeedBackActivity.this.finish();
+                                    public void onSuccess(ResponseData<String> response) {
+                                        if (response!=null){
+                                            if (response.isSuccess()){
+                                                toast("反馈成功");
+                                                finish();
+                                            }else{
+                                                toast(response.getMsg());
+                                            }
+                                        }
                                     }
                                 });
                 }

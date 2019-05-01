@@ -69,7 +69,7 @@ public class RegisterActivity extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (AppUtil.isphone(s.toString())) {
+                if (AppUtil.isPhone(s.toString())) {
                     mCountDownTextView.setBackgroundResource(R.drawable.corner_red);
                 } else {
                     mCountDownTextView.setBackgroundResource(R.drawable.corner_gray);
@@ -90,7 +90,7 @@ public class RegisterActivity extends BaseActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (AppUtil.isphone(mEtPhone.getText().toString())) {
+                        if (AppUtil.isPhone(mEtPhone.getText().toString())) {
                             showLoading();
                             Map<String, String> map = new HashMap<>();
                             map.put("mobile", mEtPhone.getText().toString());

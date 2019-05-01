@@ -65,7 +65,7 @@ public class QuickLoginActivity extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (AppUtil.isphone(s.toString())) {
+                if (AppUtil.isPhone(s.toString())) {
                     mTvGetCode.setBackgroundResource(R.drawable.corner_red);
                 } else {
                     mTvGetCode.setBackgroundResource(R.drawable.corner_gray);
@@ -79,7 +79,7 @@ public class QuickLoginActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_get_code:
-                if (AppUtil.isphone(mEtTel.getText().toString())) {
+                if (AppUtil.isPhone(mEtTel.getText().toString())) {
                     Map<String, String> map = new HashMap<>();
                     map.put("mobile", mEtTel.getText().toString());
                     OkGo.<ResponseData<String>>post(UrlConstant.GET_CODE)
