@@ -1,17 +1,23 @@
-package com.yxw.cn.carpenterrepair;
+package com.yxw.cn.carpenterrepair.service;
 
+import android.annotation.SuppressLint;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.support.multidex.MultiDex;
+import android.widget.Toast;
 
 import com.baidu.mapapi.CoordType;
 import com.baidu.mapapi.SDKInitializer;
+import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cookie.CookieJarImpl;
 import com.lzy.okgo.cookie.store.SPCookieStore;
 import com.lzy.okgo.interceptor.HttpLoggingInterceptor;
 import com.lzy.okgo.model.HttpHeaders;
+import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -22,11 +28,25 @@ import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
+import com.yxw.cn.carpenterrepair.BaseApplication;
+import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.activity.LocationService;
+import com.yxw.cn.carpenterrepair.activity.user.ChooseCategoryActivity;
+import com.yxw.cn.carpenterrepair.contast.MessageConstant;
+import com.yxw.cn.carpenterrepair.contast.SpConstant;
+import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.crash.CrashHandler;
 import com.yxw.cn.carpenterrepair.entity.CurrentUser;
+import com.yxw.cn.carpenterrepair.entity.ResponseData;
+import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.util.AppUtil;
+import com.yxw.cn.carpenterrepair.util.EventBusUtil;
+import com.yxw.cn.carpenterrepair.util.SpUtil;
+import com.yxw.cn.carpenterrepair.util.ToastUtil;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TimerTask;
 import java.util.logging.Level;
 
 import okhttp3.OkHttpClient;
@@ -35,7 +55,13 @@ public class InitService extends IntentService {
 
     private static final String ACTION_INIT = "com.yxw.cn.carpenterrepair.action.Init";
 
+    private MyTimeTask mTimeTask;
+
     public LocationService mLocationService;
+
+    public Gson mGson = new Gson();
+
+    public static final int REFRESH_TIME = 1*60*60*1000;
     /**
      * Instantiates a new Init service.
      */
@@ -91,19 +117,64 @@ public class InitService extends IntentService {
 
         OkGo.getInstance().setOkHttpClient(builder.build());
         Logger.addLogAdapter(new AndroidLogAdapter());
-
-        if (CurrentUser.getInstance().isLogin()){
-            HttpHeaders headers = new HttpHeaders();
-            headers.put("Authorization", "Bearer "+CurrentUser.getInstance().getToken());
-            OkGo.getInstance().addCommonHeaders(headers);
-        }
-
         CrashHandler.getInstance().init(BaseApplication.getInstance());
         if (getApplicationInfo().packageName.equals(AppUtil.getCurProcessName(BaseApplication.getInstance())) ||
                 "io.rong.push".equals(AppUtil.getCurProcessName(BaseApplication.getInstance()))) {
 
         }
+        setTimerTask();
     }
+
+    public void refreshToken(){
+        if (CurrentUser.getInstance().isLogin() && !CurrentUser.getInstance().getRefreshToken().isEmpty()){
+            Map<String, Object> map = new HashMap<>();
+            map.put("refreshToken", CurrentUser.getInstance().getRefreshToken());
+            OkGo.<ResponseData<String>>post(UrlConstant.REFRESH_TOKEN)
+                    .upJson(mGson.toJson(map))
+                    .execute(new JsonCallback<ResponseData<String>>() {
+                                 @Override
+                                 public void onSuccess(ResponseData<String> response) {
+                                     if (response!=null){
+                                         if (response.isSuccess()) {
+                                             HttpHeaders headers = new HttpHeaders();
+                                             CurrentUser.getInstance().setToken(response.getData());
+                                             headers.put("Authorization", "Bearer "+ response.getData());
+                                             OkGo.getInstance().addCommonHeaders(headers);
+                                         }
+                                     }
+                                 }
+                             }
+                    );
+        }
+    }
+
+    private void setTimerTask(){
+        mTimeTask = new MyTimeTask(REFRESH_TIME, new TimerTask() {
+            @Override
+            public void run() {
+                mHandler.sendEmptyMessage(1);
+            }
+        });
+        mTimeTask.start();
+    }
+
+    @SuppressLint("HandlerLeak")
+    private Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case 1:
+                    //在此执行定时操作
+                    refreshToken();
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+
+
 
     //static 代码段可以防止内存泄露
     static {

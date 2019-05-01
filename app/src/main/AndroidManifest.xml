@@ -122,7 +122,7 @@
         <activity android:name=".activity.LookImageActivity"/>
 
         <service
-            android:name=".InitService"
+            android:name=".service.InitService"
             android:exported="false" />
     </application>
 </manifest>

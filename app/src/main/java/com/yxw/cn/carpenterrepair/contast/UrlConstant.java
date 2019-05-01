@@ -28,14 +28,19 @@ public class UrlConstant {
     public final static String LOGIN = BASE_USER + "/gateway/app/api/loginByPwd";
     public final static String QUICK_LOGIN = BASE_USER + "/gateway/app/api/loginByCode";
     public final static String REGISTER = BASE_USER + "/gateway/app/api/register";
+    public final static String REFRESH_TOKEN = BASE_USER + "/gateway/app/refreshToken";
 
-    public final static String FORGET_PASSWORD = BASE_WORKER + "/ms70/api/user/auth/forgetPwd";//忘记密码
-    public final static String MODIFY_PASSWORD = BASE_WORKER + "/ms70/api/user/info/updatePwd";
-    public final static String CHANGE_AVATAR = BASE_WORKER + "/ms70/api/user/info/updateAvatar";
-    public final static String CHANGE_USERINFO = BASE_WORKER + "/ms70/api/user/info/update";
-    public final static String GET_WORKER_INFO = BASE_WORKER + "/ms70/api/user/info/view/"+ CurrentUser.getInstance().getUserId();
-    public final static String USER_FEEDBACK = BASE_WORKER + "/ms70/api/user/info/userFeedback";//用户反馈
-    public final static String UPLOAD_IDCARD = BASE_WORKER + "/ms70/api/user/info/uploadIdCard";//身份证上传
+    public final static String FORGET_PASSWORD = BASE_USER + "/ms70/api/user/auth/forgetPwd";//忘记密码
+    public final static String MODIFY_PASSWORD = BASE_USER + "/ms70/api/user/info/updatePwd";
+    public final static String CHANGE_AVATAR = BASE_USER + "/ms70/api/user/info/updateAvatar";
+    public final static String CHANGE_USERINFO = BASE_USER + "/ms70/api/user/info/update";
+    public final static String GET_WORKER_INFO = BASE_USER + "/ms70/api/user/info/view/"+ CurrentUser.getInstance().getUserId();
+    public final static String USER_FEEDBACK = BASE_USER + "/ms70/api/user/info/userFeedback";//用户反馈
+    public final static String UPLOAD_IDCARD = BASE_USER + "/ms70/api/user/info/uploadIdCard";//身份证上传
+    public final static String MY_SERVICE_LIST = BASE_USER + "/ms70/api/user/info/childService/{bindingCode}";//我的工程师列表
+    public final static String MY_SERVICE_CHECK_LIST = BASE_USER + "/ms70/api/user/info/findAllByApplicationStart";//工程师加入服务商审核列表
+    public final static String JOIN_SERVICE = BASE_USER + "/ms70/api/user/info/joinService/{bindingCode}";//工程师加入服务商
+    public final static String PARENT_SERVICE = BASE_USER + "/ms70/api/user/info/parentService/{bindingCode}";//隶属服务商
 
 
     public final static String GET_ALL_CATEGORY = BASE_URL + "/api/fix/category/all";
