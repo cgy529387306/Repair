@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical">
+
+    <com.yxw.cn.carpenterrepair.view.TitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="301dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/bg_service_empty"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:textColor="#E82B2D"
+        android:text="您没有隶属的服务商"/>
+
+    <TextView
+        android:layout_width="303dp"
+        android:layout_height="63dp"
+        android:layout_marginTop="14dp"
+        android:gravity="center_horizontal"
+        android:layout_gravity="center_horizontal"
+        android:textSize="14sp"
+        android:textColor="#666666"
+        android:text="快点击加入吧"/>
+
+    <Button
+        android:id="@+id/btn_join"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:background="@drawable/bg_btn_red"
+        android:text="加入服务商"
+        android:textSize="16sp"
+        android:layout_marginTop="22dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:textColor="#ffffff" />
+
+</LinearLayout>

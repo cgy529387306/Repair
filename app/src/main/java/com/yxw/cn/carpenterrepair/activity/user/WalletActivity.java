@@ -1,28 +1,14 @@
 package com.yxw.cn.carpenterrepair.activity.user;
 
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.lzy.okgo.OkGo;
 import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.ViewHolder;
 import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
-import com.yxw.cn.carpenterrepair.activity.user.WithdrawalCashActivity;
-import com.yxw.cn.carpenterrepair.contast.MessageConstant;
-import com.yxw.cn.carpenterrepair.contast.UrlConstant;
-import com.yxw.cn.carpenterrepair.entity.ResponseData;
-import com.yxw.cn.carpenterrepair.entity.WithdrawalCash;
-import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
-import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 import com.yxw.cn.carpenterrepair.view.TitleBar;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -72,13 +58,16 @@ public class WalletActivity extends BaseActivity {
         mTvSettlementAmount.setText(getIntent().getStringExtra("settlementAmount"));
     }
 
-    @OnClick({R.id.ll_withdrawal_cash})
+    @OnClick({R.id.ll_withdrawal_cash,R.id.ll_transaction_details})
     public void click(View view) {
         switch (view.getId()) {
             case R.id.ll_withdrawal_cash:
                 Bundle bundle = new Bundle();
                 bundle.putString("data",mTvCarryAmount.getText().toString());
                 startActivity(WithdrawalCashActivity.class,bundle);
+                break;
+            case R.id.ll_transaction_details:
+                startActivity(TransactionDetailsActivity.class);
                 break;
             case R.id.rl_type:
 //                if (dialog == null) {

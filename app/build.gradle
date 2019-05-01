@@ -90,4 +90,6 @@ dependencies {
     //下拉刷新
     implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-19'
     implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-19'//没有使用特殊Header，可以不加这行
+    compile 'com.hedgehog.ratingbar:app:1.1.2'
+
 }

@@ -203,7 +203,7 @@ public class PersonInfoActivity extends BaseActivity {
                 });
                 break;
             case R.id.ll_service_provider:
-                startActivity(UpdateNameActivity.class);
+                startActivity(ServiceProviderEmptyActivity.class);
                 break;
         }
     }
