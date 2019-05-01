@@ -12,16 +12,18 @@ public class LoginInfo {
     private String mobile;
     private String nickname;
     private String token;
-    private String username;
+    private String userName;
+    private String realName;
     private String userId;
+    private String parentId;
     private String refreshToken;
     private String registerTime;
     private List<BeGoodAtCategory> tags;
     private long expire;
     private int role;  //角色 0用户 1兼职工程师 2专职工程师
-    private String identityCard;
-    private String identityCardFront;
-    private String identityCardBack;
+    private String idCardBack;
+    private String idCardFront;
+    private String idCardHand;
     private String residentName;
     private String resident;
     private String serviceDate;
@@ -61,12 +63,20 @@ public class LoginInfo {
         this.avatar = avatar;
     }
 
-    public String getUsername() {
-        return username == null ? "" : username;
+    public String getUserName() {
+        return userName == null ? "" : userName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getRealName() {
+        return realName == null ? "" : realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
     }
 
     public String getUserId() {
@@ -78,11 +88,19 @@ public class LoginInfo {
     }
 
     public String getNickname() {
-        return Helper.isEmpty(nickname)?username:nickname;
+        return Helper.isEmpty(nickname)?userName:nickname;
     }
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public String getParentId() {
+        return parentId == null ? "" : parentId;
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
     }
 
     public List<BeGoodAtCategory> getTags() {
@@ -112,28 +130,28 @@ public class LoginInfo {
         this.role = role;
     }
 
-    public String getIdentityCard() {
-        return identityCard == null ? "" : identityCard;
+    public String getIdCardBack() {
+        return idCardBack == null ? "" : idCardBack;
     }
 
-    public void setIdentityCard(String identityCard) {
-        this.identityCard = identityCard;
+    public void setIdCardBack(String idCardBack) {
+        this.idCardBack = idCardBack;
     }
 
-    public String getIdentityCardFront() {
-        return identityCardFront == null ? "" : identityCardFront;
+    public String getIdCardFront() {
+        return idCardFront == null ? "" : idCardFront;
     }
 
-    public void setIdentityCardFront(String identityCardFront) {
-        this.identityCardFront = identityCardFront;
+    public void setIdCardFront(String idCardFront) {
+        this.idCardFront = idCardFront;
     }
 
-    public String getIdentityCardBack() {
-        return identityCardBack == null ? "" : identityCardBack;
+    public String getIdCardHand() {
+        return idCardHand == null ? "" : idCardHand;
     }
 
-    public void setIdentityCardBack(String identityCardBack) {
-        this.identityCardBack = identityCardBack;
+    public void setIdCardHand(String idCardHand) {
+        this.idCardHand = idCardHand;
     }
 
     public String getResidentName() {

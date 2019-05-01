@@ -5,20 +5,16 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 
-import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
-import com.yxw.cn.carpenterrepair.contast.SpConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.CurrentUser;
-import com.yxw.cn.carpenterrepair.entity.LoginInfo;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.util.EventBusUtil;
-import com.yxw.cn.carpenterrepair.util.SpUtil;
 import com.yxw.cn.carpenterrepair.view.TitleBar;
 
 import java.util.HashMap;
@@ -37,9 +33,6 @@ public class UpdateMobileActivity extends BaseActivity {
     @BindView(R.id.et_name)
     EditText mEtName;
 
-    private Gson gson = new Gson();
-    private LoginInfo loginInfo;
-
     @Override
     protected int getLayoutResId() {
         return R.layout.act_update_name;
@@ -49,13 +42,11 @@ public class UpdateMobileActivity extends BaseActivity {
     public void initView() {
         titleBar.setTitle("修改电话");
         if (CurrentUser.getInstance().isLogin()) {
-            loginInfo = CurrentUser.getInstance();
-            if (!TextUtils.isEmpty(loginInfo.getMobile())) {
-                mEtName.setText(loginInfo.getMobile());
-                mEtName.setSelection(loginInfo.getMobile().length());
+            CurrentUser currentUser = CurrentUser.getInstance();
+            if (!TextUtils.isEmpty(currentUser.getMobile())) {
+                mEtName.setText(currentUser.getMobile());
+                mEtName.setSelection(currentUser.getMobile().length());
             }
-        } else {
-            loginInfo = new LoginInfo();
         }
     }
 
@@ -79,10 +70,7 @@ public class UpdateMobileActivity extends BaseActivity {
                                          if (response!=null){
                                              if (response.isSuccess()) {
                                                  toast("修改成功");
-                                                 loginInfo.setMobile(mEtName.getText().toString().trim());
-                                                 SpUtil.putStr(SpConstant.LOGIN_MOBILE, mEtName.getText().toString().trim());
-                                                 CurrentUser.getInstance().login(loginInfo);
-                                                 EventBusUtil.post(MessageConstant.NOTIFY_INFO);
+                                                 EventBusUtil.post(MessageConstant.NOTIFY_GET_INFO);
                                                  finish();
                                              }else{
                                                  toast(response.getMsg());

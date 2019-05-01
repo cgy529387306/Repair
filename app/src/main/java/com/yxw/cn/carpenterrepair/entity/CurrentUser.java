@@ -47,7 +47,8 @@ public class CurrentUser extends LoginInfo{
             me.setLastLoginTime(entity.getLastLoginTime());
             me.setMobile(entity.getMobile());
             me.setAvatar(entity.getAvatar());
-            me.setUsername(entity.getUsername());
+            me.setUserName(entity.getUserName());
+            me.setRealName(entity.getRealName());
             me.setUserId(entity.getUserId());
             me.setNickname(entity.getNickname());
             me.setTags(entity.getTags());
@@ -55,10 +56,11 @@ public class CurrentUser extends LoginInfo{
             me.setRole(entity.getRole());
             me.setRefreshToken(entity.getRefreshToken());
             me.setRegisterTime(entity.getRegisterTime());
+            me.setParentId(entity.getParentId());
 
-            me.setIdentityCard(entity.getIdentityCard());
-            me.setIdentityCardFront(entity.getIdentityCardFront());
-            me.setIdentityCardBack(entity.getIdentityCardBack());
+            me.setIdCardFront(entity.getIdCardFront());
+            me.setIdCardBack(entity.getIdCardBack());
+            me.setIdCardHand(entity.getIdCardHand());
             me.setResidentName(entity.getResidentName());
             me.setResident(entity.getResident());
             me.setServiceDate(entity.getServiceDate());

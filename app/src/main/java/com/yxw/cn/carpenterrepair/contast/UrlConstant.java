@@ -1,7 +1,5 @@
 package com.yxw.cn.carpenterrepair.contast;
 
-import com.yxw.cn.carpenterrepair.entity.CurrentUser;
-
 public class UrlConstant {
 
     public final static int mRoleSign = 1;  // 1工程师端 3服务商端
@@ -39,7 +37,7 @@ public class UrlConstant {
     public final static String UPLOAD_IDCARD = BASE_USER + "/ms70/api/user/info/uploadIdCard";//身份证上传
     public final static String MY_SERVICE_LIST = BASE_USER + "/ms70/api/user/info/childService/{bindingCode}";//我的工程师列表
     public final static String MY_SERVICE_CHECK_LIST = BASE_USER + "/ms70/api/user/info/findAllByApplicationStart";//工程师加入服务商审核列表
-    public final static String JOIN_SERVICE = BASE_USER + "/ms70/api/user/info/joinService/{bindingCode}";//工程师加入服务商
+    public final static String JOIN_SERVICE = BASE_USER + "/ms70/api/user/info/joinService/";//工程师加入服务商
     public final static String PARENT_SERVICE = BASE_USER + "/ms70/api/user/info/parentService/{bindingCode}";//隶属服务商
 
 

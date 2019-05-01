@@ -7,7 +7,8 @@ public class MessageConstant {
     public final static String LOGOUT= "LOGOUT";
     public final static String LOCATION= "LOCATION";
     public final static String CHOOSE_CATEGORY_SERVICE= "CHOOSE_CATEGORY_SERVICE";
-    public final static String NOTIFY_INFO= "NOTIFY_INFO";
+    public final static String NOTIFY_UPDATE_INFO= "NOTIFY_UPDATE_INFO";
+    public final static String NOTIFY_GET_INFO= "NOTIFY_GET_INFO";
     public final static String MY_CATEGORY= "MY_CATEGORY";
     public final static String WORKER_UNORDER_COUNT= "WORKER_UNORDER_COUNT";
     public final static String WORKER_ORDERED_COUNT= "WORKER_ORDERED_COUNT";

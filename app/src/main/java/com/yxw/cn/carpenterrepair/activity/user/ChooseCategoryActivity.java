@@ -63,11 +63,13 @@ public class ChooseCategoryActivity extends BaseActivity {
 
                         @Override
                         public void onSuccess(ResponseData<List<Category>> response) {
-                            AppUtil.categoryItemList.clear();
-                            AppUtil.categoryItemList.addAll(response.getData());
-                            categoryItemList.clear();
-                            categoryItemList.addAll(response.getData());
-                            adapter.notifyDataSetChanged();
+                            if (AppUtil.categoryItemList!=null){
+                                AppUtil.categoryItemList.clear();
+                                AppUtil.categoryItemList.addAll(response.getData());
+                                categoryItemList.clear();
+                                categoryItemList.addAll(response.getData());
+                                adapter.notifyDataSetChanged();
+                            }
                         }
 
                         @Override

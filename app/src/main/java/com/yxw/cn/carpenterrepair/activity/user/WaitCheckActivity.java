@@ -2,10 +2,10 @@ package com.yxw.cn.carpenterrepair.activity.user;
 
 import android.view.View;
 
-import com.gyf.immersionbar.ImmersionBar;
 import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.activity.main.MainActivity;
+import com.yxw.cn.carpenterrepair.util.ActivityManager;
 
 import butterknife.OnClick;
 
@@ -24,6 +24,7 @@ public class WaitCheckActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.btn_confirm:
                 startActivityFinish(MainActivity.class);
+                ActivityManager.getInstance().closeAllActivityExceptOne(MainActivity.class.getName());
                 break;
         }
     }

@@ -1,9 +1,7 @@
 package com.yxw.cn.carpenterrepair.activity.user;
 
 import android.content.Intent;
-import android.text.TextUtils;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,11 +17,10 @@ import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.CurrentUser;
-import com.yxw.cn.carpenterrepair.entity.IdCardInfo;
 import com.yxw.cn.carpenterrepair.entity.LoginInfo;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
-import com.yxw.cn.carpenterrepair.util.AppUtil;
+import com.yxw.cn.carpenterrepair.util.Base64Util;
 import com.yxw.cn.carpenterrepair.view.TitleBar;
 
 import java.util.HashMap;
@@ -31,7 +28,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import com.yxw.cn.carpenterrepair.util.Base64Util;
 
 /**
  * 身份证信息
@@ -63,10 +59,10 @@ public class IdCardInfoActivity extends BaseActivity {
         titlebar.setTitle("身份证信息");
         if (CurrentUser.getInstance().isLogin()){
             LoginInfo loginInfo = CurrentUser.getInstance();
-            if(loginInfo.getIdCardStatus()==0){
-                tv_status.setVisibility(View.GONE);
-            }else if(loginInfo.getIdCardStatus()==2){
+            if(loginInfo.getIdCardStatus()==2){
                 tv_status.setVisibility(View.VISIBLE);
+            }else{
+                tv_status.setVisibility(View.GONE);
             }
         }
     }
@@ -117,41 +113,38 @@ public class IdCardInfoActivity extends BaseActivity {
                 if (idCardBack == null || idCardFront == null || icCardBoth == null) {
                     toast("请上传齐全证件图片！");
                 }else {
-                    startActivity(WaitCheckActivity.class);
-//                    showLoading();
-//                    Gson gson = new Gson();
-//                    HashMap<String, String> map = new HashMap<>();
-//                    map.put("idCardFront", Base64Util.getBase64ImageStr(idCardFront));
-//                    map.put("idCardBack", Base64Util.getBase64ImageStr(idCardBack));
-//                    OkGo.<ResponseData<IdCardInfo>>post(UrlConstant.UPLOAD_IDCARD)
-//                            .upJson(gson.toJson(map))
-//                            .execute(new JsonCallback<ResponseData<IdCardInfo>>() {
-//                                @Override
-//                                public void onSuccess(ResponseData<IdCardInfo> response) {
-//                                    toast(response.getMsg());
-//                                    dismissLoading();
-//                                    if (response.getCode() == 0) {
-//                                        try {
-//                                            LoginInfo loginInfo = CurrentUser.getInstance();
-//                                            loginInfo.setIdentityCard(response.getData().getIdCardNo());
-//                                            loginInfo.setIdentityCardFront(response.getData().getIdCardFrontPath());
-//                                            loginInfo.setIdentityCardBack(response.getData().getIdCardBackPath());
-//                                            loginInfo.setIdCardStatus(1);
-//                                            CurrentUser.getInstance().login(loginInfo);
-//                                        } catch (Exception e) {
-//                                            e.printStackTrace();
-//                                        }
-//                                        AppUtil.checkStatus(IdCardInfoActivity.this);
-//                                        finish();
-//                                    }
-//                                }
-//
-//                                @Override
-//                                public void onError(Response<ResponseData<IdCardInfo>> response) {
-//                                    super.onError(response);
-//                                    dismissLoading();
-//                                }
-//                            });
+                    showLoading();
+                    Gson gson = new Gson();
+                    HashMap<String, String> map = new HashMap<>();
+                    map.put("idCardFront", Base64Util.getBase64ImageStr(idCardFront));
+                    map.put("idCardBack", Base64Util.getBase64ImageStr(idCardBack));
+                    map.put("idCardHand", Base64Util.getBase64ImageStr(icCardBoth));
+                    OkGo.<ResponseData<String>>post(UrlConstant.UPLOAD_IDCARD)
+                            .upJson(gson.toJson(map))
+                            .execute(new JsonCallback<ResponseData<String>>() {
+                                @Override
+                                public void onSuccess(ResponseData<String> response) {
+                                    dismissLoading();
+                                    if (response!=null){
+                                        if (response.isSuccess()){
+                                            try {
+                                                toast("提交成功");
+                                                startActivity(WaitCheckActivity.class);
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
+                                        }else{
+                                            toast(response.getMsg());
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onError(Response<ResponseData<String>> response) {
+                                    super.onError(response);
+                                    dismissLoading();
+                                }
+                            });
                 }
                 break;
         }
@@ -185,11 +178,6 @@ public class IdCardInfoActivity extends BaseActivity {
                     break;
             }
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-
     }
 
     // 判断是否符合身份证号码的规范

@@ -15,8 +15,13 @@ import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 import com.yxw.cn.carpenterrepair.entity.LoginInfo;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
+import com.yxw.cn.carpenterrepair.listerner.OnChooseAddrListener;
+import com.yxw.cn.carpenterrepair.listerner.OnChooseTimeListener;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.util.AppUtil;
+import com.yxw.cn.carpenterrepair.util.EventBusUtil;
+import com.yxw.cn.carpenterrepair.util.RegionPickerUtil;
+import com.yxw.cn.carpenterrepair.util.TimePickerUtil;
 import com.yxw.cn.carpenterrepair.view.TitleBar;
 
 import java.util.HashMap;
@@ -24,11 +29,6 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import com.yxw.cn.carpenterrepair.listerner.OnChooseAddrListener;
-import com.yxw.cn.carpenterrepair.listerner.OnChooseTimeListener;
-import com.yxw.cn.carpenterrepair.util.EventBusUtil;
-import com.yxw.cn.carpenterrepair.util.RegionPickerUtil;
-import com.yxw.cn.carpenterrepair.util.TimePickerUtil;
 
 /**
  * 服务时间
@@ -297,7 +297,7 @@ public class ServiceTimeActivity extends BaseActivity {
                             loginInfo.setServiceTime(serviceTime);
                             loginInfo.setServiceDate(serviceDate);
                             CurrentUser.getInstance().login(loginInfo);
-                            EventBusUtil.post(MessageConstant.NOTIFY_INFO);
+                            EventBusUtil.post(MessageConstant.NOTIFY_GET_INFO);
                             AppUtil.checkStatus(ServiceTimeActivity.this);
                             finish();
                         }

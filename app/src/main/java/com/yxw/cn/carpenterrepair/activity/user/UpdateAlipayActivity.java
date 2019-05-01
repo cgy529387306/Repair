@@ -78,7 +78,7 @@ public class UpdateAlipayActivity extends BaseActivity {
                                          if (response.isSuccess()) {
                                              loginInfo.setAliplayAccount(mEtName.getText().toString().trim());
                                              CurrentUser.getInstance().login(loginInfo);
-                                             EventBusUtil.post(MessageConstant.NOTIFY_INFO);
+                                             EventBusUtil.post(MessageConstant.NOTIFY_GET_INFO);
                                              finish();
                                          }
                                      }

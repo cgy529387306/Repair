@@ -58,8 +58,8 @@ public class PersonInfoActivity extends BaseActivity {
     TextView mTvPhone;
     @BindView(R.id.tv_idCardNo)
     TextView mTvIdCardNo;
-    @BindView(R.id.tv_identificate)
-    TextView mTvIdentificate;
+    @BindView(R.id.tv_idCardStatus)
+    TextView mTvIdCardStatus;
     @BindView(R.id.tv_resident)
     TextView mTvResident;
     @BindView(R.id.tv_service_provider)
@@ -100,9 +100,11 @@ public class PersonInfoActivity extends BaseActivity {
         if (CurrentUser.getInstance().isLogin()) {
             try {
                 loginInfo = CurrentUser.getInstance();
-                mTvName.setText(loginInfo.getUsername());
+                mTvName.setText(loginInfo.getRealName());
                 mTvPhone.setText(loginInfo.getMobile());
-                mTvIdCardNo.setText(loginInfo.getIdentityCard());
+                mTvIdCardStatus.setText(AppUtil.getIdCardStatus(loginInfo.getIdCardStatus()));
+                mTvServiceProvider.setText(TextUtils.isEmpty(loginInfo.getParentId())?"":"服务商ID"+loginInfo.getParentId());
+//                mTvIdCardNo.setText(loginInfo.getIdentityCard());
                 mTvResident.setText(loginInfo.getResidentName());
                 if (!TextUtils.isEmpty(loginInfo.getServiceDate()) && !TextUtils.isEmpty(loginInfo.getServiceTime())) {
                     StringBuilder date = new StringBuilder();
@@ -158,7 +160,7 @@ public class PersonInfoActivity extends BaseActivity {
     }
 
     @OnClick({R.id.iv_avatar, R.id.ll_name, R.id.ll_mobile, R.id.ll_good,
-            R.id.ll_resident, R.id.ll_identificate, R.id.ll_idCardNo,R.id.img_back,R.id.ll_service_provider})
+            R.id.ll_resident, R.id.ll_idCardStatus, R.id.ll_idCardNo,R.id.img_back,R.id.ll_service_provider})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -166,7 +168,10 @@ public class PersonInfoActivity extends BaseActivity {
                 break;
             case R.id.ll_idCardNo:// 身份证号码
                 break;
-            case R.id.ll_identificate: //身份证认证
+            case R.id.ll_idCardStatus: //身份证认证
+                if (loginInfo!=null && loginInfo.getIdCardStatus()!=2){
+                    startActivity(IdCardInfoActivity.class);
+                }
                 break;
             case R.id.iv_avatar:
                 PictureSelector.create(this)
@@ -203,7 +208,11 @@ public class PersonInfoActivity extends BaseActivity {
                 });
                 break;
             case R.id.ll_service_provider:
-                startActivity(ServiceProviderEmptyActivity.class);
+                if (loginInfo!=null && !TextUtils.isEmpty(loginInfo.getParentId())){
+                    startActivity(ServiceProviderActivity.class);
+                }else{
+                    startActivity(ServiceProviderEmptyActivity.class);
+                }
                 break;
         }
     }
@@ -235,7 +244,7 @@ public class PersonInfoActivity extends BaseActivity {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case 11:
-                    // 图片、视频、音频选择结果回调
+                    //上传头像
                     List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
                     if (selectList.size() > 0) {
                         showLoading();
@@ -251,7 +260,7 @@ public class PersonInfoActivity extends BaseActivity {
                                                  dismissLoading();
                                                  toast(response.getMsg());
                                                  if (response.isSuccess()) {
-                                                     EventBusUtil.post(MessageConstant.NOTIFY_INFO);
+                                                     EventBusUtil.post(MessageConstant.NOTIFY_GET_INFO);
                                                  }
                                              }
 
@@ -272,7 +281,7 @@ public class PersonInfoActivity extends BaseActivity {
     public void onEvent(MessageEvent event) {
         super.onEvent(event);
         switch (event.getId()) {
-            case MessageConstant.NOTIFY_INFO:
+            case MessageConstant.NOTIFY_UPDATE_INFO:
                 notifyInfo();
                 break;
             case MessageConstant.MY_CATEGORY:

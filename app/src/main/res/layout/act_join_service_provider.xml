@@ -28,7 +28,7 @@
             android:text="服务商编号"/>
 
         <com.yxw.cn.carpenterrepair.view.ClearEditText
-            android:id="@+id/et_id"
+            android:id="@+id/et_parent_id"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
@@ -36,7 +36,6 @@
             android:textColorHint="#CCCCCC"
             android:layout_marginLeft="19dp"
             android:hint="请输入要加入的服务商编号"
-
             android:background="@color/white"
             android:textSize="14sp" />
 

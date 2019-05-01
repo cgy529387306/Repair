@@ -150,6 +150,19 @@ public class AppUtil {
         }
     }
 
+    public static String getIdCardStatus(int status) {
+        //身份证状态 0未上传 1已上传 2审核未通过 3审核通过
+        if (status==1){
+            return "待审核";
+        }else if (status==2){
+            return "未通过";
+        }else if (status==3){
+            return "通过";
+        }else{
+            return "未提交";
+        }
+    }
+
     public static boolean isPhone(String str) {
         Pattern pattern = Pattern.compile("^((13[0-9])|(14[5,7,9])|(15[^4])|(18[0-9])|(17[0,1,3,5,6,7,8]))\\d{8}$");
         Matcher matcher = pattern.matcher(str);

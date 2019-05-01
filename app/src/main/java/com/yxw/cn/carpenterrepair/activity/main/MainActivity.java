@@ -8,17 +8,10 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.gyf.immersionbar.ImmersionBar;
-import com.lzy.okgo.OkGo;
 import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
-import com.yxw.cn.carpenterrepair.contast.UrlConstant;
-import com.yxw.cn.carpenterrepair.entity.CurrentUser;
-import com.yxw.cn.carpenterrepair.entity.LoginInfo;
-import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.fragment.HomeFragment;
 import com.yxw.cn.carpenterrepair.fragment.UserFragment;
-import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
-import com.yxw.cn.carpenterrepair.util.AppUtil;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -47,21 +40,6 @@ public class MainActivity extends BaseActivity {
     public void initView() {
         fragmentManager = getSupportFragmentManager();
         showFragment(0);
-    }
-
-    @Override
-    public void getData() {
-        OkGo.<ResponseData<LoginInfo>>post(UrlConstant.GET_WORKER_INFO)
-                .execute(new JsonCallback<ResponseData<LoginInfo>>() {
-                             @Override
-                             public void onSuccess(ResponseData<LoginInfo> response) {
-                                 if (response.isSuccess()) {
-                                     CurrentUser.getInstance().login(response.getData());
-                                     AppUtil.checkStatus(MainActivity.this);
-                                 }
-                             }
-                         }
-                );
     }
 
     private void showFragment(int page) {
