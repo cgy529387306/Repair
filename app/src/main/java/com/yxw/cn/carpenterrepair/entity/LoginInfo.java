@@ -6,14 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LoginInfo {
-
-    private String token;
+    private String aliplayAccount;
+    private String avatar;
     private String lastLoginTime;
     private String mobile;
-    private String avatars;
+    private String nickname;
+    private String token;
     private String username;
     private String userId;
-    private String nickname;
     private String refreshToken;
     private String registerTime;
     private List<BeGoodAtCategory> tags;
@@ -27,7 +27,7 @@ public class LoginInfo {
     private String serviceDate;
     private String serviceTime;
     private int idCardStatus;//身份证状态 0未上传 1已上传 2审核未通过 3审核通过
-    private String aliplayAccount;
+
 
     public String getToken() {
         return token == null ? "" : token;
@@ -54,11 +54,11 @@ public class LoginInfo {
     }
 
     public String getAvatar() {
-        return avatars == null ? "" : avatars;
+        return avatar == null ? "" : avatar;
     }
 
     public void setAvatar(String avatar) {
-        this.avatars = avatar;
+        this.avatar = avatar;
     }
 
     public String getUsername() {

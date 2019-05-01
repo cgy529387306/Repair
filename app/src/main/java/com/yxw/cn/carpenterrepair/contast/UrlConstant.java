@@ -34,7 +34,7 @@ public class UrlConstant {
     public final static String MODIFY_PASSWORD = BASE_USER + "/ms70/api/user/info/updatePwd";
     public final static String CHANGE_AVATAR = BASE_USER + "/ms70/api/user/info/updateAvatar";
     public final static String CHANGE_USERINFO = BASE_USER + "/ms70/api/user/info/update";
-    public final static String GET_WORKER_INFO = BASE_USER + "/ms70/api/user/info/view/"+ CurrentUser.getInstance().getUserId();
+    public final static String GET_WORKER_INFO = BASE_USER + "/ms70/api/user/info/view";
     public final static String USER_FEEDBACK = BASE_USER + "/ms70/api/user/info/userFeedback";//用户反馈
     public final static String UPLOAD_IDCARD = BASE_USER + "/ms70/api/user/info/uploadIdCard";//身份证上传
     public final static String MY_SERVICE_LIST = BASE_USER + "/ms70/api/user/info/childService/{bindingCode}";//我的工程师列表
