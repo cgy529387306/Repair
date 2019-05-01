@@ -241,6 +241,7 @@ public class PersonInfoActivity extends BaseActivity {
                         showLoading();
                         HashMap<String, String> map = new HashMap<>();
                         map.put("avatar", Base64Util.getBase64ImageStr(selectList.get(0).getCompressPath()));
+                        AppUtil.showPic(PersonInfoActivity.this, mIvAvatar, selectList.get(0).getCompressPath());
                         showLoading();
                         OkGo.<ResponseData<String>>post(UrlConstant.CHANGE_AVATAR)
                                 .upJson(gson.toJson(map))
@@ -250,9 +251,6 @@ public class PersonInfoActivity extends BaseActivity {
                                                  dismissLoading();
                                                  toast(response.getMsg());
                                                  if (response.isSuccess()) {
-                                                     loginInfo.setAvatar(response.getData());
-                                                     AppUtil.showPic(PersonInfoActivity.this, mIvAvatar, selectList.get(0).getCompressPath());
-                                                     CurrentUser.getInstance().login(loginInfo);
                                                      EventBusUtil.post(MessageConstant.NOTIFY_INFO);
                                                  }
                                              }

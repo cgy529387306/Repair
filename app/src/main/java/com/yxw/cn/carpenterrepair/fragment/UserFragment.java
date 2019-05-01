@@ -73,6 +73,11 @@ public class UserFragment extends BaseFragment {
 
     @Override
     public void getData() {
+        getUserInfo();
+    }
+
+
+    private void getUserInfo(){
         OkGo.<ResponseData<LoginInfo>>post(UrlConstant.GET_WORKER_INFO)
                 .execute(new JsonCallback<ResponseData<LoginInfo>>() {
                              @Override
@@ -84,8 +89,8 @@ public class UserFragment extends BaseFragment {
                              }
                          }
                 );
-
     }
+
 
     @Override
     public void onResume() {
@@ -167,7 +172,7 @@ public class UserFragment extends BaseFragment {
         super.onEvent(event);
         switch (event.getId()) {
             case MessageConstant.NOTIFY_INFO:
-                notifyInfo();
+                getUserInfo();
                 break;
             case MessageConstant.NOTIFY_CARRY_AMONUT:
                 OkGo.<ResponseData<Asset>>post(UrlConstant.GET_ASSETS)

@@ -127,7 +127,7 @@
         <activity android:name=".activity.user.TransactionDetailsActivity"/>
 
         <service
-            android:name=".InitService"
+            android:name=".service.InitService"
             android:exported="false" />
     </application>
 </manifest>
