@@ -39,9 +39,11 @@ public class UrlConstant {
     public final static String MY_SERVICE_CHECK_LIST = BASE_USER + "/ms70/api/user/info/findAllByApplicationStart";//工程师加入服务商审核列表
     public final static String JOIN_SERVICE = BASE_USER + "/ms70/api/user/info/joinService/";//工程师加入服务商
     public final static String PARENT_SERVICE = BASE_USER + "/ms70/api/user/info/parentService/{bindingCode}";//隶属服务商
+    public final static String GET_ALL_CATEGORY = BASE_USER + "/ms20/api/sys/dicts/categoryList";//获取项目分类列表
+    public final static String SAVE_CATEGORY = BASE_USER + "/ms70/api/user/info/saveProject";//新增用户项目
 
 
-    public final static String GET_ALL_CATEGORY = BASE_URL + "/api/fix/category/all";
+
     public final static String GET_REGION_TREE = BASE_URL + "/api/region/tree";
     public final static String GET_SERVICE_FEE = BASE_URL + "/api/region/serviceFee";
     public final static String ORDER = BASE_URL + "/api/fix/order/submit";

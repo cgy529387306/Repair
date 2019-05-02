@@ -74,8 +74,8 @@ public class FindServiceFragment extends BaseFragment {
 
     public void notifyDetailCategory(int index) {
         categorySubList.clear();
-        if (categoryList.get(index).getSub() != null && categoryList.get(index).getSub().size() > 0) {
-            categorySubList.addAll(categoryList.get(index).getSub());
+        if (categoryList.get(index).getChildList() != null && categoryList.get(index).getChildList().size() > 0) {
+//            categorySubList.addAll(categoryList.get(index).getChildList());
         }
         detailCategoryAdapter.notifyDataSetChanged();
     }

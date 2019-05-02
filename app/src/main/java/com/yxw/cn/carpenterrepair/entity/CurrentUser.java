@@ -2,6 +2,7 @@ package com.yxw.cn.carpenterrepair.entity;
 
 import android.util.Log;
 
+import com.yxw.cn.carpenterrepair.util.Helper;
 import com.yxw.cn.carpenterrepair.util.JsonHelper;
 import com.yxw.cn.carpenterrepair.util.PreferencesHelper;
 
@@ -43,7 +44,12 @@ public class CurrentUser extends LoginInfo{
         boolean born = false;
         String json = "";
         if (entity != null) {
-            me.setToken(entity.getToken());
+            if (Helper.isNotEmpty(entity.getToken())){
+                me.setRefreshToken(entity.getToken());
+            }
+            if (Helper.isNotEmpty(entity.getRefreshToken())){
+                me.setRefreshToken(entity.getRefreshToken());
+            }
             me.setLastLoginTime(entity.getLastLoginTime());
             me.setMobile(entity.getMobile());
             me.setAvatar(entity.getAvatar());
@@ -51,13 +57,12 @@ public class CurrentUser extends LoginInfo{
             me.setRealName(entity.getRealName());
             me.setUserId(entity.getUserId());
             me.setNickname(entity.getNickname());
+            me.setCategory(entity.getCategory());
             me.setTags(entity.getTags());
             me.setExpire(entity.getExpire());
             me.setRole(entity.getRole());
-            me.setRefreshToken(entity.getRefreshToken());
             me.setRegisterTime(entity.getRegisterTime());
             me.setParentId(entity.getParentId());
-
             me.setIdCardFront(entity.getIdCardFront());
             me.setIdCardBack(entity.getIdCardBack());
             me.setIdCardHand(entity.getIdCardHand());

@@ -18,6 +18,7 @@ public class LoginInfo {
     private String parentId;
     private String refreshToken;
     private String registerTime;
+    private String category;
     private List<BeGoodAtCategory> tags;
     private long expire;
     private int role;  //角色 0用户 1兼职工程师 2专职工程师
@@ -216,5 +217,13 @@ public class LoginInfo {
 
     public void setRegisterTime(String registerTime) {
         this.registerTime = registerTime;
+    }
+
+    public String getCategory() {
+        return category == null ? "" : category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

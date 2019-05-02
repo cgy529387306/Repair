@@ -9,5 +9,5 @@
     android:background="@drawable/stroke_gray"
     android:lines="1"
     android:gravity="center"
-    android:textColor="#7B7B7B"
-    android:textSize="13dp" />
+    android:textColor="#666666"
+    android:textSize="14sp" />

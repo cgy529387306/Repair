@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.multidex.MultiDex;
-import android.widget.Toast;
 
 import com.baidu.mapapi.CoordType;
 import com.baidu.mapapi.SDKInitializer;
@@ -17,7 +16,6 @@ import com.lzy.okgo.cookie.CookieJarImpl;
 import com.lzy.okgo.cookie.store.SPCookieStore;
 import com.lzy.okgo.interceptor.HttpLoggingInterceptor;
 import com.lzy.okgo.model.HttpHeaders;
-import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -31,18 +29,13 @@ import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.yxw.cn.carpenterrepair.BaseApplication;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.activity.LocationService;
-import com.yxw.cn.carpenterrepair.activity.user.ChooseCategoryActivity;
-import com.yxw.cn.carpenterrepair.contast.MessageConstant;
-import com.yxw.cn.carpenterrepair.contast.SpConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.crash.CrashHandler;
 import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.util.AppUtil;
-import com.yxw.cn.carpenterrepair.util.EventBusUtil;
-import com.yxw.cn.carpenterrepair.util.SpUtil;
-import com.yxw.cn.carpenterrepair.util.ToastUtil;
+import com.yxw.cn.carpenterrepair.util.Helper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -126,7 +119,8 @@ public class InitService extends IntentService {
     }
 
     public void refreshToken(){
-        if (CurrentUser.getInstance().isLogin() && !CurrentUser.getInstance().getRefreshToken().isEmpty()){
+        Logger.d("myToken:refreshToken()");
+        if (CurrentUser.getInstance().isLogin() && Helper.isNotEmpty(CurrentUser.getInstance().getRefreshToken())){
             Map<String, Object> map = new HashMap<>();
             map.put("refreshToken", CurrentUser.getInstance().getRefreshToken());
             OkGo.<ResponseData<String>>post(UrlConstant.REFRESH_TOKEN)
@@ -136,6 +130,7 @@ public class InitService extends IntentService {
                                  public void onSuccess(ResponseData<String> response) {
                                      if (response!=null){
                                          if (response.isSuccess()) {
+                                             Logger.d("myToken:"+response.getData());
                                              HttpHeaders headers = new HttpHeaders();
                                              CurrentUser.getInstance().setToken(response.getData());
                                              headers.put("Authorization", "Bearer "+ response.getData());

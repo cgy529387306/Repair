@@ -1,6 +1,7 @@
 package com.yxw.cn.carpenterrepair.activity.user;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -22,7 +23,6 @@ import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.adapter.MyCategoryAdapter;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
-import com.yxw.cn.carpenterrepair.entity.BeGoodAtCategory;
 import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 import com.yxw.cn.carpenterrepair.entity.LoginInfo;
 import com.yxw.cn.carpenterrepair.entity.MessageEvent;
@@ -32,10 +32,12 @@ import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.util.AppUtil;
 import com.yxw.cn.carpenterrepair.util.Base64Util;
 import com.yxw.cn.carpenterrepair.util.EventBusUtil;
+import com.yxw.cn.carpenterrepair.util.Helper;
 import com.yxw.cn.carpenterrepair.util.RegionPickerUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,14 +67,14 @@ public class PersonInfoActivity extends BaseActivity {
     @BindView(R.id.tv_service_provider)
     TextView mTvServiceProvider;
     @BindView(R.id.rv_category)
-    RecyclerView mRv;
+    RecyclerView mRvCate;
     @BindView(R.id.ll_good)
     LinearLayout mLlGood;
     @BindView(R.id.img_back)
     ImageView mImgBack;
 
-    private List<BeGoodAtCategory> mList;
-    private MyCategoryAdapter mAdapter;
+    private List<String> mCateList = new ArrayList<String>();
+    private MyCategoryAdapter mCateAdapter;
     private LoginInfo loginInfo;
 
     @Override
@@ -87,16 +89,14 @@ public class PersonInfoActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        mList = new ArrayList<>();
-        mAdapter = new MyCategoryAdapter(mList);
-        mRv.setNestedScrollingEnabled(false);
-        mRv.setLayoutManager(new GridLayoutManager(this, 4));
-        mRv.setAdapter(mAdapter);
+        mCateAdapter = new MyCategoryAdapter(mCateList);
+        mRvCate.setNestedScrollingEnabled(false);
+        mRvCate.setLayoutManager(new GridLayoutManager(this, 4));
+        mRvCate.setAdapter(mCateAdapter);
         notifyInfo();
     }
 
     public void notifyInfo() {
-        String avatarUrl = null;
         if (CurrentUser.getInstance().isLogin()) {
             try {
                 loginInfo = CurrentUser.getInstance();
@@ -106,6 +106,13 @@ public class PersonInfoActivity extends BaseActivity {
                 mTvServiceProvider.setText(TextUtils.isEmpty(loginInfo.getParentId())?"":"服务商ID"+loginInfo.getParentId());
 //                mTvIdCardNo.setText(loginInfo.getIdentityCard());
                 mTvResident.setText(loginInfo.getResidentName());
+                if (Helper.isNotEmpty(loginInfo.getCategory())){
+                    String[] dataArray = loginInfo.getCategory().split(",");
+                    if (Helper.isNotEmpty(dataArray)){
+                        mCateList = Arrays.asList(dataArray);
+                        mCateAdapter.setNewData(mCateList);
+                    }
+                }
                 if (!TextUtils.isEmpty(loginInfo.getServiceDate()) && !TextUtils.isEmpty(loginInfo.getServiceTime())) {
                     StringBuilder date = new StringBuilder();
                     for (String dateInd :
@@ -135,20 +142,13 @@ public class PersonInfoActivity extends BaseActivity {
                         }
                     }
                 }
-                avatarUrl = loginInfo.getAvatar();
-                List<BeGoodAtCategory> beGoodAtCategories = loginInfo.getTags();
-                if (beGoodAtCategories != null && beGoodAtCategories.size() > 0) {
-                    mList.clear();
-                    mList.addAll(beGoodAtCategories);
-                    mAdapter.notifyDataSetChanged();
-                }
+                AppUtil.showPic(this, mIvAvatar, loginInfo.getAvatar());
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
             loginInfo = new LoginInfo();
         }
-        AppUtil.showPic(this, mIvAvatar, avatarUrl);
     }
 
     @OnTouch(R.id.rv_category)
@@ -194,7 +194,9 @@ public class PersonInfoActivity extends BaseActivity {
                 break;
             case R.id.ll_good:
                 Intent intent = new Intent(this, ChooseCategoryActivity.class);
-                intent.putExtra("data", (Serializable) mList);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("cateList", (Serializable) mCateList);
+                intent.putExtras(bundle);
                 startActivity(intent);
                 break;
             case R.id.ll_resident:
@@ -285,10 +287,7 @@ public class PersonInfoActivity extends BaseActivity {
                 notifyInfo();
                 break;
             case MessageConstant.MY_CATEGORY:
-                List<BeGoodAtCategory> names = (List<BeGoodAtCategory>) event.getData();
-                mList.clear();
-                mList.addAll(names);
-                mAdapter.notifyDataSetChanged();
+                mCateAdapter.notifyDataSetChanged();
                 break;
         }
     }

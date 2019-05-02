@@ -8,24 +8,37 @@ import android.view.View;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.yxw.cn.carpenterrepair.R;
-import com.yxw.cn.carpenterrepair.entity.BeGoodAtCategory;
 import com.yxw.cn.carpenterrepair.entity.Category;
-import com.yxw.cn.carpenterrepair.entity.CategorySub;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryAdapter extends BaseQuickAdapter<Category, BaseViewHolder> {
 
-    private List<BeGoodAtCategory> selectedList;
+    private List<Category> mSelectedList = new ArrayList<>();
+    private OnCategorySelectListener mSelectListener;
+
+    public void setSelectListener(OnCategorySelectListener selectListener) {
+        this.mSelectListener = selectListener;
+    }
+
+    public List<Category> getSelectedList() {
+        if (mSelectedList == null) {
+            return new ArrayList<>();
+        }
+        return mSelectedList;
+    }
+
+    public void setSelectedList(List<Category> selectedList) {
+        this.mSelectedList = selectedList;
+    }
+
+    public interface OnCategorySelectListener{
+        void onSelect(List<Category> categoryList);
+    }
 
     public CategoryAdapter(@Nullable List<Category> data) {
         super(R.layout.item_category, data);
-    }
-
-    public CategoryAdapter(@Nullable List<Category> data, List<BeGoodAtCategory> selectedList) {
-        super(R.layout.item_category, data);
-        this.selectedList = selectedList;
     }
 
     @Override
@@ -33,32 +46,26 @@ public class CategoryAdapter extends BaseQuickAdapter<Category, BaseViewHolder> 
         helper.setText(R.id.tv_name, item.getName());
         RecyclerView rv = helper.getView(R.id.rv_sub);
         rv.setLayoutManager(new GridLayoutManager(mContext, 4));
-        List<CategorySub> data = new ArrayList<>();
-        if (item.getSub() != null) {
-            data.addAll(item.getSub());
-        }
-        if (this.selectedList != null) {
-            for (BeGoodAtCategory category :
-                    selectedList) {
-                for (CategorySub categorySub :
-                        data) {
-                    if (category.getCategoryId().equals(categorySub.getId() + "")) {
-                        categorySub.setSelected(true);
-                        break;
-                    }
-                }
-
-            }
-        }
-
-        CategorySubAdapter adapter = new CategorySubAdapter(data, selectedList);
+        CategorySubAdapter adapter = new CategorySubAdapter(item.getChildList());
         rv.setAdapter(adapter);
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                item.getSub().get(position).setSelected(!item.getSub().get(position).isSelected());
+                Category category = item.getChildList().get(position);
+                category.setSelected(!category.isSelected());
+                if (category.isSelected()){
+                    mSelectedList.add(category);
+                }else{
+                    mSelectedList.remove(category);
+                }
                 adapter.notifyDataSetChanged();
+                if (mSelectListener!=null){
+                    mSelectListener.onSelect(mSelectedList);
+                }
             }
         });
     }
+
+
+
 }

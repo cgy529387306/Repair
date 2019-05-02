@@ -299,20 +299,17 @@
                         android:layout_height="wrap_content"
                         android:src="@drawable/icon_arrow_right" />
                 </LinearLayout>
-
                 <android.support.v7.widget.RecyclerView
-                    android:layout_marginRight="5dp"
                     android:id="@+id/rv_category"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:clickable="false"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="50dp"
                     android:layout_marginBottom="10dp"/>
-
             </LinearLayout>
-
         </LinearLayout>
-
     </android.support.v4.widget.NestedScrollView>
 
 
