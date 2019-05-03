@@ -200,14 +200,7 @@ public class PersonInfoActivity extends BaseActivity {
                 startActivity(intent);
                 break;
             case R.id.ll_resident:
-                RegionPickerUtil.showCityPicker(this, new OnChooseAddrListener() {
-                    @Override
-                    public void getAddr(int options1, int options2, int options3) {
-                        System.out.println(AppUtil.regionTreeList.get(options1).getSub().get(options2).getName());
-                        System.out.println(AppUtil.regionTreeList.get(options1).getSub().get(options2).getAgency_id());
-                        editTrait(AppUtil.regionTreeList.get(options1).getSub().get(options2).getAgency_id() + "", RegionPickerUtil.getCity(options1, options2));
-                    }
-                });
+                startActivityForResult(new Intent(PersonInfoActivity.this,SelectCityActivity.class),22);
                 break;
             case R.id.ll_service_provider:
                 if (loginInfo!=null && !TextUtils.isEmpty(loginInfo.getParentId())){
@@ -217,27 +210,6 @@ public class PersonInfoActivity extends BaseActivity {
                 }
                 break;
         }
-    }
-
-    private void editTrait(String resident, String city) {
-        Map<String, String> map = new HashMap<>();
-        map.put("resident", resident);
-        map.put("serviceTime", "");
-        map.put("serviceDate", "");
-        OkGo.<ResponseData>post(UrlConstant.EDIT_TRAIT)
-                .upJson(gson.toJson(map))
-                .execute(new JsonCallback<ResponseData>() {
-                    @Override
-                    public void onSuccess(ResponseData response) {
-                        toast(response.getMsg());
-                        if (response.isSuccess()) {
-                            loginInfo.setResident(resident);
-                            loginInfo.setResidentName(city);
-                            CurrentUser.getInstance().login(loginInfo);
-                            notifyInfo();
-                        }
-                    }
-                });
     }
 
     @Override
@@ -273,6 +245,12 @@ public class PersonInfoActivity extends BaseActivity {
                                              }
                                          }
                                 );
+                    }
+                    break;
+                case 22:
+                    //选择城市
+                    if(data!=null && data.getStringExtra("city")!=null){
+                        mTvResident.setText(data.getStringExtra("city"));
                     }
                     break;
             }

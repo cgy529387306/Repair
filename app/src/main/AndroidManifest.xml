@@ -101,6 +101,12 @@
         <activity android:name=".activity.user.WithdrawalCashActivity"/>
         <activity android:name=".activity.user.ChooseCategoryActivity"/>
         <activity android:name=".activity.user.UpdateAlipayActivity"/>
+        <activity android:name=".activity.user.SelectCityActivity"/>
+        <activity android:name=".activity.user.ServiceProviderActivity"/>
+        <activity android:name=".activity.user.ServiceProviderEmptyActivity"/>
+        <activity android:name=".activity.user.JoinServiceProviderActivity"/>
+        <activity android:name=".activity.user.ApplyServiceProviderActivity"/>
+        <activity android:name=".activity.user.TransactionDetailsActivity"/>
 
 
         <activity android:name=".activity.order.MyOrderActivity"/>
@@ -120,11 +126,6 @@
         <activity android:name=".activity.user.ServiceTimeActivity"/>
         <activity android:name=".activity.setting.ComplaintActivity"/>
         <activity android:name=".activity.LookImageActivity"/>
-        <activity android:name=".activity.user.ServiceProviderActivity"/>
-        <activity android:name=".activity.user.ServiceProviderEmptyActivity"/>
-        <activity android:name=".activity.user.JoinServiceProviderActivity"/>
-        <activity android:name=".activity.user.ApplyServiceProviderActivity"/>
-        <activity android:name=".activity.user.TransactionDetailsActivity"/>
 
         <service
             android:name=".service.InitService"
