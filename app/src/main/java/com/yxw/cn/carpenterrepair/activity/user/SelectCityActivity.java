@@ -51,18 +51,14 @@ public class SelectCityActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        mLocationService = new LocationService(this);
-        mLocationService.registerListener(mLocationListener);
         TitleBar titleBar = findViewById(R.id.titlebar);
         titleBar.setTitle("常驻");
         mIndexableLayout =  findViewById(R.id.indexableLayout);
         mIndexableLayout.setLayoutManager(new LinearLayoutManager(this));
-    }
-
-    @Override
-    public void initData() {
         initAdapter();
         setListener();
+        mLocationService = new LocationService(this);
+        mLocationService.registerListener(mLocationListener);
         mLocationService.start();
     }
 
@@ -116,8 +112,6 @@ public class SelectCityActivity extends BaseActivity {
                     intent.putExtra("city", entity.getName());
                     setResult(RESULT_OK, intent);
                     finish();
-                } else {
-//                    ToastUtil.showShort(SelectCityActivity.this, "选中Header/Footer:" + entity.getNick() + "  当前位置:" + currentPosition);
                 }
             }
         });
@@ -179,7 +173,7 @@ public class SelectCityActivity extends BaseActivity {
             public VH(View itemView) {
                 super(itemView);
                 hotCityGrid = (QGridView)itemView.findViewById(R.id.item_hot_city);
-                tvCurrentCity = itemView.findViewById(R.id.tv_current_city);
+                mTvCurrentCity = tvCurrentCity = itemView.findViewById(R.id.tv_current_city);
             }
         }
     }

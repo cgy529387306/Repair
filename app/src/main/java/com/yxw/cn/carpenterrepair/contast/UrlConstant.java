@@ -43,6 +43,18 @@ public class UrlConstant {
     public final static String SAVE_CATEGORY = BASE_USER + "/ms70/api/user/info/saveProject";//新增用户项目
 
 
+    public final static String ORDER_CANCEL = BASE_USER + "/ms60/api/fix/order/accept/cancelReceiveOrder/{orderId}";//工程师取消接单
+    public final static String ORDER_CONFIRM = BASE_USER + "/ms60/api/fix/order/accept/confirmArrival";//工程师确认到场
+    public final static String ORDER_FINISH = BASE_USER + "/ms60/api/fix/order/accept/endServiceBycode";//工程师服务完成
+    public final static String ORDER_RECEIVE = BASE_USER + "/ms60/api/fix/order/accept/receive/{orderId}";//工程师确认接单
+    public final static String ORDER_RESERVATION = BASE_USER + "/ms60/api/fix/order/accept/reservation";//工程师预约上门时间
+    public final static String ORDER_START = BASE_USER + "/ms60/api/fix/order/accept/startService/{orderId}";//工程师开始服务
+    public final static String ORDER_TURN_RESERVATION = BASE_USER + "/ms60/api/fix/order/accept/turnReservation";//工程师开始服务
+    public final static String ORDER_LIST = BASE_USER + "/ms60/api/fix/order/findAll";//订单条件查询
+    public final static String ORDER_STATUS_LIST = BASE_USER + "/ms60/api/fix/order/getOrderStatusList";//getOrderStatusList
+    public final static String ORDER_DETAIL = BASE_USER + "/ms60/api/fix/order/view/{orderId}";//获取订单详情
+
+
 
     public final static String GET_REGION_TREE = BASE_URL + "/api/region/tree";
     public final static String GET_SERVICE_FEE = BASE_URL + "/api/region/serviceFee";

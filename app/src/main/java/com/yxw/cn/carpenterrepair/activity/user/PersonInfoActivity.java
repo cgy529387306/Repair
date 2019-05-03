@@ -221,40 +221,78 @@ public class PersonInfoActivity extends BaseActivity {
                     //上传头像
                     List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
                     if (selectList.size() > 0) {
-                        showLoading();
-                        HashMap<String, String> map = new HashMap<>();
-                        map.put("avatar", Base64Util.getBase64ImageStr(selectList.get(0).getCompressPath()));
-                        AppUtil.showPic(PersonInfoActivity.this, mIvAvatar, selectList.get(0).getCompressPath());
-                        showLoading();
-                        OkGo.<ResponseData<String>>post(UrlConstant.CHANGE_AVATAR)
-                                .upJson(gson.toJson(map))
-                                .execute(new JsonCallback<ResponseData<String>>() {
-                                             @Override
-                                             public void onSuccess(ResponseData<String> response) {
-                                                 dismissLoading();
-                                                 toast(response.getMsg());
-                                                 if (response.isSuccess()) {
-                                                     EventBusUtil.post(MessageConstant.NOTIFY_GET_INFO);
-                                                 }
-                                             }
-
-                                             @Override
-                                             public void onError(Response<ResponseData<String>> response) {
-                                                 super.onError(response);
-                                                 dismissLoading();
-                                             }
-                                         }
-                                );
+                       LocalMedia localMedia = selectList.get(0);
+                       doUploadAvatar(localMedia);
                     }
                     break;
                 case 22:
                     //选择城市
                     if(data!=null && data.getStringExtra("city")!=null){
-                        mTvResident.setText(data.getStringExtra("city"));
+                        String city = data.getStringExtra("city");
+                        doSaveCity(city);
                     }
                     break;
             }
         }
+    }
+
+    private void doUploadAvatar(LocalMedia localMedia){
+        if (localMedia==null && localMedia.getCompressPath()==null){
+            return;
+        }
+        showLoading();
+        HashMap<String, String> map = new HashMap<>();
+        map.put("avatar", Base64Util.getBase64ImageStr(localMedia.getCompressPath()));
+        AppUtil.showPic(PersonInfoActivity.this, mIvAvatar, localMedia.getCompressPath());
+        OkGo.<ResponseData<String>>post(UrlConstant.CHANGE_AVATAR)
+                .upJson(gson.toJson(map))
+                .execute(new JsonCallback<ResponseData<String>>() {
+                             @Override
+                             public void onSuccess(ResponseData<String> response) {
+                                 dismissLoading();
+                                 toast(response.getMsg());
+                                 if (response.isSuccess()) {
+                                     EventBusUtil.post(MessageConstant.NOTIFY_GET_INFO);
+                                 }
+                             }
+
+                             @Override
+                             public void onError(Response<ResponseData<String>> response) {
+                                 super.onError(response);
+                                 dismissLoading();
+                             }
+                         }
+                );
+    }
+
+    private void doSaveCity(String city){
+        showLoading();
+        HashMap<String, String> map = new HashMap<>();
+        map.put("residentArea", city);
+        OkGo.<ResponseData<String>>post(UrlConstant.CHANGE_USERINFO)
+                .upJson(gson.toJson(map))
+                .execute(new JsonCallback<ResponseData<String>>() {
+                             @Override
+                             public void onSuccess(ResponseData<String> response) {
+                                 dismissLoading();
+                                 if (response != null){
+                                     if (response.isSuccess()) {
+                                         mTvResident.setText(city);
+                                         EventBusUtil.post(MessageConstant.NOTIFY_GET_INFO);
+                                         finish();
+                                     } else {
+                                         toast(response.getMsg());
+                                     }
+                                 }
+                             }
+
+                             @Override
+                             public void onError(Response<ResponseData<String>> response) {
+                                 super.onError(response);
+                                 dismissLoading();
+                             }
+                         }
+                );
     }
 
     @Override

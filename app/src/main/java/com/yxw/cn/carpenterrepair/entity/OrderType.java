@@ -10,6 +10,8 @@ public class OrderType implements Serializable{
 
     /**
      * 0:待接单  1：待预约  2：待完成 3：待上门  4：已完成
+     *
+     * 订单整体状态 0待派单1待预约2待上门3待完成4已完成5待完单审核6取消单7异常单8未完成
      */
     private int type;
 

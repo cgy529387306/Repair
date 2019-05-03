@@ -17,13 +17,18 @@ import com.yxw.cn.carpenterrepair.adapter.OrderAdapter;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.MessageEvent;
+import com.yxw.cn.carpenterrepair.entity.OrderFilterRequest;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.entity.UserOrder;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.util.EventBusUtil;
+import com.yxw.cn.carpenterrepair.util.Helper;
+import com.yxw.cn.carpenterrepair.util.JsonHelper;
 import com.yxw.cn.carpenterrepair.util.SpaceItemDecoration;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,8 +48,9 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
     private OrderAdapter mAdapter;
     private int page = 2;
     private boolean isNext = false;
-    private int state;
-    private int type;
+    private int mOrderStatus;
+    private int mOrderType;
+    private String mBookingTime;
 
     /**
      * @param state 0:今天 1:明天 2:全部
@@ -66,11 +72,24 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
 
     @Override
     protected void initView() {
+        mOrderStatus = (int) getArguments().get(KEY_STATE);
+        mOrderType = (int) getArguments().get(KEY_TYPE);
+        if (mOrderType==0){
+            mBookingTime = Helper.date2String(new Date(),"yyyy-MM-dd");
+        }else if (mOrderType==1){
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(calendar.DATE,1);//把日期往后增加一天.整数往后推,负数往前移动
+            mBookingTime = Helper.date2String(calendar.getTime(),"yyyy-MM-dd");
+        }else{
+            mBookingTime = "";
+        }
+
         mAdapter = new OrderAdapter(new ArrayList<>());
         mAdapter.setOnItemClickListener(this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.addItemDecoration(new SpaceItemDecoration(20));
         mRecyclerView.setAdapter(mAdapter);
+        getOrderData(1);
     }
 
     @Override
@@ -85,13 +104,12 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
     }
 
     private void getOrderData(int p) {
+        OrderFilterRequest filterRequest = new OrderFilterRequest(mBookingTime,mOrderStatus+"");
         Map<String, Object> map = new HashMap<>();
-        map.put("categoryId", null);
-        map.put("agencyId", null);
-        map.put("createTime", null);
-        map.put("page", p);
-        map.put("limit", loadCount);
-        OkGo.<ResponseData<UserOrder>>post(UrlConstant.WORKER_WAIT_ORDER_LIST)
+        map.put("filter", JsonHelper.toJson(filterRequest));
+        map.put("pageIndex", p);
+        map.put("pageSize", loadCount);
+        OkGo.<ResponseData<UserOrder>>post(UrlConstant.ORDER_LIST)
                 .upJson(gson.toJson(map))
                 .execute(new JsonCallback<ResponseData<UserOrder>>() {
                     @Override
@@ -160,7 +178,7 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
         super.onEvent(event);
         switch (event.getId()) {
             case MessageConstant.NOTIFY_ORDER:
-                getData();
+                getOrderData(1);
                 break;
         }
     }

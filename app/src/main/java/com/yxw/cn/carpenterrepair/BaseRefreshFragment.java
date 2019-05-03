@@ -32,7 +32,7 @@ public abstract class BaseRefreshFragment extends BaseFragment implements OnRefr
     public Context mContext;
     public Gson gson = new Gson();
     private Unbinder mUnBinder;
-    public static final int loadCount=10;
+    public static final int loadCount = 10;
 
     @Nullable
     @Override
