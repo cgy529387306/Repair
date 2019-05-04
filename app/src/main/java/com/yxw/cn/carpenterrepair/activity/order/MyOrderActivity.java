@@ -48,9 +48,9 @@ public class MyOrderActivity extends BaseActivity{
         titlebar.setTitle(orderType.getName());
 
         mFragmentList = new ArrayList<>();
-        mFragmentList.add(OrderFragment.getInstance(0,orderType.getType()));
-        mFragmentList.add(OrderFragment.getInstance(1,orderType.getType()));
-        mFragmentList.add(OrderFragment.getInstance(2,orderType.getType()));
+        mFragmentList.add(OrderFragment.getInstance(orderType.getStatus(),0));
+        mFragmentList.add(OrderFragment.getInstance(orderType.getStatus(),1));
+        mFragmentList.add(OrderFragment.getInstance(orderType.getStatus(),2));
         mViewPager.setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {

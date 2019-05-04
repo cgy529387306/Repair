@@ -27,20 +27,17 @@ import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 import com.yxw.cn.carpenterrepair.entity.LoginInfo;
 import com.yxw.cn.carpenterrepair.entity.MessageEvent;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
-import com.yxw.cn.carpenterrepair.listerner.OnChooseAddrListener;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.util.AppUtil;
 import com.yxw.cn.carpenterrepair.util.Base64Util;
 import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 import com.yxw.cn.carpenterrepair.util.Helper;
-import com.yxw.cn.carpenterrepair.util.RegionPickerUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -237,7 +234,7 @@ public class PersonInfoActivity extends BaseActivity {
     }
 
     private void doUploadAvatar(LocalMedia localMedia){
-        if (localMedia==null && localMedia.getCompressPath()==null){
+        if (localMedia==null || localMedia.getCompressPath()==null){
             return;
         }
         showLoading();

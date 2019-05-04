@@ -10,8 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.android.tu.loadingdialog.LoadingDailog;
 import com.google.gson.Gson;
 import com.yxw.cn.carpenterrepair.entity.MessageEvent;
+import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -20,14 +22,13 @@ import java.io.Serializable;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 
 public abstract class BaseFragment extends Fragment {
 
     public Context mContext;
     public Gson gson = new Gson();
     private Unbinder mUnBinder;
-
+    private LoadingDailog loadDialog;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -62,6 +63,23 @@ public abstract class BaseFragment extends Fragment {
         Intent intent = new Intent(getActivity(), cls);
         intent.putExtra("data", (Serializable) object);
         startActivity(intent);
+    }
+
+    public void showLoading() {
+        if (loadDialog == null) {
+            LoadingDailog.Builder loadBuilder = new LoadingDailog.Builder(getActivity())
+                    .setMessage("请稍后...")
+                    .setCancelable(true)
+                    .setCancelOutside(true);
+            loadDialog = loadBuilder.create();
+        }
+        loadDialog.show();
+    }
+
+    public void dismissLoading() {
+        if (loadDialog != null) {
+            loadDialog.dismiss();
+        }
     }
 
     protected abstract int getLayout();

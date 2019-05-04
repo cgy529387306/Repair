@@ -115,17 +115,18 @@ public class AppUtil {
         }
     }
 
-    public static String getWorkerOrderStatus(UserOrder.ListBean item) {
-        if (item.getOrderStatus() < 35) {
-            return "我要接单";
-        } else if (item.getOrderStatus() >= 35 && item.getOrderStatus() < 40) {
-            return "等待上门";
-        } else if (item.getOrderStatus() >= 40 && item.getOrderStatus() < 60) {
-            return "进行中";
-        } else if (item.getOrderStatus() >= 60) {
+    public static String getOrderStatus(int orderStatus) {
+        //待接单 待预约 待上门 待完成 已完成
+        if (orderStatus<=20){
+            return "待接单";
+        }else if (orderStatus<=40){
+            return "待预约";
+        }else if (orderStatus<=55){
+            return "待上门";
+        }else if (orderStatus<90){
+            return "待完成";
+        }else{
             return "已完成";
-        } else {
-            return "";
         }
     }
 

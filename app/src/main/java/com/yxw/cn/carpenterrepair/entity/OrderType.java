@@ -13,7 +13,7 @@ public class OrderType implements Serializable{
      *
      * 订单整体状态 0待派单1待预约2待上门3待完成4已完成5待完单审核6取消单7异常单8未完成
      */
-    private int type;
+    private int status;
 
     private int drawableId;
 
@@ -35,16 +35,16 @@ public class OrderType implements Serializable{
         this.name = name;
     }
 
-    public int getType() {
-        return type;
+    public int getStatus() {
+        return status;
     }
 
-    public void setType(int type) {
-        this.type = type;
+    public void setStatus(int status) {
+        this.status = status;
     }
 
-    public OrderType(int type, int drawableId, String name) {
-        this.type = type;
+    public OrderType(int status, int drawableId, String name) {
+        this.status = status;
         this.drawableId = drawableId;
         this.name = name;
     }
