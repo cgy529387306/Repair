@@ -23,7 +23,6 @@ import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.entity.ResponseData3;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.util.AppUtil;
-import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -70,27 +69,6 @@ public class UserFragment extends BaseFragment {
             mTvPhone.setText(AppUtil.getStarPhone(loginInfo.getMobile()));
             AppUtil.showPic(mContext, mIvAvatar, loginInfo.getAvatar());
         }
-    }
-
-    @Override
-    public void getData() {
-        getUserInfo();
-    }
-
-
-    private void getUserInfo(){
-        OkGo.<ResponseData<LoginInfo>>get(UrlConstant.GET_WORKER_INFO)
-                .execute(new JsonCallback<ResponseData<LoginInfo>>() {
-                             @Override
-                             public void onSuccess(ResponseData<LoginInfo> response) {
-                                 if (response.isSuccess()) {
-                                     CurrentUser.getInstance().login(response.getData());
-                                     EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_INFO);
-                                     notifyInfo();
-                                 }
-                             }
-                         }
-                );
     }
 
 
@@ -173,9 +151,6 @@ public class UserFragment extends BaseFragment {
     public void onEvent(MessageEvent event) {
         super.onEvent(event);
         switch (event.getId()) {
-            case MessageConstant.NOTIFY_GET_INFO:
-                getUserInfo();
-                break;
             case MessageConstant.NOTIFY_CARRY_AMONUT:
                 OkGo.<ResponseData<Asset>>post(UrlConstant.GET_ASSETS)
                         .execute(new JsonCallback<ResponseData<Asset>>() {

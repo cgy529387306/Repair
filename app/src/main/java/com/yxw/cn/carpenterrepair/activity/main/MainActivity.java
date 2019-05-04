@@ -8,10 +8,20 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.gyf.immersionbar.ImmersionBar;
+import com.lzy.okgo.OkGo;
 import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
+import com.yxw.cn.carpenterrepair.contast.MessageConstant;
+import com.yxw.cn.carpenterrepair.contast.UrlConstant;
+import com.yxw.cn.carpenterrepair.entity.Asset;
+import com.yxw.cn.carpenterrepair.entity.CurrentUser;
+import com.yxw.cn.carpenterrepair.entity.LoginInfo;
+import com.yxw.cn.carpenterrepair.entity.MessageEvent;
+import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.fragment.HomeFragment;
 import com.yxw.cn.carpenterrepair.fragment.UserFragment;
+import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
+import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -40,6 +50,7 @@ public class MainActivity extends BaseActivity {
     public void initView() {
         fragmentManager = getSupportFragmentManager();
         showFragment(0);
+        getUserInfo();
     }
 
     private void showFragment(int page) {
@@ -122,6 +133,32 @@ public class MainActivity extends BaseActivity {
                 Drawable drawable9 = getResources().getDrawable(R.drawable.personal_on);
                 drawable9.setBounds(0, 0, drawable9.getMinimumWidth(), drawable9.getMinimumHeight());
                 tv_personal.setCompoundDrawables(null, drawable9, null, null);
+                break;
+        }
+    }
+
+    private void getUserInfo(){
+        OkGo.<ResponseData<LoginInfo>>get(UrlConstant.GET_WORKER_INFO)
+                .execute(new JsonCallback<ResponseData<LoginInfo>>() {
+                             @Override
+                             public void onSuccess(ResponseData<LoginInfo> response) {
+                                 if (response!=null){
+                                     if (response.isSuccess()) {
+                                         CurrentUser.getInstance().login(response.getData());
+                                         EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_INFO);
+                                     }
+                                 }
+                             }
+                         }
+                );
+    }
+
+    @Override
+    public void onEvent(MessageEvent event) {
+        super.onEvent(event);
+        switch (event.getId()) {
+            case MessageConstant.NOTIFY_GET_INFO:
+                getUserInfo();
                 break;
         }
     }

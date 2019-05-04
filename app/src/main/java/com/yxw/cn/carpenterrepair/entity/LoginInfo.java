@@ -22,6 +22,7 @@ public class LoginInfo {
     private List<BeGoodAtCategory> tags;
     private long expire;
     private int role;  //角色 0用户 1兼职工程师 2专职工程师
+    private int serviceStatus;
     private String idCardBack;
     private String idCardFront;
     private String idCardHand;
@@ -225,5 +226,13 @@ public class LoginInfo {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public int getServiceStatus() {
+        return serviceStatus;
+    }
+
+    public void setServiceStatus(int serviceStatus) {
+        this.serviceStatus = serviceStatus;
     }
 }

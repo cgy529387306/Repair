@@ -17,6 +17,7 @@ import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.activity.order.MyOrderActivity;
 import com.yxw.cn.carpenterrepair.adapter.HomeMsgAdapter;
 import com.yxw.cn.carpenterrepair.adapter.OrderTypeAdapter;
+import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 import com.yxw.cn.carpenterrepair.entity.OrderType;
 import com.yxw.cn.carpenterrepair.util.ImageUtils;
 import com.yxw.cn.carpenterrepair.view.RecycleViewDivider;
@@ -80,9 +81,11 @@ public class HomeFragment extends BaseRefreshFragment {
         mGridCate.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("type",getOrderTypeList().get(i));
-                startActivity(MyOrderActivity.class,bundle);
+                if(CurrentUser.getInstance().isLogin() && CurrentUser.getInstance().getServiceStatus()==1){
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("type",getOrderTypeList().get(i));
+                    startActivity(MyOrderActivity.class,bundle);
+                }
             }
         });
     }
