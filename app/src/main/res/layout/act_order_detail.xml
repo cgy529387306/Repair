@@ -335,22 +335,34 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <Button
-            android:id="@+id/cancel"
+        <TextView
+            android:id="@+id/tv_operate0"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_weight="1"
             android:background="@color/white"
+            android:gravity="center"
             android:textSize="16sp"
             android:text="异常反馈"
             android:textColor="#666666" />
-        <Button
-            android:id="@+id/confirm"
+        <TextView
+            android:id="@+id/tv_operate1"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:text="异常反馈"
+            android:textColor="#666666" />
+        <TextView
+            android:id="@+id/tv_operate2"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:gravity="center"
             android:background="@drawable/bg_btn_rect_red"
-            android:text="预约时间"
+            android:text="联系用户"
             android:textColor="#ffffff" />
     </LinearLayout>
 </LinearLayout>

@@ -1,6 +1,5 @@
 package com.yxw.cn.carpenterrepair.activity.order;
 
-import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
@@ -9,10 +8,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,11 +33,8 @@ import com.baidu.mapapi.search.geocode.GeoCodeResult;
 import com.baidu.mapapi.search.geocode.GeoCoder;
 import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
-import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
-import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.OnClickListener;
-import com.orhanobut.dialogplus.ViewHolder;
+import com.lzy.okgo.model.Response;
 import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.adapter.UserOrderDetailAdapter;
@@ -50,13 +43,13 @@ import com.yxw.cn.carpenterrepair.adapter.UserOrderStatusAdapter;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.MessageEvent;
+import com.yxw.cn.carpenterrepair.entity.Order;
 import com.yxw.cn.carpenterrepair.entity.OrderItem;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.entity.UserOrder;
 import com.yxw.cn.carpenterrepair.listerner.OnChooseDateListener;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
-import com.yxw.cn.carpenterrepair.util.AppUtil;
-import com.yxw.cn.carpenterrepair.util.DoubleUtil;
+import com.yxw.cn.carpenterrepair.pop.ContactPop;
 import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 import com.yxw.cn.carpenterrepair.util.TimePickerUtil;
 import com.yxw.cn.carpenterrepair.util.TimeUtil;
@@ -64,24 +57,19 @@ import com.yxw.cn.carpenterrepair.util.ToastUtil;
 import com.yxw.cn.carpenterrepair.view.TitleBar;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Predicate;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * 订单详情
  */
-public class OrderDetailActivity extends BaseActivity {
+public class OrderDetailActivity extends BaseActivity implements ContactPop.SelectListener {
 
     @BindView(R.id.titlebar)
     TitleBar titleBar;
@@ -107,10 +95,12 @@ public class OrderDetailActivity extends BaseActivity {
     TextView tvBookingTime;
     @BindView(R.id.tv_remark)
     TextView tvRemark;
-    @BindView(R.id.confirm)
-    Button btConfirm;
-    @BindView(R.id.cancel)
-    Button btCancel;
+    @BindView(R.id.tv_operate0)
+    TextView tvOperate0;
+    @BindView(R.id.tv_operate1)
+    TextView tvOperate1;
+    @BindView(R.id.tv_operate2)
+    TextView tvOperate2;
     @BindView(R.id.rv_order_detail)
     RecyclerView orderRv;
     @BindView(R.id.rv_order_status)
@@ -120,6 +110,7 @@ public class OrderDetailActivity extends BaseActivity {
     @BindView(R.id.mapView)
     MapView mMapView;
 
+    private OrderItem orderItem;
     private String orderId;
     private String orderStatus;
     private String orderAddress;
@@ -138,36 +129,7 @@ public class OrderDetailActivity extends BaseActivity {
     private BaiduMap mBaiDuMap;
     private LocationClient mLocationClient;
     private MyLocationListener mLocationListener;
-    private GeoCoder mSearch;
-    private OnGetGeoCoderResultListener geoCoderListener = new OnGetGeoCoderResultListener() {
-        public void onGetGeoCodeResult(GeoCodeResult result) {
-            if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
-                ToastUtil.show("没有检索到订单具体位置！");
-                //没有检索到结果
-            } else {
-                LatLng point = new LatLng(result.getLocation().latitude, result.getLocation().longitude);//坐标参数（纬度，经度）
-                BitmapDescriptor mCurrentMarker = BitmapDescriptorFactory
-                        .fromView(View.inflate(OrderDetailActivity.this, R.layout.view_location_icon, null));
-                //构建MarkerOption，用于在地图上添加Marker
-                OverlayOptions option = new MarkerOptions()
-                        .position(point)
-                        .icon(mCurrentMarker);
-                mBaiDuMap.addOverlay(option);
-            }
-        }
-
-        @Override
-        public void onGetReverseGeoCodeResult(ReverseGeoCodeResult result) {
-            if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
-                //没有找到检索结果
-            } else {
-                Map<String, Object> map = new HashMap<>();
-                map.put("result", result);
-                finish();
-            }
-            //获取反向地理编码结果
-        }
-    };
+    private ContactPop mContactPop;
 
     @Override
     protected int getLayoutResId() {
@@ -177,7 +139,7 @@ public class OrderDetailActivity extends BaseActivity {
     @Override
     public void initView() {
         titleBar.setTitle("订单详情");
-        OrderItem orderItem = (OrderItem) getIntent().getSerializableExtra("data");
+        orderItem = (OrderItem) getIntent().getSerializableExtra("data");
         orderId = orderItem.getOrderId();
         orderList = new ArrayList<>();
         orderAdapter = new UserOrderDetailAdapter(orderList);
@@ -199,195 +161,199 @@ public class OrderDetailActivity extends BaseActivity {
         };
         picRv.setLayoutManager(gridLayoutManager);
         picRv.setAdapter(picAdapter);
+        initLocation();
+        initOrderData();
+        initOrderStatus();
+    }
+
+    private void initOrderData(){
+        if (orderItem!=null){
+            tvName.setText(orderItem.getName());
+            tvTel.setText(orderItem.getMobile());
+            tvAddress.setText(orderItem.getAddress());
+            tvTotalPrice.setText(String.valueOf(orderItem.getTotalPrice()));
+            tvOrderNo.setText(orderItem.getOrderSn());
+        }
+    }
+
+    private void initOrderStatus(){
+        int orderStatus = orderItem.getOrderStatus();
+        if (orderStatus<=20){
+            //待接单
+            tvOperate0.setVisibility(View.GONE);
+            tvOperate1.setVisibility(View.GONE);
+            tvOperate2.setVisibility(View.VISIBLE);
+            tvOperate2.setText("我要接单");
+            tvOperate2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showLoading();
+                    OkGo.<ResponseData<String>>post(UrlConstant.ORDER_RECEIVE+orderItem.getOrderId())
+                            .execute(new JsonCallback<ResponseData<String>>() {
+                                         @Override
+                                         public void onSuccess(ResponseData<String> response) {
+                                             dismissLoading();
+                                             if (response!=null){
+                                                 if (response.isSuccess()) {
+                                                     toast("抢单成功");
+                                                     EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
+                                                 }else{
+                                                     toast(response.getMsg());
+                                                 }
+                                             }
+                                         }
+
+                                         @Override
+                                         public void onError(Response<ResponseData<String>> response) {
+                                             super.onError(response);
+                                             dismissLoading();
+                                         }
+                                     }
+                            );
+                }
+            });
+        }else if (orderStatus<=40){
+            //待预约
+            tvOperate0.setVisibility(View.GONE);
+            tvOperate1.setVisibility(View.VISIBLE);
+            tvOperate1.setText("异常反馈");
+            tvOperate1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(OrderAbnormalActivity.class);
+                }
+            });
+
+            tvOperate2.setVisibility(View.VISIBLE);
+            tvOperate2.setText("联系用户");
+            tvOperate2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mContactPop==null){
+                        mContactPop = new ContactPop(OrderDetailActivity.this,OrderDetailActivity.this,orderItem);
+                    }
+                    mContactPop.showPopupWindow(mMapView);
+                }
+            });
+        }else if (orderStatus<=55){
+            //待上门
+            tvOperate0.setVisibility(View.VISIBLE);
+            tvOperate0.setText("改约");
+            tvOperate0.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    TimePickerUtil.showYearPicker(OrderDetailActivity.this, new OnChooseDateListener() {
+                        @Override
+                        public void getDate(Date date) {
+                            String startTime = TimeUtil.dateToString(date, "yyyy-MM-dd HH:mm:00");
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.setTime(date);
+                            calendar.set(Calendar.HOUR,
+                                    calendar.get(Calendar.HOUR) + 1);
+                            String endTime = TimeUtil.dateToString(calendar.getTime(), "yyyy-MM-dd HH:mm:00");
+                            showLoading();
+                            HashMap<String, Object> map = new HashMap<>();
+                            map.put("orderId", orderItem.getOrderId());
+                            map.put("bookingStartTime", startTime);
+                            map.put("bookingEndTime", endTime);
+                            OkGo.<ResponseData<String>>post(UrlConstant.ORDER_TURN_RESERVATION)
+                                    .upJson(gson.toJson(map))
+                                    .execute(new JsonCallback<ResponseData<String>>() {
+                                        @Override
+                                        public void onSuccess(ResponseData<String> response) {
+                                            dismissLoading();
+                                            ToastUtil.show(response.getMsg());
+                                            if (response.isSuccess()) {
+                                                toast("预约成功");
+                                                EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onError(Response<ResponseData<String>> response) {
+                                            super.onError(response);
+                                            dismissLoading();
+                                        }
+                                    });
+
+                        }
+                    });
+                }
+            });
+
+            tvOperate1.setVisibility(View.VISIBLE);
+            tvOperate1.setText("异常反馈");
+            tvOperate1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(OrderAbnormalActivity.class);
+                }
+            });
+
+            tvOperate2.setVisibility(View.VISIBLE);
+            tvOperate2.setText("签到");
+            tvOperate2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("order",orderItem);
+                    startActivity(OrderSignInActivity.class,bundle);
+                }
+            });
+        }else if (orderStatus<90){
+            //待完成
+            tvOperate0.setVisibility(View.GONE);
+            tvOperate1.setVisibility(View.VISIBLE);
+            tvOperate1.setText("异常反馈");
+            tvOperate1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(OrderAbnormalActivity.class);
+                }
+            });
+            tvOperate2.setVisibility(View.VISIBLE);
+            tvOperate2.setText("服务完成");
+            tvOperate2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+        }else{
+            //已完成
+            tvOperate0.setVisibility(View.GONE);
+            tvOperate1.setVisibility(View.GONE);
+            tvOperate2.setVisibility(View.VISIBLE);
+            tvOperate2.setText("查看");
+            tvOperate2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                }
+            });
+        }
     }
 
     @Override
     public void getData() {
-        OkGo.<ResponseData<UserOrder.ListBean>>post(UrlConstant.ORDER_DETAIL+orderId)
-                .execute(new JsonCallback<ResponseData<UserOrder.ListBean>>() {
-                    @SuppressLint("CheckResult")
+        OkGo.<ResponseData<OrderItem>>post(UrlConstant.ORDER_DETAIL+orderId)
+                .execute(new JsonCallback<ResponseData<OrderItem>>() {
                     @Override
-                    public void onSuccess(ResponseData<UserOrder.ListBean> response) {
-                        listBean = response.getData();
-                        connectFlag = listBean.getContactClient();
-                        orderStatus = AppUtil.getUserOrderStatus(response.getData());
-                        if(response.getData().getCity()!=null){
-                            city = response.getData().getCity();
-                        }
-                        if(response.getData().getAddress()!=null){
-                            orderAddress = response.getData().getAddress();
-                        }
-                        tvName.setText(response.getData().getName()==null?"":response.getData().getName());
-                        tvTel.setText(response.getData().getMobile()==null?"":response.getData().getMobile());
-                        tvAddress.setText(response.getData().getProvince()==null?"":response.getData().getProvince()
-                                + response.getData().getCity()==null?"":response.getData().getCity()
-                                + response.getData().getDistrict()==null?"":response.getData().getDistrict()
-                                + response.getData().getAddress()==null?"":response.getData().getAddress());
-                        tvTitle.setText(response.getData().getCategoryName()==null?"":response.getData().getCategoryName());
-                        tvTitle2.setText(response.getData().getCategoryName()==null?"":response.getData().getCategoryName());
-                        tvTotalPrice.setText("￥" + DoubleUtil.getTwoDecimal(response.getData().getTotalPrice()));
-                        tvOrderNo.setText(response.getData().getOrderSn()==null?"":response.getData().getOrderSn());
-                        tvCreateTime.setText(response.getData().getCreateTime()==null?"":response.getData().getCreateTime());
-                        tvBookingTime.setText(response.getData().getBookingDate() + " " + response.getData().getBookingTime());
-                        tvRemark.setText(response.getData().getRemark()==null?"":response.getData().getRemark());
+                    public void onSuccess(ResponseData<OrderItem> response) {
 
-                        orderList.clear();
-                        orderList.addAll(response.getData().getOrderItems());
-                        orderAdapter.notifyDataSetChanged();
-                        picList.clear();
-                        picList.addAll(response.getData().getPicList());
-                        picAdapter.notifyDataSetChanged();
-
-                        statusList = new ArrayList<>();
-                        statusList.addAll(response.getData().getTimelineList());
-                        statusAdapter = new UserOrderStatusAdapter(statusList);
-                        LinearLayoutManager layoutManager1 = new LinearLayoutManager(OrderDetailActivity.this) {
-                            @Override
-                            public boolean canScrollVertically() {
-                                return false;
-                            }
-                        };
-                        statusRv.setLayoutManager(layoutManager1);
-                        statusRv.setAdapter(statusAdapter);
-                        if (orderStatus.equals("未接单")) {
-                            dissmissCancel();
-                            connectFlag = -1;
-                            tvRestTime.setVisibility(View.VISIBLE);
-                            if (TimeUtil.compareTime(response.getData().getBookingDate() + " " + response.getData().getBookingTime())) {
-                                Observable.interval(0, 1, TimeUnit.SECONDS)
-                                        .takeWhile(new Predicate<Long>() {
-                                            @Override
-                                            public boolean test(Long aLong) throws Exception {
-                                                return !mStop;
-                                            }
-                                        })
-                                        .subscribeOn(Schedulers.io())
-                                        .observeOn(AndroidSchedulers.mainThread())
-                                        .subscribe(new Consumer<Long>() {
-                                            @Override
-                                            public void accept(Long aLong) throws Exception {
-                                                tvRestTime.setText("接单倒计时：" + TimeUtil.reFreshTime(response.getData().getBookingDate() + " " + response.getData().getBookingTime()));
-                                            }
-                                        });
-                                btConfirm.setText("我要接单");
-                                btCancel.setVisibility(View.GONE);
-                            } else {
-                                btConfirm.setVisibility(View.GONE);
-                                btCancel.setVisibility(View.GONE);
-                                tvRestTime.setText("订单时间已过期");
-                            }
-                        } else if (orderStatus.equals("待预约")) {
-                            cancelOrder();
-                            tvRestTime.setVisibility(View.GONE);
-                            if(response.getData().getReceiveTime()==null){
-                                btConfirm.setVisibility(View.GONE);
-                                btCancel.setVisibility(View.VISIBLE);
-                                tvRestTime.setText("预约时间异常");
-                            }else {
-                                if (TimeUtil.compareTime2(response.getData().getReceiveTime())) {
-                                    Observable.interval(0, 1, TimeUnit.SECONDS)
-                                            .takeWhile(new Predicate<Long>() {
-                                                @Override
-                                                public boolean test(Long aLong) throws Exception {
-                                                    return !mStop;
-                                                }
-                                            })
-                                            .subscribeOn(Schedulers.io())
-                                            .observeOn(AndroidSchedulers.mainThread())
-                                            .subscribe(new Consumer<Long>() {
-                                                @Override
-                                                public void accept(Long aLong) throws Exception {
-                                                    tvRestTime.setText("预约倒计时：" + TimeUtil.reFreshTime2(response.getData().getReceiveTime()));
-                                                }
-                                            });
-                                    btConfirm.setText("预约时间");
-                                    btConfirm.setVisibility(View.VISIBLE);
-                                    btCancel.setVisibility(View.VISIBLE);
-                                } else {
-                                    btConfirm.setVisibility(View.GONE);
-                                    btCancel.setVisibility(View.VISIBLE);
-                                    tvRestTime.setText("预约时间已过期");
-                                }
-                            }
-                        } else if (orderStatus.equals("待服务")) {
-                            cancelOrder();
-                            tvRestTime.setVisibility(View.VISIBLE);
-                            if (TimeUtil.compareTime(response.getData().getBookingDate() + " " + response.getData().getBookingTime())) {
-                                Observable.interval(0, 1, TimeUnit.SECONDS)
-                                        .takeWhile(new Predicate<Long>() {
-                                            @Override
-                                            public boolean test(Long aLong) throws Exception {
-                                                return !mStop;
-                                            }
-                                        })
-                                        .subscribeOn(Schedulers.io())
-                                        .observeOn(AndroidSchedulers.mainThread())
-                                        .subscribe(new Consumer<Long>() {
-                                            @Override
-                                            public void accept(Long aLong) throws Exception {
-                                                tvRestTime.setText("上门倒计时：" + TimeUtil.reFreshTime(response.getData().getBookingDate() + " " + response.getData().getBookingTime()));
-                                            }
-                                        });
-                                btConfirm.setText("上门服务");
-                                btConfirm.setVisibility(View.VISIBLE);
-                                btCancel.setVisibility(View.VISIBLE);
-                            } else {
-                                btConfirm.setVisibility(View.GONE);
-                                btCancel.setVisibility(View.VISIBLE);
-                                tvRestTime.setText("服务时间已过期");
-                            }
-                        } else if (orderStatus.equals("进行中")) {
-                            dissmissCancel();
-                            tvRestTime.setVisibility(View.GONE);
-                            btConfirm.setText("完成服务");
-                            btCancel.setVisibility(View.VISIBLE);
-                        } else {
-                            dissmissCancel();
-                            tvRestTime.setVisibility(View.GONE);
-                            btConfirm.setVisibility(View.GONE);
-                            btCancel.setVisibility(View.GONE);
-                        }
-                        initLocation();
-//                        else if (orderStatus.equals("待服务")) {
-//                            if (payStatus == 2) {
-////                                btConfirm.setText("开始服务");
-////                                btCancel.setVisibility(View.GONE);
-//                            } else {
-////                                btConfirm.setText("维修人员到场验证");
-////                                btCancel.setVisibility(View.VISIBLE);
-//                            }
-//                        } else if (orderStatus.getText().toString().equals("进行中")) {
-////                            btConfirm.setText("确认完成订单");
-////                            btCancel.setVisibility(View.GONE);
-//                        } else {
-////                            btConfirm.setVisibility(View.GONE);
-////                            btCancel.setVisibility(View.GONE);
-//                        }
                     }
                 });
     }
 
-    @OnClick({R.id.confirm, R.id.cancel, R.id.bt_copy, R.id.tv_call})
+    @OnClick({R.id.bt_copy, R.id.tv_call})
     public void click(View view) {
         switch (view.getId()) {
             case R.id.tv_call:
-                connectFlag = -1;
-                HashMap<String, Object> map = new HashMap<>();
-                map.put("orderId", orderId);
-                OkGo.<ResponseData<String>>post(UrlConstant.CONTACT_CLIENT)
-                        .upJson(gson.toJson(map))
-                        .execute(new JsonCallback<ResponseData<String>>() {
-
-                            @Override
-                            public void onSuccess(ResponseData<String> response) {
-                                if (response.isSuccess()) {
-                                    Intent intent = new Intent(Intent.ACTION_DIAL);
-                                    Uri data = Uri.parse("icon_call:" + tvTel.getText().toString());
-                                    intent.setData(data);
-                                    startActivity(intent);
-                                }
-                            }
-                        });
+                if (orderItem!=null){
+                    Intent intent = new Intent(Intent.ACTION_DIAL);
+                    Uri data = Uri.parse("tel:" + orderItem.getMobile());
+                    intent.setData(data);
+                    startActivity(intent);
+                }
                 break;
             case R.id.bt_copy:
                 ClipboardManager mClipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
@@ -395,245 +361,9 @@ public class OrderDetailActivity extends BaseActivity {
                 mClipboardManager.setPrimaryClip(clipData);
                 toast("复制成功！");
                 break;
-            case R.id.cancel:
-                Bundle bundle = new Bundle();
-//                bundle.putInt("orderId", orderId);
-                startActivity(OrderAbnormalActivity.class, bundle);
-                /*DialogPlus dialogPlus = DialogPlus.newDialog(this)
-                        .setContentHolder(new ViewHolder(R.layout.dlg_worker_cancel_order))
-                        .setGravity(Gravity.CENTER)
-                        .setCancelable(true)
-                        .setOnClickListener(new OnClickListener() {
-                            @Override
-                            public void onClick(DialogPlus dialog, View view) {
-                                switch (view.getId()) {
-                                    case R.id.dialog_confirm:
-                                        dialog.dismiss();
-                                        HashMap<String, Integer> map = new HashMap<>();
-                                        map.put("orderId", orderId);
-                                        OkGo.<ResponseData<String>>post(UrlConstant.WORKER_CANCEL_ORDER)
-                                                .upJson(gson.toJson(map))
-                                                .execute(new JsonCallback<ResponseData<String>>() {
-                                                    @Override
-                                                    public void onSuccess(ResponseData<String> response) {
-                                                        ToastUtil.show(response.getMsg());
-                                                        if (response.getCode() == 0) {
-                                                            EventBusUtil.post(MessageConstant.NOTIFY_ORDER);
-                                                            OrderDetailActivity.this.finish();
-                                                        }
-                                                    }
-                                                });
-                                        break;
-                                    case R.id.dialog_cancel:
-                                        dialog.dismiss();
-                                        break;
-                                }
-                            }
-                        })
-                        .create();
-                dialogPlus.show();*/
-                break;
-            case R.id.confirm:
-                if (orderStatus.equals("未接单")) {
-                    DialogPlus dialogPlus1 = DialogPlus.newDialog(this)
-                            .setContentHolder(new ViewHolder(R.layout.dlg_confirm_order))
-                            .setGravity(Gravity.CENTER)
-                            .setCancelable(true)
-                            .setOnClickListener(new OnClickListener() {
-                                @Override
-                                public void onClick(DialogPlus dialog, View view) {
-                                    switch (view.getId()) {
-                                        case R.id.dialog_confirm:
-                                            dialog.dismiss();
-                                            HashMap<String, Integer> map1 = new HashMap<>();
-//                                            map1.put("orderId", orderId);
-                                            OkGo.<ResponseData<String>>post(UrlConstant.RECEIVE_ORDER)
-                                                    .upJson(gson.toJson(map1))
-                                                    .execute(new JsonCallback<ResponseData<String>>() {
-                                                        @Override
-                                                        public void onSuccess(ResponseData<String> response) {
-                                                            ToastUtil.show(response.getMsg());
-                                                            if (response.isSuccess()) {
-                                                                getData();
-                                                            }
-                                                        }
-                                                    });
-                                            break;
-                                        case R.id.dialog_cancel:
-                                            dialog.dismiss();
-                                            break;
-                                    }
-                                }
-                            })
-                            .create();
-                    dialogPlus1.show();
-                } else if (orderStatus.equals("待预约")) {
-                    TimePickerUtil.showYearPicker(this, new OnChooseDateListener() {
-                        @Override
-                        public void getDate(Date date) {
-                            String ss = TimeUtil.dateToString(date, "yyyy-MM-dd HH:mm:ss");
-                            reservationTime(ss.split(" ")[0], ss.split(" ")[1]);
-                        }
-                    });
-                } else if (orderStatus.equals("待服务")) {
-                    Intent intent2 = new Intent();
-                    intent2.setClass(this, OrderSignInActivity.class);
-                    intent2.putExtra("data", listBean);
-                    intent2.putExtra("flag", 0);
-                    startActivity(intent2);
-                } else if (orderStatus.equals("进行中")) {
-                    Intent intent1 = new Intent();
-                    intent1.setClass(this, OrderSignInActivity.class);
-                    intent1.putExtra("data", listBean);
-                    intent1.putExtra("flag", 1);
-                    startActivity(intent1);
-                }
-
-                /*if (tvStatus.getText().toString().equals("未接单")) {
-
-                } else if (tvStatus.getText().toString().equals("待服务")) {
-                    if (payStatus == 2) {
-                       *//* DialogPlus dialogPlus = DialogPlus.newDialog(this)
-                                .setContentHolder(new ViewHolder(R.layout.dlg_evalute_fee))
-                                .setGravity(Gravity.CENTER)
-                                .setContentBackgroundResource(R.drawable.corner_write)
-                                .setCancelable(true)
-                                .setOnClickListener(new OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogPlus dialog, View view) {
-                                        switch (view.getId()) {
-                                            case R.id.dialog_confirm:
-                                                dialog.dismiss();
-                                                EditText et = (EditText) dialog.findViewById(R.id.et_cash);
-                                                Gson gson = new Gson();
-                                                HashMap<String, Object> map = new HashMap<>();
-                                                map.put("orderId", orderId);
-                                                map.put("evaluationFees", Double.parseDouble(et.getText().toString()));
-                                                OkGo.<ResponseData<String>>post(UrlConstant.CONFIRM_FEE)
-                                                        .upJson(gson.toJson(map))
-                                                        .execute(new JsonCallback<ResponseData<String>>() {
-                                                            @Override
-                                                            public void onSuccess(ResponseData<String> response) {
-                                                                ToastUtil.show(response.getMsg());
-                                                                if (response.getCode() == 0) {
-                                                                    EventBusUtil.post(MessageConstant.NOTIFY_ORDER_DETAIL);
-//                                                                sendCode();
-                                                                }
-                                                            }
-                                                        });
-                                                break;
-                                        }
-                                    }
-                                })
-                                .create();
-                        dialogPlus.show();*//*
-                    } else {
-                        sendCode();
-                    }
-                } else if (tvStatus.getText().toString().equals("进行中")) {
-                    sendEndCode();
-                }*/
-                break;
         }
     }
 
-    private void sendCode() {
-        Gson gson = new Gson();
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("orderId", orderId);
-        OkGo.<ResponseData<String>>post(UrlConstant.CONFIRM_ARRIVAL_SMS)
-                .upJson(gson.toJson(map))
-                .execute(new JsonCallback<ResponseData<String>>() {
-                    @Override
-                    public void onSuccess(ResponseData<String> response) {
-                        ToastUtil.show(response.getMsg());
-                        if (response.isSuccess()) {
-                            DialogPlus dialogPlus = DialogPlus.newDialog(OrderDetailActivity.this)
-                                    .setContentHolder(new ViewHolder(R.layout.dlg_confirm_arrival_code))
-                                    .setGravity(Gravity.CENTER)
-                                    .setContentBackgroundResource(R.drawable.corner_write)
-                                    .setCancelable(true)
-                                    .setOnClickListener(new OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogPlus dialog, View view) {
-                                            switch (view.getId()) {
-                                                case R.id.dialog_confirm:
-                                                    EditText et = (EditText) dialog.findViewById(R.id.et_cash);
-                                                    Gson gson = new Gson();
-                                                    HashMap<String, Object> map = new HashMap<>();
-                                                    map.put("orderId", orderId);
-                                                    map.put("smsCode", et.getText().toString());
-                                                    OkGo.<ResponseData<String>>post(UrlConstant.START_SERVICE_SMS)
-                                                            .upJson(gson.toJson(map))
-                                                            .execute(new JsonCallback<ResponseData<String>>() {
-                                                                @Override
-                                                                public void onSuccess(ResponseData<String> response) {
-                                                                    ToastUtil.show(response.getMsg());
-                                                                    if (response.isSuccess()) {
-                                                                        dialog.dismiss();
-                                                                        EventBusUtil.post(MessageConstant.NOTIFY_ORDER_DETAIL);
-                                                                    }
-                                                                }
-                                                            });
-                                                    break;
-                                            }
-                                        }
-                                    })
-                                    .create();
-                            dialogPlus.show();
-                        }
-                    }
-                });
-    }
-
-    private void sendEndCode() {
-        Gson gson = new Gson();
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("orderId", orderId);
-        OkGo.<ResponseData<String>>post(UrlConstant.END_SERVICE_CODE)
-                .upJson(gson.toJson(map))
-                .execute(new JsonCallback<ResponseData<String>>() {
-                    @Override
-                    public void onSuccess(ResponseData<String> response) {
-                        ToastUtil.show(response.getMsg());
-                        if (response.isSuccess()) {
-                            DialogPlus dialogPlus = DialogPlus.newDialog(OrderDetailActivity.this)
-                                    .setContentHolder(new ViewHolder(R.layout.dlg_confirm_arrival_code))
-                                    .setGravity(Gravity.CENTER)
-                                    .setContentBackgroundResource(R.drawable.corner_write)
-                                    .setCancelable(true)
-                                    .setOnClickListener(new OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogPlus dialog, View view) {
-                                            switch (view.getId()) {
-                                                case R.id.dialog_confirm:
-                                                    EditText et = (EditText) dialog.findViewById(R.id.et_cash);
-                                                    Gson gson = new Gson();
-                                                    HashMap<String, Object> map = new HashMap<>();
-                                                    map.put("orderId", orderId);
-                                                    map.put("smsCode", et.getText().toString());
-                                                    OkGo.<ResponseData<String>>post(UrlConstant.END_SERVICE_BY_CODE)
-                                                            .upJson(gson.toJson(map))
-                                                            .execute(new JsonCallback<ResponseData<String>>() {
-                                                                @Override
-                                                                public void onSuccess(ResponseData<String> response) {
-                                                                    ToastUtil.show(response.getMsg());
-                                                                    if (response.isSuccess()) {
-                                                                        dialog.dismiss();
-                                                                        EventBusUtil.post(MessageConstant.NOTIFY_ORDER_DETAIL);
-                                                                    }
-                                                                }
-                                                            });
-                                                    break;
-                                            }
-                                        }
-                                    })
-                                    .create();
-                            dialogPlus.show();
-                        }
-                    }
-                });
-    }
 
     @Override
     public void onEvent(MessageEvent event) {
@@ -648,7 +378,8 @@ public class OrderDetailActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventBusUtil.post(MessageConstant.NOTIFY_ORDER);
+        mLocationClient.unRegisterLocationListener(mLocationListener);
+
     }
 
     @Override
@@ -669,16 +400,13 @@ public class OrderDetailActivity extends BaseActivity {
     }
 
     private void initLocation() {
-        mSearch = GeoCoder.newInstance();
-        mSearch.setOnGetGeoCodeResultListener(geoCoderListener);
         mBaiDuMap = mMapView.getMap();
         mBaiDuMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
         mLocationClient = new LocationClient(this);
         mLocationListener = new MyLocationListener();
         mLocationClient.registerLocationListener(mLocationListener);
         LocationClientOption option = new LocationClientOption();
-        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy
-        );//可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
+        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);//可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
         option.setCoorType("bd09ll");//可选，默认gcj02，设置返回的定位结果坐标系
         int span = 0;
         option.setScanSpan(span);//可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
@@ -686,11 +414,8 @@ public class OrderDetailActivity extends BaseActivity {
         option.setOpenGps(true);//可选，默认false,设置是否使用gps
         option.setLocationNotify(true);//可选，默认false，设置是否当GPS有效时按照1S/1次频率输出GPS结果
         option.setIsNeedLocationDescribe(true);//可选，默认false，设置是否需要位置语义化结果，可以在BDLocation
-        // .getLocationDescribe里得到，结果类似于“在北京天安门附近”
         option.setIsNeedLocationPoiList(true);//可选，默认false，设置是否需要POI结果，可以在BDLocation.getPoiList里得到
         option.setIgnoreKillProcess(false);
-        option.setOpenGps(true); // 打开gps
-        //可选，默认true，定位SDK内部是一个SERVICE，并放到了独立进程，设置是否在stop的时候杀死这个进程，默认不杀死
         option.SetIgnoreCacheException(false);//可选，默认false，设置是否收集CRASH信息，默认收集
         option.setEnableSimulateGps(false);//可选，默认false，设置是否需要过滤GPS仿真结果，默认需要
         mLocationClient.setLocOption(option);
@@ -700,11 +425,6 @@ public class OrderDetailActivity extends BaseActivity {
             mLocationClient.start();
     }
 
-    private void confirmLocation() {
-        mSearch.geocode(new GeoCodeOption()
-                .city(city)
-                .address(orderAddress));
-    }
 
     private void reservationTime(String bookingDate, String bookingTime) {
         HashMap<String, Object> map = new HashMap<>();
@@ -724,54 +444,92 @@ public class OrderDetailActivity extends BaseActivity {
                 });
     }
 
-    private void cancelOrder() {
-        if(textAction==null){
-            textAction=new TitleBar.TextAction("取消订单") {
-                @Override
-                public void performAction(View view) {
-                    DialogPlus dialogPlus = DialogPlus.newDialog(OrderDetailActivity.this)
-                            .setContentHolder(new ViewHolder(R.layout.dlg_worker_cancel_order))
-                            .setGravity(Gravity.CENTER)
-                            .setCancelable(true)
-                            .setOnClickListener(new OnClickListener() {
-                                @Override
-                                public void onClick(DialogPlus dialog, View view) {
-                                    switch (view.getId()) {
-                                        case R.id.dialog_confirm:
-                                            dialog.dismiss();
-                                            HashMap<String, Integer> map = new HashMap<>();
-//                                            map.put("orderId", orderId);
-                                            OkGo.<ResponseData<String>>post(UrlConstant.WORKER_CANCEL_ORDER)
-                                                    .upJson(gson.toJson(map))
-                                                    .execute(new JsonCallback<ResponseData<String>>() {
-                                                        @Override
-                                                        public void onSuccess(ResponseData<String> response) {
-                                                            ToastUtil.show(response.getMsg());
-                                                            if (response.isSuccess()) {
-                                                                EventBusUtil.post(MessageConstant.NOTIFY_ORDER);
-                                                                OrderDetailActivity.this.finish();
-                                                            }
-                                                        }
-                                                    });
-                                            break;
-                                        case R.id.dialog_cancel:
-                                            dialog.dismiss();
-                                            break;
-                                    }
-                                }
-                            })
-                            .create();
-                    dialogPlus.show();
-                }
-            };
-            titleBar.addAction(textAction);
-        }
+    @Override
+    public void onCall(OrderItem orderItem) {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        Uri data = Uri.parse("tel:" + orderItem.getMobile());
+        intent.setData(data);
+        startActivity(intent);
     }
 
-    private void dissmissCancel(){
-        if(textAction!=null){
-            titleBar.getViewByAction(textAction).setVisibility(View.GONE);
-        }
+    @Override
+    public void onTime(OrderItem orderItem) {
+        TimePickerUtil.showYearPicker(OrderDetailActivity.this, new OnChooseDateListener() {
+            @Override
+            public void getDate(Date date) {
+                String startTime = TimeUtil.dateToString(date, "yyyy-MM-dd HH:mm:00");
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(date);
+                calendar.set(Calendar.HOUR,
+                        calendar.get(Calendar.HOUR) + 1);
+                String endTime = TimeUtil.dateToString(calendar.getTime(), "yyyy-MM-dd HH:mm:00");
+                showLoading();
+                HashMap<String, Object> map = new HashMap<>();
+                map.put("orderId", orderItem.getOrderId());
+                map.put("bookingStartTime", startTime);
+                map.put("bookingEndTime", endTime);
+                OkGo.<ResponseData<String>>post(UrlConstant.ORDER_RESERVATION)
+                        .upJson(gson.toJson(map))
+                        .execute(new JsonCallback<ResponseData<String>>() {
+                            @Override
+                            public void onSuccess(ResponseData<String> response) {
+                                dismissLoading();
+                                ToastUtil.show(response.getMsg());
+                                if (response.isSuccess()) {
+                                    toast("预约成功");
+                                    EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
+                                }
+                            }
+
+                            @Override
+                            public void onError(Response<ResponseData<String>> response) {
+                                super.onError(response);
+                                dismissLoading();
+                            }
+                        });
+
+            }
+        });
+    }
+
+    @Override
+    public void onConfirm(OrderItem orderItem) {
+        TimePickerUtil.showYearPicker(OrderDetailActivity.this, new OnChooseDateListener() {
+            @Override
+            public void getDate(Date date) {
+                String startTime = TimeUtil.dateToString(date, "yyyy-MM-dd HH:mm:00");
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(date);
+                calendar.set(Calendar.HOUR,
+                        calendar.get(Calendar.HOUR) + 1);
+                String endTime = TimeUtil.dateToString(calendar.getTime(), "yyyy-MM-dd HH:mm:00");
+                showLoading();
+                HashMap<String, Object> map = new HashMap<>();
+                map.put("orderId", orderItem.getOrderId());
+                map.put("bookingStartTime", startTime);
+                map.put("bookingEndTime", endTime);
+                OkGo.<ResponseData<String>>post(UrlConstant.ORDER_RESERVATION)
+                        .upJson(gson.toJson(map))
+                        .execute(new JsonCallback<ResponseData<String>>() {
+                            @Override
+                            public void onSuccess(ResponseData<String> response) {
+                                dismissLoading();
+                                ToastUtil.show(response.getMsg());
+                                if (response.isSuccess()) {
+                                    toast("预约成功");
+                                    EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
+                                }
+                            }
+
+                            @Override
+                            public void onError(Response<ResponseData<String>> response) {
+                                super.onError(response);
+                                dismissLoading();
+                            }
+                        });
+
+            }
+        });
     }
 
 
@@ -792,24 +550,6 @@ public class OrderDetailActivity extends BaseActivity {
             MyLocationConfiguration config = new MyLocationConfiguration(
                     MyLocationConfiguration.LocationMode.NORMAL, true, mCurrentMarker);
             mBaiDuMap.setMyLocationConfigeration(config);
-
-            /**
-             * 绘制圆形
-             */
-//            LatLng point = new LatLng(location.getLatitude(), location.getLongitude());//坐标参数（纬度，经度）
-//            OverlayOptions oCircle = new CircleOptions().fillColor(0x90F8EFDE)
-//                    .center(point).stroke(new Stroke(5, 0xAAF0D2C2))
-//                    .radius(1500);
-//            mBaiduMap.addOverlay(oCircle);
-
-//            /**
-//             * 绘制文本文字
-//             */
-//            LatLng point = new LatLng(location.getLatitude(), location.getLongitude());//坐标参数（纬度，经度）
-//            OverlayOptions ooText = new TextOptions().bgColor(0xAAFFFF00)
-//                    .fontSize(24).fontColor(0xFFFF00FF).text("我的位置").rotate(0)
-//                    .position(point);
-//            mBaiduMap.addOverlay(ooText);
 
             LatLng ll = new LatLng(location.getLatitude(),
                     location.getLongitude());
@@ -832,7 +572,6 @@ public class OrderDetailActivity extends BaseActivity {
             } else if (location.getLocType() == BDLocation.TypeCriteriaException) {
                 Toast.makeText(OrderDetailActivity.this, "请确认手机是否开启GPS", Toast.LENGTH_SHORT).show();
             }
-            confirmLocation();
             mLocationClient.stop();
         }
     }

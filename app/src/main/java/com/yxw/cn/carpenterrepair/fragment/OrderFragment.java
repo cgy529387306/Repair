@@ -17,6 +17,7 @@ import com.lzy.okgo.model.Response;
 import com.yxw.cn.carpenterrepair.BaseRefreshFragment;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.activity.LocationService;
+import com.yxw.cn.carpenterrepair.activity.order.OrderAbnormalActivity;
 import com.yxw.cn.carpenterrepair.activity.order.OrderDetailActivity;
 import com.yxw.cn.carpenterrepair.activity.order.OrderSignInActivity;
 import com.yxw.cn.carpenterrepair.adapter.OrderAdapter;
@@ -61,9 +62,6 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
     private int mOrderType;
     private String mBookingTime;
     private ContactPop mContactPop;
-    private LocationService mLocationService;
-    private double mLocationLat;
-    private double mLocationLng;
 
     /**
      * @param state 0:今天 1:明天 2:全部
@@ -102,31 +100,15 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.addItemDecoration(new SpaceItemDecoration(20));
         mRecyclerView.setAdapter(mAdapter);
-        mLocationService = new LocationService(getActivity());
-        mLocationService.registerListener(mLocationListener);
-        mLocationService.start();
         getOrderData(1);
     }
 
-    private BDAbstractLocationListener mLocationListener = new BDAbstractLocationListener() {
-        @Override
-        public void onReceiveLocation(BDLocation bdLocation) {
-            if (bdLocation!=null){
-                mLocationLat = bdLocation.getLatitude();
-                mLocationLng = bdLocation.getLongitude();
-            }
-        }
-    };
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mLocationService.unregisterListener(mLocationListener);
-    }
 
     private void getOrderData(int p) {
         Map<String, Object> requestMap = new HashMap<>();
-        requestMap.put("customerBookingTime",mBookingTime);
+        if (mOrderType!=2){
+            requestMap.put("customerBookingTime",mBookingTime);
+        }
         requestMap.put("orderStatus",mOrderStatus);
         Map<String, Object> map = new HashMap<>();
         map.put("filter", requestMap);
@@ -228,7 +210,7 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
 
     @Override
     public void onAbnormal(OrderItem orderItem) {
-
+        startActivity(OrderAbnormalActivity.class);
     }
 
     @Override
