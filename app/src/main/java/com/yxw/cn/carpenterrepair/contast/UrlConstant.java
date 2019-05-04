@@ -52,7 +52,7 @@ public class UrlConstant {
     public final static String ORDER_TURN_RESERVATION = BASE_USER + "/ms60/api/fix/order/accept/turnReservation";//工程师开始服务
     public final static String ORDER_LIST = BASE_USER + "/ms60/api/fix/order/findAll";//订单条件查询
     public final static String ORDER_STATUS_LIST = BASE_USER + "/ms60/api/fix/order/getOrderStatusList";//getOrderStatusList
-    public final static String ORDER_DETAIL = BASE_USER + "/ms60/api/fix/order/view/{orderId}";//获取订单详情
+    public final static String ORDER_DETAIL = BASE_USER + "/ms60/api/fix/order/view/";//获取订单详情
 
 
 

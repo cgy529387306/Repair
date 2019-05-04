@@ -13,7 +13,6 @@ import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
-import com.yxw.cn.carpenterrepair.entity.Asset;
 import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 import com.yxw.cn.carpenterrepair.entity.LoginInfo;
 import com.yxw.cn.carpenterrepair.entity.MessageEvent;
@@ -138,19 +137,21 @@ public class MainActivity extends BaseActivity {
     }
 
     private void getUserInfo(){
-        OkGo.<ResponseData<LoginInfo>>get(UrlConstant.GET_WORKER_INFO)
-                .execute(new JsonCallback<ResponseData<LoginInfo>>() {
-                             @Override
-                             public void onSuccess(ResponseData<LoginInfo> response) {
-                                 if (response!=null){
-                                     if (response.isSuccess()) {
-                                         CurrentUser.getInstance().login(response.getData());
-                                         EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_INFO);
+        if (CurrentUser.getInstance().isLogin()){
+            OkGo.<ResponseData<LoginInfo>>get(UrlConstant.GET_WORKER_INFO)
+                    .execute(new JsonCallback<ResponseData<LoginInfo>>() {
+                                 @Override
+                                 public void onSuccess(ResponseData<LoginInfo> response) {
+                                     if (response!=null){
+                                         if (response.isSuccess()) {
+                                             CurrentUser.getInstance().login(response.getData());
+                                             EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_INFO);
+                                         }
                                      }
                                  }
                              }
-                         }
-                );
+                    );
+        }
     }
 
     @Override
