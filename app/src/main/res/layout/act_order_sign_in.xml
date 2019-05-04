@@ -11,19 +11,10 @@
         android:layout_width="match_parent"
         android:layout_height="48dp" />
 
-    <com.yxw.cn.carpenterrepair.view.MyMapView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <com.baidu.mapapi.map.MapView
-            android:id="@+id/mapView"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:clickable="true" />
-    </com.yxw.cn.carpenterrepair.view.MyMapView>
-
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:scrollbars="none">
 
         <LinearLayout
@@ -31,7 +22,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
+            <com.yxw.cn.carpenterrepair.view.MyMapView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.baidu.mapapi.map.MapView
+                    android:id="@+id/mapView"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:clickable="true" />
+            </com.yxw.cn.carpenterrepair.view.MyMapView>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -89,40 +88,6 @@
             </RelativeLayout>
 
 
-            <LinearLayout
-                android:id="@+id/ll_code"
-                android:orientation="horizontal"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:padding="10dp"
-                android:background="@drawable/corner_gray_rect"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:layout_weight="1"
-                    android:layout_centerVertical="true"
-                    android:id="@+id/et_code"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:hint="客户服务验证码(必填)"
-                    android:lines="1"
-                    android:maxLength="20"
-                    android:textColor="#333333"
-                    android:textSize="14sp" />
-
-                <com.yxw.cn.carpenterrepair.view.CountDownTextView
-                    android:id="@+id/bt_code"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="获取验证码"
-                    android:background="@color/text_red"
-                    android:textColor="@color/white"/>
-
-            </LinearLayout>
-
             <RelativeLayout
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
@@ -147,16 +112,15 @@
 
             </RelativeLayout>
 
-            <Button
-                android:id="@+id/ok"
-                android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/bg_btn_rect_red"
-                android:text="签到"
-                android:textColor="#ffffff" />
-
         </LinearLayout>
     </ScrollView>
-
+    <Button
+        android:id="@+id/ok"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_btn_rect_red"
+        android:text="签到"
+        android:textSize="16sp"
+        android:textColor="#ffffff" />
 </LinearLayout>

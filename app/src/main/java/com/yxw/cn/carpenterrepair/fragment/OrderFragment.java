@@ -1,5 +1,7 @@
 package com.yxw.cn.carpenterrepair.fragment;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,11 +9,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.baidu.location.BDAbstractLocationListener;
+import com.baidu.location.BDLocation;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.yxw.cn.carpenterrepair.BaseRefreshFragment;
 import com.yxw.cn.carpenterrepair.R;
+import com.yxw.cn.carpenterrepair.activity.LocationService;
+import com.yxw.cn.carpenterrepair.activity.order.OrderDetailActivity;
+import com.yxw.cn.carpenterrepair.activity.order.OrderSignInActivity;
 import com.yxw.cn.carpenterrepair.adapter.OrderAdapter;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
@@ -21,11 +28,13 @@ import com.yxw.cn.carpenterrepair.entity.OrderListData;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.listerner.OnChooseDateListener;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
+import com.yxw.cn.carpenterrepair.pop.ContactPop;
 import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 import com.yxw.cn.carpenterrepair.util.Helper;
 import com.yxw.cn.carpenterrepair.util.SpaceItemDecoration;
 import com.yxw.cn.carpenterrepair.util.TimePickerUtil;
 import com.yxw.cn.carpenterrepair.util.TimeUtil;
+import com.yxw.cn.carpenterrepair.util.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -38,7 +47,7 @@ import butterknife.BindView;
 /**
  * 订单列表
  */
-public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapter.OnItemClickListener , OrderAdapter.OnOrderOperateListener {
+public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapter.OnItemClickListener , OrderAdapter.OnOrderOperateListener,ContactPop.SelectListener {
 
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
@@ -51,6 +60,10 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
     private int mOrderStatus;
     private int mOrderType;
     private String mBookingTime;
+    private ContactPop mContactPop;
+    private LocationService mLocationService;
+    private double mLocationLat;
+    private double mLocationLng;
 
     /**
      * @param state 0:今天 1:明天 2:全部
@@ -89,7 +102,26 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.addItemDecoration(new SpaceItemDecoration(20));
         mRecyclerView.setAdapter(mAdapter);
+        mLocationService = new LocationService(getActivity());
+        mLocationService.registerListener(mLocationListener);
+        mLocationService.start();
         getOrderData(1);
+    }
+
+    private BDAbstractLocationListener mLocationListener = new BDAbstractLocationListener() {
+        @Override
+        public void onReceiveLocation(BDLocation bdLocation) {
+            if (bdLocation!=null){
+                mLocationLat = bdLocation.getLatitude();
+                mLocationLng = bdLocation.getLongitude();
+            }
+        }
+    };
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mLocationService.unregisterListener(mLocationListener);
     }
 
     private void getOrderData(int p) {
@@ -163,7 +195,7 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         if (mAdapter.getItem(position)!=null){
-//            startActivity(OrderDetailActivity.class, mAdapter.getItem(position).get());
+            startActivity(OrderDetailActivity.class, mAdapter.getData().get(position));
         }
     }
 
@@ -201,17 +233,57 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
 
     @Override
     public void onContact(OrderItem orderItem) {
+        if (mContactPop==null){
+            mContactPop = new ContactPop(getActivity(),this,orderItem);
+        }
+        mContactPop.showPopupWindow(mRecyclerView);
+    }
+
+    @Override
+    public void onTurnReservation(OrderItem orderItem) {
         TimePickerUtil.showYearPicker(getActivity(), new OnChooseDateListener() {
             @Override
             public void getDate(Date date) {
-                String ss = TimeUtil.dateToString(date, "yyyy-MM-dd HH:mm:00");
+                String startTime = TimeUtil.dateToString(date, "yyyy-MM-dd HH:mm:00");
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(date);
+                calendar.set(Calendar.HOUR,
+                        calendar.get(Calendar.HOUR) + 1);
+                String endTime = TimeUtil.dateToString(calendar.getTime(), "yyyy-MM-dd HH:mm:00");
+                showLoading();
+                HashMap<String, Object> map = new HashMap<>();
+                map.put("orderId", orderItem.getOrderId());
+                map.put("bookingStartTime", startTime);
+                map.put("bookingEndTime", endTime);
+                OkGo.<ResponseData<String>>post(UrlConstant.ORDER_TURN_RESERVATION)
+                        .upJson(gson.toJson(map))
+                        .execute(new JsonCallback<ResponseData<String>>() {
+                            @Override
+                            public void onSuccess(ResponseData<String> response) {
+                                dismissLoading();
+                                ToastUtil.show(response.getMsg());
+                                if (response.isSuccess()) {
+                                    toast("预约成功");
+                                    EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
+                                }
+                            }
+
+                            @Override
+                            public void onError(Response<ResponseData<String>> response) {
+                                super.onError(response);
+                                dismissLoading();
+                            }
+                        });
+
             }
         });
     }
 
     @Override
-    public void onTurnReservation(OrderItem orderItem) {
-
+    public void onSign(OrderItem orderItem) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("order",orderItem);
+        startActivity(OrderSignInActivity.class,bundle);
     }
 
     @Override
@@ -232,5 +304,93 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
                 getOrderData(1);
                 break;
         }
+    }
+
+    @Override
+    public void onCall(OrderItem orderItem) {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        Uri data = Uri.parse("tel:" + orderItem.getMobile());
+        intent.setData(data);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onTime(OrderItem orderItem) {
+        TimePickerUtil.showYearPicker(getActivity(), new OnChooseDateListener() {
+            @Override
+            public void getDate(Date date) {
+                String startTime = TimeUtil.dateToString(date, "yyyy-MM-dd HH:mm:00");
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(date);
+                calendar.set(Calendar.HOUR,
+                        calendar.get(Calendar.HOUR) + 1);
+                String endTime = TimeUtil.dateToString(calendar.getTime(), "yyyy-MM-dd HH:mm:00");
+                showLoading();
+                HashMap<String, Object> map = new HashMap<>();
+                map.put("orderId", orderItem.getOrderId());
+                map.put("bookingStartTime", startTime);
+                map.put("bookingEndTime", endTime);
+                OkGo.<ResponseData<String>>post(UrlConstant.ORDER_RESERVATION)
+                        .upJson(gson.toJson(map))
+                        .execute(new JsonCallback<ResponseData<String>>() {
+                            @Override
+                            public void onSuccess(ResponseData<String> response) {
+                                dismissLoading();
+                                ToastUtil.show(response.getMsg());
+                                if (response.isSuccess()) {
+                                    toast("预约成功");
+                                    EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
+                                }
+                            }
+
+                            @Override
+                            public void onError(Response<ResponseData<String>> response) {
+                                super.onError(response);
+                                dismissLoading();
+                            }
+                        });
+
+            }
+        });
+    }
+
+    @Override
+    public void onConfirm(OrderItem orderItem) {
+        TimePickerUtil.showYearPicker(getActivity(), new OnChooseDateListener() {
+            @Override
+            public void getDate(Date date) {
+                String startTime = TimeUtil.dateToString(date, "yyyy-MM-dd HH:mm:00");
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(date);
+                calendar.set(Calendar.HOUR,
+                        calendar.get(Calendar.HOUR) + 1);
+                String endTime = TimeUtil.dateToString(calendar.getTime(), "yyyy-MM-dd HH:mm:00");
+                showLoading();
+                HashMap<String, Object> map = new HashMap<>();
+                map.put("orderId", orderItem.getOrderId());
+                map.put("bookingStartTime", startTime);
+                map.put("bookingEndTime", endTime);
+                OkGo.<ResponseData<String>>post(UrlConstant.ORDER_RESERVATION)
+                        .upJson(gson.toJson(map))
+                        .execute(new JsonCallback<ResponseData<String>>() {
+                            @Override
+                            public void onSuccess(ResponseData<String> response) {
+                                dismissLoading();
+                                ToastUtil.show(response.getMsg());
+                                if (response.isSuccess()) {
+                                    toast("预约成功");
+                                    EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
+                                }
+                            }
+
+                            @Override
+                            public void onError(Response<ResponseData<String>> response) {
+                                super.onError(response);
+                                dismissLoading();
+                            }
+                        });
+
+            }
+        });
     }
 }

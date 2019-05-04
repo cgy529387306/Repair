@@ -23,6 +23,7 @@ public class OrderAdapter extends BaseQuickAdapter<OrderItem, BaseViewHolder> {
         void onAbnormal(OrderItem orderItem);//异常反馈
         void onContact(OrderItem orderItem);//联系用户
         void onTurnReservation(OrderItem orderItem);//改约
+        void onSign(OrderItem orderItem);//签到
         void onFinish(OrderItem orderItem);//服务完成
         void onView(OrderItem orderItem);//查看
     }
@@ -98,11 +99,11 @@ public class OrderAdapter extends BaseQuickAdapter<OrderItem, BaseViewHolder> {
             });
 
             tvOperate2.setVisibility(View.VISIBLE);
-            tvOperate2.setText("联系用户");
+            tvOperate2.setText("签到");
             tvOperate2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mOperateListener.onContact(item);
+                    mOperateListener.onSign(item);
                 }
             });
         }else if (orderStatus<90){

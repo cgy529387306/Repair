@@ -18,6 +18,7 @@
     <color name="white">#ffffffff</color>
     <color name="black">#ff000000</color>
     <color name="transparent">#00000000</color>
+    <color name="translucent">#88000000</color>
     <color name="base_red">#ff4543</color>
 
     <color name="text_color">#3f3a39</color>

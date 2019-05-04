@@ -39,10 +39,12 @@ import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.lzy.okgo.OkGo;
+import com.lzy.okgo.model.Response;
 import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
+import com.yxw.cn.carpenterrepair.entity.OrderItem;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.entity.UserOrder;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
@@ -66,14 +68,10 @@ public class OrderSignInActivity extends BaseActivity {
 
     @BindView(R.id.titlebar)
     TitleBar titleBar;
-    @BindView(R.id.ll_code)
-    LinearLayout ll_code;
     @BindView(R.id.iv)
     ImageView iv;
     @BindView(R.id.ok)
     Button ok;
-    @BindView(R.id.et_code)
-    EditText et_code;
     @BindView(R.id.et_remark)
     EditText etRemark;
     @BindView(R.id.distance)
@@ -82,9 +80,12 @@ public class OrderSignInActivity extends BaseActivity {
     TextView tv_location;
     @BindView(R.id.mapView)
     MapView mMapView;
-    @BindView(R.id.bt_code)
-    CountDownTextView mCountDownTextView;
 
+    private OrderItem mOrderItem;
+    private boolean flag;
+    private String path;
+    private BDLocation mLocation;
+    private int page;
     private BaiduMap mBaiduMap;
     private LocationClient mLocationClient;
     private MyLocationListener mLocationListener;
@@ -112,8 +113,6 @@ public class OrderSignInActivity extends BaseActivity {
                 //没有找到检索结果
             } else {
                 Map<String, Object> map = new HashMap<>();
-//                    map.put("addr1", areaTv.getText().toString().replace("-", ""));
-//                    map.put("addr2", et_detail.getText().toString());
                 map.put("result", result);
                 finish();
             }
@@ -121,11 +120,6 @@ public class OrderSignInActivity extends BaseActivity {
         }
     };
 
-    private UserOrder.ListBean listBean;
-    private boolean flag;
-    private String path;
-    private BDLocation mLocation;
-    private int page;
 
     @Override
     protected int getLayoutResId() {
@@ -135,81 +129,33 @@ public class OrderSignInActivity extends BaseActivity {
     @Override
     public void initView() {
         super.initView();
-        listBean = (UserOrder.ListBean) getIntent().getSerializableExtra("data");
+        mOrderItem = (OrderItem) getIntent().getSerializableExtra("order");
         page = getIntent().getIntExtra("flag", 0);
         if (page == 0) {
             titleBar.setTitle("上门签到");
             ok.setText("立即签到");
-            ll_code.setVisibility(View.GONE);
         } else {
             titleBar.setTitle("确认服务完成");
             ok.setText("完成服务");
-            ll_code.setVisibility(View.VISIBLE);
         }
         initLocation();
-        mCountDownTextView.setNormalText("获取验证码")
-                .setCountDownText("重新获取", "")
-                .setCloseKeepCountDown(false)//关闭页面保持倒计时开关
-                .setCountDownClickable(false)//倒计时期间点击事件是否生效开关
-                .setShowFormatTime(true)//是否格式化时间
-                .setOnCountDownFinishListener(new CountDownTextView.OnCountDownFinishListener() {
-                    @Override
-                    public void onFinish() {
-                        Toast.makeText(OrderSignInActivity.this, "倒计时完毕", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(OrderSignInActivity.this, "短信已发送", Toast.LENGTH_SHORT).show();
-                        mCountDownTextView.startCountDown(59);
-
-                        HashMap<String, Object> map = new HashMap<>();
-                        map.put("orderId", listBean.getId());
-                        OkGo.<ResponseData<String>>post(UrlConstant.END_SERVICE_CODE)
-                                .upJson(gson.toJson(map))
-                                .execute(new JsonCallback<ResponseData<String>>() {
-                                    @Override
-                                    public void onSuccess(ResponseData<String> response) {
-                                        ToastUtil.show(response.getMsg());
-                                    }
-                                });
-                    }
-                });
     }
 
     @OnClick({R.id.rl_iv, R.id.ok})
     public void click(View view) {
         switch (view.getId()) {
             case R.id.ok:
-                if (page == 0) {
-                    if (flag) {
-                        confirmArrival();
-                    } else {
-                        toast("在签到范围外，不能签到!");
-                    }
-                } else {
-                    HashMap<String, Object> map1 = new HashMap<>();
-                    map1.put("orderId", listBean.getId());
-                    map1.put("smsCode", et_code.getText().toString());
-                    map1.put("locationLat", mLocation.getLatitude());
-                    map1.put("locationLng", mLocation.getLongitude());
-                    map1.put("shot", path);
-                    map1.put("remark", etRemark.getText().toString());
-                    OkGo.<ResponseData<String>>post(UrlConstant.END_SERVICE_BY_CODE)
-                            .upJson(gson.toJson(map1))
-                            .execute(new JsonCallback<ResponseData<String>>() {
-                                @Override
-                                public void onSuccess(ResponseData<String> response) {
-                                    ToastUtil.show(response.getMsg());
-                                    if (response.isSuccess()) {
-                                        OrderSignInActivity.this.finish();
-                                        EventBusUtil.post(MessageConstant.NOTIFY_ORDER_DETAIL);
-                                    }
-                                }
-                            });
-
-                }
+                confirmArrival();
+//                if (page == 0) {
+//                    if (flag) {
+//                        confirmArrival();
+//                    } else {
+//                        toast("在签到范围外，不能签到!");
+//                    }
+//                } else {
+//                    confirmArrival();
+//
+//                }
                 break;
             case R.id.rl_iv:
                 PictureSelector.create(this)
@@ -298,8 +244,8 @@ public class OrderSignInActivity extends BaseActivity {
 
     private void confirmLocation() {
         mSearch.geocode(new GeoCodeOption()
-                .city(listBean.getCity())
-                .address(listBean.getAddress()));
+                .city(mOrderItem.getCity())
+                .address(mOrderItem.getAddress()));
     }
 
     public void getDistance(double lat1, double lon1,
@@ -322,21 +268,32 @@ public class OrderSignInActivity extends BaseActivity {
 
     private void confirmArrival() {
         HashMap<String, Object> map = new HashMap<>();
-        map.put("orderId", listBean.getId());
+        map.put("orderId", mOrderItem.getOrderId());
         map.put("locationLat", mLocation.getLatitude());
         map.put("locationLng", mLocation.getLongitude());
         map.put("shot", path);
         map.put("remark", etRemark.getText().toString());
-        OkGo.<ResponseData<String>>post(UrlConstant.CONFIRM_ARRIVAL)
+        showLoading();
+        OkGo.<ResponseData<String>>post(UrlConstant.ORDER_ARRIVAL)
                 .upJson(gson.toJson(map))
                 .execute(new JsonCallback<ResponseData<String>>() {
                     @Override
                     public void onSuccess(ResponseData<String> response) {
-                        ToastUtil.show(response.getMsg());
-                        if (response.isSuccess()) {
-                            OrderSignInActivity.this.finish();
-                            EventBusUtil.post(MessageConstant.NOTIFY_ORDER_DETAIL);
+                        dismissLoading();
+                        if (response!=null){
+                            if (response.isSuccess()){
+                                finish();
+                                EventBusUtil.post(MessageConstant.NOTIFY_ORDER_DETAIL);
+                            }else{
+                                toast(response.getMsg());
+                            }
                         }
+                    }
+
+                    @Override
+                    public void onError(Response<ResponseData<String>> response) {
+                        super.onError(response);
+                        dismissLoading();
                     }
                 });
     }
@@ -369,15 +326,6 @@ public class OrderSignInActivity extends BaseActivity {
                     .radius(2000);
             mBaiduMap.addOverlay(oCircle);
 
-//            /**
-//             * 绘制文本文字
-//             */
-//            LatLng point = new LatLng(location.getLatitude(), location.getLongitude());//坐标参数（纬度，经度）
-//            OverlayOptions ooText = new TextOptions().bgColor(0xAAFFFF00)
-//                    .fontSize(24).fontColor(0xFFFF00FF).text("我的位置").rotate(0)
-//                    .position(point);
-//            mBaiduMap.addOverlay(ooText);
-
             LatLng ll = new LatLng(location.getLatitude(),
                     location.getLongitude());
             MapStatus.Builder builder = new MapStatus.Builder();
@@ -399,7 +347,7 @@ public class OrderSignInActivity extends BaseActivity {
             } else if (location.getLocType() == BDLocation.TypeCriteriaException) {
                 Toast.makeText(OrderSignInActivity.this, "请确认手机是否开启GPS", Toast.LENGTH_SHORT).show();
             }
-            getDistance(mLocation.getLatitude(), mLocation.getLongitude(), listBean.getLocationLat(), listBean.getLocationLng());
+            getDistance(mLocation.getLatitude(), mLocation.getLongitude(), mOrderItem.getLocationLat(), mOrderItem.getLocationLng());
             confirmLocation();
             mLocationClient.stop();
         }

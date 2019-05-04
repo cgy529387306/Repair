@@ -50,6 +50,7 @@ import com.yxw.cn.carpenterrepair.adapter.UserOrderStatusAdapter;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.MessageEvent;
+import com.yxw.cn.carpenterrepair.entity.OrderItem;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.entity.UserOrder;
 import com.yxw.cn.carpenterrepair.listerner.OnChooseDateListener;
@@ -119,7 +120,7 @@ public class OrderDetailActivity extends BaseActivity {
     @BindView(R.id.mapView)
     MapView mMapView;
 
-    private int orderId;
+    private String orderId;
     private String orderStatus;
     private String orderAddress;
     private String city;
@@ -161,8 +162,6 @@ public class OrderDetailActivity extends BaseActivity {
                 //没有找到检索结果
             } else {
                 Map<String, Object> map = new HashMap<>();
-//                    map.put("addr1", areaTv.getText().toString().replace("-", ""));
-//                    map.put("addr2", et_detail.getText().toString());
                 map.put("result", result);
                 finish();
             }
@@ -178,7 +177,8 @@ public class OrderDetailActivity extends BaseActivity {
     @Override
     public void initView() {
         titleBar.setTitle("订单详情");
-        orderId = getIntent().getIntExtra("data", 0);
+        OrderItem orderItem = (OrderItem) getIntent().getSerializableExtra("data");
+        orderId = orderItem.getOrderId();
         orderList = new ArrayList<>();
         orderAdapter = new UserOrderDetailAdapter(orderList);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this) {
@@ -203,11 +203,7 @@ public class OrderDetailActivity extends BaseActivity {
 
     @Override
     public void getData() {
-        Gson gson = new Gson();
-        HashMap<String, Integer> map = new HashMap<>();
-        map.put("orderId", orderId);
-        OkGo.<ResponseData<UserOrder.ListBean>>post(UrlConstant.ORDER_VIEW)
-                .upJson(gson.toJson(map))
+        OkGo.<ResponseData<UserOrder.ListBean>>post(UrlConstant.ORDER_DETAIL+orderId)
                 .execute(new JsonCallback<ResponseData<UserOrder.ListBean>>() {
                     @SuppressLint("CheckResult")
                     @Override
@@ -401,7 +397,7 @@ public class OrderDetailActivity extends BaseActivity {
                 break;
             case R.id.cancel:
                 Bundle bundle = new Bundle();
-                bundle.putInt("orderId", orderId);
+//                bundle.putInt("orderId", orderId);
                 startActivity(OrderAbnormalActivity.class, bundle);
                 /*DialogPlus dialogPlus = DialogPlus.newDialog(this)
                         .setContentHolder(new ViewHolder(R.layout.dlg_worker_cancel_order))
@@ -450,7 +446,7 @@ public class OrderDetailActivity extends BaseActivity {
                                         case R.id.dialog_confirm:
                                             dialog.dismiss();
                                             HashMap<String, Integer> map1 = new HashMap<>();
-                                            map1.put("orderId", orderId);
+//                                            map1.put("orderId", orderId);
                                             OkGo.<ResponseData<String>>post(UrlConstant.RECEIVE_ORDER)
                                                     .upJson(gson.toJson(map1))
                                                     .execute(new JsonCallback<ResponseData<String>>() {
@@ -744,7 +740,7 @@ public class OrderDetailActivity extends BaseActivity {
                                         case R.id.dialog_confirm:
                                             dialog.dismiss();
                                             HashMap<String, Integer> map = new HashMap<>();
-                                            map.put("orderId", orderId);
+//                                            map.put("orderId", orderId);
                                             OkGo.<ResponseData<String>>post(UrlConstant.WORKER_CANCEL_ORDER)
                                                     .upJson(gson.toJson(map))
                                                     .execute(new JsonCallback<ResponseData<String>>() {
