@@ -40,7 +40,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/icon_location"
+                    android:drawableLeft="@drawable/icon_detail_location"
                     android:drawablePadding="10dp"
                     android:gravity="center_vertical"
                     android:text="我的位置"
@@ -77,21 +77,20 @@
                 android:id="@+id/rl_iv"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
-                android:background="#F6F3F3">
+                android:background="#F6F6F6">
 
                 <ImageView
-                    android:scaleType="fitXY"
                     android:id="@+id/iv"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:src="@drawable/icon_add_card" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/icon_camera_nor" />
             </RelativeLayout>
 
 
             <RelativeLayout
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginTop="10dp"
+                android:layout_margin="15dp"
                 android:background="@drawable/corner_gray_rect"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -118,7 +117,6 @@
         android:id="@+id/ok"
         android:layout_width="match_parent"
         android:layout_height="46dp"
-        android:layout_marginTop="20dp"
         android:background="@drawable/bg_btn_rect_red"
         android:text="签到"
         android:textSize="16sp"

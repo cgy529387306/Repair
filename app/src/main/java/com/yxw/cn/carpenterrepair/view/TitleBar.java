@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -114,6 +115,10 @@ public class TitleBar extends ViewGroup implements View.OnClickListener {
 
         setBackgroundColor(context.getResources().getColor(R.color.white));
         setDividerColor(context.getResources().getColor(R.color.gray_divider));
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            setElevation(2);
+            setTranslationZ(2);
+        }
     }
 
     public void setImmersive(boolean immersive) {

@@ -164,6 +164,7 @@ public class PersonInfoActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.ll_idCardNo:// 身份证号码
+
                 break;
             case R.id.ll_idCardStatus: //身份证认证
                 if (loginInfo!=null && loginInfo.getIdCardStatus()!=2){
@@ -187,7 +188,7 @@ public class PersonInfoActivity extends BaseActivity {
                 startActivity(UpdateMobileActivity.class);
                 break;
             case R.id.ll_name:
-                startActivity(UpdateNameActivity.class);
+//                startActivity(UpdateNameActivity.class);
                 break;
             case R.id.ll_good:
                 Intent intent = new Intent(this, ChooseCategoryActivity.class);

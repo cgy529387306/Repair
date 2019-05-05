@@ -64,6 +64,7 @@
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/tv_name"
                     android:layout_marginLeft="16dp"
+                    android:layout_marginRight="110dp"
                     android:text="183****1234"
                     android:textSize="14sp"
                     android:textColor="#333333" />
@@ -74,7 +75,8 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="10dp"
                     android:layout_below="@id/tv_name"
-                    android:text="福州-晋安区福州站小区"
+                    android:layout_marginRight="110dp"
+                    android:text="福州-晋安区福州站小区晋安区福州站小区晋安区福州站小区晋安区福州站小区晋安区福州站小区"
                     android:textSize="14sp"
                     android:textColor="#333333" />
                 <com.yxw.cn.carpenterrepair.view.DrawableCenterTextView
@@ -332,6 +334,7 @@
         </LinearLayout>
     </ScrollView>
     <LinearLayout
+        android:id="@+id/ll_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -343,8 +346,12 @@
             android:background="@color/white"
             android:gravity="center"
             android:textSize="16sp"
-            android:text="异常反馈"
+            android:text="改约"
             android:textColor="#666666" />
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="#F8F8F8"/>
         <TextView
             android:id="@+id/tv_operate1"
             android:layout_width="0dp"
@@ -355,6 +362,10 @@
             android:textSize="16sp"
             android:text="异常反馈"
             android:textColor="#666666" />
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="#F8F8F8"/>
         <TextView
             android:id="@+id/tv_operate2"
             android:layout_width="0dp"

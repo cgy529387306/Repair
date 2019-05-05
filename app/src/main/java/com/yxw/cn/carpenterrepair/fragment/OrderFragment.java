@@ -24,6 +24,7 @@ import com.yxw.cn.carpenterrepair.adapter.OrderAdapter;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.MessageEvent;
+import com.yxw.cn.carpenterrepair.entity.Order;
 import com.yxw.cn.carpenterrepair.entity.OrderItem;
 import com.yxw.cn.carpenterrepair.entity.OrderListData;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
@@ -44,6 +45,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.BindView;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * 订单列表
@@ -62,7 +64,7 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
     private int mOrderType;
     private String mBookingTime;
     private ContactPop mContactPop;
-
+    private SweetAlertDialog mTakingDialog;
     /**
      * @param state 0:今天 1:明天 2:全部
      * @return
@@ -183,29 +185,7 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
 
     @Override
     public void onOrderTaking(OrderItem orderItem) {
-        showLoading();
-        OkGo.<ResponseData<String>>post(UrlConstant.ORDER_RECEIVE+orderItem.getOrderId())
-                .execute(new JsonCallback<ResponseData<String>>() {
-                             @Override
-                             public void onSuccess(ResponseData<String> response) {
-                                 dismissLoading();
-                                 if (response!=null){
-                                     if (response.isSuccess()) {
-                                         toast("抢单成功");
-                                         EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
-                                     }else{
-                                         toast(response.getMsg());
-                                     }
-                                 }
-                             }
-
-                             @Override
-                             public void onError(Response<ResponseData<String>> response) {
-                                 super.onError(response);
-                                 dismissLoading();
-                             }
-                         }
-                );
+         showOrderTakingDialog(orderItem);
     }
 
     @Override
@@ -243,10 +223,13 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
                             @Override
                             public void onSuccess(ResponseData<String> response) {
                                 dismissLoading();
-                                ToastUtil.show(response.getMsg());
-                                if (response.isSuccess()) {
-                                    toast("预约成功");
-                                    EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
+                                if (response!=null){
+                                    if (response.isSuccess()) {
+                                        toast("预约成功");
+                                        EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
+                                    }else{
+                                        toast(response.getMsg());
+                                    }
                                 }
                             }
 
@@ -318,10 +301,13 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
                             @Override
                             public void onSuccess(ResponseData<String> response) {
                                 dismissLoading();
-                                ToastUtil.show(response.getMsg());
-                                if (response.isSuccess()) {
-                                    toast("预约成功");
-                                    EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
+                                if (response!=null){
+                                    if (response.isSuccess()) {
+                                        toast("预约成功");
+                                        EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
+                                    }else{
+                                        toast(response.getMsg());
+                                    }
                                 }
                             }
 
@@ -358,10 +344,13 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
                             @Override
                             public void onSuccess(ResponseData<String> response) {
                                 dismissLoading();
-                                ToastUtil.show(response.getMsg());
-                                if (response.isSuccess()) {
-                                    toast("预约成功");
-                                    EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
+                                if (response!=null){
+                                    if (response.isSuccess()) {
+                                        toast("预约成功");
+                                        EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
+                                    }else{
+                                        toast(response.getMsg());
+                                    }
                                 }
                             }
 
@@ -374,5 +363,51 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
 
             }
         });
+    }
+
+    public void showOrderTakingDialog(OrderItem orderItem) {
+        if (mTakingDialog == null) {
+            mTakingDialog = new SweetAlertDialog(getActivity())
+                    .setTitleText("请仔细核实订单信息是否能够服务，恶意抢单会遭受平台处罚！")
+                    .setCancelText("我再看看")
+                    .setConfirmText("确定抢单")
+                    .showCancelButton(true)
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sDialog) {
+                            sDialog.cancel();
+                            showLoading();
+                            OkGo.<ResponseData<String>>post(UrlConstant.ORDER_RECEIVE+orderItem.getOrderId())
+                                    .execute(new JsonCallback<ResponseData<String>>() {
+                                                 @Override
+                                                 public void onSuccess(ResponseData<String> response) {
+                                                     dismissLoading();
+                                                     if (response!=null){
+                                                         if (response.isSuccess()) {
+                                                             toast("抢单成功");
+                                                             EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
+                                                         }else{
+                                                             toast(response.getMsg());
+                                                         }
+                                                     }
+                                                 }
+
+                                                 @Override
+                                                 public void onError(Response<ResponseData<String>> response) {
+                                                     super.onError(response);
+                                                     dismissLoading();
+                                                 }
+                                             }
+                                    );
+                        }
+                    })
+                    .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sDialog) {
+                            sDialog.cancel();
+                        }
+                    });
+            mTakingDialog.setCancelable(false);
+        }
     }
 }

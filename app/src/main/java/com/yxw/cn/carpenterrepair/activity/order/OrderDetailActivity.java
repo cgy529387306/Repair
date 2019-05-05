@@ -4,11 +4,13 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,6 +67,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * 订单详情
@@ -109,6 +112,8 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
     RecyclerView picRv;
     @BindView(R.id.mapView)
     MapView mMapView;
+    @BindView(R.id.ll_bottom)
+    LinearLayout llBottom;
 
     private OrderItem orderItem;
     private String orderId;
@@ -130,6 +135,7 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
     private LocationClient mLocationClient;
     private MyLocationListener mLocationListener;
     private ContactPop mContactPop;
+    private SweetAlertDialog mTakingDialog;
 
     @Override
     protected int getLayoutResId() {
@@ -139,6 +145,10 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
     @Override
     public void initView() {
         titleBar.setTitle("订单详情");
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            llBottom.setElevation(2);
+            llBottom.setTranslationZ(2);
+        }
         orderItem = (OrderItem) getIntent().getSerializableExtra("data");
         orderId = orderItem.getOrderId();
         orderList = new ArrayList<>();
@@ -161,9 +171,8 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
         };
         picRv.setLayoutManager(gridLayoutManager);
         picRv.setAdapter(picAdapter);
-        initLocation();
         initOrderData();
-        initOrderStatus();
+        initLocation();
     }
 
     private void initOrderData(){
@@ -173,163 +182,7 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
             tvAddress.setText(orderItem.getAddress());
             tvTotalPrice.setText(String.valueOf(orderItem.getTotalPrice()));
             tvOrderNo.setText(orderItem.getOrderSn());
-        }
-    }
-
-    private void initOrderStatus(){
-        int orderStatus = orderItem.getOrderStatus();
-        if (orderStatus<=20){
-            //待接单
-            tvOperate0.setVisibility(View.GONE);
-            tvOperate1.setVisibility(View.GONE);
-            tvOperate2.setVisibility(View.VISIBLE);
-            tvOperate2.setText("我要接单");
-            tvOperate2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showLoading();
-                    OkGo.<ResponseData<String>>post(UrlConstant.ORDER_RECEIVE+orderItem.getOrderId())
-                            .execute(new JsonCallback<ResponseData<String>>() {
-                                         @Override
-                                         public void onSuccess(ResponseData<String> response) {
-                                             dismissLoading();
-                                             if (response!=null){
-                                                 if (response.isSuccess()) {
-                                                     toast("抢单成功");
-                                                     EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
-                                                 }else{
-                                                     toast(response.getMsg());
-                                                 }
-                                             }
-                                         }
-
-                                         @Override
-                                         public void onError(Response<ResponseData<String>> response) {
-                                             super.onError(response);
-                                             dismissLoading();
-                                         }
-                                     }
-                            );
-                }
-            });
-        }else if (orderStatus<=40){
-            //待预约
-            tvOperate0.setVisibility(View.GONE);
-            tvOperate1.setVisibility(View.VISIBLE);
-            tvOperate1.setText("异常反馈");
-            tvOperate1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startActivity(OrderAbnormalActivity.class);
-                }
-            });
-
-            tvOperate2.setVisibility(View.VISIBLE);
-            tvOperate2.setText("联系用户");
-            tvOperate2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mContactPop==null){
-                        mContactPop = new ContactPop(OrderDetailActivity.this,OrderDetailActivity.this,orderItem);
-                    }
-                    mContactPop.showPopupWindow(mMapView);
-                }
-            });
-        }else if (orderStatus<=55){
-            //待上门
-            tvOperate0.setVisibility(View.VISIBLE);
-            tvOperate0.setText("改约");
-            tvOperate0.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    TimePickerUtil.showYearPicker(OrderDetailActivity.this, new OnChooseDateListener() {
-                        @Override
-                        public void getDate(Date date) {
-                            String startTime = TimeUtil.dateToString(date, "yyyy-MM-dd HH:mm:00");
-                            Calendar calendar = Calendar.getInstance();
-                            calendar.setTime(date);
-                            calendar.set(Calendar.HOUR,
-                                    calendar.get(Calendar.HOUR) + 1);
-                            String endTime = TimeUtil.dateToString(calendar.getTime(), "yyyy-MM-dd HH:mm:00");
-                            showLoading();
-                            HashMap<String, Object> map = new HashMap<>();
-                            map.put("orderId", orderItem.getOrderId());
-                            map.put("bookingStartTime", startTime);
-                            map.put("bookingEndTime", endTime);
-                            OkGo.<ResponseData<String>>post(UrlConstant.ORDER_TURN_RESERVATION)
-                                    .upJson(gson.toJson(map))
-                                    .execute(new JsonCallback<ResponseData<String>>() {
-                                        @Override
-                                        public void onSuccess(ResponseData<String> response) {
-                                            dismissLoading();
-                                            ToastUtil.show(response.getMsg());
-                                            if (response.isSuccess()) {
-                                                toast("预约成功");
-                                                EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onError(Response<ResponseData<String>> response) {
-                                            super.onError(response);
-                                            dismissLoading();
-                                        }
-                                    });
-
-                        }
-                    });
-                }
-            });
-
-            tvOperate1.setVisibility(View.VISIBLE);
-            tvOperate1.setText("异常反馈");
-            tvOperate1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startActivity(OrderAbnormalActivity.class);
-                }
-            });
-
-            tvOperate2.setVisibility(View.VISIBLE);
-            tvOperate2.setText("签到");
-            tvOperate2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("order",orderItem);
-                    startActivity(OrderSignInActivity.class,bundle);
-                }
-            });
-        }else if (orderStatus<90){
-            //待完成
-            tvOperate0.setVisibility(View.GONE);
-            tvOperate1.setVisibility(View.VISIBLE);
-            tvOperate1.setText("异常反馈");
-            tvOperate1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startActivity(OrderAbnormalActivity.class);
-                }
-            });
-            tvOperate2.setVisibility(View.VISIBLE);
-            tvOperate2.setText("服务完成");
-            tvOperate2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
-        }else{
-            //已完成
-            tvOperate0.setVisibility(View.GONE);
-            tvOperate1.setVisibility(View.GONE);
-            tvOperate2.setVisibility(View.VISIBLE);
-            tvOperate2.setText("查看");
-            tvOperate2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                }
-            });
+            initOrderStatus();
         }
     }
 
@@ -339,7 +192,14 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
                 .execute(new JsonCallback<ResponseData<OrderItem>>() {
                     @Override
                     public void onSuccess(ResponseData<OrderItem> response) {
-
+                        if (response!=null){
+                            if (response.isSuccess()){
+                                orderItem = response.getData();
+//                                initOrderData();
+                            }else{
+                                toast(response.getMsg());
+                            }
+                        }
                     }
                 });
     }
@@ -474,10 +334,13 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
                             @Override
                             public void onSuccess(ResponseData<String> response) {
                                 dismissLoading();
-                                ToastUtil.show(response.getMsg());
-                                if (response.isSuccess()) {
-                                    toast("预约成功");
-                                    EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
+                                if (response!=null){
+                                    if (response.isSuccess()) {
+                                        toast("预约成功");
+                                        EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
+                                    }else{
+                                        toast(response.getMsg());
+                                    }
                                 }
                             }
 
@@ -514,10 +377,13 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
                             @Override
                             public void onSuccess(ResponseData<String> response) {
                                 dismissLoading();
-                                ToastUtil.show(response.getMsg());
-                                if (response.isSuccess()) {
-                                    toast("预约成功");
-                                    EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
+                                if (response!=null){
+                                    if (response.isSuccess()) {
+                                        toast("预约成功");
+                                        EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
+                                    }else{
+                                        toast(response.getMsg());
+                                    }
                                 }
                             }
 
@@ -573,6 +439,190 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
                 Toast.makeText(OrderDetailActivity.this, "请确认手机是否开启GPS", Toast.LENGTH_SHORT).show();
             }
             mLocationClient.stop();
+        }
+    }
+
+    private void initOrderStatus(){
+        int orderStatus = orderItem.getOrderStatus();
+        if (orderStatus<=20){
+            //待接单
+            tvOperate0.setVisibility(View.GONE);
+            tvOperate1.setVisibility(View.GONE);
+            tvOperate2.setVisibility(View.VISIBLE);
+            tvOperate2.setText("我要接单");
+            tvOperate2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showOrderTakingDialog(orderItem);
+                }
+            });
+        }else if (orderStatus<=40){
+            //待预约
+            tvOperate0.setVisibility(View.GONE);
+            tvOperate1.setVisibility(View.VISIBLE);
+            tvOperate1.setText("异常反馈");
+            tvOperate1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(OrderAbnormalActivity.class);
+                }
+            });
+
+            tvOperate2.setVisibility(View.VISIBLE);
+            tvOperate2.setText("联系用户");
+            tvOperate2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mContactPop==null){
+                        mContactPop = new ContactPop(OrderDetailActivity.this,OrderDetailActivity.this,orderItem);
+                    }
+                    mContactPop.showPopupWindow(mMapView);
+                }
+            });
+        }else if (orderStatus<=55){
+            //待上门
+            tvOperate0.setVisibility(View.VISIBLE);
+            tvOperate0.setText("改约");
+            tvOperate0.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    TimePickerUtil.showYearPicker(OrderDetailActivity.this, new OnChooseDateListener() {
+                        @Override
+                        public void getDate(Date date) {
+                            String startTime = TimeUtil.dateToString(date, "yyyy-MM-dd HH:mm:00");
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.setTime(date);
+                            calendar.set(Calendar.HOUR,
+                                    calendar.get(Calendar.HOUR) + 1);
+                            String endTime = TimeUtil.dateToString(calendar.getTime(), "yyyy-MM-dd HH:mm:00");
+                            showLoading();
+                            HashMap<String, Object> map = new HashMap<>();
+                            map.put("orderId", orderItem.getOrderId());
+                            map.put("bookingStartTime", startTime);
+                            map.put("bookingEndTime", endTime);
+                            OkGo.<ResponseData<String>>post(UrlConstant.ORDER_TURN_RESERVATION)
+                                    .upJson(gson.toJson(map))
+                                    .execute(new JsonCallback<ResponseData<String>>() {
+                                        @Override
+                                        public void onSuccess(ResponseData<String> response) {
+                                            dismissLoading();
+                                            if (response!=null){
+                                                if (response.isSuccess()) {
+                                                    toast("预约成功");
+                                                    EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
+                                                }else{
+                                                    toast(response.getMsg());
+                                                }
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onError(Response<ResponseData<String>> response) {
+                                            super.onError(response);
+                                            dismissLoading();
+                                        }
+                                    });
+
+                        }
+                    });
+                }
+            });
+
+            tvOperate1.setVisibility(View.VISIBLE);
+            tvOperate1.setText("异常反馈");
+            tvOperate1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(OrderAbnormalActivity.class);
+                }
+            });
+
+            tvOperate2.setVisibility(View.VISIBLE);
+            tvOperate2.setText("签到");
+            tvOperate2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("order",orderItem);
+                    startActivity(OrderSignInActivity.class,bundle);
+                }
+            });
+        }else if (orderStatus<90){
+            //待完成
+            tvOperate0.setVisibility(View.GONE);
+            tvOperate1.setVisibility(View.VISIBLE);
+            tvOperate1.setText("异常反馈");
+            tvOperate1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(OrderAbnormalActivity.class);
+                }
+            });
+            tvOperate2.setVisibility(View.VISIBLE);
+            tvOperate2.setText("服务完成");
+            tvOperate2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+        }else{
+            //已完成
+            tvOperate0.setVisibility(View.GONE);
+            tvOperate1.setVisibility(View.GONE);
+            tvOperate2.setVisibility(View.VISIBLE);
+            tvOperate2.setText("查看");
+            tvOperate2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                }
+            });
+        }
+    }
+
+    public void showOrderTakingDialog(OrderItem orderItem) {
+        if (mTakingDialog == null) {
+            mTakingDialog = new SweetAlertDialog(this)
+                    .setTitleText("请仔细核实订单信息是否能够服务，恶意抢单会遭受平台处罚！")
+                    .setCancelText("我再看看")
+                    .setConfirmText("确定抢单")
+                    .showCancelButton(true)
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sDialog) {
+                            sDialog.cancel();
+                            showLoading();
+                            OkGo.<ResponseData<String>>post(UrlConstant.ORDER_RECEIVE+orderItem.getOrderId())
+                                    .execute(new JsonCallback<ResponseData<String>>() {
+                                                 @Override
+                                                 public void onSuccess(ResponseData<String> response) {
+                                                     dismissLoading();
+                                                     if (response!=null){
+                                                         if (response.isSuccess()) {
+                                                             toast("抢单成功");
+                                                             EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
+                                                         }else{
+                                                             toast(response.getMsg());
+                                                         }
+                                                     }
+                                                 }
+
+                                                 @Override
+                                                 public void onError(Response<ResponseData<String>> response) {
+                                                     super.onError(response);
+                                                     dismissLoading();
+                                                 }
+                                             }
+                                    );
+                        }
+                    })
+                    .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sDialog) {
+                            sDialog.cancel();
+                        }
+                    });
+            mTakingDialog.setCancelable(false);
         }
     }
 
