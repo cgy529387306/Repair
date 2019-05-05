@@ -167,7 +167,7 @@ public class PersonInfoActivity extends BaseActivity {
 
                 break;
             case R.id.ll_idCardStatus: //身份证认证
-                if (loginInfo!=null && loginInfo.getIdCardStatus()!=2){
+                if (loginInfo!=null && loginInfo.getIdCardStatus()!=3){
                     startActivity(IdCardInfoActivity.class);
                 }
                 break;

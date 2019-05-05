@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
     android:focusableInTouchMode="true"
     android:focusable="true">
 
@@ -18,7 +19,6 @@
         android:scrollbars="none">
 
         <LinearLayout
-            android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -72,21 +72,13 @@
                 android:textColor="#666666"
                 android:textSize="12sp" />
 
-            <RelativeLayout
-                android:layout_marginLeft="15dp"
-                android:id="@+id/rl_iv"
+            <ImageView
+                android:id="@+id/iv_picture"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
-                android:background="#F6F6F6">
-
-                <ImageView
-                    android:id="@+id/iv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/icon_camera_nor" />
-            </RelativeLayout>
+                android:layout_marginLeft="15dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/icon_camera_add" />
 
 
             <RelativeLayout

@@ -115,10 +115,6 @@ public class TitleBar extends ViewGroup implements View.OnClickListener {
 
         setBackgroundColor(context.getResources().getColor(R.color.white));
         setDividerColor(context.getResources().getColor(R.color.gray_divider));
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
-            setElevation(2);
-            setTranslationZ(2);
-        }
     }
 
     public void setImmersive(boolean immersive) {

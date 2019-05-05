@@ -24,7 +24,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="30dp"
             android:layout_marginBottom="10dp"
-            android:src="@drawable/icon_success_head"/>
+            android:src="@drawable/icon_edit_bg"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

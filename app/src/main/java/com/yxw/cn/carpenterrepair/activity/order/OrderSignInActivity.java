@@ -68,8 +68,8 @@ public class OrderSignInActivity extends BaseActivity {
 
     @BindView(R.id.titlebar)
     TitleBar titleBar;
-    @BindView(R.id.iv)
-    ImageView iv;
+    @BindView(R.id.iv_picture)
+    ImageView ivPicture;
     @BindView(R.id.ok)
     Button ok;
     @BindView(R.id.et_remark)
@@ -141,7 +141,7 @@ public class OrderSignInActivity extends BaseActivity {
         initLocation();
     }
 
-    @OnClick({R.id.rl_iv, R.id.ok})
+    @OnClick({R.id.iv_picture, R.id.ok})
     public void click(View view) {
         switch (view.getId()) {
             case R.id.ok:
@@ -157,7 +157,7 @@ public class OrderSignInActivity extends BaseActivity {
 //
 //                }
                 break;
-            case R.id.rl_iv:
+            case R.id.iv_picture:
                 PictureSelector.create(this)
                         .openGallery(PictureMimeType.ofImage())
                         .selectionMode(PictureConfig.MULTIPLE)// 多选 or 单选 PictureConfig.MULTIPLE or PictureConfig.SINGLE
@@ -183,7 +183,7 @@ public class OrderSignInActivity extends BaseActivity {
                     if (selectList.size() > 0) {
                         for (LocalMedia localMedia : selectList) {
                             path = Base64Util.getBase64ImageStr(localMedia.getCompressPath());
-                            Glide.with(this).load(localMedia.getCompressPath()).into(iv);
+                            Glide.with(this).load(localMedia.getCompressPath()).into(ivPicture);
                         }
                     }
                     break;
