@@ -201,40 +201,31 @@ public class AppUtil {
     }
 
     public static void initRegionTreeData() {
-        OkGo.<ResponseData<RegionTreeList>>get(UrlConstant.GET_REGION_TREE)
-                .execute(new JsonCallback<ResponseData<RegionTreeList>>() {
+        OkGo.<ResponseData<List<CityBean>>>post(UrlConstant.GET_ALL_REGION)
+                .execute(new JsonCallback<ResponseData<List<CityBean>>>() {
 
                     @Override
-                    public void onSuccess(ResponseData<RegionTreeList> response) {
-                        if (response.getData().getList() != null && response.getData().getList().size() > 0) {
-                            regionTreeList.clear();
-                            regionTreeList.addAll(response.getData().getList());
-                            RegionPickerUtil.init();
+                    public void onSuccess(ResponseData<List<CityBean>> response) {
+                        if (response!=null){
+                            if (response.isSuccess() && response.getData()!=null){
+                                AppUtil.cityItemList = response.getData();
+                            }
                         }
-                    }
-
-                    @Override
-                    public void onError(Response<ResponseData<RegionTreeList>> response) {
-                        super.onError(response);
                     }
                 });
     }
 
     public static void initCategoryData() {
-        OkGo.<ResponseData<List<Category>>>get(UrlConstant.GET_ALL_CATEGORY)
+        OkGo.<ResponseData<List<Category>>>post(UrlConstant.GET_ALL_CATEGORY)
                 .execute(new JsonCallback<ResponseData<List<Category>>>() {
 
                     @Override
                     public void onSuccess(ResponseData<List<Category>> response) {
-                        if (response.getData() != null && response.getData().size() > 0) {
-                            categoryItemList.clear();
-                            categoryItemList.addAll(response.getData());
+                        if (response!=null){
+                            if (response.isSuccess()){
+                                AppUtil.categoryItemList = response.getData();
+                            }
                         }
-                    }
-
-                    @Override
-                    public void onError(Response<ResponseData<List<Category>>> response) {
-                        super.onError(response);
                     }
                 });
     }

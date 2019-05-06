@@ -20,6 +20,7 @@ import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.fragment.HomeFragment;
 import com.yxw.cn.carpenterrepair.fragment.UserFragment;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
+import com.yxw.cn.carpenterrepair.util.AppUtil;
 import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 
 import butterknife.BindView;
@@ -50,6 +51,8 @@ public class MainActivity extends BaseActivity {
         fragmentManager = getSupportFragmentManager();
         showFragment(0);
         getUserInfo();
+        AppUtil.initCategoryData();
+        AppUtil.initRegionTreeData();
     }
 
     private void showFragment(int page) {

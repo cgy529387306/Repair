@@ -20,9 +20,7 @@ import com.yxw.cn.carpenterrepair.activity.LocationService;
 import com.yxw.cn.carpenterrepair.adapter.CityAdapter;
 import com.yxw.cn.carpenterrepair.adapter.HotCityAdapter;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
-import com.yxw.cn.carpenterrepair.entity.Category;
 import com.yxw.cn.carpenterrepair.entity.CityBean;
-import com.yxw.cn.carpenterrepair.entity.CityEntity;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.util.AppUtil;
@@ -75,6 +73,7 @@ public class SelectCityActivity extends BaseActivity {
         public void onReceiveLocation(BDLocation bdLocation) {
             if (mTvCurrentCity!=null && bdLocation!=null && bdLocation.getCity()!=null){
                 mTvCurrentCity.setText(bdLocation.getCity());
+                String code  = bdLocation.getCityCode();
             }
         }
     };

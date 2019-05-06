@@ -37,23 +37,38 @@
             android:textColorHint="#999999"
             android:textSize="14sp"
             android:hint="手机号"/>
-        <com.yxw.cn.carpenterrepair.view.ClearEditText
-            android:id="@+id/et_password"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginTop="20dp"
-            android:drawablePadding="10dp"
-            android:drawableLeft="@drawable/icon_passw"
-            android:padding="10dp"
-            android:gravity="center_vertical"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
             android:background="@drawable/edt_bt"
-            android:inputType="phone"
-            android:hint="密码"
-            android:textColor="#666666"
-            android:textColorHint="#999999"
-            android:textSize="14sp" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+                <com.yxw.cn.carpenterrepair.view.ClearEditText
+                    android:id="@+id/et_password"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="48dp"
+                    android:drawablePadding="10dp"
+                    android:drawableLeft="@drawable/icon_passw"
+                    android:padding="10dp"
+                    android:gravity="center_vertical"
+                    android:background="@null"
+                    android:inputType="textPassword"
+                    android:hint="密码"
+                    android:textColor="#666666"
+                    android:textColorHint="#999999"
+                    android:textSize="14sp" />
+                <ImageView
+                    android:id="@+id/iv_show"
+                    android:layout_width="wrap_content"
+                    android:src="@drawable/eyes_off"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:layout_height="match_parent" />
+        </LinearLayout>
         <TextView
             android:id="@+id/tv_login"
             android:layout_width="match_parent"
