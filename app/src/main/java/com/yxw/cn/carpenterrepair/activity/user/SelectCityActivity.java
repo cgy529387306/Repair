@@ -12,12 +12,19 @@ import android.widget.TextView;
 
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.model.Response;
 import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.activity.LocationService;
 import com.yxw.cn.carpenterrepair.adapter.CityAdapter;
 import com.yxw.cn.carpenterrepair.adapter.HotCityAdapter;
+import com.yxw.cn.carpenterrepair.contast.UrlConstant;
+import com.yxw.cn.carpenterrepair.entity.Category;
 import com.yxw.cn.carpenterrepair.entity.CityEntity;
+import com.yxw.cn.carpenterrepair.entity.ResponseData;
+import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
+import com.yxw.cn.carpenterrepair.util.AppUtil;
 import com.yxw.cn.carpenterrepair.view.QGridView;
 import com.yxw.cn.carpenterrepair.view.TitleBar;
 
@@ -77,6 +84,31 @@ public class SelectCityActivity extends BaseActivity {
         mLocationService.stop();
     }
 
+    @Override
+    public void getData() {
+        super.getData();
+        OkGo.<ResponseData<List<Category>>>post(UrlConstant.GET_ALL_REGION)
+                .tag(this)
+                .execute(new JsonCallback<ResponseData<List<Category>>>() {
+
+                    @Override
+                    public void onSuccess(ResponseData<List<Category>> response) {
+                        if (response!=null){
+                            if (response.isSuccess()){
+//                                AppUtil.categoryItemList = response.getData();
+//                                initCateData();
+                            }else{
+                                toast(response.getMsg());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<ResponseData<List<Category>>> response) {
+                        super.onError(response);
+                    }
+                });
+    }
 
     @Override
     protected void onDestroy() {
