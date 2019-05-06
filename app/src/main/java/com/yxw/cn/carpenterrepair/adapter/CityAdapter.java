@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.yxw.cn.carpenterrepair.R;
+import com.yxw.cn.carpenterrepair.entity.CityBean;
 import com.yxw.cn.carpenterrepair.entity.CityEntity;
 
 import me.yokeyword.indexablerv.IndexableAdapter;
@@ -16,7 +17,7 @@ import me.yokeyword.indexablerv.IndexableAdapter;
 /**
  * Created by YoKey on 16/10/8.
  */
-public class CityAdapter extends IndexableAdapter<CityEntity> {
+public class CityAdapter extends IndexableAdapter<CityBean> {
     private LayoutInflater mInflater;
 
     public CityAdapter(Context context) {
@@ -42,9 +43,9 @@ public class CityAdapter extends IndexableAdapter<CityEntity> {
     }
 
     @Override
-    public void onBindContentViewHolder(RecyclerView.ViewHolder holder, CityEntity entity) {
+    public void onBindContentViewHolder(RecyclerView.ViewHolder holder, CityBean entity) {
         ContentVH vh = (ContentVH) holder;
-        vh.tvName.setText(entity.getName());
+        vh.tvName.setText(entity.getRegionName());
     }
 
     private class IndexVH extends RecyclerView.ViewHolder {

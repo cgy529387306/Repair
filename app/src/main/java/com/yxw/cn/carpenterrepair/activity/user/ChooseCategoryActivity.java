@@ -77,12 +77,14 @@ public class ChooseCategoryActivity extends BaseActivity {
         if (AppUtil.categoryItemList != null && AppUtil.categoryItemList.size() > 0) {
             initCateData();
         } else {
+            showLoading();
             OkGo.<ResponseData<List<Category>>>post(UrlConstant.GET_ALL_CATEGORY)
                     .tag(this)
                     .execute(new JsonCallback<ResponseData<List<Category>>>() {
 
                         @Override
                         public void onSuccess(ResponseData<List<Category>> response) {
+                            dismissLoading();
                             if (response!=null){
                                 if (response.isSuccess()){
                                     AppUtil.categoryItemList = response.getData();
@@ -96,6 +98,7 @@ public class ChooseCategoryActivity extends BaseActivity {
                         @Override
                         public void onError(Response<ResponseData<List<Category>>> response) {
                             super.onError(response);
+                            dismissLoading();
                         }
                     });
         }

@@ -29,6 +29,7 @@ import com.yxw.cn.carpenterrepair.activity.user.ServiceTimeActivity;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.Abnormal;
 import com.yxw.cn.carpenterrepair.entity.Category;
+import com.yxw.cn.carpenterrepair.entity.CityBean;
 import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 import com.yxw.cn.carpenterrepair.entity.LoginInfo;
 import com.yxw.cn.carpenterrepair.entity.QueryListByMark;
@@ -51,6 +52,7 @@ public class AppUtil {
     public static List<QueryListByMark> timeList = new ArrayList<>();
     public static List<RegionTree> regionTreeList = new ArrayList<>();
     public static List<Category> categoryItemList = new ArrayList<>();
+    public static List<CityBean> cityItemList = new ArrayList<>();
     public static List<Abnormal> categoryItemList0 = new ArrayList<>();
     private static Gson gson = new Gson();
 
