@@ -42,7 +42,8 @@ public class UrlConstant {
     public final static String SAVE_CATEGORY = BASE_USER + "/ms70/api/user/info/saveProject";//新增用户项目
 
     public final static String GET_ALL_CATEGORY = BASE_USER + "/ms20/api/sys/dicts/categoryList";//获取项目分类列表
-    public final static String GET_ALL_REGION= BASE_USER + "/ms20/api/sys/region/getRegionList";//获取所有地区接口
+    public final static String GET_ALL_REGION = BASE_USER + "/ms20/api/sys/region/getRegionList";//获取所有地区接口
+    public final static String GET_EXCEPTION_REASON = BASE_USER + "/ms20/api/sys/dicts/findDictsByKey";//查询数据字典
 
 
     public final static String ORDER_CANCEL = BASE_USER + "/ms60/api/fix/order/accept/cancelReceiveOrder/{orderId}";//工程师取消接单

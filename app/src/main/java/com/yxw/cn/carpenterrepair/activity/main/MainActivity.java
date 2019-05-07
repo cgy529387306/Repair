@@ -53,6 +53,8 @@ public class MainActivity extends BaseActivity {
         getUserInfo();
         AppUtil.initCategoryData();
         AppUtil.initRegionTreeData();
+        AppUtil.initSignReasonData();
+        AppUtil.initReservationReasonData();
     }
 
     private void showFragment(int page) {

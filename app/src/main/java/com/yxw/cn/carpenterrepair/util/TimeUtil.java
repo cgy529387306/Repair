@@ -2,6 +2,7 @@ package com.yxw.cn.carpenterrepair.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -143,6 +144,18 @@ public class TimeUtil {
     // date要转换的date类型的时间
     public static long dateToLong(Date date) {
         return date.getTime();
+    }
+
+
+    public static String getAfterHourTime(Date date) {
+        if (date==null){
+            date = new Date();
+        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR,
+                calendar.get(Calendar.HOUR) + 1);
+       return TimeUtil.dateToString(calendar.getTime(), "yyyy-MM-dd HH:mm:00");
     }
 
 }

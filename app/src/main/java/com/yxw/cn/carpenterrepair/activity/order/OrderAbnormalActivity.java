@@ -7,14 +7,19 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.lzy.okgo.OkGo;
+import com.lzy.okgo.model.Response;
 import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.adapter.OrderAbnormalAdapter;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.Abnormal;
+import com.yxw.cn.carpenterrepair.entity.CityBean;
+import com.yxw.cn.carpenterrepair.entity.ReasonBean;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
+import com.yxw.cn.carpenterrepair.util.AppUtil;
+import com.yxw.cn.carpenterrepair.util.Helper;
 import com.yxw.cn.carpenterrepair.view.TitleBar;
 
 import java.util.ArrayList;
@@ -39,14 +44,17 @@ public class OrderAbnormalActivity extends BaseActivity implements BaseQuickAdap
     TitleBar titleBar;
     @BindView(R.id.tv_time)
     TextView tv_time;
-    @BindView(R.id.rv)
-    RecyclerView mRv;
+    @BindView(R.id.rv_reason)
+    RecyclerView mRvReason;
 
-    private List<Abnormal> mList;
     private OrderAbnormalAdapter mAdapter;
     private int orderId;
     private String exceptionIds;
 
+    private int type;
+
+    private String startTime;
+    private String endTime;
 
     @Override
     protected int getLayoutResId() {
@@ -55,37 +63,86 @@ public class OrderAbnormalActivity extends BaseActivity implements BaseQuickAdap
 
     @Override
     public void initView() {
-        titleBar.setTitle("异常反馈");
+        type = getIntent().getIntExtra("type",0);
+        titleBar.setTitle(type==0?"预约异常反馈":"签到异常反馈");
         orderId = getIntent().getIntExtra("orderId", 0);
-        mList = new ArrayList<>();
-        mAdapter = new OrderAbnormalAdapter(mList);
+        mAdapter = new OrderAbnormalAdapter(new ArrayList<>());
         mAdapter.setOnItemClickListener(this);
-        mRv.setLayoutManager(new GridLayoutManager(this, 2));
-        mRv.setAdapter(mAdapter);
+        mRvReason.setLayoutManager(new GridLayoutManager(this, 2));
+        mRvReason.setAdapter(mAdapter);
     }
 
     @Override
     public void getData() {
-        super.getData();
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("mark", "TURN_RESERVATION_REASON");
-        OkGo.<ResponseData<List<Abnormal>>>post(UrlConstant.ABNORMAL_TYPE)
-                .upJson(gson.toJson(map))
-                .execute(new JsonCallback<ResponseData<List<Abnormal>>>() {
-                    @Override
-                    public void onSuccess(ResponseData<List<Abnormal>> response) {
-                        if (response.isSuccess()) {
-                            if (response.getData().size() > 0) {
-                                mList.addAll(response.getData());
-                                mAdapter.notifyDataSetChanged();
-                                exceptionIds = response.getData().get(0).getValue();
-                            }
-                        } else {
-                            ToastUtil.show(response.getMsg());
-                        }
-                    }
-                });
+        if (type == 0){
+            getReservationReasonData();
+        }else{
+            getSignReasonData();
+        }
     }
+
+    private void getSignReasonData(){
+        if (AppUtil.signReasonList != null && AppUtil.signReasonList.size() > 0) {
+            mAdapter.setNewData(AppUtil.signReasonList);
+        } else{
+            showLoading();
+            HashMap<String,String> map = new HashMap<>();
+            map.put("dictKey","SIGN_IN_EXCEPTION");
+            OkGo.<ResponseData<List<ReasonBean>>>post(UrlConstant.GET_EXCEPTION_REASON)
+                    .upJson(gson.toJson(map))
+                    .execute(new JsonCallback<ResponseData<List<ReasonBean>>>() {
+
+                        @Override
+                        public void onSuccess(ResponseData<List<ReasonBean>> response) {
+                            dismissLoading();
+                            if (response!=null){
+                                if (response.isSuccess() && response.getData()!=null){
+                                    AppUtil.signReasonList = response.getData();
+                                    mAdapter.setNewData(AppUtil.signReasonList);
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onError(Response<ResponseData<List<ReasonBean>>> response) {
+                            super.onError(response);
+                            dismissLoading();
+                        }
+                    });
+        }
+    }
+
+    private void getReservationReasonData(){
+        if (AppUtil.reservationReasonList != null && AppUtil.reservationReasonList.size() > 0) {
+            mAdapter.setNewData(AppUtil.reservationReasonList);
+        } else{
+            showLoading();
+            HashMap<String,String> map = new HashMap<>();
+            map.put("dictKey","TURN_RESERVATION_REASON");
+            OkGo.<ResponseData<List<ReasonBean>>>post(UrlConstant.GET_EXCEPTION_REASON)
+                    .upJson(gson.toJson(map))
+                    .execute(new JsonCallback<ResponseData<List<ReasonBean>>>() {
+
+                        @Override
+                        public void onSuccess(ResponseData<List<ReasonBean>> response) {
+                            dismissLoading();
+                            if (response!=null){
+                                if (response.isSuccess() && response.getData()!=null){
+                                    AppUtil.reservationReasonList = response.getData();
+                                    mAdapter.setNewData(AppUtil.reservationReasonList);
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onError(Response<ResponseData<List<ReasonBean>>> response) {
+                            super.onError(response);
+                            dismissLoading();
+                        }
+                    });
+        }
+    }
+
 
     @OnClick({R.id.rl_time, R.id.cancel, R.id.confirm})
     public void click(View view) {
@@ -94,21 +151,25 @@ public class OrderAbnormalActivity extends BaseActivity implements BaseQuickAdap
                 TimePickerUtil.showYearPicker(this, new OnChooseDateListener() {
                     @Override
                     public void getDate(Date date) {
-                        String ss = TimeUtil.dateToString(date, "yyyy-MM-dd HH:mm:00");
-                        tv_time.setText(ss);
+                        startTime = TimeUtil.dateToString(date, "yyyy-MM-dd HH:mm:00");
+                        endTime = TimeUtil.getAfterHourTime(date);
+                        tv_time.setText(startTime);
                     }
                 });
                 break;
             case R.id.confirm:
-                if (tv_time.getText().toString().isEmpty()) {
+                if (Helper.isEmpty(startTime)) {
                     toast("请先选择再次预约时间！");
+                } else if (Helper.isEmpty(exceptionIds)) {
+                    toast("请先选择异常原因");
                 } else {
                     HashMap<String, Object> map = new HashMap<>();
                     map.put("orderId", orderId);
-                    map.put("bookingDate", tv_time.getText().toString().split(" ")[0]);
-                    map.put("bookingTime", tv_time.getText().toString().split(" ")[1]);
+                    map.put("bookingStartTime", startTime);
+                    map.put("bookingEndTime", endTime);
                     map.put("exceptionIds", exceptionIds);
-                    OkGo.<ResponseData<String>>post(UrlConstant.ABNORMAL_COMMIT)
+                    String requestUrl = type==0?UrlConstant.ORDER_EXEPTION_APPOINT:UrlConstant.ORDER_EXEPTION_SIGN;
+                    OkGo.<ResponseData<String>>post(requestUrl)
                             .upJson(gson.toJson(map))
                             .execute(new JsonCallback<ResponseData<String>>() {
                                 @Override
@@ -131,7 +192,9 @@ public class OrderAbnormalActivity extends BaseActivity implements BaseQuickAdap
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         mAdapter.setSelect(position);
-        exceptionIds = mList.get(position).getValue();
         mAdapter.notifyDataSetChanged();
+        if (Helper.isNotEmpty(mAdapter.getData()) && mAdapter.getData().size()>position){
+            exceptionIds = mAdapter.getData().get(position).getDictId();
+        }
     }
 }

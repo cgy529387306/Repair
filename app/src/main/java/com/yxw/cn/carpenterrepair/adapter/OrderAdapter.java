@@ -20,7 +20,7 @@ public class OrderAdapter extends BaseQuickAdapter<OrderItem, BaseViewHolder> {
 
     public interface OnOrderOperateListener{
         void onOrderTaking(OrderItem orderItem);//接单
-        void onAbnormal(OrderItem orderItem);//异常反馈
+        void onAbnormal(OrderItem orderItem,int type);//异常反馈
         void onContact(OrderItem orderItem);//联系用户
         void onTurnReservation(OrderItem orderItem);//改约
         void onSign(OrderItem orderItem);//签到
@@ -66,7 +66,7 @@ public class OrderAdapter extends BaseQuickAdapter<OrderItem, BaseViewHolder> {
             tvOperate1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mOperateListener.onAbnormal(item);
+                    mOperateListener.onAbnormal(item,0);
                 }
             });
 
@@ -94,7 +94,7 @@ public class OrderAdapter extends BaseQuickAdapter<OrderItem, BaseViewHolder> {
             tvOperate1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mOperateListener.onAbnormal(item);
+                    mOperateListener.onAbnormal(item,1);
                 }
             });
 
@@ -114,7 +114,7 @@ public class OrderAdapter extends BaseQuickAdapter<OrderItem, BaseViewHolder> {
             tvOperate1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mOperateListener.onAbnormal(item);
+                    mOperateListener.onAbnormal(item,1);
                 }
             });
             tvOperate2.setVisibility(View.VISIBLE);

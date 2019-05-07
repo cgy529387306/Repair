@@ -33,8 +33,8 @@ import com.yxw.cn.carpenterrepair.entity.CityBean;
 import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 import com.yxw.cn.carpenterrepair.entity.LoginInfo;
 import com.yxw.cn.carpenterrepair.entity.QueryListByMark;
+import com.yxw.cn.carpenterrepair.entity.ReasonBean;
 import com.yxw.cn.carpenterrepair.entity.RegionTree;
-import com.yxw.cn.carpenterrepair.entity.RegionTreeList;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.entity.UserOrder;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
@@ -53,6 +53,8 @@ public class AppUtil {
     public static List<RegionTree> regionTreeList = new ArrayList<>();
     public static List<Category> categoryItemList = new ArrayList<>();
     public static List<CityBean> cityItemList = new ArrayList<>();
+    public static List<ReasonBean> signReasonList = new ArrayList<>();
+    public static List<ReasonBean> reservationReasonList = new ArrayList<>();
     public static List<Abnormal> categoryItemList0 = new ArrayList<>();
     private static Gson gson = new Gson();
 
@@ -224,6 +226,42 @@ public class AppUtil {
                         if (response!=null){
                             if (response.isSuccess()){
                                 AppUtil.categoryItemList = response.getData();
+                            }
+                        }
+                    }
+                });
+    }
+
+    public static void initSignReasonData() {
+        HashMap<String,String> map = new HashMap<>();
+        map.put("dictKey","SIGN_IN_EXCEPTION");
+        OkGo.<ResponseData<List<ReasonBean>>>post(UrlConstant.GET_EXCEPTION_REASON)
+                .upJson(gson.toJson(map))
+                .execute(new JsonCallback<ResponseData<List<ReasonBean>>>() {
+
+                    @Override
+                    public void onSuccess(ResponseData<List<ReasonBean>> response) {
+                        if (response!=null){
+                            if (response.isSuccess() && response.getData()!=null){
+                                AppUtil.signReasonList = response.getData();
+                            }
+                        }
+                    }
+                });
+    }
+
+    public static void initReservationReasonData() {
+        HashMap<String,String> map = new HashMap<>();
+        map.put("dictKey","TURN_RESERVATION_REASON");
+        OkGo.<ResponseData<List<ReasonBean>>>post(UrlConstant.GET_EXCEPTION_REASON)
+                .upJson(gson.toJson(map))
+                .execute(new JsonCallback<ResponseData<List<ReasonBean>>>() {
+
+                    @Override
+                    public void onSuccess(ResponseData<List<ReasonBean>> response) {
+                        if (response!=null){
+                            if (response.isSuccess() && response.getData()!=null){
+                                AppUtil.reservationReasonList = response.getData();
                             }
                         }
                     }
