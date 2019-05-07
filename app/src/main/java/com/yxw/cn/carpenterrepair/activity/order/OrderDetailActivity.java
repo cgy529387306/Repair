@@ -50,6 +50,7 @@ import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.MessageEvent;
 import com.yxw.cn.carpenterrepair.entity.Order;
+import com.yxw.cn.carpenterrepair.entity.OrderDetail;
 import com.yxw.cn.carpenterrepair.entity.OrderItem;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.entity.UserOrder;
@@ -119,6 +120,7 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
     @BindView(R.id.ll_bottom)
     LinearLayout llBottom;
 
+    private OrderDetail orderDetail;
     private OrderItem orderItem;
     private String orderId;
     private String orderStatus;
@@ -192,14 +194,14 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
 
     @Override
     public void getData() {
-        OkGo.<ResponseData<OrderItem>>post(UrlConstant.ORDER_DETAIL+orderId)
-                .execute(new JsonCallback<ResponseData<OrderItem>>() {
+        OkGo.<ResponseData<OrderDetail>>post(UrlConstant.ORDER_DETAIL+orderId)
+                .execute(new JsonCallback<ResponseData<OrderDetail>>() {
                     @Override
-                    public void onSuccess(ResponseData<OrderItem> response) {
+                    public void onSuccess(ResponseData<OrderDetail> response) {
                         if (response!=null){
                             if (response.isSuccess()){
                                 orderItem = response.getData();
-//                                initOrderData();
+                                initOrderData();
                             }else{
                                 toast(response.getMsg());
                             }
