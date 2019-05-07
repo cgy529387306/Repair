@@ -52,6 +52,7 @@ import com.yxw.cn.carpenterrepair.entity.MessageEvent;
 import com.yxw.cn.carpenterrepair.entity.Order;
 import com.yxw.cn.carpenterrepair.entity.OrderDetail;
 import com.yxw.cn.carpenterrepair.entity.OrderItem;
+import com.yxw.cn.carpenterrepair.entity.OrderStatusLineBean;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.entity.UserOrder;
 import com.yxw.cn.carpenterrepair.listerner.OnChooseDateListener;
@@ -130,9 +131,7 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
     private UserOrderDetailAdapter orderAdapter;
     private List<UserOrder.ListBean.PicListBean> picList;
     private UserOrderPicAdapter picAdapter;
-    private List<UserOrder.ListBean.TimelineListBean> statusList;
     private UserOrderStatusAdapter statusAdapter;
-    private UserOrder.ListBean listBean;
     private boolean mStop;
     private int connectFlag = 0;
     private TitleBar.TextAction textAction;
@@ -177,6 +176,18 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
         };
         picRv.setLayoutManager(gridLayoutManager);
         picRv.setAdapter(picAdapter);
+
+        statusRv.setLayoutManager(new LinearLayoutManager(this){
+            @Override
+            public boolean canScrollVertically() {
+                //解决ScrollView里存在多个RecyclerView时滑动卡顿的问题
+                //如果你的RecyclerView是水平滑动的话可以重写canScrollHorizontally方法
+                return false;
+            }
+        });
+        statusRv.setNestedScrollingEnabled(false);
+        statusAdapter = new UserOrderStatusAdapter(new ArrayList<>());
+        statusRv.setAdapter(statusAdapter);
         initOrderData();
         initLocation();
     }
@@ -214,6 +225,7 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
                             if (response.isSuccess()){
                                 orderItem = response.getData();
                                 initOrderData();
+                                statusAdapter.setNewData(response.getData().getFixOrderTimelineViewRespIOList());
                             }else{
                                 toast(response.getMsg());
                             }

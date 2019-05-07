@@ -5,8 +5,8 @@
     android:gravity="center">
 
 <ImageView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="20dp"
+    android:layout_height="28dp"
     android:src="@drawable/icon_location_user"/>
 
 </LinearLayout>
