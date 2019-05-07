@@ -83,14 +83,6 @@ public class AppUtil {
         if(loginInfo.getIdCardStatus() == 0 || loginInfo.getIdCardStatus() == 2){
             intent = new Intent(context,IdCardInfoActivity.class);
             context.startActivity(intent);
-        }else if(TextUtils.isEmpty(loginInfo.getServiceTime())||TextUtils.isEmpty(loginInfo.getServiceDate())){
-            intent = new Intent(context, ServiceTimeActivity.class);
-            intent.putExtra("place",true);
-            context.startActivity(intent);
-        }else if(loginInfo.getTags() == null || loginInfo.getTags().size()==0){
-            intent = new Intent(context, ChooseCategoryActivity.class);
-            intent.putExtra("force",true);
-            context.startActivity(intent);
         }
     }
 

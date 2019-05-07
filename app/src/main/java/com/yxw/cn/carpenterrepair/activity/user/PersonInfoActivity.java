@@ -194,6 +194,7 @@ public class PersonInfoActivity extends BaseActivity {
                 Intent intent = new Intent(this, ChooseCategoryActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("cateList", (Serializable) mCateList);
+                bundle.putBoolean("canBack",true);
                 intent.putExtras(bundle);
                 startActivity(intent);
                 break;

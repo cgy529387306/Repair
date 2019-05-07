@@ -1,5 +1,7 @@
 package com.yxw.cn.carpenterrepair.activity.user;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -26,6 +28,8 @@ import com.yxw.cn.carpenterrepair.util.SpUtil;
 import com.yxw.cn.carpenterrepair.view.CountDownTextView;
 import com.yxw.cn.carpenterrepair.view.TitleBar;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -164,7 +168,12 @@ public class RegisterActivity extends BaseActivity {
                                                      toast("注册成功");
                                                      SpUtil.putStr(SpConstant.LOGIN_MOBILE, mEtPhone.getText().toString().trim());
                                                      EventBusUtil.post(MessageConstant.REGISTER);
-                                                     startActivity(ChooseCategoryActivity.class);
+                                                     Intent intent = new Intent(RegisterActivity.this, ChooseCategoryActivity.class);
+                                                     Bundle bundle = new Bundle();
+                                                     bundle.putSerializable("cateList", (Serializable) new ArrayList<String>());
+                                                     bundle.putBoolean("canBack",false);
+                                                     intent.putExtras(bundle);
+                                                     startActivity(intent);
                                                  }else{
                                                      toast(response.getMsg());
                                                  }

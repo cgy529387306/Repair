@@ -44,6 +44,7 @@ public class ChooseCategoryActivity extends BaseActivity {
     private CategoryAdapter mCategoryAdapter;
     private List<Category> mCategoryList = new ArrayList<>();
     private List<String> mSelectCateList = new ArrayList<>();
+    private boolean mIsCanBack;
 
     @Override
     protected int getLayoutResId() {
@@ -60,6 +61,7 @@ public class ChooseCategoryActivity extends BaseActivity {
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         mSelectCateList = (List<String>) bundle.getSerializable("cateList");
+        mIsCanBack  = bundle.getBoolean("canBack",false);
         mRvCategory.setLayoutManager(new LinearLayoutManager(this));
         mCategoryAdapter = new CategoryAdapter(mCategoryList);
         mRvCategory.setAdapter(mCategoryAdapter);
@@ -159,7 +161,11 @@ public class ChooseCategoryActivity extends BaseActivity {
                             if (response.isSuccess()){
                                 EventBusUtil.post(MessageConstant.NOTIFY_GET_INFO);
                                 toast("保存成功");
-                                finish();
+                                if (mIsCanBack){
+                                    finish();
+                                }else{
+                                    startActivityFinish(IdCardInfoActivity.class);
+                                }
                             }else{
                                 toast(response.getMsg());
                             }
@@ -176,6 +182,8 @@ public class ChooseCategoryActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-
+        if (mIsCanBack){
+            super.onBackPressed();
+        }
     }
 }
