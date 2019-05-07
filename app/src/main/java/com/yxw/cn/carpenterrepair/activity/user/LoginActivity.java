@@ -121,6 +121,7 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        mEtTel.setText(SpUtil.getStr(SpConstant.LOGIN_MOBILE));
     }
 
 
@@ -134,8 +135,9 @@ public class LoginActivity extends BaseActivity {
         super.onEvent(event);
         switch (event.getId()) {
             case MessageConstant.LOGIN:
+                break;
             case MessageConstant.REGISTER:
-                finish();
+                initView();
                 break;
         }
     }

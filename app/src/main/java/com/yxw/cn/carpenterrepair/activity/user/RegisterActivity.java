@@ -168,12 +168,13 @@ public class RegisterActivity extends BaseActivity {
                                                      toast("注册成功");
                                                      SpUtil.putStr(SpConstant.LOGIN_MOBILE, mEtPhone.getText().toString().trim());
                                                      EventBusUtil.post(MessageConstant.REGISTER);
-                                                     Intent intent = new Intent(RegisterActivity.this, ChooseCategoryActivity.class);
-                                                     Bundle bundle = new Bundle();
-                                                     bundle.putSerializable("cateList", (Serializable) new ArrayList<String>());
-                                                     bundle.putBoolean("canBack",false);
-                                                     intent.putExtras(bundle);
-                                                     startActivity(intent);
+                                                     finish();
+//                                                     Intent intent = new Intent(RegisterActivity.this, ChooseCategoryActivity.class);
+//                                                     Bundle bundle = new Bundle();
+//                                                     bundle.putSerializable("cateList", (Serializable) new ArrayList<String>());
+//                                                     bundle.putBoolean("canBack",false);
+//                                                     intent.putExtras(bundle);
+//                                                     startActivity(intent);
                                                  }else{
                                                      toast(response.getMsg());
                                                  }
@@ -198,9 +199,6 @@ public class RegisterActivity extends BaseActivity {
         super.onEvent(event);
         switch (event.getId()) {
             case MessageConstant.LOGIN:
-            case MessageConstant.REGISTER:
-                finish();
-                break;
         }
     }
 }

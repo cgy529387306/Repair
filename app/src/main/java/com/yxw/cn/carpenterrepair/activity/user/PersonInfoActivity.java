@@ -76,7 +76,7 @@ public class PersonInfoActivity extends BaseActivity {
 
     @Override
     public void setStatusBar() {
-        ImmersionBar.with(this).fitsSystemWindows(true).statusBarColor(R.color.bg_personal).statusBarDarkFont(false).init();
+        ImmersionBar.with(this).statusBarDarkFont(false).init();
     }
 
     @Override

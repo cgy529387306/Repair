@@ -81,13 +81,16 @@ public class HomeFragment extends BaseRefreshFragment {
         mGridCate.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if(CurrentUser.getInstance().isLogin() && CurrentUser.getInstance().getIdCardStatus()==3){
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("type",getOrderTypeList().get(i));
-                    startActivity(MyOrderActivity.class,bundle);
-                }else{
-                    toast("工程师身份审核未通过!");
-                }
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("type",getOrderTypeList().get(i));
+                startActivity(MyOrderActivity.class,bundle);
+//                if(CurrentUser.getInstance().isLogin() && CurrentUser.getInstance().getIdCardStatus()==3){
+//                    Bundle bundle = new Bundle();
+//                    bundle.putSerializable("type",getOrderTypeList().get(i));
+//                    startActivity(MyOrderActivity.class,bundle);
+//                }else{
+//                    toast("工程师身份审核未通过!");
+//                }
             }
         });
     }

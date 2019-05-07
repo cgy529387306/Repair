@@ -189,7 +189,19 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
             tvTotalPrice.setText(String.valueOf(orderItem.getTotalPrice()));
             tvOrderNo.setText(orderItem.getOrderSn());
             initOrderStatus();
+//            initOrderLocation();
         }
+    }
+
+    private void initOrderLocation(){
+        LatLng point = new LatLng(orderItem.getLocationLat(), orderItem.getLocationLng());//坐标参数（纬度，经度）
+        BitmapDescriptor mCurrentMarker = BitmapDescriptorFactory
+                .fromView(View.inflate(OrderDetailActivity.this, R.layout.view_location_icon, null));
+        //构建MarkerOption，用于在地图上添加Marker
+        OverlayOptions option = new MarkerOptions()
+                .position(point)
+                .icon(mCurrentMarker);
+        mBaiDuMap.addOverlay(option);
     }
 
     @Override
