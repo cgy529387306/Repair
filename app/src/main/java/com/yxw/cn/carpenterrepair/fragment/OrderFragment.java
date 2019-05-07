@@ -186,8 +186,10 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
     }
 
     @Override
-    public void onAbnormal(OrderItem orderItem) {
-        startActivity(OrderAbnormalActivity.class);
+    public void onAbnormal(OrderItem orderItem,int type) {
+        Bundle bundle = new Bundle();
+        bundle.putInt("type",type);
+        startActivity(OrderAbnormalActivity.class,bundle);
     }
 
     @Override
@@ -204,11 +206,7 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
             @Override
             public void getDate(Date date) {
                 String startTime = TimeUtil.dateToString(date, "yyyy-MM-dd HH:mm:00");
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(date);
-                calendar.set(Calendar.HOUR,
-                        calendar.get(Calendar.HOUR) + 1);
-                String endTime = TimeUtil.dateToString(calendar.getTime(), "yyyy-MM-dd HH:mm:00");
+                String endTime = TimeUtil.getAfterHourTime(date);
                 showLoading();
                 HashMap<String, Object> map = new HashMap<>();
                 map.put("orderId", orderItem.getOrderId());
@@ -282,11 +280,7 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
             @Override
             public void getDate(Date date) {
                 String startTime = TimeUtil.dateToString(date, "yyyy-MM-dd HH:mm:00");
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(date);
-                calendar.set(Calendar.HOUR,
-                        calendar.get(Calendar.HOUR) + 1);
-                String endTime = TimeUtil.dateToString(calendar.getTime(), "yyyy-MM-dd HH:mm:00");
+                String endTime = TimeUtil.getAfterHourTime(date);
                 showLoading();
                 HashMap<String, Object> map = new HashMap<>();
                 map.put("orderId", orderItem.getOrderId());
@@ -325,11 +319,7 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
             @Override
             public void getDate(Date date) {
                 String startTime = TimeUtil.dateToString(date, "yyyy-MM-dd HH:mm:00");
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(date);
-                calendar.set(Calendar.HOUR,
-                        calendar.get(Calendar.HOUR) + 1);
-                String endTime = TimeUtil.dateToString(calendar.getTime(), "yyyy-MM-dd HH:mm:00");
+                String endTime = TimeUtil.getAfterHourTime(date);
                 showLoading();
                 HashMap<String, Object> map = new HashMap<>();
                 map.put("orderId", orderItem.getOrderId());

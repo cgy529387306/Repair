@@ -1,8 +1,11 @@
 package com.yxw.cn.carpenterrepair.activity.user;
 
 import android.text.TextUtils;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.HttpHeaders;
@@ -37,15 +40,27 @@ public class LoginActivity extends BaseActivity {
     EditText mEtTel;
     @BindView(R.id.et_password)
     EditText mEtPassword;
+    @BindView(R.id.iv_show)
+    ImageView mIvShow;
 
     @Override
     protected int getLayoutResId() {
         return R.layout.act_login;
     }
 
-    @OnClick({R.id.tv_login, R.id.tv_register,R.id.tv_forget_password,R.id.tv_quick_login})
+    @OnClick({R.id.iv_show,R.id.tv_login, R.id.tv_register,R.id.tv_forget_password,R.id.tv_quick_login})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.iv_show:
+                if (mEtPassword.getTransformationMethod().equals(HideReturnsTransformationMethod.getInstance())) {
+                    mEtPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    mIvShow.setImageResource(R.drawable.eyes_off);
+                } else {
+                    mEtPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    mIvShow.setImageResource(R.drawable.eyes_on);
+                }
+                mEtPassword.setSelection(mEtPassword.getText().toString().length());
+                break;
             case R.id.tv_login:
                 doLogin();
                 break;

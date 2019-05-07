@@ -50,6 +50,7 @@ import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.MessageEvent;
 import com.yxw.cn.carpenterrepair.entity.Order;
+import com.yxw.cn.carpenterrepair.entity.OrderDetail;
 import com.yxw.cn.carpenterrepair.entity.OrderItem;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.entity.UserOrder;
@@ -119,6 +120,7 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
     @BindView(R.id.ll_bottom)
     LinearLayout llBottom;
 
+    private OrderDetail orderDetail;
     private OrderItem orderItem;
     private String orderId;
     private String orderStatus;
@@ -192,14 +194,14 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
 
     @Override
     public void getData() {
-        OkGo.<ResponseData<OrderItem>>post(UrlConstant.ORDER_DETAIL+orderId)
-                .execute(new JsonCallback<ResponseData<OrderItem>>() {
+        OkGo.<ResponseData<OrderDetail>>post(UrlConstant.ORDER_DETAIL+orderId)
+                .execute(new JsonCallback<ResponseData<OrderDetail>>() {
                     @Override
-                    public void onSuccess(ResponseData<OrderItem> response) {
+                    public void onSuccess(ResponseData<OrderDetail> response) {
                         if (response!=null){
                             if (response.isSuccess()){
                                 orderItem = response.getData();
-//                                initOrderData();
+                                initOrderData();
                             }else{
                                 toast(response.getMsg());
                             }
@@ -322,11 +324,7 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
             @Override
             public void getDate(Date date) {
                 String startTime = TimeUtil.dateToString(date, "yyyy-MM-dd HH:mm:00");
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(date);
-                calendar.set(Calendar.HOUR,
-                        calendar.get(Calendar.HOUR) + 1);
-                String endTime = TimeUtil.dateToString(calendar.getTime(), "yyyy-MM-dd HH:mm:00");
+                String endTime = TimeUtil.getAfterHourTime(date);
                 showLoading();
                 HashMap<String, Object> map = new HashMap<>();
                 map.put("orderId", orderItem.getOrderId());
@@ -365,11 +363,7 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
             @Override
             public void getDate(Date date) {
                 String startTime = TimeUtil.dateToString(date, "yyyy-MM-dd HH:mm:00");
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(date);
-                calendar.set(Calendar.HOUR,
-                        calendar.get(Calendar.HOUR) + 1);
-                String endTime = TimeUtil.dateToString(calendar.getTime(), "yyyy-MM-dd HH:mm:00");
+                String endTime = TimeUtil.getAfterHourTime(date);
                 showLoading();
                 HashMap<String, Object> map = new HashMap<>();
                 map.put("orderId", orderItem.getOrderId());
@@ -468,7 +462,9 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
             tvOperate1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(OrderAbnormalActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("type",0);
+                    startActivity(OrderAbnormalActivity.class,bundle);
                 }
             });
 
@@ -494,11 +490,7 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
                         @Override
                         public void getDate(Date date) {
                             String startTime = TimeUtil.dateToString(date, "yyyy-MM-dd HH:mm:00");
-                            Calendar calendar = Calendar.getInstance();
-                            calendar.setTime(date);
-                            calendar.set(Calendar.HOUR,
-                                    calendar.get(Calendar.HOUR) + 1);
-                            String endTime = TimeUtil.dateToString(calendar.getTime(), "yyyy-MM-dd HH:mm:00");
+                            String endTime = TimeUtil.getAfterHourTime(date);
                             showLoading();
                             HashMap<String, Object> map = new HashMap<>();
                             map.put("orderId", orderItem.getOrderId());
@@ -537,7 +529,9 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
             tvOperate1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(OrderAbnormalActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("type",1);
+                    startActivity(OrderAbnormalActivity.class,bundle);
                 }
             });
 
@@ -559,7 +553,9 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
             tvOperate1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(OrderAbnormalActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("type",1);
+                    startActivity(OrderAbnormalActivity.class,bundle);
                 }
             });
             tvOperate2.setVisibility(View.VISIBLE);

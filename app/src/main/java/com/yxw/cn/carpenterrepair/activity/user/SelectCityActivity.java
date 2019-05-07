@@ -12,12 +12,18 @@ import android.widget.TextView;
 
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.model.Response;
 import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.activity.LocationService;
 import com.yxw.cn.carpenterrepair.adapter.CityAdapter;
 import com.yxw.cn.carpenterrepair.adapter.HotCityAdapter;
-import com.yxw.cn.carpenterrepair.entity.CityEntity;
+import com.yxw.cn.carpenterrepair.contast.UrlConstant;
+import com.yxw.cn.carpenterrepair.entity.CityBean;
+import com.yxw.cn.carpenterrepair.entity.ResponseData;
+import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
+import com.yxw.cn.carpenterrepair.util.AppUtil;
 import com.yxw.cn.carpenterrepair.view.QGridView;
 import com.yxw.cn.carpenterrepair.view.TitleBar;
 
@@ -67,6 +73,7 @@ public class SelectCityActivity extends BaseActivity {
         public void onReceiveLocation(BDLocation bdLocation) {
             if (mTvCurrentCity!=null && bdLocation!=null && bdLocation.getCity()!=null){
                 mTvCurrentCity.setText(bdLocation.getCity());
+                String code  = bdLocation.getCityCode();
             }
         }
     };
@@ -77,6 +84,41 @@ public class SelectCityActivity extends BaseActivity {
         mLocationService.stop();
     }
 
+    @Override
+    public void getData() {
+        if (AppUtil.cityItemList != null && AppUtil.cityItemList.size() > 0) {
+            initCityData();
+        } else{
+            showLoading();
+            OkGo.<ResponseData<List<CityBean>>>post(UrlConstant.GET_ALL_REGION)
+                    .tag(this)
+                    .execute(new JsonCallback<ResponseData<List<CityBean>>>() {
+
+                        @Override
+                        public void onSuccess(ResponseData<List<CityBean>> response) {
+                            dismissLoading();
+                            if (response!=null){
+                                if (response.isSuccess() && response.getData()!=null){
+                                    AppUtil.cityItemList = response.getData();
+                                    initCityData();
+                                }else{
+                                    toast(response.getMsg());
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onError(Response<ResponseData<List<CityBean>>> response) {
+                            super.onError(response);
+                            dismissLoading();
+                        }
+                    });
+        }
+    }
+
+    private void initCityData(){
+        mCityAdapter.setDatas(AppUtil.cityItemList);
+    }
 
     @Override
     protected void onDestroy() {
@@ -88,15 +130,7 @@ public class SelectCityActivity extends BaseActivity {
         mCityAdapter = new CityAdapter(this);
         mIndexableLayout.setAdapter(mCityAdapter);
         mIndexableLayout.setOverlayStyle_Center();
-        mCityAdapter.setDatas(initDatas());
-//        indexableLayout.setOverlayStyle_MaterialDesign(Color.RED);
-        // 全字母排序。  排序规则设置为：每个字母都会进行比较排序；速度较慢
         mIndexableLayout.setCompareMode(IndexableLayout.MODE_FAST);
-//        indexableLayout.addHeaderAdapter(new SimpleHeaderAdapter<>(mAdapter, "☆",null, null));
-//         构造函数里3个参数,分别对应 (IndexBar的字母索引, IndexTitle, 数据源), 不想显示哪个就传null, 数据源传null时,代表add一个普通的View
-//        mMenuHeaderAdapter = new MenuHeaderAdapter("↑", null, initMenuDatas());
-//        indexableLayout.addHeaderAdapter(mMenuHeaderAdapter);
-        // 这里BannerView只有一个Item, 添加一个长度为1的任意List作为第三个参数
         List<String> bannerList = new ArrayList<>();
         bannerList.add("");
         mBannerHeaderAdapter = new BannerHeaderAdapter("↑", null, bannerList);
@@ -104,12 +138,12 @@ public class SelectCityActivity extends BaseActivity {
     }
 
     public void setListener(){
-        mCityAdapter.setOnItemContentClickListener(new IndexableAdapter.OnItemContentClickListener<CityEntity>() {
+        mCityAdapter.setOnItemContentClickListener(new IndexableAdapter.OnItemContentClickListener<CityBean>() {
             @Override
-            public void onItemClick(View v, int originalPosition, int currentPosition, CityEntity entity) {
+            public void onItemClick(View v, int originalPosition, int currentPosition, CityBean entity) {
                 if (originalPosition >= 0) {
                     Intent intent = new Intent();
-                    intent.putExtra("city", entity.getName());
+                    intent.putExtra("city", entity.getRegionName());
                     setResult(RESULT_OK, intent);
                     finish();
                 }
@@ -176,16 +210,5 @@ public class SelectCityActivity extends BaseActivity {
                 mTvCurrentCity = tvCurrentCity = itemView.findViewById(R.id.tv_current_city);
             }
         }
-    }
-
-    private List<CityEntity> initDatas() {
-        List<CityEntity> list = new ArrayList<>();
-        // 初始化数据
-        List<String> cityList = Arrays.asList(getResources().getStringArray(R.array.provinces));
-        for (int i = 0; i < cityList.size(); i++) {
-            CityEntity contactEntity = new CityEntity(cityList.get(i));
-            list.add(contactEntity);
-        }
-        return list;
     }
 }

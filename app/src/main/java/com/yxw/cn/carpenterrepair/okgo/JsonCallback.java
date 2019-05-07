@@ -72,7 +72,7 @@ public abstract class JsonCallback<T> extends AbsCallback<T> {
     @Override
     public void onError(com.lzy.okgo.model.Response<T> response) {
         super.onError(response);
-        ToastUtil.show("网络异常");
+        ToastUtil.show("服务器异常");
     }
 
     @Override
