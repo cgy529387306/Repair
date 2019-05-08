@@ -83,9 +83,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.main.MainActivity"/>
+        <activity android:name=".activity.main.MainActivity"
+            android:launchMode="singleTask"/>
 
-        <activity android:name=".activity.user.LoginActivity"/>
+        <activity android:name=".activity.user.LoginActivity"
+            android:launchMode="singleTask"/>
         <activity android:name=".activity.user.QuickLoginActivity"/>
         <activity android:name=".activity.user.ForgetPasswordActivity"/>
         <activity android:name=".activity.user.RegisterActivity"/>
@@ -109,7 +111,8 @@
         <activity android:name=".activity.user.TransactionDetailsActivity"/>
 
 
-        <activity android:name=".activity.order.MyOrderActivity"/>
+        <activity android:name=".activity.order.MyOrderActivity"
+            android:launchMode="singleTop"/>
         <activity android:name=".activity.order.OrderActivity"/>
         <activity android:name=".activity.order.OrderAbnormalActivity"/>
         <activity android:name=".activity.order.OrderSignInActivity"/>

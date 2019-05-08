@@ -85,7 +85,7 @@ public class OrderSignInActivity extends BaseActivity {
     private boolean flag;
     private String path;
     private BDLocation mLocation;
-    private int page;
+    private int type;//0:签到 1:完成
     private BaiduMap mBaiDuMap;
     private LocationClient mLocationClient;
     private MyLocationListener mLocationListener;
@@ -98,14 +98,14 @@ public class OrderSignInActivity extends BaseActivity {
     @Override
     public void initView() {
         orderItem = (OrderItem) getIntent().getSerializableExtra("order");
-        page = getIntent().getIntExtra("flag", 0);
+        type = getIntent().getIntExtra("type", 0);
         initTitle();
         initMyLocation();
         initOrderLocation();
     }
 
     private void initTitle(){
-        if (page == 0) {
+        if (type == 0) {
             titleBar.setTitle("上门签到");
             btnConfirm.setText("立即签到");
         } else {
@@ -250,8 +250,12 @@ public class OrderSignInActivity extends BaseActivity {
         map.put("locationLng", mLocation.getLongitude());
         map.put("shot", path);
         map.put("remark", etRemark.getText().toString());
+        if (type==1){
+            map.put("smsCode", "888888");
+        }
+        String requestUrl = type==1?UrlConstant.ORDER_FINISH:UrlConstant.ORDER_ARRIVAL;
         showLoading();
-        OkGo.<ResponseData<String>>post(UrlConstant.ORDER_ARRIVAL)
+        OkGo.<ResponseData<String>>post(requestUrl)
                 .upJson(gson.toJson(map))
                 .execute(new JsonCallback<ResponseData<String>>() {
                     @Override

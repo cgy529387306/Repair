@@ -53,6 +53,7 @@ import com.yxw.cn.carpenterrepair.entity.Order;
 import com.yxw.cn.carpenterrepair.entity.OrderDetail;
 import com.yxw.cn.carpenterrepair.entity.OrderItem;
 import com.yxw.cn.carpenterrepair.entity.OrderStatusLineBean;
+import com.yxw.cn.carpenterrepair.entity.OrderType;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.entity.UserOrder;
 import com.yxw.cn.carpenterrepair.listerner.OnChooseDateListener;
@@ -534,6 +535,9 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
                                             if (response!=null){
                                                 if (response.isSuccess()) {
                                                     toast("预约成功");
+                                                    Bundle bundle = new Bundle();
+                                                    bundle.putSerializable("type",new OrderType(2,"待上门"));
+                                                    startActivityFinish(MyOrderActivity.class,bundle);
                                                     EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
                                                 }else{
                                                     toast(response.getMsg());
@@ -572,6 +576,7 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
                 public void onClick(View v) {
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("order",orderItem);
+                    bundle.putInt("type",0);
                     startActivity(OrderSignInActivity.class,bundle);
                 }
             });
@@ -594,20 +599,17 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
             tvOperate2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("order",orderItem);
+                    bundle.putInt("type",1);
+                    startActivity(OrderSignInActivity.class,bundle);
                 }
             });
         }else{
             //已完成
             tvOperate0.setVisibility(View.GONE);
             tvOperate1.setVisibility(View.GONE);
-            tvOperate2.setVisibility(View.VISIBLE);
-            tvOperate2.setText("查看");
-            tvOperate2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                }
-            });
+            tvOperate2.setVisibility(View.GONE);
         }
     }
 
@@ -638,6 +640,9 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
                                              if (response!=null){
                                                  if (response.isSuccess()) {
                                                      toast("抢单成功");
+                                                     Bundle bundle = new Bundle();
+                                                     bundle.putSerializable("type",new OrderType(1,"待预约"));
+                                                     startActivityFinish(MyOrderActivity.class,bundle);
                                                      EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
                                                  }else{
                                                      toast(response.getMsg());

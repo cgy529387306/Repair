@@ -17,6 +17,7 @@ import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.yxw.cn.carpenterrepair.BaseRefreshFragment;
 import com.yxw.cn.carpenterrepair.R;
+import com.yxw.cn.carpenterrepair.activity.order.MyOrderActivity;
 import com.yxw.cn.carpenterrepair.activity.order.OrderAbnormalActivity;
 import com.yxw.cn.carpenterrepair.activity.order.OrderDetailActivity;
 import com.yxw.cn.carpenterrepair.activity.order.OrderSignInActivity;
@@ -26,6 +27,7 @@ import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.MessageEvent;
 import com.yxw.cn.carpenterrepair.entity.OrderItem;
 import com.yxw.cn.carpenterrepair.entity.OrderListData;
+import com.yxw.cn.carpenterrepair.entity.OrderType;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.listerner.OnChooseDateListener;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
@@ -108,12 +110,11 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
         if (mOrderType!=2){
             requestMap.put("customerBookingTime",mBookingTime);
         }
-        requestMap.put("orderStatus",mOrderStatus);
+        requestMap.put("status",mOrderStatus);
         Map<String, Object> map = new HashMap<>();
         map.put("filter", requestMap);
         map.put("pageIndex", p);
         map.put("pageSize", loadCount);
-        map.put("sorter", "");
         OkGo.<ResponseData<OrderListData>>post(UrlConstant.ORDER_LIST)
                 .upJson(gson.toJson(map))
                 .execute(new JsonCallback<ResponseData<OrderListData>>() {
@@ -244,17 +245,21 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
     public void onSign(OrderItem orderItem) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("order",orderItem);
+        bundle.putInt("type",0);
         startActivity(OrderSignInActivity.class,bundle);
     }
 
     @Override
     public void onFinish(OrderItem orderItem) {
-
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("order",orderItem);
+        bundle.putInt("type",1);
+        startActivity(OrderSignInActivity.class,bundle);
     }
 
     @Override
     public void onView(OrderItem orderItem) {
-
+        startActivity(OrderDetailActivity.class, orderItem);
     }
 
     @Override
@@ -335,6 +340,9 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
                                 if (response!=null){
                                     if (response.isSuccess()) {
                                         toast("预约成功");
+                                        Bundle bundle = new Bundle();
+                                        bundle.putSerializable("type",new OrderType(2,"待上门"));
+                                        startActivity(MyOrderActivity.class,bundle);
                                         EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
                                     }else{
                                         toast(response.getMsg());
@@ -380,6 +388,9 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
                                              if (response!=null){
                                                  if (response.isSuccess()) {
                                                      toast("抢单成功");
+                                                     Bundle bundle = new Bundle();
+                                                     bundle.putSerializable("type",new OrderType(1,"待预约"));
+                                                     startActivity(MyOrderActivity.class,bundle);
                                                      EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
                                                  }else{
                                                      toast(response.getMsg());

@@ -54,7 +54,7 @@ public class OrderAbnormalActivity extends BaseActivity implements BaseQuickAdap
     private String orderId;
     private String exceptionIds;
 
-    private int type;
+    private int type;//0：预约异常 1：签到异常
 
     private String startTime;
     private String endTime;
@@ -181,11 +181,15 @@ public class OrderAbnormalActivity extends BaseActivity implements BaseQuickAdap
                             .execute(new JsonCallback<ResponseData<String>>() {
                                 @Override
                                 public void onSuccess(ResponseData<String> response) {
-                                    if (response.isSuccess()) {
-                                        OrderAbnormalActivity.this.finish();
-                                        EventBusUtil.post(MessageConstant.NOTIFY_ORDER_DETAIL);
+                                    if (response!=null){
+                                        if (response.isSuccess()) {
+                                            toast("异常反馈成功");
+                                            OrderAbnormalActivity.this.finish();
+                                            EventBusUtil.post(MessageConstant.NOTIFY_ORDER_DETAIL);
+                                        }else{
+                                            toast(response.getMsg());
+                                        }
                                     }
-                                    ToastUtil.show(response.getMsg());
                                 }
                             });
                 }

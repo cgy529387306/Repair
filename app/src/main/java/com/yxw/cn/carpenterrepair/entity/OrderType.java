@@ -43,6 +43,11 @@ public class OrderType implements Serializable{
         this.status = status;
     }
 
+    public OrderType(int status, String name) {
+        this.status = status;
+        this.name = name;
+    }
+
     public OrderType(int status, int drawableId, String name) {
         this.status = status;
         this.drawableId = drawableId;

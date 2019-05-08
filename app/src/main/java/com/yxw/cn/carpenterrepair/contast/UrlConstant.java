@@ -53,7 +53,7 @@ public class UrlConstant {
     public final static String ORDER_RESERVATION = BASE_USER + "/ms60/api/fix/order/accept/reservation";//工程师预约上门时间
     public final static String ORDER_START = BASE_USER + "/ms60/api/fix/order/accept/startService/{orderId}";//工程师开始服务
     public final static String ORDER_TURN_RESERVATION = BASE_USER + "/ms60/api/fix/order/accept/turnReservation";//工程师开始服务
-    public final static String ORDER_LIST = BASE_USER + "/ms60/api/fix/order/findAll";//订单条件查询
+    public final static String ORDER_LIST = BASE_USER + "/ms60/api/fix/order/findEngineerOrderList";//订单条件查询
     public final static String ORDER_STATUS_LIST = BASE_USER + "/ms60/api/fix/order/getOrderStatusList";//getOrderStatusList
     public final static String ORDER_DETAIL = BASE_USER + "/ms60/api/fix/order/orderDetails/";//获取订单详情
     public final static String ORDER_EXEPTION_APPOINT = BASE_USER + "/ms60/api/fix/order/exception/appointment";//预约异常

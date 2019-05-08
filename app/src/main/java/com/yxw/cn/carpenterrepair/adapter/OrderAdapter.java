@@ -38,7 +38,7 @@ public class OrderAdapter extends BaseQuickAdapter<OrderItem, BaseViewHolder> {
         TextView tvOperate0 = helper.getView(R.id.tv_operate0);
         TextView tvOperate1 = helper.getView(R.id.tv_operate1);
         TextView tvOperate2 = helper.getView(R.id.tv_operate2);
-        helper.setText(R.id.tv_ordre_name, item.getName())
+        helper.setText(R.id.tv_ordre_name, item.getCategoryCName())
                 .setText(R.id.tv_order_no,item.getOrderSn())
                 .setText(R.id.tv_order_time, item.getBookingStartTime() + " " + item.getBookingEndTime())
                 .setText(R.id.tv_order_address, item.getAddress())
