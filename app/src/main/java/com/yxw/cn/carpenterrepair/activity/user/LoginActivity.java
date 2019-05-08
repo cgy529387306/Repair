@@ -86,7 +86,7 @@ public class LoginActivity extends BaseActivity {
             Map<String, Object> map = new HashMap<>();
             map.put("userName", mEtTel.getText().toString().trim());
             map.put("password", mEtPassword.getText().toString().trim());
-            map.put("roleSign", UrlConstant.mRoleSign);
+            map.put("appSign", UrlConstant.mRoleSign);
             OkGo.<ResponseData<LoginInfo>>post(UrlConstant.LOGIN)
                     .upJson(gson.toJson(map))
                     .execute(new JsonCallback<ResponseData<LoginInfo>>() {

@@ -105,7 +105,7 @@ public class QuickLoginActivity extends BaseActivity {
                     Map<String, Object> map = new HashMap<>();
                     map.put("userName", mEtTel.getText().toString());
                     map.put("smsCode", mEtPassword.getText().toString().trim());
-                    map.put("roleSign", UrlConstant.mRoleSign);
+                    map.put("appSign", UrlConstant.mRoleSign);
                     OkGo.<ResponseData<LoginInfo>>post(UrlConstant.QUICK_LOGIN)
                             .upJson(gson.toJson(map))
                             .execute(new JsonCallback<ResponseData<LoginInfo>>() {

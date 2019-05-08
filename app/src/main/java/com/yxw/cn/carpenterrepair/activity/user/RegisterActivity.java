@@ -155,7 +155,7 @@ public class RegisterActivity extends BaseActivity {
                     map.put("userName", mEtPhone.getText().toString().trim());
                     map.put("password", mEtPassword.getText().toString().trim());
                     map.put("smsCode", mEtCode.getText().toString().trim());
-                    map.put("roleSign", UrlConstant.mRoleSign);
+                    map.put("appSign", UrlConstant.mRoleSign);
                     showLoading();
                     OkGo.<ResponseData<String>>post(UrlConstant.REGISTER)
                             .upJson(gson.toJson(map))
