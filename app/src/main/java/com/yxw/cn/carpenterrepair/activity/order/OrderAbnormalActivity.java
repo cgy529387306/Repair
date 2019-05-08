@@ -3,6 +3,7 @@ package com.yxw.cn.carpenterrepair.activity.order;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -43,12 +44,14 @@ public class OrderAbnormalActivity extends BaseActivity implements BaseQuickAdap
     @BindView(R.id.titlebar)
     TitleBar titleBar;
     @BindView(R.id.tv_time)
-    TextView tv_time;
+    TextView tvTime;
     @BindView(R.id.rv_reason)
     RecyclerView mRvReason;
+    @BindView(R.id.et_remark)
+    EditText etRemark;
 
     private OrderAbnormalAdapter mAdapter;
-    private int orderId;
+    private String orderId;
     private String exceptionIds;
 
     private int type;
@@ -65,7 +68,7 @@ public class OrderAbnormalActivity extends BaseActivity implements BaseQuickAdap
     public void initView() {
         type = getIntent().getIntExtra("type",0);
         titleBar.setTitle(type==0?"预约异常反馈":"签到异常反馈");
-        orderId = getIntent().getIntExtra("orderId", 0);
+        orderId = getIntent().getStringExtra("orderId");
         mAdapter = new OrderAbnormalAdapter(new ArrayList<>());
         mAdapter.setOnItemClickListener(this);
         mRvReason.setLayoutManager(new GridLayoutManager(this, 2));
@@ -153,11 +156,12 @@ public class OrderAbnormalActivity extends BaseActivity implements BaseQuickAdap
                     public void getDate(Date date) {
                         startTime = TimeUtil.dateToString(date, "yyyy-MM-dd HH:mm:00");
                         endTime = TimeUtil.getAfterHourTime(date);
-                        tv_time.setText(startTime);
+                        tvTime.setText(startTime);
                     }
                 });
                 break;
             case R.id.confirm:
+                String desc = etRemark.getText().toString().trim();
                 if (Helper.isEmpty(startTime)) {
                     toast("请先选择再次预约时间！");
                 } else if (Helper.isEmpty(exceptionIds)) {
@@ -167,7 +171,10 @@ public class OrderAbnormalActivity extends BaseActivity implements BaseQuickAdap
                     map.put("orderId", orderId);
                     map.put("bookingStartTime", startTime);
                     map.put("bookingEndTime", endTime);
-                    map.put("exceptionIds", exceptionIds);
+                    map.put("ids", exceptionIds);
+                    if (Helper.isNotEmpty(desc)){
+                        map.put("fixDesc", desc);
+                    }
                     String requestUrl = type==0?UrlConstant.ORDER_EXEPTION_APPOINT:UrlConstant.ORDER_EXEPTION_SIGN;
                     OkGo.<ResponseData<String>>post(requestUrl)
                             .upJson(gson.toJson(map))

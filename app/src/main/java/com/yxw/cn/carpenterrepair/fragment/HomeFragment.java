@@ -99,9 +99,9 @@ public class HomeFragment extends BaseRefreshFragment {
         List<OrderType> orderTypeList = new ArrayList<>();
         orderTypeList.add(new OrderType(20,R.drawable.icon_orders,"订单池"));
         orderTypeList.add(new OrderType(40,R.drawable.icon_order_waiting,"待预约"));
-        orderTypeList.add(new OrderType(50,R.drawable.icon_order_finishing,"待完成"));
         orderTypeList.add(new OrderType(60,R.drawable.icon_order_coming,"待上门"));
-        orderTypeList.add(new OrderType(100,R.drawable.icon_order_finished,"已完成"));
+        orderTypeList.add(new OrderType(80,R.drawable.icon_order_finishing,"待完成"));
+        orderTypeList.add(new OrderType(110,R.drawable.icon_order_finished,"已完成"));
         return orderTypeList;
     }
 

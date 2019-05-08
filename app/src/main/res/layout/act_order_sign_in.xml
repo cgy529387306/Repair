@@ -106,7 +106,7 @@
         </LinearLayout>
     </ScrollView>
     <Button
-        android:id="@+id/ok"
+        android:id="@+id/btn_confirm"
         android:layout_width="match_parent"
         android:layout_height="46dp"
         android:background="@drawable/bg_btn_rect_red"

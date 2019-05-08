@@ -313,7 +313,7 @@
                     android:layout_weight="1"
                     android:layout_height="0dp"/>
                 <TextView
-                    android:id="@+id/tv_remark"
+                    android:id="@+id/tv_desc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="手机屏幕碎了，得换屏幕"

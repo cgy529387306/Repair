@@ -48,6 +48,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        AppUtil.checkStatus(MainActivity.this);
         fragmentManager = getSupportFragmentManager();
         showFragment(0);
         getUserInfo();
@@ -151,7 +152,6 @@ public class MainActivity extends BaseActivity {
                                          if (response.isSuccess()) {
                                              CurrentUser.getInstance().login(response.getData());
                                              EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_INFO);
-                                             AppUtil.checkStatus(MainActivity.this);
                                          }
                                      }
                                  }

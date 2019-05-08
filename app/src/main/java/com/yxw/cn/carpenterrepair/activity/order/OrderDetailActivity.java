@@ -102,8 +102,8 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
     TextView tvCreateTime;
     @BindView(R.id.tv_booking_time)
     TextView tvBookingTime;
-    @BindView(R.id.tv_remark)
-    TextView tvRemark;
+    @BindView(R.id.tv_desc)
+    TextView tvDesc;
     @BindView(R.id.tv_operate0)
     TextView tvOperate0;
     @BindView(R.id.tv_operate1)
@@ -150,10 +150,6 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
     @Override
     public void initView() {
         titleBar.setTitle("订单详情");
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
-            llBottom.setElevation(2);
-            llBottom.setTranslationZ(2);
-        }
         orderItem = (OrderItem) getIntent().getSerializableExtra("data");
         orderId = orderItem.getOrderId();
         orderList = new ArrayList<>();
@@ -166,6 +162,7 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
         };
         orderRv.setLayoutManager(layoutManager);
         orderRv.setAdapter(orderAdapter);
+
         picList = new ArrayList<>();
         picAdapter = new UserOrderPicAdapter(picList);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 4) {
@@ -188,8 +185,9 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
         statusRv.setNestedScrollingEnabled(false);
         statusAdapter = new UserOrderStatusAdapter(new ArrayList<>());
         statusRv.setAdapter(statusAdapter);
+
+        initMyLocation();
         initOrderData();
-        initLocation();
     }
 
     private void initOrderData(){
@@ -199,8 +197,20 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
             tvAddress.setText(orderItem.getAddress());
             tvTotalPrice.setText(String.valueOf(orderItem.getTotalPrice()));
             tvOrderNo.setText(orderItem.getOrderSn());
+            tvTitle.setText(orderItem.getCategoryPName());
+            tvTitle2.setText(orderItem.getCategoryCName());
+            tvBookingTime.setText(orderItem.getBookingStartTime());
+            tvDesc.setText(orderItem.getFixDesc());
             initOrderStatus();
-//            initOrderLocation();
+            initOrderLocation();
+        }
+    }
+
+    private void initDetail(){
+        if (orderDetail!=null){
+            tvTitle.setText(orderDetail.getCategoryName());
+            tvTitle2.setText(orderDetail.getCategoryNameJoint());
+            statusAdapter.setNewData(orderDetail.getFixOrderTimelineViewRespIOList());
         }
     }
 
@@ -223,9 +233,8 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
                     public void onSuccess(ResponseData<OrderDetail> response) {
                         if (response!=null){
                             if (response.isSuccess()){
-                                orderItem = response.getData();
-                                initOrderData();
-                                statusAdapter.setNewData(response.getData().getFixOrderTimelineViewRespIOList());
+                                orderDetail = response.getData();
+                                initDetail();
                             }else{
                                 toast(response.getMsg());
                             }
@@ -269,7 +278,11 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
     protected void onDestroy() {
         super.onDestroy();
         mLocationClient.unRegisterLocationListener(mLocationListener);
-
+        mLocationClient.stop();
+        mBaiDuMap.setMyLocationEnabled(false);
+        mBaiDuMap.clear();
+        mMapView.onDestroy();
+        mMapView = null;
     }
 
     @Override
@@ -289,7 +302,7 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
         }
     }
 
-    private void initLocation() {
+    private void initMyLocation() {
         mBaiDuMap = mMapView.getMap();
         mBaiDuMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
         mLocationClient = new LocationClient(this);
@@ -311,8 +324,7 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
         mLocationClient.setLocOption(option);
         // 开启定位
         mBaiDuMap.setMyLocationEnabled(true);
-        if (!mLocationClient.isStarted())
-            mLocationClient.start();
+        mLocationClient.start();
     }
 
 
@@ -424,6 +436,7 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
     class MyLocationListener implements BDLocationListener {
         @Override
         public void onReceiveLocation(BDLocation location) {
+
             // 构造定位数据
             MyLocationData locData = new MyLocationData.Builder()
                     .accuracy(location.getRadius())
@@ -432,28 +445,19 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
                     .longitude(location.getLongitude()).build();
             // 设置定位数据
             mBaiDuMap.setMyLocationData(locData);
-            // 设置自定义图标
-            BitmapDescriptor mCurrentMarker = BitmapDescriptorFactory
+
+            BitmapDescriptor currentMarker = BitmapDescriptorFactory
                     .fromView(View.inflate(OrderDetailActivity.this, R.layout.view_location_icon_my, null));
             MyLocationConfiguration config = new MyLocationConfiguration(
-                    MyLocationConfiguration.LocationMode.NORMAL, true, mCurrentMarker);
-            mBaiDuMap.setMyLocationConfigeration(config);
+                    MyLocationConfiguration.LocationMode.NORMAL, true, currentMarker);
+            mBaiDuMap.setMyLocationConfiguration(config);
 
             LatLng ll = new LatLng(location.getLatitude(),
                     location.getLongitude());
             MapStatus.Builder builder = new MapStatus.Builder();
-            builder.target(ll).zoom(12.0f);
+            builder.target(ll).zoom(14.0f);
             mBaiDuMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
-            if (location.getLocType() == BDLocation.TypeGpsLocation) {
-                // GPS定位结果
-//                tv_location.setText(location.getProvince() + location.getCity() +  location.getDistrict()+location.getStreet());
-            } else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {
-                // 网络定位结果
-//                tv_location.setText(location.getProvince() + location.getCity() +  location.getDistrict()+location.getStreet());
-            } else if (location.getLocType() == BDLocation.TypeOffLineLocation) {
-                // 离线定位结果
-//                tv_location.setText(location.getProvince() + location.getCity() +  location.getDistrict()+location.getStreet());
-            } else if (location.getLocType() == BDLocation.TypeServerError) {
+            if (location.getLocType() == BDLocation.TypeServerError) {
                 Toast.makeText(OrderDetailActivity.this, "服务器错误，请检查", Toast.LENGTH_SHORT).show();
             } else if (location.getLocType() == BDLocation.TypeNetWorkException) {
                 Toast.makeText(OrderDetailActivity.this, "网络错误，请检查", Toast.LENGTH_SHORT).show();
@@ -488,6 +492,7 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
                 public void onClick(View v) {
                     Bundle bundle = new Bundle();
                     bundle.putInt("type",0);
+                    bundle.putString("orderId",orderItem.getOrderId());
                     startActivity(OrderAbnormalActivity.class,bundle);
                 }
             });
@@ -555,6 +560,7 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
                 public void onClick(View v) {
                     Bundle bundle = new Bundle();
                     bundle.putInt("type",1);
+                    bundle.putString("orderId",orderItem.getOrderId());
                     startActivity(OrderAbnormalActivity.class,bundle);
                 }
             });
@@ -579,6 +585,7 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
                 public void onClick(View v) {
                     Bundle bundle = new Bundle();
                     bundle.putInt("type",1);
+                    bundle.putString("orderId",orderItem.getOrderId());
                     startActivity(OrderAbnormalActivity.class,bundle);
                 }
             });

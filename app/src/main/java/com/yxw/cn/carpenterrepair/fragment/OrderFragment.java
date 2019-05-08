@@ -189,6 +189,7 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
     public void onAbnormal(OrderItem orderItem,int type) {
         Bundle bundle = new Bundle();
         bundle.putInt("type",type);
+        bundle.putString("orderId",orderItem.getOrderId());
         startActivity(OrderAbnormalActivity.class,bundle);
     }
 

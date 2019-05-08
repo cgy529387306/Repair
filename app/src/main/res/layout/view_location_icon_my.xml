@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:gravity="center">
 
-<ImageView
-    android:layout_width="20dp"
-    android:layout_height="28dp"
-    android:src="@drawable/icon_location_worker"/>
+    <ImageView
+        android:layout_width="13dp"
+        android:layout_height="18dp"
+        android:src="@drawable/icon_location_worker" />
 
 </LinearLayout>
