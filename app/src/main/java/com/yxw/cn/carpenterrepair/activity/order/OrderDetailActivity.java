@@ -4,14 +4,12 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,12 +29,6 @@ import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
-import com.baidu.mapapi.search.core.SearchResult;
-import com.baidu.mapapi.search.geocode.GeoCodeOption;
-import com.baidu.mapapi.search.geocode.GeoCodeResult;
-import com.baidu.mapapi.search.geocode.GeoCoder;
-import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
-import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.orhanobut.dialogplus.DialogPlus;
@@ -49,11 +41,8 @@ import com.yxw.cn.carpenterrepair.adapter.UserOrderStatusAdapter;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.MessageEvent;
-import com.yxw.cn.carpenterrepair.entity.Order;
 import com.yxw.cn.carpenterrepair.entity.OrderDetail;
 import com.yxw.cn.carpenterrepair.entity.OrderItem;
-import com.yxw.cn.carpenterrepair.entity.OrderStatusLineBean;
-import com.yxw.cn.carpenterrepair.entity.OrderType;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.entity.UserOrder;
 import com.yxw.cn.carpenterrepair.listerner.OnChooseDateListener;
@@ -66,15 +55,12 @@ import com.yxw.cn.carpenterrepair.util.ToastUtil;
 import com.yxw.cn.carpenterrepair.view.TitleBar;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * 订单详情
@@ -496,7 +482,7 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
                     Bundle bundle = new Bundle();
                     bundle.putInt("type",0);
                     bundle.putString("orderId",orderItem.getOrderId());
-                    startActivity(OrderAbnormalActivity.class,bundle);
+                    startActivity(AppointAbnormalActivity.class,bundle);
                 }
             });
 
@@ -564,7 +550,7 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
                     Bundle bundle = new Bundle();
                     bundle.putInt("type",1);
                     bundle.putString("orderId",orderItem.getOrderId());
-                    startActivity(OrderAbnormalActivity.class,bundle);
+                    startActivity(SignAbnormalActivity.class,bundle);
                 }
             });
 
@@ -582,17 +568,7 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
         }else if (orderStatus<90){
             //待完成
             tvOperate0.setVisibility(View.GONE);
-            tvOperate1.setVisibility(View.VISIBLE);
-            tvOperate1.setText("异常反馈");
-            tvOperate1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("type",1);
-                    bundle.putString("orderId",orderItem.getOrderId());
-                    startActivity(OrderAbnormalActivity.class,bundle);
-                }
-            });
+            tvOperate1.setVisibility(View.GONE);
             tvOperate2.setVisibility(View.VISIBLE);
             tvOperate2.setText("服务完成");
             tvOperate2.setOnClickListener(new View.OnClickListener() {

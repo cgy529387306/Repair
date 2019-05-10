@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F8F8F8"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    android:focusableInTouchMode="true"
+    android:focusable="true">
+
+    <com.yxw.cn.carpenterrepair.view.TitleBar
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp" />
+
+   <ScrollView
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:scrollbars="none">
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical">
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/white"
+              android:orientation="vertical">
+              <ImageView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_gravity="center_horizontal"
+                  android:layout_marginTop="30dp"
+                  android:layout_marginBottom="10dp"
+                  android:src="@drawable/icon_edit_bg"/>
+              <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginLeft="16dp"
+                  android:text="需再次预约原因"
+                  android:textColor="#333333"
+                  android:textSize="14sp"/>
+
+              <android.support.v7.widget.RecyclerView
+                  android:id="@+id/rv_reason"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginRight="10dp"
+                  android:layout_marginBottom="10dp"/>
+
+              <ImageView
+                  android:id="@+id/iv_picture"
+                  android:layout_width="70dp"
+                  android:layout_height="70dp"
+                  android:layout_marginLeft="15dp"
+                  android:layout_marginBottom="10dp"
+                  android:scaleType="fitXY"
+                  android:src="@drawable/icon_camera_add" />
+          </LinearLayout>
+
+          <RelativeLayout
+              android:id="@+id/rl_time"
+              android:layout_marginTop="10dp"
+              android:visibility="gone"
+              android:layout_width="match_parent"
+              android:layout_height="44dp"
+              android:background="#ffffff"
+              android:orientation="horizontal">
+
+              <TextView
+                  android:id="@+id/tv1"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_centerVertical="true"
+                  android:layout_marginLeft="10dp"
+                  android:text="再次预约时间"
+                  android:textSize="14sp"
+                  android:textColor="#333333"/>
+
+              <TextView
+                  android:id="@+id/tv_time"
+                  android:layout_width="wrap_content"
+                  android:layout_height="match_parent"
+                  android:layout_centerVertical="true"
+                  android:layout_alignParentRight="true"
+                  android:drawableRight="@drawable/icon_arrow_right"
+                  android:paddingRight="16dp"
+                  android:paddingLeft="16dp"
+                  android:gravity="center_vertical"
+                  android:text="请选择"
+                  android:textSize="14sp"
+                  android:textColor="#999999"/>
+          </RelativeLayout>
+          <RelativeLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="10dp"
+              android:background="@color/white">
+
+              <EditText
+                  android:padding="10dp"
+                  android:id="@+id/et_remark"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_margin="15dp"
+                  android:background="@drawable/corner_gray_rect"
+                  android:minHeight="90dp"
+                  android:gravity="left"
+                  android:hint="备注填写"
+                  android:lines="1"
+                  android:maxLength="20"
+                  android:textColor="#333333"
+                  android:textSize="14sp" />
+
+          </RelativeLayout>
+
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_margin="20dp"
+              android:orientation="horizontal">
+
+              <TextView
+                  android:id="@+id/cancel"
+                  android:gravity="center"
+                  android:layout_width="0dp"
+                  android:layout_weight="1"
+                  android:layout_height="40dp"
+                  android:text="取消"
+                  android:textColor="#666666"
+                  android:textSize="16sp"
+                  android:background="@drawable/corner_stroke_gray1"/>
+
+              <TextView
+                  android:id="@+id/confirm"
+                  android:layout_marginLeft="10dp"
+                  android:gravity="center"
+                  android:layout_weight="1"
+                  android:layout_width="0dp"
+                  android:layout_height="40dp"
+                  android:text="提交"
+                  android:textColor="@color/white"
+                  android:textSize="16sp"
+                  android:background="@drawable/bg_btn_red"/>
+
+          </LinearLayout>
+          <LinearLayout
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="60dp"
+              android:layout_gravity="center_horizontal">
+              <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="46dp"
+                  android:gravity="center"
+                  android:text="遇到问题？你可以"
+                  android:textColor="@color/text_gray"
+                  android:textSize="12sp" />
+
+              <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="46dp"
+                  android:paddingRight="16dp"
+                  android:gravity="center"
+                  android:text="联系客服"
+                  android:textColor="@color/text_red"
+                  android:textSize="12sp" />
+          </LinearLayout>
+      </LinearLayout>
+   </ScrollView>
+</LinearLayout>

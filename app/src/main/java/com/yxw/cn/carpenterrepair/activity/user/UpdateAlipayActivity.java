@@ -5,7 +5,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 
-import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.yxw.cn.carpenterrepair.BaseActivity;
@@ -19,9 +18,6 @@ import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 import com.yxw.cn.carpenterrepair.view.TitleBar;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -40,7 +36,7 @@ public class UpdateAlipayActivity extends BaseActivity {
 
     @Override
     protected int getLayoutResId() {
-        return R.layout.act_update_name;
+        return R.layout.act_update_aliaccount;
     }
 
     @Override

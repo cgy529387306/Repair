@@ -109,14 +109,7 @@ public class OrderAdapter extends BaseQuickAdapter<OrderItem, BaseViewHolder> {
         }else if (orderStatus<90){
             //待完成
             tvOperate0.setVisibility(View.GONE);
-            tvOperate1.setVisibility(View.VISIBLE);
-            tvOperate1.setText("异常反馈");
-            tvOperate1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mOperateListener.onAbnormal(item,1);
-                }
-            });
+            tvOperate1.setVisibility(View.GONE);
             tvOperate2.setVisibility(View.VISIBLE);
             tvOperate2.setText("服务完成");
             tvOperate2.setOnClickListener(new View.OnClickListener() {

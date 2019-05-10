@@ -17,10 +17,11 @@ import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.yxw.cn.carpenterrepair.BaseRefreshFragment;
 import com.yxw.cn.carpenterrepair.R;
+import com.yxw.cn.carpenterrepair.activity.order.AppointAbnormalActivity;
 import com.yxw.cn.carpenterrepair.activity.order.MyOrderActivity;
-import com.yxw.cn.carpenterrepair.activity.order.OrderAbnormalActivity;
 import com.yxw.cn.carpenterrepair.activity.order.OrderDetailActivity;
 import com.yxw.cn.carpenterrepair.activity.order.OrderSignInActivity;
+import com.yxw.cn.carpenterrepair.activity.order.SignAbnormalActivity;
 import com.yxw.cn.carpenterrepair.adapter.OrderAdapter;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
@@ -188,10 +189,15 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
 
     @Override
     public void onAbnormal(OrderItem orderItem,int type) {
-        Bundle bundle = new Bundle();
-        bundle.putInt("type",type);
-        bundle.putString("orderId",orderItem.getOrderId());
-        startActivity(OrderAbnormalActivity.class,bundle);
+        if (type==0){
+            Bundle bundle = new Bundle();
+            bundle.putString("orderId",orderItem.getOrderId());
+            startActivity(AppointAbnormalActivity.class,bundle);
+        }else{
+            Bundle bundle = new Bundle();
+            bundle.putString("orderId",orderItem.getOrderId());
+            startActivity(SignAbnormalActivity.class,bundle);
+        }
     }
 
     @Override
