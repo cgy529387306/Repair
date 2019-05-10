@@ -8,6 +8,8 @@ import android.widget.TextView;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
+import com.yxw.cn.carpenterrepair.entity.CurrentUser;
+import com.yxw.cn.carpenterrepair.util.Helper;
 import com.yxw.cn.carpenterrepair.view.TitleBar;
 
 import butterknife.BindView;
@@ -58,9 +60,18 @@ public class WalletActivity extends BaseActivity {
         mTvSettlementAmount.setText(getIntent().getStringExtra("settlementAmount"));
     }
 
-    @OnClick({R.id.ll_withdrawal_cash,R.id.ll_transaction_details})
+    @Override
+    public void initData() {
+        super.initData();
+        mTvAlipay.setText(Helper.isEmpty(CurrentUser.getInstance().getAliplayAccount())?"未绑定":CurrentUser.getInstance().getAliplayAccount());
+    }
+
+    @OnClick({R.id.ll_alipay,R.id.ll_withdrawal_cash,R.id.ll_transaction_details})
     public void click(View view) {
         switch (view.getId()) {
+            case R.id.ll_alipay:
+                startActivity(UpdateAlipayActivity.class);
+                break;
             case R.id.ll_withdrawal_cash:
                 Bundle bundle = new Bundle();
                 bundle.putString("data",mTvCarryAmount.getText().toString());

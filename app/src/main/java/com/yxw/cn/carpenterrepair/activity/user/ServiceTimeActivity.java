@@ -147,13 +147,13 @@ public class ServiceTimeActivity extends BaseActivity {
     public void click(View view) {
         switch (view.getId()) {
             case R.id.rl_place:
-                RegionPickerUtil.showCityPicker(this, new OnChooseAddrListener() {
-                    @Override
-                    public void getAddr(int options1, int options2, int options3) {
-                        mTvPlace.setText(RegionPickerUtil.getCity(options1,options2));
-                        mTvPlace.setTag(AppUtil.regionTreeList.get(options1).getSub().get(options2).getAgency_id()+"");
-                    }
-                });
+//                RegionPickerUtil.showCityPicker(this, new OnChooseAddrListener() {
+//                    @Override
+//                    public void getAddr(int options1, int options2, int options3) {
+//                        mTvPlace.setText(RegionPickerUtil.getCity(options1,options2));
+//                        mTvPlace.setTag(AppUtil.regionTreeList.get(options1).getSub().get(options2).getAgency_id()+"");
+//                    }
+//                });
                 break;
             case R.id.rl_start:
                 TimePickerUtil.showTimePicker(this, mTvStart, new OnChooseTimeListener() {

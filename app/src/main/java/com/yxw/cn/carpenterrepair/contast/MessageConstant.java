@@ -15,7 +15,6 @@ public class MessageConstant {
     public final static String WORKER_UNORDER_COUNT= "WORKER_UNORDER_COUNT";
     public final static String WORKER_ORDERED_COUNT= "WORKER_ORDERED_COUNT";
     public final static String NOTIFY_ORDER= "NOTIFY_ORDER";
-    public final static String NOTIFY_ORDER_DETAIL= "NOTIFY_ORDER_DETAIL";
     public final static String NOTIFY_CARRY_AMONUT= "NOTIFY_CARRY_AMONUT";
 
 }

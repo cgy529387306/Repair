@@ -73,6 +73,7 @@ public class QuickLoginActivity extends BaseActivity {
             }
         });
         mEtTel.setText(SpUtil.getStr(SpConstant.LOGIN_MOBILE));
+        mEtTel.setSelection(mEtTel.getText().toString().length());
     }
 
     @OnClick({R.id.tv_get_code, R.id.tv_login})

@@ -186,8 +186,9 @@
                 android:id="@+id/tv_alipay"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="20dp"
+                android:layout_marginRight="10dp"
                 android:layout_weight="1"
+                android:text="未绑定"
                 android:gravity="end"
                 android:textColor="#333333"
                 android:textSize="14dp" />
@@ -227,8 +228,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:text="未绑定"
                 android:gravity="end"
-                android:layout_marginRight="20dp"
+                android:layout_marginRight="10dp"
                 android:textColor="#333333"
                 android:textSize="14dp" />
 
@@ -268,7 +270,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="end"
-                android:layout_marginRight="20dp"
+                android:layout_marginRight="10dp"
+                android:text="未绑定"
                 android:textColor="#333333"
                 android:textSize="14dp" />
 

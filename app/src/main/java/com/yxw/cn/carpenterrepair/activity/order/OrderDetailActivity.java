@@ -234,7 +234,9 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
                     public void onSuccess(ResponseData<OrderDetail> response) {
                         if (response!=null){
                             if (response.isSuccess()){
+                                orderItem = response.getData();
                                 orderDetail = response.getData();
+                                initOrderData();
                                 initDetail();
                             }else{
                                 toast(response.getMsg());
@@ -269,7 +271,7 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
     public void onEvent(MessageEvent event) {
         super.onEvent(event);
         switch (event.getId()) {
-            case MessageConstant.NOTIFY_ORDER_DETAIL:
+            case MessageConstant.NOTIFY_UPDATE_ORDER:
                 getData();
                 break;
         }
@@ -535,9 +537,6 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
                                             if (response!=null){
                                                 if (response.isSuccess()) {
                                                     toast("预约成功");
-                                                    Bundle bundle = new Bundle();
-                                                    bundle.putSerializable("type",new OrderType(2,"待上门"));
-                                                    startActivityFinish(MyOrderActivity.class,bundle);
                                                     EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
                                                 }else{
                                                     toast(response.getMsg());
@@ -640,9 +639,6 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
                                              if (response!=null){
                                                  if (response.isSuccess()) {
                                                      toast("抢单成功");
-                                                     Bundle bundle = new Bundle();
-                                                     bundle.putSerializable("type",new OrderType(1,"待预约"));
-                                                     startActivityFinish(MyOrderActivity.class,bundle);
                                                      EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
                                                  }else{
                                                      toast(response.getMsg());

@@ -185,7 +185,7 @@ public class OrderAbnormalActivity extends BaseActivity implements BaseQuickAdap
                                         if (response.isSuccess()) {
                                             toast("异常反馈成功");
                                             OrderAbnormalActivity.this.finish();
-                                            EventBusUtil.post(MessageConstant.NOTIFY_ORDER_DETAIL);
+                                            EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
                                         }else{
                                             toast(response.getMsg());
                                         }

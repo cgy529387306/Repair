@@ -195,14 +195,14 @@ public class AppUtil {
     }
 
     public static void initRegionTreeData() {
-        OkGo.<ResponseData<List<CityBean>>>post(UrlConstant.GET_ALL_REGION)
-                .execute(new JsonCallback<ResponseData<List<CityBean>>>() {
+        OkGo.<ResponseData<List<RegionTree>>>post(UrlConstant.GET_ALL_REGION)
+                .execute(new JsonCallback<ResponseData<List<RegionTree>>>() {
 
                     @Override
-                    public void onSuccess(ResponseData<List<CityBean>> response) {
+                    public void onSuccess(ResponseData<List<RegionTree>> response) {
                         if (response!=null){
                             if (response.isSuccess() && response.getData()!=null){
-                                AppUtil.cityItemList = response.getData();
+                                AppUtil.regionTreeList = response.getData();
                             }
                         }
                     }

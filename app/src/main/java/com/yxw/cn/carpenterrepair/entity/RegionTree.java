@@ -1,61 +1,47 @@
 package com.yxw.cn.carpenterrepair.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RegionTree {
 
-    private int id;
-    private int parent_id;
-    private String name;
-    private int type;
-    private long agency_id;
-    private List<RegionTreeSub> sub;
+    private int parentId;
+    private String regionName;
+    private long agencyId;
+    private List<RegionTree> children;
 
-    public int getId() {
-        return id;
+    public int getParentId() {
+        return parentId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setParentId(int parentId) {
+        this.parentId = parentId;
     }
 
-    public int getParent_id() {
-        return parent_id;
+    public String getRegionName() {
+        return regionName == null ? "" : regionName;
     }
 
-    public void setParent_id(int parent_id) {
-        this.parent_id = parent_id;
+    public void setRegionName(String regionName) {
+        this.regionName = regionName;
     }
 
-    public String getName() {
-        return name;
+    public long getAgencyId() {
+        return agencyId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setAgencyId(long agencyId) {
+        this.agencyId = agencyId;
     }
 
-    public int getType() {
-        return type;
+    public List<RegionTree> getChildren() {
+        if (children == null) {
+            return new ArrayList<>();
+        }
+        return children;
     }
 
-    public void setType(int type) {
-        this.type = type;
-    }
-
-    public long getAgency_id() {
-        return agency_id;
-    }
-
-    public void setAgency_id(long agency_id) {
-        this.agency_id = agency_id;
-    }
-
-    public List<RegionTreeSub> getSub() {
-        return sub;
-    }
-
-    public void setSub(List<RegionTreeSub> sub) {
-        this.sub = sub;
+    public void setChildren(List<RegionTree> children) {
+        this.children = children;
     }
 }

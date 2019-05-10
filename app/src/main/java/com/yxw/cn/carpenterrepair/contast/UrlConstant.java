@@ -40,9 +40,11 @@ public class UrlConstant {
     public final static String JOIN_SERVICE = BASE_USER + "/ms70/api/user/info/joinService/";//工程师加入服务商
     public final static String PARENT_SERVICE = BASE_USER + "/ms70/api/user/info/parentService/{bindingCode}";//隶属服务商
     public final static String SAVE_CATEGORY = BASE_USER + "/ms70/api/user/info/saveProject";//新增用户项目
+    public final static String UPDATE_ALIPAY_ACCOUNT = BASE_URL + "/ms70/api/user/info/saveAliplay/";//1015 - 用户 - 个人资料 - 修改支付宝账号
+
 
     public final static String GET_ALL_CATEGORY = BASE_USER + "/ms20/api/sys/dicts/categoryList";//获取项目分类列表
-    public final static String GET_ALL_REGION = BASE_USER + "/ms20/api/sys/region/getRegionList";//获取所有地区接口
+    public final static String GET_ALL_REGION = BASE_USER + "/ms20/api/sys/region/allRegionTree";//获取所有地区接口
     public final static String GET_EXCEPTION_REASON = BASE_USER + "/ms20/api/sys/dicts/findDictsByKey";//查询数据字典
 
 
@@ -92,7 +94,6 @@ public class UrlConstant {
     public final static String END_SERVICE_CODE = BASE_URL + "/api/fix/workerOrder/getEndServiceCode";//2015 - 维修人员 - 服务完成请求短信验证接口
     public final static String END_SERVICE_BY_CODE = BASE_URL + "/api/fix/workerOrder/endServiceBycode";//2016 - 维修人员 - 服务完成短信验证提交接口
     public final static String RONG_CLOUD_TOKEN = BASE_URL + "/api/rongCloud/getToken";//3010 - 通用 - 融云即时通讯（佳信客服）-获取Token
-    public final static String UPDATE_ALIPAY_ACCOUNT = BASE_URL + "/api/fix/shopUser/editAliplayAccount";//1015 - 用户 - 个人资料 - 修改支付宝账号
     public final static String WORKER_CANCEL_ORDER = BASE_URL + "/api/fix/workerOrder/cancelOrder";//工人取消订单
     public final static String RESERVATION_TIME = BASE_URL + "/api/fix/workerOrder/reservation";//2020 - 维修人员 - 预约上门时间
     public final static String CONFIRM_ARRIVAL = BASE_URL + "/api/fix/workerOrder/confirmArrival";//2004 - 维修人员 - 确认到达现场

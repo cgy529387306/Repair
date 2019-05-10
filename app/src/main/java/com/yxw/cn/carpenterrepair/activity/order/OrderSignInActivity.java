@@ -48,6 +48,7 @@ import com.yxw.cn.carpenterrepair.entity.OrderItem;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.entity.UserOrder;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
+import com.yxw.cn.carpenterrepair.util.Helper;
 import com.yxw.cn.carpenterrepair.view.CountDownTextView;
 import com.yxw.cn.carpenterrepair.view.TitleBar;
 
@@ -244,6 +245,10 @@ public class OrderSignInActivity extends BaseActivity {
     }
 
     private void confirmArrival() {
+        if (Helper.isEmpty(path)){
+            toast("现场照片不能为空!");
+            return;
+        }
         HashMap<String, Object> map = new HashMap<>();
         map.put("orderId", orderItem.getOrderId());
         map.put("locationLat", mLocation.getLatitude());
@@ -264,7 +269,7 @@ public class OrderSignInActivity extends BaseActivity {
                         if (response!=null){
                             if (response.isSuccess()){
                                 finish();
-                                EventBusUtil.post(MessageConstant.NOTIFY_ORDER_DETAIL);
+                                EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
                             }else{
                                 toast(response.getMsg());
                             }

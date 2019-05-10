@@ -122,6 +122,7 @@ public class LoginActivity extends BaseActivity {
     @Override
     public void initView() {
         mEtTel.setText(SpUtil.getStr(SpConstant.LOGIN_MOBILE));
+        mEtTel.setSelection(mEtTel.getText().toString().length());
     }
 
 

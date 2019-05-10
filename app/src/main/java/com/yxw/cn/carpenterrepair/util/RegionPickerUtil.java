@@ -12,9 +12,11 @@ import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.CustomListener;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
+import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.yxw.cn.carpenterrepair.R;
+import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.RegionTree;
 import com.yxw.cn.carpenterrepair.entity.RegionTreeList;
@@ -25,6 +27,7 @@ import com.yxw.cn.carpenterrepair.listerner.OnChooseAddrListener;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -50,22 +53,19 @@ public class RegionPickerUtil {
         if (provinceBeanList != null && provinceBeanList.size() > 0) {
             show(context, textView, showDistrict);
         } else {
-            OkGo.<ResponseData<RegionTreeList>>get(UrlConstant.GET_REGION_TREE)
-                    .execute(new JsonCallback<ResponseData<RegionTreeList>>() {
+            OkGo.<ResponseData<List<RegionTree>>>post(UrlConstant.GET_ALL_REGION)
+                    .execute(new JsonCallback<ResponseData<List<RegionTree>>>() {
 
                         @Override
-                        public void onSuccess(ResponseData<RegionTreeList> response) {
-                            if (response.getData().getList() != null && response.getData().getList().size() > 0) {
-                                AppUtil.regionTreeList.clear();
-                                AppUtil.regionTreeList.addAll(response.getData().getList());
-                                handlerData();
-                                show(context, textView, showDistrict);
+                        public void onSuccess(ResponseData<List<RegionTree>> response) {
+                            if (response!=null){
+                                if (response.isSuccess() && response.getData()!=null){
+                                    AppUtil.regionTreeList.clear();
+                                    AppUtil.regionTreeList.addAll(response.getData());
+                                    handlerData();
+                                    show(context, textView, showDistrict);
+                                }
                             }
-                        }
-
-                        @Override
-                        public void onError(Response<ResponseData<RegionTreeList>> response) {
-                            super.onError(response);
                         }
                     });
         }
@@ -85,7 +85,7 @@ public class RegionPickerUtil {
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
                 long agencyId = 0;
                 if (AppUtil.regionTreeList != null && AppUtil.regionTreeList.size() > 0) {
-                    agencyId = AppUtil.regionTreeList.get(options1).getSub().get(options2).getSub().get(options3).getAgency_id();
+                    agencyId = AppUtil.regionTreeList.get(options1).getChildren().get(options2).getChildren().get(options3).getAgencyId();
                 }
                 String address; //  如果是直辖市或者特别行政区只设置市和区/县
                 if (showDistrict) {
@@ -95,6 +95,7 @@ public class RegionPickerUtil {
                 }
                 textView.setText(address);
                 textView.setTag(agencyId + "");
+                doSaveCity(agencyId + "");
             }
         }).setSubmitText("确定")//确定按钮文字
                 .setCancelText("取消")//取消按钮文字
@@ -158,6 +159,28 @@ public class RegionPickerUtil {
             e.printStackTrace();
         }
         pvCustomOptions.show();
+    }
+
+
+    private static void doSaveCity(String cityId){
+        Gson gson = new Gson();
+        HashMap<String, String> map = new HashMap<>();
+        map.put("residentArea", cityId);
+        OkGo.<ResponseData<String>>post(UrlConstant.CHANGE_USERINFO)
+                .upJson(gson.toJson(map))
+                .execute(new JsonCallback<ResponseData<String>>() {
+                             @Override
+                             public void onSuccess(ResponseData<String> response) {
+                                 if (response != null){
+                                     if (response.isSuccess()) {
+                                         EventBusUtil.post(MessageConstant.NOTIFY_GET_INFO);
+                                     } else {
+                                         ToastUtil.show(response.getMsg());
+                                     }
+                                 }
+                             }
+                         }
+                );
     }
 
     public static void showAllPicker(Context context, OnChooseAddrListener listener) {
@@ -390,16 +413,16 @@ public class RegionPickerUtil {
         if (AppUtil.regionTreeList != null && AppUtil.regionTreeList.size() > 0) {
             for (RegionTree regionTree :
                     AppUtil.regionTreeList) {
-                provinceBeanList.add(regionTree.getName());
+                provinceBeanList.add(regionTree.getRegionName());
                 cities = new ArrayList<>();
                 districts = new ArrayList<>();
-                for (RegionTreeSub regionTreeSub :
-                        regionTree.getSub()) {
-                    cities.add(regionTreeSub.getName());
+                for (RegionTree regionTreeSub :
+                        regionTree.getChildren()) {
+                    cities.add(regionTreeSub.getRegionName());
                     district = new ArrayList<>();
-                    for (RegionTreeSubItem regionTreeSubItem :
-                            regionTreeSub.getSub()) {
-                        district.add(regionTreeSubItem.getName());
+                    for (RegionTree regionTreeSubItem :
+                            regionTreeSub.getChildren()) {
+                        district.add(regionTreeSubItem.getRegionName());
                     }
                     districts.add(district);
                 }

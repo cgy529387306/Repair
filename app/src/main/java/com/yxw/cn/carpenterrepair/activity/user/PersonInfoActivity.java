@@ -32,6 +32,7 @@ import com.yxw.cn.carpenterrepair.util.AppUtil;
 import com.yxw.cn.carpenterrepair.util.Base64Util;
 import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 import com.yxw.cn.carpenterrepair.util.Helper;
+import com.yxw.cn.carpenterrepair.util.RegionPickerUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -199,7 +200,7 @@ public class PersonInfoActivity extends BaseActivity {
                 startActivity(intent);
                 break;
             case R.id.ll_resident:
-                startActivityForResult(new Intent(PersonInfoActivity.this,SelectCityActivity.class),22);
+                RegionPickerUtil.showPicker(this, mTvResident, true);
                 break;
             case R.id.ll_service_provider:
                 if (loginInfo!=null && !TextUtils.isEmpty(loginInfo.getParentId())){
@@ -224,13 +225,6 @@ public class PersonInfoActivity extends BaseActivity {
                        doUploadAvatar(localMedia);
                     }
                     break;
-                case 22:
-                    //选择城市
-                    if(data!=null && data.getStringExtra("city")!=null){
-                        String city = data.getStringExtra("city");
-                        doSaveCity(city);
-                    }
-                    break;
             }
         }
     }
@@ -252,36 +246,6 @@ public class PersonInfoActivity extends BaseActivity {
                                  toast(response.getMsg());
                                  if (response.isSuccess()) {
                                      EventBusUtil.post(MessageConstant.NOTIFY_GET_INFO);
-                                 }
-                             }
-
-                             @Override
-                             public void onError(Response<ResponseData<String>> response) {
-                                 super.onError(response);
-                                 dismissLoading();
-                             }
-                         }
-                );
-    }
-
-    private void doSaveCity(String city){
-        showLoading();
-        HashMap<String, String> map = new HashMap<>();
-        map.put("residentArea", city);
-        OkGo.<ResponseData<String>>post(UrlConstant.CHANGE_USERINFO)
-                .upJson(gson.toJson(map))
-                .execute(new JsonCallback<ResponseData<String>>() {
-                             @Override
-                             public void onSuccess(ResponseData<String> response) {
-                                 dismissLoading();
-                                 if (response != null){
-                                     if (response.isSuccess()) {
-                                         mTvResident.setText(city);
-                                         EventBusUtil.post(MessageConstant.NOTIFY_GET_INFO);
-                                         finish();
-                                     } else {
-                                         toast(response.getMsg());
-                                     }
                                  }
                              }
 
