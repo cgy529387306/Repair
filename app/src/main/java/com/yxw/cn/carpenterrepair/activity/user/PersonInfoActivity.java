@@ -103,7 +103,7 @@ public class PersonInfoActivity extends BaseActivity {
                 mTvIdCardStatus.setText(AppUtil.getIdCardStatus(loginInfo.getIdCardStatus()));
                 mTvServiceProvider.setText(TextUtils.isEmpty(loginInfo.getParentId())?"":"服务商ID"+loginInfo.getParentId());
 //                mTvIdCardNo.setText(loginInfo.getIdentityCard());
-                mTvResident.setText(loginInfo.getResidentName());
+                mTvResident.setText(loginInfo.getResidentAreaName());
                 if (Helper.isNotEmpty(loginInfo.getCategory())){
                     String[] dataArray = loginInfo.getCategory().split(",");
                     if (Helper.isNotEmpty(dataArray)){

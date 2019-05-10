@@ -50,7 +50,8 @@ public class RegionPickerUtil {
     public static OptionsPickerView pvCustomOptions;
 
     public static void showPicker(Context context, TextView textView, boolean showDistrict) {
-        if (provinceBeanList != null && provinceBeanList.size() > 0) {
+        if (AppUtil.regionTreeList != null && AppUtil.regionTreeList.size() > 0) {
+            handlerData();
             show(context, textView, showDistrict);
         } else {
             OkGo.<ResponseData<List<RegionTree>>>post(UrlConstant.GET_ALL_REGION)
@@ -413,21 +414,25 @@ public class RegionPickerUtil {
         if (AppUtil.regionTreeList != null && AppUtil.regionTreeList.size() > 0) {
             for (RegionTree regionTree :
                     AppUtil.regionTreeList) {
-                provinceBeanList.add(regionTree.getRegionName());
-                cities = new ArrayList<>();
-                districts = new ArrayList<>();
-                for (RegionTree regionTreeSub :
-                        regionTree.getChildren()) {
-                    cities.add(regionTreeSub.getRegionName());
-                    district = new ArrayList<>();
-                    for (RegionTree regionTreeSubItem :
-                            regionTreeSub.getChildren()) {
-                        district.add(regionTreeSubItem.getRegionName());
+                if (Helper.isNotEmpty(regionTree.getChildren())){
+                    provinceBeanList.add(regionTree.getRegionName());
+                    cities = new ArrayList<>();
+                    districts = new ArrayList<>();
+                    for (RegionTree regionTreeSub :
+                            regionTree.getChildren()) {
+                        if (Helper.isNotEmpty(regionTreeSub.getChildren())){
+                            cities.add(regionTreeSub.getRegionName());
+                            district = new ArrayList<>();
+                            for (RegionTree regionTreeSubItem :
+                                    regionTreeSub.getChildren()) {
+                                district.add(regionTreeSubItem.getRegionName());
+                            }
+                            districts.add(district);
+                        }
                     }
-                    districts.add(district);
+                    districtList.add(districts);
+                    cityList.add(cities);
                 }
-                districtList.add(districts);
-                cityList.add(cities);
             }
             allProvinceBeanList.add("全部");
             allProvinceBeanList.addAll(provinceBeanList);
