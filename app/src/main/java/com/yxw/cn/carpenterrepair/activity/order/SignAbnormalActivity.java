@@ -131,7 +131,9 @@ public class SignAbnormalActivity extends BaseActivity implements BaseQuickAdapt
                 String desc = etRemark.getText().toString().trim();
                 if (Helper.isEmpty(exceptionIds)) {
                     toast("请先选择异常原因");
-                } else {
+                }else if (Helper.isEmpty(exceptionIds)) {
+                    toast("请先上传图片");
+                }else {
                     showLoading();
                     HashMap<String, Object> map = new HashMap<>();
                     map.put("orderId", orderId);

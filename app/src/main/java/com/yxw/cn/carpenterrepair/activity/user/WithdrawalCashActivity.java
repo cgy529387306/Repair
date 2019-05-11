@@ -1,21 +1,19 @@
 package com.yxw.cn.carpenterrepair.activity.user;
 
-import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lzy.okgo.OkGo;
-import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.ViewHolder;
 import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
+import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
-import com.yxw.cn.carpenterrepair.entity.WithdrawalCash;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
+import com.yxw.cn.carpenterrepair.pop.TradeSuccessPop;
+import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 import com.yxw.cn.carpenterrepair.view.TitleBar;
 
 import java.util.HashMap;
@@ -23,7 +21,6 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 
 /**
  * 提现
@@ -39,7 +36,7 @@ public class WithdrawalCashActivity extends BaseActivity {
     @BindView(R.id.cash2)
     TextView cash2;
 
-    private DialogPlus dialog;
+    private TradeSuccessPop mTradeSuccessPop;
     private String carryAmount;
 
     @Override
@@ -50,86 +47,92 @@ public class WithdrawalCashActivity extends BaseActivity {
     @Override
     public void initView() {
         titleBar.setTitle("提现");
-        carryAmount = getIntent().getStringExtra("data");
+        carryAmount = CurrentUser.getInstance().isLogin()?CurrentUser.getInstance().getCarryAmount():"0.0";
         cash1.setText(carryAmount);
         cash2.setText(carryAmount);
+        mTradeSuccessPop = new TradeSuccessPop(this, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     @OnClick({R.id.rl_type, R.id.btn_withdrawal_now, R.id.all})
     public void click(View view) {
         switch (view.getId()) {
             case R.id.rl_type:
-                if (dialog == null) {
-                    dialog = DialogPlus.newDialog(this)
-                            .setContentHolder(new ViewHolder(R.layout.dlg_withdrawal))
-                            .setGravity(Gravity.BOTTOM)
-                            .setCancelable(true)
-                            .create();
-                    View dialogView = dialog.getHolderView();
-                    ImageView ivSelZhifubao = dialogView.findViewById(R.id.iv_selected_zhifubao);
-                    ImageView ivSelWechat = dialogView.findViewById(R.id.iv_selected_wechat);
-                    ImageView ivSelBank = dialogView.findViewById(R.id.iv_selected_bank);
-                    dialogView.findViewById(R.id.ll_zhifubao).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            ivSelZhifubao.setVisibility(View.VISIBLE);
-                            ivSelWechat.setVisibility(View.GONE);
-                            ivSelBank.setVisibility(View.GONE);
-                            tvType.setText("支付宝");
-                            dialog.dismiss();
-                        }
-                    });
-                    dialogView.findViewById(R.id.ll_wechat).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            ivSelZhifubao.setVisibility(View.GONE);
-                            ivSelWechat.setVisibility(View.VISIBLE);
-                            ivSelBank.setVisibility(View.GONE);
-                            tvType.setText("微信");
-                            dialog.dismiss();
-                        }
-                    });
-                    dialogView.findViewById(R.id.ll_bank).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            ivSelZhifubao.setVisibility(View.GONE);
-                            ivSelWechat.setVisibility(View.GONE);
-                            ivSelBank.setVisibility(View.VISIBLE);
-                            tvType.setText("储蓄卡");
-                            dialog.dismiss();
-                        }
-                    });
-                }
-                dialog.show();
+//                if (dialog == null) {
+//                    dialog = DialogPlus.newDialog(this)
+//                            .setContentHolder(new ViewHolder(R.layout.dlg_withdrawal))
+//                            .setGravity(Gravity.BOTTOM)
+//                            .setCancelable(true)
+//                            .create();
+//                    View dialogView = dialog.getHolderView();
+//                    ImageView ivSelZhifubao = dialogView.findViewById(R.id.iv_selected_zhifubao);
+//                    ImageView ivSelWechat = dialogView.findViewById(R.id.iv_selected_wechat);
+//                    ImageView ivSelBank = dialogView.findViewById(R.id.iv_selected_bank);
+//                    dialogView.findViewById(R.id.ll_zhifubao).setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            ivSelZhifubao.setVisibility(View.VISIBLE);
+//                            ivSelWechat.setVisibility(View.GONE);
+//                            ivSelBank.setVisibility(View.GONE);
+//                            tvType.setText("支付宝");
+//                            dialog.dismiss();
+//                        }
+//                    });
+//                    dialogView.findViewById(R.id.ll_wechat).setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            ivSelZhifubao.setVisibility(View.GONE);
+//                            ivSelWechat.setVisibility(View.VISIBLE);
+//                            ivSelBank.setVisibility(View.GONE);
+//                            tvType.setText("微信");
+//                            dialog.dismiss();
+//                        }
+//                    });
+//                    dialogView.findViewById(R.id.ll_bank).setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            ivSelZhifubao.setVisibility(View.GONE);
+//                            ivSelWechat.setVisibility(View.GONE);
+//                            ivSelBank.setVisibility(View.VISIBLE);
+//                            tvType.setText("储蓄卡");
+//                            dialog.dismiss();
+//                        }
+//                    });
+//                }
+//                dialog.show();
                 break;
             case R.id.btn_withdrawal_now:
                 if (Double.parseDouble(cash1.getText().toString().trim()) == 0.0) {
                     toast("提现金额不能为零！");
                 } else {
                     Map<String, Object> map = new HashMap<>();
-                    map.put("deposit", Double.parseDouble(cash1.getText().toString()));
-                    map.put("payWay", "aliplay");
-                    OkGo.<ResponseData<WithdrawalCash>>post(UrlConstant.WORKER_DEPOSIT)
+                    map.put("amount", Double.parseDouble(cash1.getText().toString()));
+                    map.put("tradeWay", 0);//交易方式 0支付宝 1微信 2银行卡
+                    OkGo.<ResponseData<String>>post(UrlConstant.APPLY_WITHDRAWAL)
                             .upJson(gson.toJson(map))
-                            .execute(new JsonCallback<ResponseData<WithdrawalCash>>() {
+                            .execute(new JsonCallback<ResponseData<String>>() {
                                          @Override
-                                         public void onSuccess(ResponseData<WithdrawalCash> response) {
-                                             if (response.isSuccess()) {
-                                                 if(response.getData().isIsExist()){
-                                                     EventBusUtil.post(MessageConstant.NOTIFY_CARRY_AMONUT);
-                                                     WithdrawalCashActivity.this.finish();
-                                                 }else {
-                                                     startActivity(UpdateAlipayActivity.class);
+                                         public void onSuccess(ResponseData<String> response) {
+                                             if (response!=null){
+                                                 if (response.isSuccess()) {
+                                                     EventBusUtil.post(MessageConstant.NOTIFY_GET_INFO);
+                                                     mTradeSuccessPop.showPopupWindow(cash1);
+                                                 }else{
+                                                     toast(response.getMsg());
                                                  }
                                              }
-                                             toast(response.getMsg());
                                          }
                                      }
                             );
                 }
                 break;
             case R.id.all:
-                cash1.setText("￥" + cash2.getText().toString());
+                cash1.setText(carryAmount);
+                cash1.setSelection(cash1.getText().toString().length());
                 break;
         }
     }

@@ -1,14 +1,15 @@
 package com.yxw.cn.carpenterrepair.activity.user;
 
-import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.orhanobut.dialogplus.DialogPlus;
 import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
+import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.entity.CurrentUser;
+import com.yxw.cn.carpenterrepair.entity.LoginInfo;
+import com.yxw.cn.carpenterrepair.entity.MessageEvent;
 import com.yxw.cn.carpenterrepair.util.Helper;
 import com.yxw.cn.carpenterrepair.view.TitleBar;
 
@@ -45,8 +46,7 @@ public class WalletActivity extends BaseActivity {
     @BindView(R.id.ll_transaction_details)
     LinearLayout mLlTransactionDetails;
 
-    private DialogPlus dialog;
-
+    private LoginInfo loginInfo;
     @Override
     protected int getLayoutResId() {
         return R.layout.act_wallet;
@@ -55,15 +55,23 @@ public class WalletActivity extends BaseActivity {
     @Override
     public void initView() {
         titleBar.setTitle(getIntent().getStringExtra("title"));
-        mTvCarryAmount.setText(getIntent().getStringExtra("carryAmount"));
-        mTvDeposit.setText(getIntent().getStringExtra("deposit"));
-        mTvSettlementAmount.setText(getIntent().getStringExtra("settlementAmount"));
     }
 
     @Override
     public void initData() {
-        super.initData();
-        mTvAlipay.setText(Helper.isEmpty(CurrentUser.getInstance().getAliplayAccount())?"未绑定":CurrentUser.getInstance().getAliplayAccount());
+        if (CurrentUser.getInstance().isLogin()) {
+            try {
+                loginInfo = CurrentUser.getInstance();
+                mTvAlipay.setText(Helper.isEmpty(loginInfo.getAliplayAccount())?"未绑定":loginInfo.getAliplayAccount());
+                mTvCarryAmount.setText(loginInfo.getCarryAmount());
+                mTvDeposit.setText(loginInfo.getDeposit());
+                mTvSettlementAmount.setText(loginInfo.getSettlementAmount());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            loginInfo = new LoginInfo();
+        }
     }
 
     @OnClick({R.id.ll_alipay,R.id.ll_withdrawal_cash,R.id.ll_transaction_details})
@@ -73,86 +81,21 @@ public class WalletActivity extends BaseActivity {
                 startActivity(UpdateAlipayActivity.class);
                 break;
             case R.id.ll_withdrawal_cash:
-                Bundle bundle = new Bundle();
-                bundle.putString("data",mTvCarryAmount.getText().toString());
-                startActivity(WithdrawalCashActivity.class,bundle);
+                startActivity(WithdrawalCashActivity.class);
                 break;
             case R.id.ll_transaction_details:
                 startActivity(TransactionDetailsActivity.class);
                 break;
-            case R.id.rl_type:
-//                if (dialog == null) {
-//                    dialog = DialogPlus.newDialog(this)
-//                            .setContentHolder(new ViewHolder(R.layout.dlg_withdrawal))
-//                            .setGravity(Gravity.BOTTOM)
-//                            .setCancelable(true)
-//                            .create();
-//                    View dialogView = dialog.getHolderView();
-//                    ImageView ivSelZhifubao = dialogView.findViewById(R.id.iv_selected_zhifubao);
-//                    ImageView ivSelWechat = dialogView.findViewById(R.id.iv_selected_wechat);
-//                    ImageView ivSelBank = dialogView.findViewById(R.id.iv_selected_bank);
-//                    dialogView.findViewById(R.id.ll_zhifubao).setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            ivSelZhifubao.setVisibility(View.VISIBLE);
-//                            ivSelWechat.setVisibility(View.GONE);
-//                            ivSelBank.setVisibility(View.GONE);
-//                            tvType.setText("支付宝");
-//                            dialog.dismiss();
-//                        }
-//                    });
-//                    dialogView.findViewById(R.id.ll_wechat).setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            ivSelZhifubao.setVisibility(View.GONE);
-//                            ivSelWechat.setVisibility(View.VISIBLE);
-//                            ivSelBank.setVisibility(View.GONE);
-//                            tvType.setText("微信");
-//                            dialog.dismiss();
-//                        }
-//                    });
-//                    dialogView.findViewById(R.id.ll_bank).setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            ivSelZhifubao.setVisibility(View.GONE);
-//                            ivSelWechat.setVisibility(View.GONE);
-//                            ivSelBank.setVisibility(View.VISIBLE);
-//                            tvType.setText("储蓄卡");
-//                            dialog.dismiss();
-//                        }
-//                    });
-//                }
-//                dialog.show();
-//                break;
-//            case R.id.btn_withdrawal_now:
-//                if (Double.parseDouble(cash1.getText().toString().trim()) == 0.0) {
-//                    toast("提现金额不能为零！");
-//                } else {
-//                    Map<String, Object> map = new HashMap<>();
-//                    map.put("deposit", Double.parseDouble(cash1.getText().toString()));
-//                    map.put("payWay", "aliplay");
-//                    OkGo.<ResponseData<WithdrawalCash>>post(UrlConstant.WORKER_DEPOSIT)
-//                            .upJson(gson.toJson(map))
-//                            .execute(new JsonCallback<ResponseData<WithdrawalCash>>() {
-//                                         @Override
-//                                         public void onSuccess(ResponseData<WithdrawalCash> response) {
-//                                             if (response.getCode() == 0) {
-//                                                 if(response.getData().isIsExist()){
-//                                                     EventBusUtil.post(MessageConstant.NOTIFY_CARRY_AMONUT);
-//                                                     WalletActivity.this.finish();
-//                                                 }else {
-//                                                     startActivity(UpdateAlipayActivity.class);
-//                                                 }
-//                                             }
-//                                             toast(response.getMsg());
-//                                         }
-//                                     }
-//                            );
-//                }
-//                break;
-//            case R.id.all:
-//                cash1.setText(cash2.getText().toString());
-//                break;
+        }
+    }
+
+    @Override
+    public void onEvent(MessageEvent event) {
+        super.onEvent(event);
+        switch (event.getId()) {
+            case MessageConstant.NOTIFY_UPDATE_INFO:
+                initData();
+                break;
         }
     }
 

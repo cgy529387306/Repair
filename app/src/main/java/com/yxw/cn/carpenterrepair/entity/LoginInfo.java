@@ -2,9 +2,6 @@ package com.yxw.cn.carpenterrepair.entity;
 
 import com.yxw.cn.carpenterrepair.util.Helper;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class LoginInfo {
     private String aliplayAccount;
     private String avatar;
@@ -19,7 +16,6 @@ public class LoginInfo {
     private String refreshToken;
     private String registerTime;
     private String category;
-    private List<BeGoodAtCategory> tags;
     private long expire;
     private int role;  //角色 0用户 1兼职工程师 2专职工程师
     private int serviceStatus;
@@ -31,6 +27,10 @@ public class LoginInfo {
     private String serviceDate;
     private String serviceTime;
     private int idCardStatus;//身份证状态 0未上传 1已上传 2审核未通过 3审核通过
+    private String carryAmount;//可提现金额
+    private String deposit;//押金
+    private String settlementAmount;//待结算金额
+
 
 
     public String getToken() {
@@ -105,12 +105,6 @@ public class LoginInfo {
         this.parentId = parentId;
     }
 
-    public List<BeGoodAtCategory> getTags() {
-        if (tags == null) {
-            return new ArrayList<>();
-        }
-        return tags;
-    }
 
     public String getAliplayAccount() {
         return aliplayAccount == null ? "" : aliplayAccount;
@@ -142,10 +136,6 @@ public class LoginInfo {
 
     public void setCategory(String category) {
         this.category = category;
-    }
-
-    public void setTags(List<BeGoodAtCategory> tags) {
-        this.tags = tags;
     }
 
     public long getExpire() {
@@ -234,5 +224,29 @@ public class LoginInfo {
 
     public void setIdCardStatus(int idCardStatus) {
         this.idCardStatus = idCardStatus;
+    }
+
+    public String getCarryAmount() {
+        return carryAmount == null ? "" : carryAmount;
+    }
+
+    public void setCarryAmount(String carryAmount) {
+        this.carryAmount = carryAmount;
+    }
+
+    public String getDeposit() {
+        return deposit == null ? "" : deposit;
+    }
+
+    public void setDeposit(String deposit) {
+        this.deposit = deposit;
+    }
+
+    public String getSettlementAmount() {
+        return settlementAmount == null ? "" : settlementAmount;
+    }
+
+    public void setSettlementAmount(String settlementAmount) {
+        this.settlementAmount = settlementAmount;
     }
 }

@@ -113,7 +113,6 @@
 
         <activity android:name=".activity.order.MyOrderActivity"
             android:launchMode="singleTop"/>
-        <activity android:name=".activity.order.OrderActivity"/>
         <activity android:name=".activity.order.AppointAbnormalActivity"/>
         <activity android:name=".activity.order.OrderSignInActivity"/>
         <activity android:name=".activity.order.OrderDetailActivity"/>

@@ -97,20 +97,21 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="余额￥"
+                    android:layout_marginLeft="20dp"
+                    android:text="￥"
                     android:textColor="#333333"
-                    android:textSize="14sp" />
+                    android:textSize="28sp" />
                 <EditText
                     android:id="@+id/cash1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="10dp"
                     android:background="@null"
+                    android:inputType="numberDecimal"
                     android:text="0.00"
                     android:textColor="#333333"
                     android:textSize="36sp" />
@@ -123,7 +124,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="55dp"
-                android:background="@color/text_gray" />
+                android:background="#F8F8F8" />
 
             <LinearLayout
                 android:layout_marginBottom="20dp"
@@ -131,28 +132,24 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp">
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="余额￥"
                     android:textColor="#333333"
                     android:textSize="14sp" />
-
                 <TextView
                     android:id="@+id/cash2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="#333333"
                     android:textSize="14sp" />
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="，"
                     android:textColor="@color/text_black"
                     android:textSize="14sp" />
-
                 <TextView
                     android:id="@+id/all"
                     android:layout_width="wrap_content"
@@ -160,7 +157,6 @@
                     android:text="全部转出"
                     android:textColor="#ff0000"
                     android:textSize="14sp" />
-
             </LinearLayout>
 
         </LinearLayout>
@@ -170,6 +166,7 @@
             android:layout_marginLeft="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="invisible"
             android:orientation="horizontal">
 
             <TextView

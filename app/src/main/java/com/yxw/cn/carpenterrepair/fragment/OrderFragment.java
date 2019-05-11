@@ -111,6 +111,8 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
         if (mOrderType!=2){
             requestMap.put("customerBookingTime",mBookingTime);
         }
+        requestMap.put("locationLat",26.088114);
+        requestMap.put("locationLng",119.310492);
         requestMap.put("status",mOrderStatus);
         Map<String, Object> map = new HashMap<>();
         map.put("filter", requestMap);

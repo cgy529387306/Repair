@@ -16,13 +16,13 @@
            android:drawableLeft="@drawable/icon_msg"
            android:textColor="#333333"
            android:drawablePadding="10dp"
-           android:text="系统消息"
+           android:text="系统消息提醒"
            android:textSize="15sp"/>
        <TextView
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:textColor="#C1C1C1"
-           android:text="四分钟前"
+           android:text="3分钟之前"
            android:textSize="11sp"/>
    </LinearLayout>
     <TextView
@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:textColor="#C1C1C1"
         android:layout_marginTop="10dp"
-        android:text="四分钟前"
+        android:text="您的账号昨天转入150元，戳我查看详细~"
         android:textSize="12sp"/>
 </LinearLayout>
 

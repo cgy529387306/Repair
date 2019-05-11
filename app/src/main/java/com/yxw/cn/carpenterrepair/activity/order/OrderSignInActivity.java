@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,12 +26,6 @@ import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.Stroke;
 import com.baidu.mapapi.model.LatLng;
-import com.baidu.mapapi.search.core.SearchResult;
-import com.baidu.mapapi.search.geocode.GeoCodeOption;
-import com.baidu.mapapi.search.geocode.GeoCodeResult;
-import com.baidu.mapapi.search.geocode.GeoCoder;
-import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
-import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.bumptech.glide.Glide;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
@@ -46,21 +39,17 @@ import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.OrderItem;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
-import com.yxw.cn.carpenterrepair.entity.UserOrder;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
+import com.yxw.cn.carpenterrepair.util.Base64Util;
+import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 import com.yxw.cn.carpenterrepair.util.Helper;
-import com.yxw.cn.carpenterrepair.view.CountDownTextView;
 import com.yxw.cn.carpenterrepair.view.TitleBar;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import com.yxw.cn.carpenterrepair.util.Base64Util;
-import com.yxw.cn.carpenterrepair.util.EventBusUtil;
-import com.yxw.cn.carpenterrepair.util.ToastUtil;
 
 /**
  * 签到
@@ -119,17 +108,11 @@ public class OrderSignInActivity extends BaseActivity {
     public void click(View view) {
         switch (view.getId()) {
             case R.id.btn_confirm:
-                confirmArrival();
-//                if (page == 0) {
-//                    if (flag) {
-//                        confirmArrival();
-//                    } else {
-//                        toast("在签到范围外，不能签到!");
-//                    }
-//                } else {
-//                    confirmArrival();
-//
-//                }
+                if (flag) {
+                    confirmArrival();
+                } else {
+                    toast("在签到范围外，不能签到!");
+                }
                 break;
             case R.id.iv_picture:
                 PictureSelector.create(this)

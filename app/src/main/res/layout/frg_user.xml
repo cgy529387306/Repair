@@ -28,6 +28,7 @@
                 android:src="@drawable/icon_remind" />
             <FrameLayout
                 android:layout_width="match_parent"
+                android:visibility="gone"
                 android:layout_height="48dp">
 
                 <TextView

@@ -37,8 +37,8 @@
                 android:id="@+id/tv_carry_amount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="0.0"
                 android:gravity="center"
+                android:text="0.0"
                 android:textColor="@color/white"
                 android:textSize="30sp" />
 
@@ -203,12 +203,14 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginLeft="16dp"
+            android:visibility="gone"
             android:background="@color/bg_gray" />
 
         <LinearLayout
             android:id="@+id/ll_weixin"
             android:layout_width="match_parent"
             android:layout_height="45dp"
+            android:visibility="gone"
             android:background="@color/white"
             android:gravity="center_vertical"
             android:paddingLeft="16dp"
@@ -244,6 +246,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginLeft="16dp"
+            android:visibility="gone"
             android:background="@color/bg_gray" />
 
         <LinearLayout
@@ -251,6 +254,7 @@
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:background="@color/white"
+            android:visibility="gone"
             android:gravity="center_vertical"
             android:paddingLeft="16dp"
             android:paddingRight="16dp">

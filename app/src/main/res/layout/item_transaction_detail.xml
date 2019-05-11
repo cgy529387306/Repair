@@ -22,11 +22,12 @@
             android:textSize="14sp" />
 
         <TextView
+            android:id="@+id/tv_trade_amount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="end|center"
             android:text="-300"
-            android:textColor="#333333"
+            android:textColor="#E82B2D"
             android:textSize="14sp" />
     </LinearLayout>
 
@@ -36,6 +37,7 @@
         android:layout_marginTop="8dp">
 
         <TextView
+            android:id="@+id/tv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -44,6 +46,7 @@
             android:textSize="12sp" />
 
         <TextView
+            android:id="@+id/tv_rest_money"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="end|center"

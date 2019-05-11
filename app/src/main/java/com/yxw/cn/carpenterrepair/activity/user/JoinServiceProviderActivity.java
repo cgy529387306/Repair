@@ -9,6 +9,7 @@ import com.lzy.okgo.model.Response;
 import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
+import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.view.ClearEditText;
@@ -35,7 +36,10 @@ public class JoinServiceProviderActivity extends BaseActivity {
     @Override
     public void initView() {
         titleBar.setTitle("加入服务商");
-
+        if (CurrentUser.getInstance().isLogin()){
+            mEtParentId.setText(CurrentUser.getInstance().getParentId());
+            mEtParentId.setSelection(mEtParentId.getText().toString().length());
+        }
     }
 
     @OnClick({R.id.btn_confirm})

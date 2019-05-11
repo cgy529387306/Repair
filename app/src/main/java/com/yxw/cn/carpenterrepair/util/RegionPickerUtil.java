@@ -20,8 +20,6 @@ import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.RegionTree;
 import com.yxw.cn.carpenterrepair.entity.RegionTreeList;
-import com.yxw.cn.carpenterrepair.entity.RegionTreeSub;
-import com.yxw.cn.carpenterrepair.entity.RegionTreeSubItem;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.listerner.OnChooseAddrListener;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
@@ -90,9 +88,9 @@ public class RegionPickerUtil {
                 }
                 String address; //  如果是直辖市或者特别行政区只设置市和区/县
                 if (showDistrict) {
-                    address = provinceBeanList.get(options1) + "-" + cityList.get(options1).get(options2) + "-" + districtList.get(options1).get(options2).get(options3);
+                    address = provinceBeanList.get(options1) + ">" + cityList.get(options1).get(options2) + ">" + districtList.get(options1).get(options2).get(options3);
                 } else {
-                    address = provinceBeanList.get(options1) + "-" + cityList.get(options1).get(options2);
+                    address = provinceBeanList.get(options1) + ">" + cityList.get(options1).get(options2);
                 }
                 textView.setText(address);
                 textView.setTag(agencyId + "");

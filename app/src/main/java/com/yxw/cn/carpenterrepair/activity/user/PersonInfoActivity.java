@@ -111,35 +111,6 @@ public class PersonInfoActivity extends BaseActivity {
                         mCateAdapter.setNewData(mCateList);
                     }
                 }
-                if (!TextUtils.isEmpty(loginInfo.getServiceDate()) && !TextUtils.isEmpty(loginInfo.getServiceTime())) {
-                    StringBuilder date = new StringBuilder();
-                    for (String dateInd :
-                            loginInfo.getServiceDate().split(",")) {
-                        switch (dateInd) {
-                            case "1":
-                                date.append("周一、");
-                                break;
-                            case "2":
-                                date.append("周二、");
-                                break;
-                            case "3":
-                                date.append("周三、");
-                                break;
-                            case "4":
-                                date.append("周四、");
-                                break;
-                            case "5":
-                                date.append("周五、");
-                                break;
-                            case "6":
-                                date.append("周六、");
-                                break;
-                            case "7":
-                                date.append("周日、");
-                                break;
-                        }
-                    }
-                }
                 AppUtil.showPic(this, mIvAvatar, loginInfo.getAvatar());
             } catch (Exception e) {
                 e.printStackTrace();
@@ -186,7 +157,7 @@ public class PersonInfoActivity extends BaseActivity {
                         .forResult(11);
                 break;
             case R.id.ll_mobile:
-                startActivity(UpdateMobileActivity.class);
+//                startActivity(UpdateMobileActivity.class);
                 break;
             case R.id.ll_name:
 //                startActivity(UpdateNameActivity.class);
@@ -204,7 +175,7 @@ public class PersonInfoActivity extends BaseActivity {
                 break;
             case R.id.ll_service_provider:
                 if (loginInfo!=null && !TextUtils.isEmpty(loginInfo.getParentId())){
-                    startActivity(ServiceProviderActivity.class);
+                    startActivity(JoinServiceProviderActivity.class);
                 }else{
                     startActivity(ServiceProviderEmptyActivity.class);
                 }

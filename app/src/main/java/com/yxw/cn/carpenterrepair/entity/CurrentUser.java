@@ -58,7 +58,6 @@ public class CurrentUser extends LoginInfo{
             me.setUserId(entity.getUserId());
             me.setNickname(entity.getNickname());
             me.setCategory(entity.getCategory());
-            me.setTags(entity.getTags());
             me.setExpire(entity.getExpire());
             me.setRole(entity.getRole());
             me.setRegisterTime(entity.getRegisterTime());
@@ -72,6 +71,9 @@ public class CurrentUser extends LoginInfo{
             me.setServiceTime(entity.getServiceTime());
             me.setIdCardStatus(entity.getIdCardStatus());
             me.setAliplayAccount(entity.getAliplayAccount());
+            me.setCarryAmount(entity.getCarryAmount());
+            me.setDeposit(entity.getDeposit());
+            me.setSettlementAmount(entity.getSettlementAmount());
             json = JsonHelper.toJson(me);
             born = me != null;
         }

@@ -23,11 +23,10 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.yxw.cn.carpenterrepair.BaseApplication;
 import com.yxw.cn.carpenterrepair.R;
-import com.yxw.cn.carpenterrepair.activity.user.ChooseCategoryActivity;
 import com.yxw.cn.carpenterrepair.activity.user.IdCardInfoActivity;
-import com.yxw.cn.carpenterrepair.activity.user.ServiceTimeActivity;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.Abnormal;
+import com.yxw.cn.carpenterrepair.entity.TradeItem;
 import com.yxw.cn.carpenterrepair.entity.Category;
 import com.yxw.cn.carpenterrepair.entity.CityBean;
 import com.yxw.cn.carpenterrepair.entity.CurrentUser;
@@ -94,21 +93,25 @@ public class AppUtil {
         return order.getProvince()+order.getCity()+order.getDistrict()+order.getAddress();
     }
 
-    public static String getUserOrderStatus(UserOrder.ListBean item) {
-        if (item.getOrderStatus()< 25) {
-            return "未接单";
-        }else if (item.getOrderStatus() >= 25 && item.getOrderStatus() < 35) {
-            return "待预约";
+    public static String getTradeName(TradeItem item) {
+        String tradeName = "";
+        if (item==null){
+            return tradeName;
         }
-        else if (item.getOrderStatus() >= 35 && item.getOrderStatus() < 55) {
-            return "待服务";
-        } else if (item.getOrderStatus() >= 55 && item.getOrderStatus() < 60) {
-            return "进行中";
-        } else if (item.getOrderStatus() >= 60) {
-            return "已完成";
-        } else {
-            return "";
+        if (item.getTradeType()==0){
+            if (item.getTradeWay()==0){
+                tradeName = "支付宝提现";
+            }else if (item.getTradeWay()==1){
+                tradeName = "微信提现";
+            }else if (item.getTradeWay()==2){
+                tradeName = "银联提现";
+            }
+        }else if (item.getTradeType()==1){
+            tradeName = "交保证金";
+        }else if (item.getTradeType()==3){
+            tradeName = "订单结算";
         }
+        return tradeName;
     }
 
     public static String getOrderStatus(int orderStatus) {
