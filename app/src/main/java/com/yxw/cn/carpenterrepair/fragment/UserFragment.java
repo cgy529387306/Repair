@@ -21,6 +21,7 @@ import com.yxw.cn.carpenterrepair.entity.MessageEvent;
 import com.yxw.cn.carpenterrepair.entity.ResponseData3;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.util.AppUtil;
+import com.yxw.cn.carpenterrepair.util.Helper;
 
 import java.util.Map;
 
@@ -62,8 +63,8 @@ public class UserFragment extends BaseFragment {
     public void notifyInfo() {
         if (CurrentUser.getInstance().isLogin()){
             LoginInfo loginInfo = CurrentUser.getInstance();
-            mTvName.setText(loginInfo.getNickname());
-            mTvPhone.setText(AppUtil.getStarPhone(loginInfo.getMobile()));
+            mTvName.setText(Helper.isEmpty(loginInfo.getRealName())?loginInfo.getUserName():loginInfo.getRealName());
+            mTvPhone.setText(loginInfo.getMobile());
             AppUtil.showPic(mContext, mIvAvatar, loginInfo.getAvatar());
             mTvCarryAmount.setText(loginInfo.getCarryAmount());
             mTvDeposit.setText(loginInfo.getDeposit());

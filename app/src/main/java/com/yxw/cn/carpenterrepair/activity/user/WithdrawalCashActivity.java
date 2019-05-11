@@ -5,6 +5,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.lzy.okgo.OkGo;
+import com.lzy.okgo.model.Response;
 import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
@@ -49,10 +50,12 @@ public class WithdrawalCashActivity extends BaseActivity {
         titleBar.setTitle("提现");
         carryAmount = CurrentUser.getInstance().isLogin()?CurrentUser.getInstance().getCarryAmount():"0.0";
         cash1.setText(carryAmount);
+        cash1.setSelection(cash1.getText().toString().length());
         cash2.setText(carryAmount);
         mTradeSuccessPop = new TradeSuccessPop(this, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mTradeSuccessPop.dismiss();
                 finish();
             }
         });
@@ -109,6 +112,7 @@ public class WithdrawalCashActivity extends BaseActivity {
                 if (Double.parseDouble(cash1.getText().toString().trim()) == 0.0) {
                     toast("提现金额不能为零！");
                 } else {
+                    showLoading();
                     Map<String, Object> map = new HashMap<>();
                     map.put("amount", Double.parseDouble(cash1.getText().toString()));
                     map.put("tradeWay", 0);//交易方式 0支付宝 1微信 2银行卡
@@ -117,6 +121,7 @@ public class WithdrawalCashActivity extends BaseActivity {
                             .execute(new JsonCallback<ResponseData<String>>() {
                                          @Override
                                          public void onSuccess(ResponseData<String> response) {
+                                             dismissLoading();
                                              if (response!=null){
                                                  if (response.isSuccess()) {
                                                      EventBusUtil.post(MessageConstant.NOTIFY_GET_INFO);
@@ -125,6 +130,12 @@ public class WithdrawalCashActivity extends BaseActivity {
                                                      toast(response.getMsg());
                                                  }
                                              }
+                                         }
+
+                                         @Override
+                                         public void onError(Response<ResponseData<String>> response) {
+                                             super.onError(response);
+                                             dismissLoading();
                                          }
                                      }
                             );
