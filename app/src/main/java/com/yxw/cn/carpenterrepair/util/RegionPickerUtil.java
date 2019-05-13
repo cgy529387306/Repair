@@ -14,16 +14,13 @@ import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.model.Response;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.RegionTree;
-import com.yxw.cn.carpenterrepair.entity.RegionTreeList;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.listerner.OnChooseAddrListener;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -182,176 +179,7 @@ public class RegionPickerUtil {
                 );
     }
 
-    public static void showAllPicker(Context context, OnChooseAddrListener listener) {
-        if (provinceBeanList != null && provinceBeanList.size() > 0) {
-            showAll(context, listener);
-        } else {
-            OkGo.<ResponseData<RegionTreeList>>get(UrlConstant.GET_REGION_TREE)
-                    .execute(new JsonCallback<ResponseData<RegionTreeList>>() {
-
-                        @Override
-                        public void onSuccess(ResponseData<RegionTreeList> response) {
-                            if (response.getData().getList() != null && response.getData().getList().size() > 0) {
-                                AppUtil.regionTreeList.clear();
-                                AppUtil.regionTreeList.addAll(response.getData().getList());
-                                handlerData();
-                                showAll(context, listener);
-                            }
-                        }
-
-                        @Override
-                        public void onError(Response<ResponseData<RegionTreeList>> response) {
-                            super.onError(response);
-                        }
-                    });
-        }
-    }
-
-    public static void showPicker(Context context, OnChooseAddrListener listener) {
-        if (provinceBeanList != null && provinceBeanList.size() > 0) {
-            show(context, listener);
-        } else {
-            OkGo.<ResponseData<RegionTreeList>>get(UrlConstant.GET_REGION_TREE)
-                    .execute(new JsonCallback<ResponseData<RegionTreeList>>() {
-
-                        @Override
-                        public void onSuccess(ResponseData<RegionTreeList> response) {
-                            if (response.getData().getList() != null && response.getData().getList().size() > 0) {
-                                AppUtil.regionTreeList.clear();
-                                AppUtil.regionTreeList.addAll(response.getData().getList());
-                                handlerData();
-                                show(context, listener);
-                            }
-                        }
-
-                        @Override
-                        public void onError(Response<ResponseData<RegionTreeList>> response) {
-                            super.onError(response);
-                        }
-                    });
-        }
-    }
-
-    public static void showCityPicker(Context context, OnChooseAddrListener listener) {
-        if (provinceBeanList != null && provinceBeanList.size() > 0) {
-            showCity(context, listener);
-        } else {
-            OkGo.<ResponseData<RegionTreeList>>get(UrlConstant.GET_REGION_TREE)
-                    .execute(new JsonCallback<ResponseData<RegionTreeList>>() {
-
-                        @Override
-                        public void onSuccess(ResponseData<RegionTreeList> response) {
-                            if (response.getData().getList() != null && response.getData().getList().size() > 0) {
-                                AppUtil.regionTreeList.clear();
-                                AppUtil.regionTreeList.addAll(response.getData().getList());
-                                handlerData();
-                                showCity(context, listener);
-                            }
-                        }
-
-                        @Override
-                        public void onError(Response<ResponseData<RegionTreeList>> response) {
-                            super.onError(response);
-                        }
-                    });
-        }
-    }
-
-    public static void showAll(Context context, OnChooseAddrListener listener) {
-        pvCustomOptions = new OptionsPickerBuilder(context, new OnOptionsSelectListener() {
-            @Override
-            public void onOptionsSelect(int options1, int options2, int options3, View v) {
-                listener.getAddr(options1,options2,options3);
-            }
-        }).setSubmitText("确定")//确定按钮文字
-                .setCancelText("取消")//取消按钮文字
-                .setTitleText("城市选择")//标题
-                .setSubCalSize(18)//确定和取消文字大小
-                .setTitleSize(20)//标题文字大小
-                .setTitleColor(Color.BLACK)//标题文字颜色
-                .setSubmitColor(Color.parseColor("#FF3431"))//确定按钮文字颜色
-                .setCancelColor(Color.BLACK)//取消按钮文字颜色
-                .setTitleBgColor(Color.WHITE)//标题背景颜色 Night mode
-                .setBgColor(Color.WHITE)//滚轮背景颜色 Night mode
-                .setContentTextSize(18)//滚轮文字大小
-                .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
-                .setCyclic(false, false, false)//循环与否
-                .setSelectOptions(0, 0, 0)  //设置默认选中项
-                .setOutSideCancelable(true)//点击外部dismiss default true
-                .isDialog(false)//是否显示为对话框样式
-                .isRestoreItem(true)//切换时是否还原，设置默认选中第一项。
-                .setLayoutRes(R.layout.view_picker_options_type, new CustomListener() {
-                    @Override
-                    public void customLayout(View v) {
-                        final TextView tvSubmit = v.findViewById(R.id.tv_confirm);
-                        final TextView tType = v.findViewById(R.id.tv_type);
-                        View bottomView = v.findViewById(R.id.view_bottom);
-                        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) bottomView.getLayoutParams();
-                        params.height = AppUtil.getNavigationBarHeight((Activity) context);
-                        bottomView.setLayoutParams(params);
-                        tType.setText("城市选择");
-                        tvSubmit.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                pvCustomOptions.returnData();
-                                pvCustomOptions.dismiss();
-                            }
-                        });
-                    }
-                }).build();
-        pvCustomOptions.setPicker(allProvinceBeanList, allCityList, allDistrictList);//添加数据源
-        pvCustomOptions.show();
-    }
-
-
     public static void show(Context context, OnChooseAddrListener listener) {
-        pvCustomOptions = new OptionsPickerBuilder(context, new OnOptionsSelectListener() {
-            @Override
-            public void onOptionsSelect(int options1, int options2, int options3, View v) {
-                listener.getAddr(options1,options2,options3);
-            }
-        }).setSubmitText("确定")//确定按钮文字
-                .setCancelText("取消")//取消按钮文字
-                .setTitleText("城市选择")//标题
-                .setSubCalSize(18)//确定和取消文字大小
-                .setTitleSize(20)//标题文字大小
-                .setTitleColor(Color.BLACK)//标题文字颜色
-                .setSubmitColor(Color.parseColor("#FF3431"))//确定按钮文字颜色
-                .setCancelColor(Color.BLACK)//取消按钮文字颜色
-                .setTitleBgColor(Color.WHITE)//标题背景颜色 Night mode
-                .setBgColor(Color.WHITE)//滚轮背景颜色 Night mode
-                .setContentTextSize(18)//滚轮文字大小
-                .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
-                .setCyclic(false, false, false)//循环与否
-                .setSelectOptions(0, 0, 0)  //设置默认选中项
-                .setOutSideCancelable(true)//点击外部dismiss default true
-                .isDialog(false)//是否显示为对话框样式
-                .isRestoreItem(true)//切换时是否还原，设置默认选中第一项。
-                .setLayoutRes(R.layout.view_picker_options_type, new CustomListener() {
-                    @Override
-                    public void customLayout(View v) {
-                        final TextView tvSubmit = v.findViewById(R.id.tv_confirm);
-                        final TextView tType = v.findViewById(R.id.tv_type);
-                        View bottomView = v.findViewById(R.id.view_bottom);
-                        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) bottomView.getLayoutParams();
-                        params.height = AppUtil.getNavigationBarHeight((Activity) context);
-                        bottomView.setLayoutParams(params);
-                        tType.setText("城市选择");
-                        tvSubmit.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                pvCustomOptions.returnData();
-                                pvCustomOptions.dismiss();
-                            }
-                        });
-                    }
-                }).build();
-
-        pvCustomOptions.setPicker(provinceBeanList, cityList, districtList);//添加数据源
-        pvCustomOptions.show();
-    }
-
-    public static void showCity(Context context, OnChooseAddrListener listener) {
         pvCustomOptions = new OptionsPickerBuilder(context, new OnOptionsSelectListener() {
             @Override
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
