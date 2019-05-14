@@ -98,7 +98,7 @@ public class RegisterActivity extends BaseActivity {
                             showLoading();
                             Map<String, String> map = new HashMap<>();
                             map.put("mobile", mEtPhone.getText().toString());
-                            OkGo.<ResponseData<String>>post(UrlConstant.GET_CODE)
+                            OkGo.<ResponseData<String>>post(UrlConstant.GET_CODE_REGISTER)
                                     .upJson(gson.toJson(map))
                                     .execute(new JsonCallback<ResponseData<String>>() {
                                                  @Override

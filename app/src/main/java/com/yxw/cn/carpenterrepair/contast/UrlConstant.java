@@ -22,7 +22,6 @@ public class UrlConstant {
     public final static String BASE_SERVICE = "http://114.115.184.217:28020";
     public final static String BASE_WORKER = "http://114.115.184.217:28070";
 
-    public final static String GET_CODE = BASE_SERVICE + "/gateway/ms20/api/validateCode/code/getCode";
     public final static String LOGIN = BASE_USER + "/gateway/app/api/loginByPwd";
     public final static String QUICK_LOGIN = BASE_USER + "/gateway/app/api/loginByCode";
     public final static String REGISTER = BASE_USER + "/gateway/app/api/register";
@@ -44,7 +43,8 @@ public class UrlConstant {
     public final static String APPLY_WITHDRAWAL = BASE_USER + "/ms70/api/user/info/destoonFinanceCash";//用户提现申请
     public final static String APPLY_WITHDRAWAL_LIST = BASE_USER + "/ms70/api/fix/user/transaction/record/findAll";//交易明细
 
-
+    public final static String GET_CODE = BASE_SERVICE + "/ms20/api/validateCode/code/ingnore-internal/getCode";
+    public final static String GET_CODE_REGISTER = BASE_SERVICE + "/ms20/api/validateCode/code/ingnore-internal/getRegisterCode";
     public final static String GET_ALL_CATEGORY = BASE_USER + "/ms20/api/sys/dicts/categoryList";//获取项目分类列表
     public final static String GET_ALL_REGION = BASE_USER + "/ms20/api/sys/region/allRegionTree";//获取所有地区接口
     public final static String GET_EXCEPTION_REASON = BASE_USER + "/ms20/api/sys/dicts/findDictsByKey";//查询数据字典

@@ -6,6 +6,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.HttpHeaders;
@@ -24,6 +25,7 @@ import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.util.AppUtil;
 import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 import com.yxw.cn.carpenterrepair.util.SpUtil;
+import com.yxw.cn.carpenterrepair.view.CountDownTextView;
 import com.yxw.cn.carpenterrepair.view.TitleBar;
 
 import java.util.HashMap;
@@ -44,7 +46,7 @@ public class QuickLoginActivity extends BaseActivity {
     @BindView(R.id.et_password)
     EditText mEtPassword;
     @BindView(R.id.tv_get_code)
-    TextView mTvGetCode;
+    CountDownTextView mCountDownTextView;
 
     @Override
     protected int getLayoutResId() {
@@ -66,36 +68,66 @@ public class QuickLoginActivity extends BaseActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 if (AppUtil.isPhone(s.toString())) {
-                    mTvGetCode.setBackgroundResource(R.drawable.corner_red);
+                    mCountDownTextView.setBackgroundResource(R.drawable.corner_red);
                 } else {
-                    mTvGetCode.setBackgroundResource(R.drawable.corner_gray);
+                    mCountDownTextView.setBackgroundResource(R.drawable.corner_gray);
                 }
             }
         });
         mEtTel.setText(SpUtil.getStr(SpConstant.LOGIN_MOBILE));
         mEtTel.setSelection(mEtTel.getText().toString().length());
+
+        mCountDownTextView.setNormalText("获取验证码")
+                .setCountDownText("重新获取", "")
+                .setCloseKeepCountDown(false)//关闭页面保持倒计时开关
+                .setCountDownClickable(false)//倒计时期间点击事件是否生效开关
+                .setShowFormatTime(true)//是否格式化时间
+                .setOnCountDownFinishListener(new CountDownTextView.OnCountDownFinishListener() {
+                    @Override
+                    public void onFinish() {
+                        Toast.makeText(QuickLoginActivity.this, "倒计时完毕", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (AppUtil.isPhone(mEtTel.getText().toString())) {
+                            showLoading();
+                            Map<String, String> map = new HashMap<>();
+                            map.put("mobile", mEtTel.getText().toString());
+                            OkGo.<ResponseData<String>>post(UrlConstant.GET_CODE)
+                                    .upJson(gson.toJson(map))
+                                    .execute(new JsonCallback<ResponseData<String>>() {
+                                                 @Override
+                                                 public void onSuccess(ResponseData<String> response) {
+                                                     dismissLoading();
+                                                     if (response!=null){
+                                                         if (response.isSuccess()){
+                                                             toast("短信发送成功");
+                                                             mCountDownTextView.startCountDown(59);
+                                                         }else{
+                                                             toast(response.getMsg());
+                                                         }
+                                                     }
+                                                 }
+
+                                                 @Override
+                                                 public void onError(Response<ResponseData<String>> response) {
+                                                     super.onError(response);
+                                                     dismissLoading();
+                                                 }
+                                             }
+                                    );
+                        } else {
+                            toast("请输入正确的手机号！");
+                        }
+                    }
+                });
     }
 
-    @OnClick({R.id.tv_get_code, R.id.tv_login})
+    @OnClick({R.id.tv_login})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.tv_get_code:
-                if (AppUtil.isPhone(mEtTel.getText().toString())) {
-                    Map<String, String> map = new HashMap<>();
-                    map.put("mobile", mEtTel.getText().toString());
-                    OkGo.<ResponseData<String>>post(UrlConstant.GET_CODE)
-                            .upJson(gson.toJson(map))
-                            .execute(new JsonCallback<ResponseData<String>>() {
-                                         @Override
-                                         public void onSuccess(ResponseData<String> response) {
-                                             toast(response.getMsg());
-                                         }
-                                     }
-                            );
-                } else {
-                    toast("请输入正确的手机号！");
-                }
-                break;
             case R.id.tv_login:
                 if (TextUtils.isEmpty(mEtTel.getText().toString().trim())) {
                     toast("手机号不能为空！");

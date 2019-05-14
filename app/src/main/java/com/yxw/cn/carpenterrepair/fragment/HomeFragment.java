@@ -113,12 +113,12 @@ public class HomeFragment extends BaseRefreshFragment {
 
     @Override
     public void onRefresh() {
-        super.onRefresh();
+        mRefreshLayout.finishRefresh(true);
     }
 
     @Override
     public void onLoad() {
-        super.onLoad();
+        mRefreshLayout.finishLoadMore(true);
     }
 
 
