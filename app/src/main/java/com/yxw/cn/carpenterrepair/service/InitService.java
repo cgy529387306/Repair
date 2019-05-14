@@ -129,7 +129,7 @@ public class InitService extends IntentService {
                                  @Override
                                  public void onSuccess(ResponseData<String> response) {
                                      if (response!=null){
-                                         if (response.isSuccess()) {
+                                         if (response.isSuccess() && Helper.isNotEmpty(response.getData())) {
                                              Logger.d("myToken:"+response.getData());
                                              HttpHeaders headers = new HttpHeaders();
                                              CurrentUser.getInstance().setToken(response.getData());

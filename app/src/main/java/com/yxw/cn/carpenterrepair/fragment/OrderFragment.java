@@ -35,6 +35,7 @@ import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.pop.ContactPop;
 import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 import com.yxw.cn.carpenterrepair.util.Helper;
+import com.yxw.cn.carpenterrepair.util.PreferencesHelper;
 import com.yxw.cn.carpenterrepair.util.SpaceItemDecoration;
 import com.yxw.cn.carpenterrepair.util.TimePickerUtil;
 import com.yxw.cn.carpenterrepair.util.TimeUtil;
@@ -66,7 +67,7 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
     private ContactPop mContactPop;
     private DialogPlus mTakingDialog;
     /**
-     * @param state 0:今天 1:明天 2:全部
+     * @param type 0:今天 1:明天 2:全部
      * @return
      */
     public static Fragment getInstance(int state,int type) {
@@ -111,8 +112,12 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
         if (mOrderType!=2){
             requestMap.put("customerBookingTime",mBookingTime);
         }
-        requestMap.put("locationLat",26.088114);
-        requestMap.put("locationLng",119.310492);
+        if (mOrderStatus==0){
+            String locationLat = PreferencesHelper.getInstance().getString("latitude","26.088114");
+            String locationLng = PreferencesHelper.getInstance().getString("longitude","119.310492");
+            requestMap.put("locationLat",locationLat);
+            requestMap.put("locationLng",locationLng);
+        }
         requestMap.put("status",mOrderStatus);
         Map<String, Object> map = new HashMap<>();
         map.put("filter", requestMap);

@@ -7,10 +7,13 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.TextView;
 
+import com.baidu.location.BDAbstractLocationListener;
+import com.baidu.location.BDLocation;
 import com.gyf.immersionbar.ImmersionBar;
 import com.lzy.okgo.OkGo;
 import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
+import com.yxw.cn.carpenterrepair.activity.LocationService;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.CurrentUser;
@@ -22,6 +25,8 @@ import com.yxw.cn.carpenterrepair.fragment.UserFragment;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.util.AppUtil;
 import com.yxw.cn.carpenterrepair.util.EventBusUtil;
+import com.yxw.cn.carpenterrepair.util.PreferencesHelper;
+import com.yxw.cn.carpenterrepair.util.SpUtil;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -40,6 +45,17 @@ public class MainActivity extends BaseActivity {
     private HomeFragment homeFragment;
     private UserFragment userFragment;
     private FragmentManager fragmentManager;
+    private LocationService mLocationService;
+
+    private BDAbstractLocationListener mLocationListener = new BDAbstractLocationListener() {
+        @Override
+        public void onReceiveLocation(BDLocation bdLocation) {
+            if (bdLocation!=null){
+                PreferencesHelper.getInstance().putString("latitude",String.valueOf(bdLocation.getLatitude()));
+                PreferencesHelper.getInstance().putString("longitude",String.valueOf(bdLocation.getLongitude()));
+            }
+        }
+    };
 
     @Override
     protected int getLayoutResId() {
@@ -48,14 +64,35 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        AppUtil.checkStatus(MainActivity.this);
+        startForLocation();
         fragmentManager = getSupportFragmentManager();
         showFragment(0);
-        getUserInfo();
-        AppUtil.initCategoryData();
-        AppUtil.initRegionTreeData();
-        AppUtil.initSignReasonData();
-        AppUtil.initReservationReasonData();
+        boolean isCheck = AppUtil.checkStatus(MainActivity.this);
+        if (isCheck){
+            getUserInfo();
+            AppUtil.initCategoryData();
+            AppUtil.initRegionTreeData();
+            AppUtil.initSignReasonData();
+            AppUtil.initReservationReasonData();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mLocationService.stop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mLocationService.unregisterListener(mLocationListener);
+    }
+
+    private void startForLocation(){
+        mLocationService = new LocationService(this);
+        mLocationService.registerListener(mLocationListener);
+        mLocationService.start();
     }
 
     private void showFragment(int page) {

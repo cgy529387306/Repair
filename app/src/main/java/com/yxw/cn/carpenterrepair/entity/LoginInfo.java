@@ -30,7 +30,7 @@ public class LoginInfo {
     private String carryAmount;//可提现金额
     private String deposit;//押金
     private String settlementAmount;//待结算金额
-
+    private String bindingCode;
 
 
     public String getToken() {
@@ -248,5 +248,13 @@ public class LoginInfo {
 
     public void setSettlementAmount(String settlementAmount) {
         this.settlementAmount = settlementAmount;
+    }
+
+    public String getBindingCode() {
+        return bindingCode == null ? "" : bindingCode;
+    }
+
+    public void setBindingCode(String bindingCode) {
+        this.bindingCode = bindingCode;
     }
 }

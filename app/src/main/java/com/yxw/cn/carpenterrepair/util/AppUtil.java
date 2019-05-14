@@ -80,12 +80,15 @@ public class AppUtil {
         return versionCode;
     }
 
-    public static void checkStatus(Context context){
+    public static boolean checkStatus(Context context){
         LoginInfo loginInfo = CurrentUser.getInstance();
         Intent intent;
         if(loginInfo.getIdCardStatus() == 0 || loginInfo.getIdCardStatus() == 2){
             intent = new Intent(context,IdCardInfoActivity.class);
             context.startActivity(intent);
+            return false;
+        }else {
+            return true;
         }
     }
 

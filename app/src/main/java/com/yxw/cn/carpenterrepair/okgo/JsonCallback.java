@@ -81,7 +81,7 @@ public abstract class JsonCallback<T> extends AbsCallback<T> {
             ResponseData responseData = (ResponseData) response.body();
             //token 问题
             if (responseData.getStatus()==401) {
-                ToastUtil.show("Token 失效，请重新登录");
+                ToastUtil.show("登录失效，请重新登录");
                 Intent intent = new Intent(BaseApplication.getInstance(), LoginActivity.class);
                 // Calling startActivity() from outside of an Activity  context requires the FLAG_ACTIVITY_NEW_TASK flag
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
