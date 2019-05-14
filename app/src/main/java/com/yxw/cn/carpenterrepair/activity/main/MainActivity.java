@@ -64,12 +64,12 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        startForLocation();
         fragmentManager = getSupportFragmentManager();
         showFragment(0);
         boolean isCheck = AppUtil.checkStatus(MainActivity.this);
         if (isCheck){
             getUserInfo();
-            startForLocation();
             AppUtil.initCategoryData();
             AppUtil.initRegionTreeData();
             AppUtil.initSignReasonData();

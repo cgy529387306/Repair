@@ -34,8 +34,7 @@ public class ApplyServiceProviderActivity extends BaseActivity {
     @OnClick({R.id.btn_ok})
     public void click(View view) {
         if (view.getId() == R.id.btn_ok){
-            startActivityFinish(MainActivity.class);
-            ActivityManager.getInstance().closeAllActivityExceptOne(MainActivity.class.getName());
+            finish();
         }
     }
 }

@@ -32,7 +32,7 @@ public class ServiceProviderEmptyActivity extends BaseActivity {
     @OnClick({R.id.btn_join})
     public void click(View view) {
         if (view.getId() == R.id.btn_join){
-            startActivity(JoinServiceProviderActivity.class);
+            startActivityFinish(JoinServiceProviderActivity.class);
         }
     }
 }

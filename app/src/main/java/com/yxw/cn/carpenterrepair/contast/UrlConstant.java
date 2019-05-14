@@ -20,7 +20,6 @@ public class UrlConstant {
 
     public final static String BASE_USER = "http://114.115.184.217:28010";
     public final static String BASE_SERVICE = "http://114.115.184.217:28020";
-    public final static String BASE_WORKER = "http://114.115.184.217:28070";
 
     public final static String LOGIN = BASE_USER + "/gateway/app/api/loginByPwd";
     public final static String QUICK_LOGIN = BASE_USER + "/gateway/app/api/loginByCode";
@@ -71,12 +70,10 @@ public class UrlConstant {
 
 
 
-    public final static String WECHAT_PAY_ORDER = BASE_URL + "/api/fix/pay/wxPrepay";
     public final static String USER_EVALUATE = BASE_URL + "/api/fix/userOrder/evaluate";
     public final static String USER_COMPLAIN = BASE_URL + "/api/fix/userOrder/complain";
     public final static String QUERT_LIST_BY_MARK = BASE_URL + "/api/dicts/queryListByMarkWithAll";//通用 - 根据标识mark,获取数据字典
     public final static String EDIT_TRAIT = BASE_URL + "/api/fix/shopUser/editTrait";//用户 - 个人资料-修改常驻地点和服务时间
-    public final static String CHECK_ALI_PAY = BASE_URL + "/api/fix/aliplay/checkAlipay";//1013 - 用户 - 取消订单,未上门
     public final static String RONG_CLOUD_TOKEN = BASE_URL + "/api/rongCloud/getToken";//3010 - 通用 - 融云即时通讯（佳信客服）-获取Token
     public final static String RESERVATION_TIME = BASE_URL + "/api/fix/workerOrder/reservation";//2020 - 维修人员 - 预约上门时间
 
