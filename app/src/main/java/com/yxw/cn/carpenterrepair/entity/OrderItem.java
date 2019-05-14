@@ -5,65 +5,93 @@ import java.io.Serializable;
 public class OrderItem implements Serializable {
 
     /**
+     * acceptId : 7816288277080637440
      * address : 福建省福州市鼓楼区软件园40号2楼
      * agencyId : 350102
      * bookingEndTime : null
      * bookingStartTime : null
+     * categoryCName : DIY装机服务（基础版）
      * categoryId : 43
+     * categoryPName : 京东服务
      * city : 福州市
-     * createTime : 2019-05-03 21:56:44
+     * contactClient : 0
+     * createTime : 2019-05-04 15:12:59
      * district : 鼓楼区
      * endTime : null
+     * fee : null
      * fixDesc : null
      * handleStatus : 1
      * locationLat : 26.088114
      * locationLng : 119.310492
      * mobile : 13800000000
      * name : 张三
-     * orderId : 7812652845701304320
-     * orderSn : JDA12019050300004
+     * operaterId : 7814087432699707392
+     * orderId : 7812913626866974720
+     * orderSn : JDA12019050400016
      * orderSnOriginal : null
+     * orderStatus : 30
+     * orderStatusName : 待指派
      * payStatus : 1
      * province : 福建省
-     * receiveStatus : 0
+     * receiveStatus : 1
+     * receiveTime : 2019-05-13 22:42:38
      * remark :
-     * source : 4
+     * serviceProvider : null
+     * serviceStatus : 1
+     * sfee : null
+     * source : 2
      * totalPrice : 150.0
      * userId : null
      */
 
+    private String acceptId;
     private String address;
     private int agencyId;
     private String bookingEndTime;
     private String bookingStartTime;
+    private String categoryCName;
     private int categoryId;
+    private String categoryPName;
     private String city;
+    private int contactClient;
     private String createTime;
     private String district;
     private String endTime;
+    private double fee;
     private String fixDesc;
     private int handleStatus;
     private double locationLat;
     private double locationLng;
     private String mobile;
     private String name;
+    private String operaterId;
     private String orderId;
     private String orderSn;
     private String orderSnOriginal;
+    private int orderStatus;
+    private String orderStatusName;
     private int payStatus;
     private String province;
     private int receiveStatus;
+    private String receiveTime;
     private String remark;
+    private String serviceProvider;
+    private int serviceStatus;
+    private double sfee;
     private int source;
     private double totalPrice;
     private String userId;
-    private int orderStatus;
-    private String orderStatusName;
-    private String categoryCName;//维修小类
-    private String categoryPName;//维修大类
+
+    public String getAcceptId() {
+        return acceptId;
+    }
+
+    public void setAcceptId(String acceptId) {
+        this.acceptId = acceptId;
+    }
 
     public String getAddress() {
-        return address == null ? "" : address;
+        return address;
     }
 
     public void setAddress(String address) {
@@ -79,7 +107,7 @@ public class OrderItem implements Serializable {
     }
 
     public String getBookingEndTime() {
-        return bookingEndTime == null ? "" : bookingEndTime;
+        return bookingEndTime;
     }
 
     public void setBookingEndTime(String bookingEndTime) {
@@ -87,11 +115,19 @@ public class OrderItem implements Serializable {
     }
 
     public String getBookingStartTime() {
-        return bookingStartTime == null ? "" : bookingStartTime;
+        return bookingStartTime;
     }
 
     public void setBookingStartTime(String bookingStartTime) {
         this.bookingStartTime = bookingStartTime;
+    }
+
+    public String getCategoryCName() {
+        return categoryCName;
+    }
+
+    public void setCategoryCName(String categoryCName) {
+        this.categoryCName = categoryCName;
     }
 
     public int getCategoryId() {
@@ -102,16 +138,32 @@ public class OrderItem implements Serializable {
         this.categoryId = categoryId;
     }
 
+    public String getCategoryPName() {
+        return categoryPName;
+    }
+
+    public void setCategoryPName(String categoryPName) {
+        this.categoryPName = categoryPName;
+    }
+
     public String getCity() {
-        return city == null ? "" : city;
+        return city;
     }
 
     public void setCity(String city) {
         this.city = city;
     }
 
+    public int getContactClient() {
+        return contactClient;
+    }
+
+    public void setContactClient(int contactClient) {
+        this.contactClient = contactClient;
+    }
+
     public String getCreateTime() {
-        return createTime == null ? "" : createTime;
+        return createTime;
     }
 
     public void setCreateTime(String createTime) {
@@ -119,7 +171,7 @@ public class OrderItem implements Serializable {
     }
 
     public String getDistrict() {
-        return district == null ? "" : district;
+        return district;
     }
 
     public void setDistrict(String district) {
@@ -127,7 +179,7 @@ public class OrderItem implements Serializable {
     }
 
     public String getEndTime() {
-        return endTime == null ? "" : endTime;
+        return endTime;
     }
 
     public void setEndTime(String endTime) {
@@ -135,7 +187,7 @@ public class OrderItem implements Serializable {
     }
 
     public String getFixDesc() {
-        return fixDesc == null ? "" : fixDesc;
+        return fixDesc;
     }
 
     public void setFixDesc(String fixDesc) {
@@ -167,7 +219,7 @@ public class OrderItem implements Serializable {
     }
 
     public String getMobile() {
-        return mobile == null ? "" : mobile;
+        return mobile;
     }
 
     public void setMobile(String mobile) {
@@ -175,15 +227,23 @@ public class OrderItem implements Serializable {
     }
 
     public String getName() {
-        return name == null ? "" : name;
+        return name;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
+    public String getOperaterId() {
+        return operaterId;
+    }
+
+    public void setOperaterId(String operaterId) {
+        this.operaterId = operaterId;
+    }
+
     public String getOrderId() {
-        return orderId == null ? "" : orderId;
+        return orderId;
     }
 
     public void setOrderId(String orderId) {
@@ -191,7 +251,7 @@ public class OrderItem implements Serializable {
     }
 
     public String getOrderSn() {
-        return orderSn == null ? "" : orderSn;
+        return orderSn;
     }
 
     public void setOrderSn(String orderSn) {
@@ -199,11 +259,27 @@ public class OrderItem implements Serializable {
     }
 
     public String getOrderSnOriginal() {
-        return orderSnOriginal == null ? "" : orderSnOriginal;
+        return orderSnOriginal;
     }
 
     public void setOrderSnOriginal(String orderSnOriginal) {
         this.orderSnOriginal = orderSnOriginal;
+    }
+
+    public int getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(int orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    public String getOrderStatusName() {
+        return orderStatusName;
+    }
+
+    public void setOrderStatusName(String orderStatusName) {
+        this.orderStatusName = orderStatusName;
     }
 
     public int getPayStatus() {
@@ -215,7 +291,7 @@ public class OrderItem implements Serializable {
     }
 
     public String getProvince() {
-        return province == null ? "" : province;
+        return province;
     }
 
     public void setProvince(String province) {
@@ -230,13 +306,38 @@ public class OrderItem implements Serializable {
         this.receiveStatus = receiveStatus;
     }
 
+    public String getReceiveTime() {
+        return receiveTime;
+    }
+
+    public void setReceiveTime(String receiveTime) {
+        this.receiveTime = receiveTime;
+    }
+
     public String getRemark() {
-        return remark == null ? "" : remark;
+        return remark;
     }
 
     public void setRemark(String remark) {
         this.remark = remark;
     }
+
+    public String getServiceProvider() {
+        return serviceProvider;
+    }
+
+    public void setServiceProvider(String serviceProvider) {
+        this.serviceProvider = serviceProvider;
+    }
+
+    public int getServiceStatus() {
+        return serviceStatus;
+    }
+
+    public void setServiceStatus(int serviceStatus) {
+        this.serviceStatus = serviceStatus;
+    }
+
 
     public int getSource() {
         return source;
@@ -255,45 +356,26 @@ public class OrderItem implements Serializable {
     }
 
     public String getUserId() {
-        return userId == null ? "" : userId;
+        return userId;
     }
 
     public void setUserId(String userId) {
         this.userId = userId;
     }
 
-    public void setOrderStatus(int orderStatus) {
-        this.orderStatus = orderStatus;
+    public double getFee() {
+        return fee;
     }
 
-    public int getOrderStatus(){
-        return orderStatus;
+    public void setFee(double fee) {
+        this.fee = fee;
     }
 
-    public String getOrderStatusName() {
-        return orderStatusName == null ? "" : orderStatusName;
+    public double getSfee() {
+        return sfee;
     }
 
-    public void setOrderStatusName(String orderStatusName) {
-        this.orderStatusName = orderStatusName;
+    public void setSfee(double sfee) {
+        this.sfee = sfee;
     }
-
-    public String getCategoryCName() {
-        return categoryCName == null ? "" : categoryCName;
-    }
-
-    public void setCategoryCName(String categoryCName) {
-        this.categoryCName = categoryCName;
-    }
-
-    public String getCategoryPName() {
-        return categoryPName == null ? "" : categoryPName;
-    }
-
-    public void setCategoryPName(String categoryPName) {
-        this.categoryPName = categoryPName;
-    }
-
-
-
 }

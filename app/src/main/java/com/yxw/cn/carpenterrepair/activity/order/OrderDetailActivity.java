@@ -179,11 +179,14 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
 
     private void initOrderData(){
         if (orderItem!=null){
+            int orderStatus = orderItem.getOrderStatus();
+            double price = orderStatus<=30?orderItem.getTotalPrice():orderItem.getFee();
             tvName.setText(orderItem.getName());
             tvTel.setText(orderItem.getMobile());
             tvAddress.setText(orderItem.getAddress());
-            tvTotalPrice.setText(String.valueOf(orderItem.getTotalPrice()));
-            tvOrderNo.setText(orderItem.getOrderSn());
+            tvTotalPrice.setText(String.valueOf(price));
+            tvOrderNo.setText(String.format("订单编号：%s", orderItem.getOrderSn()));
+            tvCreateTime.setText(String.format("下单时间：%s", orderItem.getCreateTime()));
             tvTitle.setText(orderItem.getCategoryPName());
             tvTitle2.setText(orderItem.getCategoryCName());
             tvBookingTime.setText(orderItem.getBookingStartTime());
