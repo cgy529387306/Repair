@@ -81,9 +81,10 @@ public class OrderItem implements Serializable {
     private int source;
     private double totalPrice;
     private String userId;
+    private String faultDesc;
 
     public String getAcceptId() {
-        return acceptId;
+        return acceptId == null ? "" : acceptId;
     }
 
     public void setAcceptId(String acceptId) {
@@ -91,7 +92,7 @@ public class OrderItem implements Serializable {
     }
 
     public String getAddress() {
-        return address;
+        return address == null ? "" : address;
     }
 
     public void setAddress(String address) {
@@ -107,7 +108,7 @@ public class OrderItem implements Serializable {
     }
 
     public String getBookingEndTime() {
-        return bookingEndTime;
+        return bookingEndTime == null ? "" : bookingEndTime;
     }
 
     public void setBookingEndTime(String bookingEndTime) {
@@ -115,7 +116,7 @@ public class OrderItem implements Serializable {
     }
 
     public String getBookingStartTime() {
-        return bookingStartTime;
+        return bookingStartTime == null ? "" : bookingStartTime;
     }
 
     public void setBookingStartTime(String bookingStartTime) {
@@ -123,7 +124,7 @@ public class OrderItem implements Serializable {
     }
 
     public String getCategoryCName() {
-        return categoryCName;
+        return categoryCName == null ? "" : categoryCName;
     }
 
     public void setCategoryCName(String categoryCName) {
@@ -139,7 +140,7 @@ public class OrderItem implements Serializable {
     }
 
     public String getCategoryPName() {
-        return categoryPName;
+        return categoryPName == null ? "" : categoryPName;
     }
 
     public void setCategoryPName(String categoryPName) {
@@ -147,7 +148,7 @@ public class OrderItem implements Serializable {
     }
 
     public String getCity() {
-        return city;
+        return city == null ? "" : city;
     }
 
     public void setCity(String city) {
@@ -163,7 +164,7 @@ public class OrderItem implements Serializable {
     }
 
     public String getCreateTime() {
-        return createTime;
+        return createTime == null ? "" : createTime;
     }
 
     public void setCreateTime(String createTime) {
@@ -171,7 +172,7 @@ public class OrderItem implements Serializable {
     }
 
     public String getDistrict() {
-        return district;
+        return district == null ? "" : district;
     }
 
     public void setDistrict(String district) {
@@ -179,15 +180,23 @@ public class OrderItem implements Serializable {
     }
 
     public String getEndTime() {
-        return endTime;
+        return endTime == null ? "" : endTime;
     }
 
     public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 
+    public double getFee() {
+        return fee;
+    }
+
+    public void setFee(double fee) {
+        this.fee = fee;
+    }
+
     public String getFixDesc() {
-        return fixDesc;
+        return fixDesc == null ? "" : fixDesc;
     }
 
     public void setFixDesc(String fixDesc) {
@@ -219,7 +228,7 @@ public class OrderItem implements Serializable {
     }
 
     public String getMobile() {
-        return mobile;
+        return mobile == null ? "" : mobile;
     }
 
     public void setMobile(String mobile) {
@@ -227,7 +236,7 @@ public class OrderItem implements Serializable {
     }
 
     public String getName() {
-        return name;
+        return name == null ? "" : name;
     }
 
     public void setName(String name) {
@@ -235,7 +244,7 @@ public class OrderItem implements Serializable {
     }
 
     public String getOperaterId() {
-        return operaterId;
+        return operaterId == null ? "" : operaterId;
     }
 
     public void setOperaterId(String operaterId) {
@@ -243,7 +252,7 @@ public class OrderItem implements Serializable {
     }
 
     public String getOrderId() {
-        return orderId;
+        return orderId == null ? "" : orderId;
     }
 
     public void setOrderId(String orderId) {
@@ -251,7 +260,7 @@ public class OrderItem implements Serializable {
     }
 
     public String getOrderSn() {
-        return orderSn;
+        return orderSn == null ? "" : orderSn;
     }
 
     public void setOrderSn(String orderSn) {
@@ -259,7 +268,7 @@ public class OrderItem implements Serializable {
     }
 
     public String getOrderSnOriginal() {
-        return orderSnOriginal;
+        return orderSnOriginal == null ? "" : orderSnOriginal;
     }
 
     public void setOrderSnOriginal(String orderSnOriginal) {
@@ -275,7 +284,7 @@ public class OrderItem implements Serializable {
     }
 
     public String getOrderStatusName() {
-        return orderStatusName;
+        return orderStatusName == null ? "" : orderStatusName;
     }
 
     public void setOrderStatusName(String orderStatusName) {
@@ -291,7 +300,7 @@ public class OrderItem implements Serializable {
     }
 
     public String getProvince() {
-        return province;
+        return province == null ? "" : province;
     }
 
     public void setProvince(String province) {
@@ -307,7 +316,7 @@ public class OrderItem implements Serializable {
     }
 
     public String getReceiveTime() {
-        return receiveTime;
+        return receiveTime == null ? "" : receiveTime;
     }
 
     public void setReceiveTime(String receiveTime) {
@@ -315,7 +324,7 @@ public class OrderItem implements Serializable {
     }
 
     public String getRemark() {
-        return remark;
+        return remark == null ? "" : remark;
     }
 
     public void setRemark(String remark) {
@@ -323,7 +332,7 @@ public class OrderItem implements Serializable {
     }
 
     public String getServiceProvider() {
-        return serviceProvider;
+        return serviceProvider == null ? "" : serviceProvider;
     }
 
     public void setServiceProvider(String serviceProvider) {
@@ -338,6 +347,13 @@ public class OrderItem implements Serializable {
         this.serviceStatus = serviceStatus;
     }
 
+    public double getSfee() {
+        return sfee;
+    }
+
+    public void setSfee(double sfee) {
+        this.sfee = sfee;
+    }
 
     public int getSource() {
         return source;
@@ -356,26 +372,18 @@ public class OrderItem implements Serializable {
     }
 
     public String getUserId() {
-        return userId;
+        return userId == null ? "" : userId;
     }
 
     public void setUserId(String userId) {
         this.userId = userId;
     }
 
-    public double getFee() {
-        return fee;
+    public String getFaultDesc() {
+        return faultDesc == null ? "" : faultDesc;
     }
 
-    public void setFee(double fee) {
-        this.fee = fee;
-    }
-
-    public double getSfee() {
-        return sfee;
-    }
-
-    public void setSfee(double sfee) {
-        this.sfee = sfee;
+    public void setFaultDesc(String faultDesc) {
+        this.faultDesc = faultDesc;
     }
 }

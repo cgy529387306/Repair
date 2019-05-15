@@ -44,7 +44,7 @@ public class OrderAdapter extends BaseQuickAdapter<OrderItem, BaseViewHolder> {
                 .setText(R.id.tv_order_no,item.getOrderSn())
                 .setText(R.id.tv_order_time, item.getCreateTime())
                 .setText(R.id.tv_order_address, item.getAddress())
-                .setText(R.id.tv_order_content, item.getFixDesc())
+                .setText(R.id.tv_order_content, item.getFaultDesc())
                 .setText(R.id.tv_order_state, AppUtil.getOrderStatus(item.getOrderStatus()))
                 .setText(R.id.tv_price,String.valueOf(price));
         if (orderStatus<=20){

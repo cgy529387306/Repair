@@ -32,6 +32,7 @@ import com.yxw.cn.carpenterrepair.entity.OrderType;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.listerner.OnChooseDateListener;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
+import com.yxw.cn.carpenterrepair.pop.ConfirmOrderPop;
 import com.yxw.cn.carpenterrepair.pop.ContactPop;
 import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 import com.yxw.cn.carpenterrepair.util.Helper;
@@ -51,7 +52,7 @@ import butterknife.BindView;
 /**
  * 订单列表
  */
-public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapter.OnItemClickListener , OrderAdapter.OnOrderOperateListener,ContactPop.SelectListener {
+public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapter.OnItemClickListener , OrderAdapter.OnOrderOperateListener,ContactPop.SelectListener,ConfirmOrderPop.SelectListener {
 
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
@@ -65,7 +66,7 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
     private int mOrderType;
     private String mBookingTime;
     private ContactPop mContactPop;
-    private DialogPlus mTakingDialog;
+    private ConfirmOrderPop mConfirmOrderPop;
     /**
      * @param type 0:今天 1:明天 2:全部
      * @return
@@ -191,7 +192,10 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
 
     @Override
     public void onOrderTaking(OrderItem orderItem) {
-         showOrderTakingDialog(orderItem);
+        if (mConfirmOrderPop==null){
+            mConfirmOrderPop = new ConfirmOrderPop(getActivity(),orderItem,this);
+        }
+        mConfirmOrderPop.showPopupWindow(mRecyclerView);
     }
 
     @Override
@@ -374,53 +378,31 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
         });
     }
 
-    public void showOrderTakingDialog(OrderItem orderItem) {
-        if (mTakingDialog == null) {
-            mTakingDialog = DialogPlus.newDialog(getActivity())
-                    .setContentHolder(new ViewHolder(R.layout.dlg_confirm_order))
-                    .setGravity(Gravity.CENTER)
-                    .setCancelable(true)
-                    .create();
-            View dialogView = mTakingDialog.getHolderView();
-            dialogView.findViewById(R.id.dialog_cancel).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mTakingDialog.dismiss();
-                }
-            });
-            dialogView.findViewById(R.id.dialog_confirm).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mTakingDialog.dismiss();
-                    showLoading();
-                    OkGo.<ResponseData<String>>post(UrlConstant.ORDER_RECEIVE+orderItem.getOrderId())
-                            .execute(new JsonCallback<ResponseData<String>>() {
-                                         @Override
-                                         public void onSuccess(ResponseData<String> response) {
-                                             dismissLoading();
-                                             if (response!=null){
-                                                 if (response.isSuccess()) {
-                                                     toast("抢单成功");
-                                                     Bundle bundle = new Bundle();
-                                                     bundle.putSerializable("type",new OrderType(1,"待预约"));
-                                                     startActivity(MyOrderActivity.class,bundle);
-                                                     EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
-                                                 }else{
-                                                     toast(response.getMsg());
-                                                 }
-                                             }
-                                         }
 
-                                         @Override
-                                         public void onError(Response<ResponseData<String>> response) {
-                                             super.onError(response);
-                                             dismissLoading();
-                                         }
+    @Override
+    public void onOrderComfirm(OrderItem orderItem) {
+        showLoading();
+        OkGo.<ResponseData<String>>post(UrlConstant.ORDER_RECEIVE+orderItem.getOrderId())
+                .execute(new JsonCallback<ResponseData<String>>() {
+                             @Override
+                             public void onSuccess(ResponseData<String> response) {
+                                 dismissLoading();
+                                 if (response!=null){
+                                     if (response.isSuccess()) {
+                                         toast("抢单成功");
+                                         EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
+                                     }else{
+                                         toast(response.getMsg());
                                      }
-                            );
-                }
-            });
-        }
-        mTakingDialog.show();
+                                 }
+                             }
+
+                             @Override
+                             public void onError(Response<ResponseData<String>> response) {
+                                 super.onError(response);
+                                 dismissLoading();
+                             }
+                         }
+                );
     }
 }
