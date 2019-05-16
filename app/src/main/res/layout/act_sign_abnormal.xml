@@ -37,7 +37,7 @@
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:layout_marginLeft="16dp"
-                  android:text="需再次预约原因"
+                  android:text="需要二次上门原因"
                   android:textColor="#333333"
                   android:textSize="14sp"/>
 

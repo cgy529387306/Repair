@@ -8,6 +8,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.entity.OrderItem;
 import com.yxw.cn.carpenterrepair.util.AppUtil;
+import com.yxw.cn.carpenterrepair.util.TimeUtil;
 
 import java.util.List;
 
@@ -38,6 +39,7 @@ public class OrderAdapter extends BaseQuickAdapter<OrderItem, BaseViewHolder> {
         TextView tvOperate0 = helper.getView(R.id.tv_operate0);
         TextView tvOperate1 = helper.getView(R.id.tv_operate1);
         TextView tvOperate2 = helper.getView(R.id.tv_operate2);
+        TextView tvRestTime = helper.getView(R.id.tv_rest_time);
         int orderStatus = item.getOrderStatus();
         double price = orderStatus<=30?item.getTotalPrice():item.getFee();
         helper.setText(R.id.tv_ordre_name, item.getCategoryPName()+"/"+item.getCategoryCName())
@@ -61,6 +63,7 @@ public class OrderAdapter extends BaseQuickAdapter<OrderItem, BaseViewHolder> {
             });
         }else if (orderStatus<=40){
             //待预约
+            tvRestTime.setText(String.format("预约倒计时：%s", TimeUtil.reFreshTime2(item.getReceiveTime())));
             tvOperate0.setVisibility(View.GONE);
             tvOperate1.setVisibility(View.VISIBLE);
             tvOperate1.setText("异常反馈");
@@ -81,6 +84,7 @@ public class OrderAdapter extends BaseQuickAdapter<OrderItem, BaseViewHolder> {
             });
         }else if (orderStatus<=55){
             //待上门
+            tvRestTime.setText(String.format("上门倒计时：%s", TimeUtil.reFreshTime(item.getBookingStartTime())));
             tvOperate0.setVisibility(View.VISIBLE);
             tvOperate0.setText("改约");
             tvOperate0.setOnClickListener(new View.OnClickListener() {

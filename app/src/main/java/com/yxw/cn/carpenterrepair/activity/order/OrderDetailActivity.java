@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -31,8 +30,6 @@ import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
-import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.ViewHolder;
 import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.adapter.UserOrderDetailAdapter;
@@ -50,6 +47,7 @@ import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.pop.ConfirmOrderPop;
 import com.yxw.cn.carpenterrepair.pop.ContactPop;
 import com.yxw.cn.carpenterrepair.util.EventBusUtil;
+import com.yxw.cn.carpenterrepair.util.Helper;
 import com.yxw.cn.carpenterrepair.util.TimePickerUtil;
 import com.yxw.cn.carpenterrepair.util.TimeUtil;
 import com.yxw.cn.carpenterrepair.util.ToastUtil;
@@ -59,9 +57,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Predicate;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * 订单详情
@@ -129,6 +134,7 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
     private MyLocationListener mLocationListener;
     private ContactPop mContactPop;
     private ConfirmOrderPop mConfirmOrderPop;
+    private Disposable mDisposable;
     @Override
     protected int getLayoutResId() {
         return R.layout.act_order_detail;
@@ -279,6 +285,9 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
         mBaiDuMap.clear();
         mMapView.onDestroy();
         mMapView = null;
+        if (mDisposable!=null){
+            mDisposable.dispose();
+        }
     }
 
     @Override
@@ -468,6 +477,7 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
         int orderStatus = orderItem.getOrderStatus();
         if (orderStatus<=20){
             //待接单
+            tvRestTime.setVisibility(View.GONE);
             tvOperate0.setVisibility(View.GONE);
             tvOperate1.setVisibility(View.GONE);
             tvOperate2.setVisibility(View.VISIBLE);
@@ -480,6 +490,34 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
             });
         }else if (orderStatus<=40){
             //待预约
+            tvRestTime.setVisibility(View.VISIBLE);
+            if (Helper.isEmpty(orderItem.getReceiveTime())){
+                tvRestTime.setText("预约时间异常");
+            }else{
+                if (TimeUtil.compareTime2(orderItem.getReceiveTime())){
+                    mDisposable = Observable.interval(0, 1, TimeUnit.SECONDS)
+                            .takeWhile(new Predicate<Long>() {
+                                @Override
+                                public boolean test(Long aLong) throws Exception {
+                                    return !mStop;
+                                }
+                            })
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Consumer<Long>() {
+                                @Override
+                                public void accept(Long aLong) throws Exception {
+                                    if (TimeUtil.reFreshTime2(orderItem.getReceiveTime()) == null) {
+                                        tvRestTime.setText("预约倒计时已结束");
+                                    } else {
+                                        tvRestTime.setText(String.format("预约倒计时：%s", TimeUtil.reFreshTime2(orderItem.getReceiveTime())));
+                                    }
+                                }
+                            });
+                }else{
+                    tvRestTime.setText("预约时间已过期");
+                }
+            }
             tvOperate0.setVisibility(View.GONE);
             tvOperate1.setVisibility(View.VISIBLE);
             tvOperate1.setText("异常反馈");
@@ -506,6 +544,35 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
             });
         }else if (orderStatus<=55){
             //待上门
+            //待上门
+            tvRestTime.setVisibility(View.VISIBLE);
+            if (Helper.isEmpty(orderItem.getBookingStartTime())){
+                tvRestTime.setText("上门时间异常");
+            }else{
+                if (TimeUtil.compareTime(orderItem.getBookingStartTime())){
+                    mDisposable = Observable.interval(0, 1, TimeUnit.SECONDS)
+                            .takeWhile(new Predicate<Long>() {
+                                @Override
+                                public boolean test(Long aLong) throws Exception {
+                                    return !mStop;
+                                }
+                            })
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Consumer<Long>() {
+                                @Override
+                                public void accept(Long aLong) throws Exception {
+                                    if (TimeUtil.reFreshTime(orderItem.getBookingStartTime()) == null) {
+                                        tvRestTime.setText("上门倒计时已结束");
+                                    } else {
+                                        tvRestTime.setText(String.format("上门倒计时：%s", TimeUtil.reFreshTime(orderItem.getBookingStartTime())));
+                                    }
+                                }
+                            });
+                }else{
+                    tvRestTime.setText("服务时间已过期");
+                }
+            }
             tvOperate0.setVisibility(View.VISIBLE);
             tvOperate0.setText("改约");
             tvOperate0.setOnClickListener(new View.OnClickListener() {
@@ -574,6 +641,7 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
             });
         }else if (orderStatus<90){
             //待完成
+            tvRestTime.setVisibility(View.GONE);
             tvOperate0.setVisibility(View.GONE);
             tvOperate1.setVisibility(View.GONE);
             tvOperate2.setVisibility(View.VISIBLE);
@@ -589,6 +657,7 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
             });
         }else{
             //已完成
+            tvRestTime.setVisibility(View.GONE);
             tvOperate0.setVisibility(View.GONE);
             tvOperate1.setVisibility(View.GONE);
             tvOperate2.setVisibility(View.GONE);
