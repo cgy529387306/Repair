@@ -162,11 +162,11 @@ public class RegionPickerUtil {
         Gson gson = new Gson();
         HashMap<String, String> map = new HashMap<>();
         map.put("residentArea", cityId);
-        OkGo.<ResponseData<String>>post(UrlConstant.CHANGE_USERINFO)
+        OkGo.<ResponseData<Object>>post(UrlConstant.CHANGE_USERINFO)
                 .upJson(gson.toJson(map))
-                .execute(new JsonCallback<ResponseData<String>>() {
+                .execute(new JsonCallback<ResponseData<Object>>() {
                              @Override
-                             public void onSuccess(ResponseData<String> response) {
+                             public void onSuccess(ResponseData<Object> response) {
                                  if (response != null){
                                      if (response.isSuccess()) {
                                          EventBusUtil.post(MessageConstant.NOTIFY_GET_INFO);

@@ -16,9 +16,13 @@ import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.ReasonBean;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
+import com.yxw.cn.carpenterrepair.listerner.OnChooseDateListener;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.util.AppUtil;
+import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 import com.yxw.cn.carpenterrepair.util.Helper;
+import com.yxw.cn.carpenterrepair.util.TimePickerUtil;
+import com.yxw.cn.carpenterrepair.util.TimeUtil;
 import com.yxw.cn.carpenterrepair.view.TitleBar;
 
 import java.util.ArrayList;
@@ -28,10 +32,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import com.yxw.cn.carpenterrepair.listerner.OnChooseDateListener;
-import com.yxw.cn.carpenterrepair.util.EventBusUtil;
-import com.yxw.cn.carpenterrepair.util.TimePickerUtil;
-import com.yxw.cn.carpenterrepair.util.TimeUtil;
 
 /**
  * 预约异常
@@ -48,7 +48,7 @@ public class AppointAbnormalActivity extends BaseActivity implements BaseQuickAd
     EditText etRemark;
 
     private OrderAbnormalAdapter mAdapter;
-    private String orderId;
+    private String acceptId;
     private String exceptionIds;
 
     private String startTime;
@@ -62,7 +62,7 @@ public class AppointAbnormalActivity extends BaseActivity implements BaseQuickAd
     @Override
     public void initView() {
         titleBar.setTitle("预约异常反馈");
-        orderId = getIntent().getStringExtra("orderId");
+        acceptId = getIntent().getStringExtra("acceptId");
         mAdapter = new OrderAbnormalAdapter(new ArrayList<>());
         mAdapter.setOnItemClickListener(this);
         mRvReason.setLayoutManager(new GridLayoutManager(this, 2));
@@ -131,18 +131,18 @@ public class AppointAbnormalActivity extends BaseActivity implements BaseQuickAd
                 } else {
                     showLoading();
                     HashMap<String, Object> map = new HashMap<>();
-                    map.put("orderId", orderId);
+                    map.put("acceptId", acceptId);
                     map.put("bookingStartTime", startTime);
                     map.put("bookingEndTime", endTime);
                     map.put("ids", exceptionIds);
                     if (Helper.isNotEmpty(desc)){
                         map.put("fixDesc", desc);
                     }
-                    OkGo.<ResponseData<String>>post(UrlConstant.ORDER_EXEPTION_APPOINT)
+                    OkGo.<ResponseData<Object>>post(UrlConstant.ORDER_EXEPTION_APPOINT)
                             .upJson(gson.toJson(map))
-                            .execute(new JsonCallback<ResponseData<String>>() {
+                            .execute(new JsonCallback<ResponseData<Object>>() {
                                 @Override
-                                public void onSuccess(ResponseData<String> response) {
+                                public void onSuccess(ResponseData<Object> response) {
                                     dismissLoading();
                                     if (response!=null){
                                         if (response.isSuccess()) {
@@ -156,7 +156,7 @@ public class AppointAbnormalActivity extends BaseActivity implements BaseQuickAd
                                 }
 
                                 @Override
-                                public void onError(Response<ResponseData<String>> response) {
+                                public void onError(Response<ResponseData<Object>> response) {
                                     super.onError(response);
                                     dismissLoading();
                                 }

@@ -21,12 +21,6 @@ import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 
-/**
- * 起始页
- *
- * @author @author chenqm on 2018/1/15.
- */
-
 public class SplashActivity extends Activity{
 
     private SweetAlertDialog dialog;
@@ -145,7 +139,7 @@ public class SplashActivity extends Activity{
                 startActivity(new Intent(SplashActivity.this,LoginActivity.class));
                 finish();
             }
-        }, 1000);
+        }, 2000);
     }
 
     @Override
@@ -156,5 +150,4 @@ public class SplashActivity extends Activity{
             handler = null;
         }
     }
-
 }

@@ -208,11 +208,11 @@ public class PersonInfoActivity extends BaseActivity {
         HashMap<String, String> map = new HashMap<>();
         map.put("avatar", Base64Util.getBase64ImageStr(localMedia.getCompressPath()));
         AppUtil.showPic(PersonInfoActivity.this, mIvAvatar, localMedia.getCompressPath());
-        OkGo.<ResponseData<String>>post(UrlConstant.CHANGE_AVATAR)
+        OkGo.<ResponseData<Object>>post(UrlConstant.CHANGE_AVATAR)
                 .upJson(gson.toJson(map))
-                .execute(new JsonCallback<ResponseData<String>>() {
+                .execute(new JsonCallback<ResponseData<Object>>() {
                              @Override
-                             public void onSuccess(ResponseData<String> response) {
+                             public void onSuccess(ResponseData<Object> response) {
                                  dismissLoading();
                                  toast(response.getMsg());
                                  if (response.isSuccess()) {
@@ -221,7 +221,7 @@ public class PersonInfoActivity extends BaseActivity {
                              }
 
                              @Override
-                             public void onError(Response<ResponseData<String>> response) {
+                             public void onError(Response<ResponseData<Object>> response) {
                                  super.onError(response);
                                  dismissLoading();
                              }

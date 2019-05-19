@@ -114,17 +114,17 @@ public class EvaluationActivity extends BaseActivity implements BaseQuickAdapter
                     pictures.add(new Evaluation.Picture(orderUpload.getPath()));
                 }
                 Evaluation evaluation=new Evaluation(orderId,star,etRemark.getText().toString().trim(),pictures);
-                OkGo.<ResponseData<String>>post(UrlConstant.USER_EVALUATE)
+                OkGo.<ResponseData<Object>>post(UrlConstant.USER_EVALUATE)
                         .upJson(gson.toJson(evaluation))
-                        .execute(new JsonCallback<ResponseData<String>>() {
+                        .execute(new JsonCallback<ResponseData<Object>>() {
                             @Override
-                            public void onSuccess(ResponseData<String> response) {
+                            public void onSuccess(ResponseData<Object> response) {
                                 toast(response.getMsg());
                                 dismissLoading();
                             }
 
                             @Override
-                            public void onError(Response<ResponseData<String>> response) {
+                            public void onError(Response<ResponseData<Object>> response) {
                                 super.onError(response);
                                 dismissLoading();
                             }

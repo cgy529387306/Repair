@@ -170,13 +170,20 @@ public class TimePickerUtil {
 
     public static void showYearPicker(Context context, OnChooseDateListener listener) {
         //时间选择器
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.HOUR_OF_DAY,1);
+        calendar.set(Calendar.MINUTE,0);
         TimePickerView pvTime = new TimePickerBuilder(context, new OnTimeSelectListener() {
             @Override
             public void onTimeSelect(Date date, View v) {
+                if (date.getTime()<new Date().getTime()){
+                    ToastUtil.show("上门时间不能小于当前时间");
+                    return;
+                }
                 if (listener != null) listener.getDate(date);
             }
         }).setType(new boolean[]{true, true, true, true, true, false})
-                .setRangDate(Calendar.getInstance(), null)
+                .setRangDate(calendar, null)
                 .setContentTextSize(20)
                 .setTitleText("预约时间")//标题
                 .setSubCalSize(18)//确定和取消文字大小

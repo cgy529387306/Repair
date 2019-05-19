@@ -61,11 +61,11 @@ public class UpdateNameActivity extends BaseActivity {
                 showLoading();
                 Map<String, String> map = new HashMap<>();
                 map.put("realName", mEtName.getText().toString().trim());
-                OkGo.<ResponseData<String>>post(UrlConstant.CHANGE_USERINFO)
+                OkGo.<ResponseData<Object>>post(UrlConstant.CHANGE_USERINFO)
                         .upJson(gson.toJson(map))
-                        .execute(new JsonCallback<ResponseData<String>>() {
+                        .execute(new JsonCallback<ResponseData<Object>>() {
                                      @Override
-                                     public void onSuccess(ResponseData<String> response) {
+                                     public void onSuccess(ResponseData<Object> response) {
                                          dismissLoading();
                                          if (response != null){
                                              if (response.isSuccess()) {
@@ -78,7 +78,7 @@ public class UpdateNameActivity extends BaseActivity {
                                      }
 
                                      @Override
-                                     public void onError(Response<ResponseData<String>> response) {
+                                     public void onError(Response<ResponseData<Object>> response) {
                                          super.onError(response);
                                          dismissLoading();
                                      }

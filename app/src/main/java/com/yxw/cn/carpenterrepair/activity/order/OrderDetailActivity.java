@@ -38,6 +38,7 @@ import com.yxw.cn.carpenterrepair.adapter.UserOrderStatusAdapter;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.MessageEvent;
+import com.yxw.cn.carpenterrepair.entity.OperateResult;
 import com.yxw.cn.carpenterrepair.entity.OrderDetail;
 import com.yxw.cn.carpenterrepair.entity.OrderItem;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
@@ -46,8 +47,10 @@ import com.yxw.cn.carpenterrepair.listerner.OnChooseDateListener;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.pop.ConfirmOrderPop;
 import com.yxw.cn.carpenterrepair.pop.ContactPop;
+import com.yxw.cn.carpenterrepair.util.AppUtil;
 import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 import com.yxw.cn.carpenterrepair.util.Helper;
+import com.yxw.cn.carpenterrepair.util.MapUtil;
 import com.yxw.cn.carpenterrepair.util.TimePickerUtil;
 import com.yxw.cn.carpenterrepair.util.TimeUtil;
 import com.yxw.cn.carpenterrepair.util.ToastUtil;
@@ -227,7 +230,8 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
 
     @Override
     public void getData() {
-        OkGo.<ResponseData<OrderDetail>>post(UrlConstant.ORDER_DETAIL+orderId)
+        String url = AppUtil.getDetailUrl(orderItem)+ AppUtil.getDetailId(orderItem);
+        OkGo.<ResponseData<OrderDetail>>post(url)
                 .execute(new JsonCallback<ResponseData<OrderDetail>>() {
                     @Override
                     public void onSuccess(ResponseData<OrderDetail> response) {
@@ -245,7 +249,7 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
                 });
     }
 
-    @OnClick({R.id.bt_copy, R.id.tv_call})
+    @OnClick({R.id.bt_copy,R.id.tv_nav, R.id.tv_call})
     public void click(View view) {
         switch (view.getId()) {
             case R.id.tv_call:
@@ -254,6 +258,11 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
                     Uri data = Uri.parse("tel:" + orderItem.getMobile());
                     intent.setData(data);
                     startActivity(intent);
+                }
+                break;
+            case R.id.tv_nav:
+                if (orderItem !=null ){
+                    MapUtil.navWithMap(OrderDetailActivity.this,orderItem.getLocationLat(),orderItem.getLocationLng(),orderItem.getAddress());
                 }
                 break;
             case R.id.bt_copy:
@@ -271,6 +280,9 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
         super.onEvent(event);
         switch (event.getId()) {
             case MessageConstant.NOTIFY_UPDATE_ORDER:
+                if (mDisposable!=null){
+                    mDisposable.dispose();
+                }
                 getData();
                 break;
         }
@@ -338,11 +350,11 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
         map.put("orderId", orderId);
         map.put("bookingDate", bookingDate);
         map.put("bookingTime", bookingTime);
-        OkGo.<ResponseData<String>>post(UrlConstant.RESERVATION_TIME)
+        OkGo.<ResponseData<Object>>post(UrlConstant.RESERVATION_TIME)
                 .upJson(gson.toJson(map))
-                .execute(new JsonCallback<ResponseData<String>>() {
+                .execute(new JsonCallback<ResponseData<Object>>() {
                     @Override
-                    public void onSuccess(ResponseData<String> response) {
+                    public void onSuccess(ResponseData<Object> response) {
                         ToastUtil.show(response.getMsg());
                         if (response.isSuccess()) {
                             getData();
@@ -368,14 +380,14 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
                 String endTime = TimeUtil.getAfterHourTime(date);
                 showLoading();
                 HashMap<String, Object> map = new HashMap<>();
-                map.put("orderId", orderItem.getOrderId());
+                map.put("acceptId", orderItem.getAcceptId());
                 map.put("bookingStartTime", startTime);
                 map.put("bookingEndTime", endTime);
-                OkGo.<ResponseData<String>>post(UrlConstant.ORDER_RESERVATION)
+                OkGo.<ResponseData<Object>>post(UrlConstant.ORDER_RESERVATION)
                         .upJson(gson.toJson(map))
-                        .execute(new JsonCallback<ResponseData<String>>() {
+                        .execute(new JsonCallback<ResponseData<Object>>() {
                             @Override
-                            public void onSuccess(ResponseData<String> response) {
+                            public void onSuccess(ResponseData<Object> response) {
                                 dismissLoading();
                                 if (response!=null){
                                     if (response.isSuccess()) {
@@ -388,7 +400,7 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
                             }
 
                             @Override
-                            public void onError(Response<ResponseData<String>> response) {
+                            public void onError(Response<ResponseData<Object>> response) {
                                 super.onError(response);
                                 dismissLoading();
                             }
@@ -407,14 +419,14 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
                 String endTime = TimeUtil.getAfterHourTime(date);
                 showLoading();
                 HashMap<String, Object> map = new HashMap<>();
-                map.put("orderId", orderItem.getOrderId());
+                map.put("acceptId", orderItem.getAcceptId());
                 map.put("bookingStartTime", startTime);
                 map.put("bookingEndTime", endTime);
-                OkGo.<ResponseData<String>>post(UrlConstant.ORDER_RESERVATION)
+                OkGo.<ResponseData<Object>>post(UrlConstant.ORDER_RESERVATION)
                         .upJson(gson.toJson(map))
-                        .execute(new JsonCallback<ResponseData<String>>() {
+                        .execute(new JsonCallback<ResponseData<Object>>() {
                             @Override
-                            public void onSuccess(ResponseData<String> response) {
+                            public void onSuccess(ResponseData<Object> response) {
                                 dismissLoading();
                                 if (response!=null){
                                     if (response.isSuccess()) {
@@ -427,7 +439,7 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
                             }
 
                             @Override
-                            public void onError(Response<ResponseData<String>> response) {
+                            public void onError(Response<ResponseData<Object>> response) {
                                 super.onError(response);
                                 dismissLoading();
                             }
@@ -526,7 +538,7 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
                 public void onClick(View v) {
                     Bundle bundle = new Bundle();
                     bundle.putInt("type",0);
-                    bundle.putString("orderId",orderItem.getOrderId());
+                    bundle.putString("acceptId",orderItem.getAcceptId());
                     startActivity(AppointAbnormalActivity.class,bundle);
                 }
             });
@@ -585,18 +597,18 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
                             String endTime = TimeUtil.getAfterHourTime(date);
                             showLoading();
                             HashMap<String, Object> map = new HashMap<>();
-                            map.put("orderId", orderItem.getOrderId());
+                            map.put("acceptId", orderItem.getAcceptId());
                             map.put("bookingStartTime", startTime);
                             map.put("bookingEndTime", endTime);
-                            OkGo.<ResponseData<String>>post(UrlConstant.ORDER_TURN_RESERVATION)
+                            OkGo.<ResponseData<Object>>post(UrlConstant.ORDER_TURN_RESERVATION)
                                     .upJson(gson.toJson(map))
-                                    .execute(new JsonCallback<ResponseData<String>>() {
+                                    .execute(new JsonCallback<ResponseData<Object>>() {
                                         @Override
-                                        public void onSuccess(ResponseData<String> response) {
+                                        public void onSuccess(ResponseData<Object> response) {
                                             dismissLoading();
                                             if (response!=null){
                                                 if (response.isSuccess()) {
-                                                    toast("预约成功");
+                                                    toast("改约成功");
                                                     EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
                                                 }else{
                                                     toast(response.getMsg());
@@ -605,7 +617,7 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
                                         }
 
                                         @Override
-                                        public void onError(Response<ResponseData<String>> response) {
+                                        public void onError(Response<ResponseData<Object>> response) {
                                             super.onError(response);
                                             dismissLoading();
                                         }
@@ -623,7 +635,7 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
                 public void onClick(View v) {
                     Bundle bundle = new Bundle();
                     bundle.putInt("type",1);
-                    bundle.putString("orderId",orderItem.getOrderId());
+                    bundle.putString("acceptId",orderItem.getAcceptId());
                     startActivity(SignAbnormalActivity.class,bundle);
                 }
             });
@@ -675,14 +687,16 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
     @Override
     public void onOrderComfirm(OrderItem orderItem) {
         showLoading();
-        OkGo.<ResponseData<String>>post(UrlConstant.ORDER_RECEIVE+orderItem.getOrderId())
-                .execute(new JsonCallback<ResponseData<String>>() {
+        OkGo.<ResponseData<OperateResult>>post(UrlConstant.ORDER_RECEIVE+orderItem.getOrderId())
+                .execute(new JsonCallback<ResponseData<OperateResult>>() {
                              @Override
-                             public void onSuccess(ResponseData<String> response) {
+                             public void onSuccess(ResponseData<OperateResult> response) {
                                  dismissLoading();
                                  if (response!=null){
-                                     if (response.isSuccess()) {
+                                     if (response.isSuccess() && response.getData()!=null) {
                                          toast("抢单成功");
+                                         orderItem.setOrderStatus(response.getData().getOrderStatus());
+                                         orderItem.setAcceptId(response.getData().getAcceptId());
                                          EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
                                      }else{
                                          toast(response.getMsg());
@@ -691,7 +705,7 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
                              }
 
                              @Override
-                             public void onError(Response<ResponseData<String>> response) {
+                             public void onError(Response<ResponseData<OperateResult>> response) {
                                  super.onError(response);
                                  dismissLoading();
                              }

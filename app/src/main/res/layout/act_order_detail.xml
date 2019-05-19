@@ -42,6 +42,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:clickable="true" />
+                <com.yxw.cn.carpenterrepair.view.DrawableCenterTextView
+                    android:id="@+id/tv_nav"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:paddingBottom="7dp"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:drawableLeft="@drawable/icon_nav"
+                    android:drawablePadding="6dp"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/nav_bg"
+                    android:text="立即导航"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"/>
             </com.yxw.cn.carpenterrepair.view.MyMapView>
 
             <RelativeLayout

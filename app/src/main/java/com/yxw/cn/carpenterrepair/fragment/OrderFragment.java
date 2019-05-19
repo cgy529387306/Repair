@@ -6,18 +6,16 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
-import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.ViewHolder;
 import com.yxw.cn.carpenterrepair.BaseRefreshFragment;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.activity.order.AppointAbnormalActivity;
+import com.yxw.cn.carpenterrepair.activity.order.MyOrder1Activity;
 import com.yxw.cn.carpenterrepair.activity.order.MyOrderActivity;
 import com.yxw.cn.carpenterrepair.activity.order.OrderDetailActivity;
 import com.yxw.cn.carpenterrepair.activity.order.OrderSignInActivity;
@@ -26,6 +24,7 @@ import com.yxw.cn.carpenterrepair.adapter.OrderAdapter;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.MessageEvent;
+import com.yxw.cn.carpenterrepair.entity.OperateResult;
 import com.yxw.cn.carpenterrepair.entity.OrderItem;
 import com.yxw.cn.carpenterrepair.entity.OrderListData;
 import com.yxw.cn.carpenterrepair.entity.OrderType;
@@ -202,11 +201,11 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
     public void onAbnormal(OrderItem orderItem,int type) {
         if (type==0){
             Bundle bundle = new Bundle();
-            bundle.putString("orderId",orderItem.getOrderId());
+            bundle.putString("acceptId",orderItem.getAcceptId());
             startActivity(AppointAbnormalActivity.class,bundle);
         }else{
             Bundle bundle = new Bundle();
-            bundle.putString("orderId",orderItem.getOrderId());
+            bundle.putString("acceptId",orderItem.getAcceptId());
             startActivity(SignAbnormalActivity.class,bundle);
         }
     }
@@ -228,18 +227,18 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
                 String endTime = TimeUtil.getAfterHourTime(date);
                 showLoading();
                 HashMap<String, Object> map = new HashMap<>();
-                map.put("orderId", orderItem.getOrderId());
+                map.put("acceptId", orderItem.getAcceptId());
                 map.put("bookingStartTime", startTime);
                 map.put("bookingEndTime", endTime);
-                OkGo.<ResponseData<String>>post(UrlConstant.ORDER_TURN_RESERVATION)
+                OkGo.<ResponseData<Object>>post(UrlConstant.ORDER_TURN_RESERVATION)
                         .upJson(gson.toJson(map))
-                        .execute(new JsonCallback<ResponseData<String>>() {
+                        .execute(new JsonCallback<ResponseData<Object>>() {
                             @Override
-                            public void onSuccess(ResponseData<String> response) {
+                            public void onSuccess(ResponseData<Object> response) {
                                 dismissLoading();
                                 if (response!=null){
                                     if (response.isSuccess()) {
-                                        toast("预约成功");
+                                        toast("改约成功");
                                         EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
                                     }else{
                                         toast(response.getMsg());
@@ -248,7 +247,7 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
                             }
 
                             @Override
-                            public void onError(Response<ResponseData<String>> response) {
+                            public void onError(Response<ResponseData<Object>> response) {
                                 super.onError(response);
                                 dismissLoading();
                             }
@@ -286,6 +285,8 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
             case MessageConstant.NOTIFY_UPDATE_ORDER:
                 getOrderData(1);
                 break;
+            case MessageConstant.MY_LOCATION:
+                break;
         }
     }
 
@@ -306,19 +307,18 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
                 String endTime = TimeUtil.getAfterHourTime(date);
                 showLoading();
                 HashMap<String, Object> map = new HashMap<>();
-                map.put("orderId", orderItem.getOrderId());
+                map.put("acceptId", orderItem.getAcceptId());
                 map.put("bookingStartTime", startTime);
                 map.put("bookingEndTime", endTime);
-                OkGo.<ResponseData<String>>post(UrlConstant.ORDER_RESERVATION)
+                OkGo.<ResponseData<Object>>post(UrlConstant.ORDER_RESERVATION)
                         .upJson(gson.toJson(map))
-                        .execute(new JsonCallback<ResponseData<String>>() {
+                        .execute(new JsonCallback<ResponseData<Object>>() {
                             @Override
-                            public void onSuccess(ResponseData<String> response) {
+                            public void onSuccess(ResponseData<Object> response) {
                                 dismissLoading();
                                 if (response!=null){
                                     if (response.isSuccess()) {
-                                        toast("预约成功");
-                                        EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
+                                        refreshActivity(new OrderType(2,"待上门"));
                                     }else{
                                         toast(response.getMsg());
                                     }
@@ -326,7 +326,7 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
                             }
 
                             @Override
-                            public void onError(Response<ResponseData<String>> response) {
+                            public void onError(Response<ResponseData<Object>> response) {
                                 super.onError(response);
                                 dismissLoading();
                             }
@@ -345,22 +345,18 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
                 String endTime = TimeUtil.getAfterHourTime(date);
                 showLoading();
                 HashMap<String, Object> map = new HashMap<>();
-                map.put("orderId", orderItem.getOrderId());
+                map.put("acceptId", orderItem.getAcceptId());
                 map.put("bookingStartTime", startTime);
                 map.put("bookingEndTime", endTime);
-                OkGo.<ResponseData<String>>post(UrlConstant.ORDER_RESERVATION)
+                OkGo.<ResponseData<Object>>post(UrlConstant.ORDER_RESERVATION)
                         .upJson(gson.toJson(map))
-                        .execute(new JsonCallback<ResponseData<String>>() {
+                        .execute(new JsonCallback<ResponseData<Object>>() {
                             @Override
-                            public void onSuccess(ResponseData<String> response) {
+                            public void onSuccess(ResponseData<Object> response) {
                                 dismissLoading();
                                 if (response!=null){
                                     if (response.isSuccess()) {
-                                        toast("预约成功");
-                                        Bundle bundle = new Bundle();
-                                        bundle.putSerializable("type",new OrderType(2,"待上门"));
-                                        startActivity(MyOrderActivity.class,bundle);
-                                        EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
+                                        refreshActivity(new OrderType(2,"待上门"));
                                     }else{
                                         toast(response.getMsg());
                                     }
@@ -368,7 +364,7 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
                             }
 
                             @Override
-                            public void onError(Response<ResponseData<String>> response) {
+                            public void onError(Response<ResponseData<Object>> response) {
                                 super.onError(response);
                                 dismissLoading();
                             }
@@ -382,15 +378,14 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
     @Override
     public void onOrderComfirm(OrderItem orderItem) {
         showLoading();
-        OkGo.<ResponseData<String>>post(UrlConstant.ORDER_RECEIVE+orderItem.getOrderId())
-                .execute(new JsonCallback<ResponseData<String>>() {
+        OkGo.<ResponseData<OperateResult>>post(UrlConstant.ORDER_RECEIVE+orderItem.getOrderId())
+                .execute(new JsonCallback<ResponseData<OperateResult>>() {
                              @Override
-                             public void onSuccess(ResponseData<String> response) {
+                             public void onSuccess(ResponseData<OperateResult> response) {
                                  dismissLoading();
                                  if (response!=null){
                                      if (response.isSuccess()) {
-                                         toast("抢单成功");
-                                         EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
+                                         refreshActivity(new OrderType(1,"待预约"));
                                      }else{
                                          toast(response.getMsg());
                                      }
@@ -398,11 +393,22 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
                              }
 
                              @Override
-                             public void onError(Response<ResponseData<String>> response) {
+                             public void onError(Response<ResponseData<OperateResult>> response) {
                                  super.onError(response);
                                  dismissLoading();
                              }
                          }
                 );
     }
+
+    private void refreshActivity(OrderType orderType){
+        if (getActivity()!=null && !getActivity().isFinishing()){
+            toast(orderType.getStatus()==1?"抢单成功":"预约成功");
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("type",orderType);
+            startActivity(getActivity() instanceof MyOrderActivity?MyOrder1Activity.class:MyOrderActivity.class,bundle);
+            getActivity().finish();
+        }
+    }
+
 }

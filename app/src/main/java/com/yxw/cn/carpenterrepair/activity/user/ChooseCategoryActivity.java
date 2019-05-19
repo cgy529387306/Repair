@@ -152,13 +152,13 @@ public class ChooseCategoryActivity extends BaseActivity {
         }
         Map<String, Object> map = new HashMap<>();
         map.put("category",sb.toString());
-        OkGo.<ResponseData<String>>post(UrlConstant.SAVE_CATEGORY)
+        OkGo.<ResponseData<Object>>post(UrlConstant.SAVE_CATEGORY)
                 .tag(this)
                 .upJson(gson.toJson(map))
-                .execute(new JsonCallback<ResponseData<String>>() {
+                .execute(new JsonCallback<ResponseData<Object>>() {
 
                     @Override
-                    public void onSuccess(ResponseData<String> response) {
+                    public void onSuccess(ResponseData<Object> response) {
                         dismissLoading();
                         if (response!=null){
                             if (response.isSuccess()){
@@ -176,7 +176,7 @@ public class ChooseCategoryActivity extends BaseActivity {
                     }
 
                     @Override
-                    public void onError(Response<ResponseData<String>> response) {
+                    public void onError(Response<ResponseData<Object>> response) {
                         super.onError(response);
                         dismissLoading();
                     }

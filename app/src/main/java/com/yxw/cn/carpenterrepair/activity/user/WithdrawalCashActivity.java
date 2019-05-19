@@ -116,11 +116,11 @@ public class WithdrawalCashActivity extends BaseActivity {
                     Map<String, Object> map = new HashMap<>();
                     map.put("amount", Double.parseDouble(cash1.getText().toString()));
                     map.put("tradeWay", 0);//交易方式 0支付宝 1微信 2银行卡
-                    OkGo.<ResponseData<String>>post(UrlConstant.APPLY_WITHDRAWAL)
+                    OkGo.<ResponseData<Object>>post(UrlConstant.APPLY_WITHDRAWAL)
                             .upJson(gson.toJson(map))
-                            .execute(new JsonCallback<ResponseData<String>>() {
+                            .execute(new JsonCallback<ResponseData<Object>>() {
                                          @Override
-                                         public void onSuccess(ResponseData<String> response) {
+                                         public void onSuccess(ResponseData<Object> response) {
                                              dismissLoading();
                                              if (response!=null){
                                                  if (response.isSuccess()) {
@@ -133,7 +133,7 @@ public class WithdrawalCashActivity extends BaseActivity {
                                          }
 
                                          @Override
-                                         public void onError(Response<ResponseData<String>> response) {
+                                         public void onError(Response<ResponseData<Object>> response) {
                                              super.onError(response);
                                              dismissLoading();
                                          }

@@ -10,13 +10,10 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
 
-import com.baidu.location.BDAbstractLocationListener;
-import com.baidu.location.BDLocation;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
-import com.yxw.cn.carpenterrepair.activity.LocationService;
 import com.yxw.cn.carpenterrepair.adapter.CityAdapter;
 import com.yxw.cn.carpenterrepair.adapter.HotCityAdapter;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
@@ -47,9 +44,6 @@ public class SelectCityActivity extends BaseActivity {
     private HotCityAdapter mHotCityAdapter;
     private TextView mTvCurrentCity;
 
-    private LocationService mLocationService;
-
-
     @Override
     protected int getLayoutResId() {
         return R.layout.act_select_city;
@@ -63,25 +57,6 @@ public class SelectCityActivity extends BaseActivity {
         mIndexableLayout.setLayoutManager(new LinearLayoutManager(this));
         initAdapter();
         setListener();
-        mLocationService = new LocationService(this);
-        mLocationService.registerListener(mLocationListener);
-        mLocationService.start();
-    }
-
-    private BDAbstractLocationListener mLocationListener = new BDAbstractLocationListener() {
-        @Override
-        public void onReceiveLocation(BDLocation bdLocation) {
-            if (mTvCurrentCity!=null && bdLocation!=null && bdLocation.getCity()!=null){
-                mTvCurrentCity.setText(bdLocation.getCity());
-                String code  = bdLocation.getCityCode();
-            }
-        }
-    };
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mLocationService.stop();
     }
 
     @Override
@@ -118,12 +93,6 @@ public class SelectCityActivity extends BaseActivity {
 
     private void initCityData(){
         mCityAdapter.setDatas(AppUtil.cityItemList);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mLocationService.unregisterListener(mLocationListener);
     }
 
     public void initAdapter(){

@@ -15,7 +15,7 @@ import com.baidu.location.LocationClientOption.LocationMode;
 public class LocationService {
 	private LocationClient client = null;
 	private LocationClientOption mOption,DIYoption;
-	private Object objLock = new Object();
+	private final Object objLock = new Object();
 
 	/***
 	 * 

@@ -6,6 +6,7 @@ public class MessageConstant {
     public final static String REGISTER= "REGISTER";
     public final static String LOGOUT= "LOGOUT";
     public final static String LOCATION= "LOCATION";
+    public final static String MY_LOCATION= "MY_LOCATION";
     public final static String CHOOSE_CATEGORY_SERVICE= "CHOOSE_CATEGORY_SERVICE";
     public final static String NOTIFY_UPDATE_INFO= "NOTIFY_UPDATE_INFO";
     public final static String NOTIFY_GET_INFO= "NOTIFY_GET_INFO";

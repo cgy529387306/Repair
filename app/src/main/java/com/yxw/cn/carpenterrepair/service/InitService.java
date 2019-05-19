@@ -28,7 +28,6 @@ import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.yxw.cn.carpenterrepair.BaseApplication;
 import com.yxw.cn.carpenterrepair.R;
-import com.yxw.cn.carpenterrepair.activity.LocationService;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.crash.CrashHandler;
 import com.yxw.cn.carpenterrepair.entity.CurrentUser;
@@ -36,6 +35,7 @@ import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.util.AppUtil;
 import com.yxw.cn.carpenterrepair.util.Helper;
+import com.yxw.cn.carpenterrepair.util.LocationUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -49,8 +49,6 @@ public class InitService extends IntentService {
     private static final String ACTION_INIT = "com.yxw.cn.carpenterrepair.action.Init";
 
     private MyTimeTask mTimeTask;
-
-    public LocationService mLocationService;
 
     public Gson mGson = new Gson();
 
@@ -95,10 +93,9 @@ public class InitService extends IntentService {
      */
     private void loadInit() {
         MultiDex.install(BaseApplication.getInstance());
-        mLocationService = new LocationService(BaseApplication.getInstance());
         SDKInitializer.initialize(BaseApplication.getInstance());
         SDKInitializer.setCoordType(CoordType.BD09LL);
-
+        LocationUtils.instance().startLocation();
         OkGo.getInstance().init(BaseApplication.getInstance());
         //Builder
         OkHttpClient.Builder builder = new OkHttpClient.Builder();

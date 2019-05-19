@@ -119,11 +119,11 @@ public class IdCardInfoActivity extends BaseActivity {
                     map.put("idCardFront", Base64Util.getBase64ImageStr(idCardFront));
                     map.put("idCardBack", Base64Util.getBase64ImageStr(idCardBack));
                     map.put("idCardHand", Base64Util.getBase64ImageStr(icCardBoth));
-                    OkGo.<ResponseData<String>>post(UrlConstant.UPLOAD_IDCARD)
+                    OkGo.<ResponseData<Object>>post(UrlConstant.UPLOAD_IDCARD)
                             .upJson(gson.toJson(map))
-                            .execute(new JsonCallback<ResponseData<String>>() {
+                            .execute(new JsonCallback<ResponseData<Object>>() {
                                 @Override
-                                public void onSuccess(ResponseData<String> response) {
+                                public void onSuccess(ResponseData<Object> response) {
                                     dismissLoading();
                                     if (response!=null){
                                         if (response.isSuccess()){
@@ -140,7 +140,7 @@ public class IdCardInfoActivity extends BaseActivity {
                                 }
 
                                 @Override
-                                public void onError(Response<ResponseData<String>> response) {
+                                public void onError(Response<ResponseData<Object>> response) {
                                     super.onError(response);
                                     dismissLoading();
                                 }

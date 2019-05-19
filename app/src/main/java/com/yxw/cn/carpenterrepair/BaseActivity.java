@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
 
 import com.android.tu.loadingdialog.LoadingDailog;
 import com.google.gson.Gson;
@@ -15,6 +14,7 @@ import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.entity.MessageEvent;
 import com.yxw.cn.carpenterrepair.util.ActivityManager;
 import com.yxw.cn.carpenterrepair.util.EventBusUtil;
+import com.yxw.cn.carpenterrepair.util.ToastUtil;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -84,21 +84,11 @@ public abstract class BaseActivity extends AppCompatActivity implements EasyPerm
     }
 
     public void toast(final String msg) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(BaseActivity.this, msg, Toast.LENGTH_SHORT).show();
-            }
-        });
+        ToastUtil.show(msg);
     }
 
     public void toastNetError() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(BaseActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
-            }
-        });
+        ToastUtil.show("网络异常");
     }
 
     @Override

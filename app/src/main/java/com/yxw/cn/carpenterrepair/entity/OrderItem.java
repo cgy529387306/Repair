@@ -82,6 +82,7 @@ public class OrderItem implements Serializable {
     private double totalPrice;
     private String userId;
     private String faultDesc;
+    private String serviceId;
 
     public String getAcceptId() {
         return acceptId == null ? "" : acceptId;
@@ -385,5 +386,13 @@ public class OrderItem implements Serializable {
 
     public void setFaultDesc(String faultDesc) {
         this.faultDesc = faultDesc;
+    }
+
+    public String getServiceId() {
+        return serviceId == null ? "" : serviceId;
+    }
+
+    public void setServiceId(String serviceId) {
+        this.serviceId = serviceId;
     }
 }

@@ -61,7 +61,9 @@ public class UrlConstant {
     public final static String ORDER_STATUS_LIST = BASE_USER + "/ms60/api/fix/order/getOrderStatusList";//getOrderStatusList
     public final static String ORDER_CANCEL = BASE_USER + "/ms60/api/fix/order/accept/cancelReceiveOrder/{orderId}";//工程师取消接单
     public final static String ORDER_START = BASE_USER + "/ms60/api/fix/order/accept/startService/{orderId}";//工程师开始服务
-
+    public final static String ORDER_DETAIL_DFP = BASE_USER + "/ms60/api/fix/order/dfpOrderDetails/";//查询订单详情信息（待分派的订单）serviceId
+    public final static String ORDER_DETAIL_DJD = BASE_USER + "/ms60/api/fix/order/djdOrderDetails/";//查询订单详情信息(未接单的订单) orderId
+    public final static String ORDER_DETAIL_YFP = BASE_USER + "/ms60/api/fix/order/yfpOrderDetails/";//查询订单详情信息（已接单或已分派后的订单）acceptId
 
     public final static String GET_REGION_TREE = BASE_URL + "/api/region/tree";
     public final static String GET_SERVICE_FEE = BASE_URL + "/api/region/serviceFee";

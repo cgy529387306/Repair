@@ -55,10 +55,10 @@ public class JoinServiceProviderActivity extends BaseActivity {
             toast("请输入要加入的服务商编号");
             return;
         }
-        OkGo.<ResponseData<String>>post(UrlConstant.JOIN_SERVICE+parentId)
-                .execute(new JsonCallback<ResponseData<String>>() {
+        OkGo.<ResponseData<Object>>post(UrlConstant.JOIN_SERVICE+parentId)
+                .execute(new JsonCallback<ResponseData<Object>>() {
                              @Override
-                             public void onSuccess(ResponseData<String> response) {
+                             public void onSuccess(ResponseData<Object> response) {
                                  dismissLoading();
                                  if (response!=null){
                                      if (response.isSuccess()) {
@@ -71,7 +71,7 @@ public class JoinServiceProviderActivity extends BaseActivity {
                              }
 
                              @Override
-                             public void onError(Response<ResponseData<String>> response) {
+                             public void onError(Response<ResponseData<Object>> response) {
                                  super.onError(response);
                                  dismissLoading();
                              }

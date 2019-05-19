@@ -26,15 +26,16 @@ import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.activity.user.IdCardInfoActivity;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.Abnormal;
-import com.yxw.cn.carpenterrepair.entity.TradeItem;
 import com.yxw.cn.carpenterrepair.entity.Category;
 import com.yxw.cn.carpenterrepair.entity.CityBean;
 import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 import com.yxw.cn.carpenterrepair.entity.LoginInfo;
+import com.yxw.cn.carpenterrepair.entity.OrderItem;
 import com.yxw.cn.carpenterrepair.entity.QueryListByMark;
 import com.yxw.cn.carpenterrepair.entity.ReasonBean;
 import com.yxw.cn.carpenterrepair.entity.RegionTree;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
+import com.yxw.cn.carpenterrepair.entity.TradeItem;
 import com.yxw.cn.carpenterrepair.entity.UserOrder;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 
@@ -359,6 +360,33 @@ public class AppUtil {
             }
         }
         return null;
+    }
+
+    /**
+     * 获取id
+     * @param orderItem
+     * @return
+     */
+    public static String getDetailId(OrderItem orderItem){
+        int orderStatus = orderItem.getOrderStatus();
+        if (orderStatus<=25){
+            return orderItem.getOrderId();
+        }else if (orderStatus<=30){
+            return orderItem.getServiceId();
+        }else{
+            return orderItem.getAcceptId();
+        }
+    }
+
+    public static String getDetailUrl(OrderItem orderItem){
+        int orderStatus = orderItem.getOrderStatus();
+        if (orderStatus<=25){
+            return UrlConstant.ORDER_DETAIL_DJD;
+        }else if (orderStatus<=30){
+            return UrlConstant.ORDER_DETAIL_DFP;
+        }else{
+            return UrlConstant.ORDER_DETAIL_YFP;
+        }
     }
 
 }

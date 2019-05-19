@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -15,6 +14,8 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.yxw.cn.carpenterrepair.entity.MessageEvent;
+import com.yxw.cn.carpenterrepair.util.EventBusUtil;
+import com.yxw.cn.carpenterrepair.util.ToastUtil;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -22,7 +23,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 
 public abstract class BaseRefreshFragment extends BaseFragment implements OnRefreshListener, OnLoadMoreListener {
 
@@ -115,11 +115,11 @@ public abstract class BaseRefreshFragment extends BaseFragment implements OnRefr
     }
 
     public void toast(final String msg) {
-        Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
+        ToastUtil.show(msg);
     }
 
     public void toastNetError() {
-        Toast.makeText(mContext, "网络异常", Toast.LENGTH_SHORT).show();
+        ToastUtil.show("网络异常");
     }
 
 }

@@ -95,11 +95,11 @@ public class QuickLoginActivity extends BaseActivity {
                             showLoading();
                             Map<String, String> map = new HashMap<>();
                             map.put("mobile", mEtTel.getText().toString());
-                            OkGo.<ResponseData<String>>post(UrlConstant.GET_CODE)
+                            OkGo.<ResponseData<Object>>post(UrlConstant.GET_CODE)
                                     .upJson(gson.toJson(map))
-                                    .execute(new JsonCallback<ResponseData<String>>() {
+                                    .execute(new JsonCallback<ResponseData<Object>>() {
                                                  @Override
-                                                 public void onSuccess(ResponseData<String> response) {
+                                                 public void onSuccess(ResponseData<Object> response) {
                                                      dismissLoading();
                                                      if (response!=null){
                                                          if (response.isSuccess()){
@@ -112,7 +112,7 @@ public class QuickLoginActivity extends BaseActivity {
                                                  }
 
                                                  @Override
-                                                 public void onError(Response<ResponseData<String>> response) {
+                                                 public void onError(Response<ResponseData<Object>> response) {
                                                      super.onError(response);
                                                      dismissLoading();
                                                  }

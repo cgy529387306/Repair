@@ -89,11 +89,11 @@ public class ForgetPasswordActivity extends BaseActivity {
                             showLoading();
                             Map<String, String> map = new HashMap<>();
                             map.put("mobile", mEtPhone.getText().toString());
-                            OkGo.<ResponseData<String>>post(UrlConstant.GET_CODE)
+                            OkGo.<ResponseData<Object>>post(UrlConstant.GET_CODE)
                                     .upJson(gson.toJson(map))
-                                    .execute(new JsonCallback<ResponseData<String>>() {
+                                    .execute(new JsonCallback<ResponseData<Object>>() {
                                                  @Override
-                                                 public void onSuccess(ResponseData<String> response) {
+                                                 public void onSuccess(ResponseData<Object> response) {
                                                      dismissLoading();
                                                      if (response!=null){
                                                          if (response.isSuccess()){
@@ -106,7 +106,7 @@ public class ForgetPasswordActivity extends BaseActivity {
                                                  }
 
                                                  @Override
-                                                 public void onError(Response<ResponseData<String>> response) {
+                                                 public void onError(Response<ResponseData<Object>> response) {
                                                      super.onError(response);
                                                      dismissLoading();
                                                  }
@@ -149,11 +149,11 @@ public class ForgetPasswordActivity extends BaseActivity {
                     map.put("mobile", mEtPhone.getText().toString().trim());
                     map.put("newPassword", mEtPassword.getText().toString().trim());
                     map.put("smsCode", mEtCode.getText().toString().trim());
-                    OkGo.<ResponseData<String>>post(UrlConstant.FORGET_PASSWORD)
+                    OkGo.<ResponseData<Object>>post(UrlConstant.FORGET_PASSWORD)
                             .upJson(gson.toJson(map))
-                            .execute(new JsonCallback<ResponseData<String>>() {
+                            .execute(new JsonCallback<ResponseData<Object>>() {
                                          @Override
-                                         public void onSuccess(ResponseData<String> response) {
+                                         public void onSuccess(ResponseData<Object> response) {
                                              dismissLoading();
                                              if (response!=null){
                                                  if (response.isSuccess()) {
@@ -166,7 +166,7 @@ public class ForgetPasswordActivity extends BaseActivity {
                                          }
 
                                          @Override
-                                         public void onError(Response<ResponseData<String>> response) {
+                                         public void onError(Response<ResponseData<Object>> response) {
                                              super.onError(response);
                                              dismissLoading();
                                          }

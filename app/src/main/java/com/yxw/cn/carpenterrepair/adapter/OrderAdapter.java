@@ -63,7 +63,9 @@ public class OrderAdapter extends BaseQuickAdapter<OrderItem, BaseViewHolder> {
             });
         }else if (orderStatus<=40){
             //待预约
-            tvRestTime.setText(String.format("预约倒计时：%s", TimeUtil.reFreshTime2(item.getReceiveTime())));
+            if (TimeUtil.reFreshTime2(item.getReceiveTime())!=null){
+                tvRestTime.setText(String.format("预约倒计时：%s", TimeUtil.reFreshTime2(item.getReceiveTime())));
+            }
             tvOperate0.setVisibility(View.GONE);
             tvOperate1.setVisibility(View.VISIBLE);
             tvOperate1.setText("异常反馈");
@@ -84,7 +86,11 @@ public class OrderAdapter extends BaseQuickAdapter<OrderItem, BaseViewHolder> {
             });
         }else if (orderStatus<=55){
             //待上门
-            tvRestTime.setText(String.format("上门倒计时：%s", TimeUtil.reFreshTime(item.getBookingStartTime())));
+            if (TimeUtil.reFreshTime(item.getBookingStartTime())!=null){
+                tvRestTime.setText(String.format("上门倒计时：%s", TimeUtil.reFreshTime(item.getBookingStartTime())));
+            }else{
+                tvRestTime.setText("服务时间已过期");
+            }
             tvOperate0.setVisibility(View.VISIBLE);
             tvOperate0.setText("改约");
             tvOperate0.setOnClickListener(new View.OnClickListener() {

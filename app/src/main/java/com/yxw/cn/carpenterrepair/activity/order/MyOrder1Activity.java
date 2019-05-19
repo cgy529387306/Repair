@@ -12,7 +12,6 @@ import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.entity.OrderType;
 import com.yxw.cn.carpenterrepair.fragment.OrderFragment;
-import com.yxw.cn.carpenterrepair.util.LocationUtils;
 import com.yxw.cn.carpenterrepair.view.TitleBar;
 
 import java.util.ArrayList;
@@ -26,7 +25,7 @@ import butterknife.BindView;
  * @author @author chenqm on 2018/1/15.
  */
 
-public class MyOrderActivity extends BaseActivity{
+public class MyOrder1Activity extends BaseActivity{
 
     @BindView(R.id.titlebar)
     TitleBar titlebar;
@@ -45,7 +44,6 @@ public class MyOrderActivity extends BaseActivity{
 
     @Override
     public void initView() {
-        LocationUtils.instance().startLocation();
         OrderType orderType = (OrderType) getIntent().getSerializableExtra("type");
         titlebar.setTitle(orderType.getName());
 

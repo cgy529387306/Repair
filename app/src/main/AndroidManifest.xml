@@ -109,14 +109,13 @@
         <activity android:name=".activity.user.TransactionDetailsActivity"/>
 
 
-        <activity android:name=".activity.order.MyOrderActivity"
-            android:launchMode="singleTop"/>
+        <activity android:name=".activity.order.MyOrderActivity" />
+        <activity android:name=".activity.order.MyOrder1Activity" />
         <activity android:name=".activity.order.OrderSignInActivity"/>
         <activity android:name=".activity.order.OrderDetailActivity"/>
         <activity android:name=".activity.order.SignAbnormalActivity"/>
         <activity android:name=".activity.order.AppointAbnormalActivity"/>
 
-        <activity android:name=".activity.LocationActivity"/>
         <activity android:name=".activity.setting.UserFeedBackActivity"/>
         <activity android:name=".activity.setting.ClearCacheActivity"/>
         <activity android:name=".activity.setting.SettingActivity"/>

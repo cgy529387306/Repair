@@ -51,7 +51,7 @@ public class SignAbnormalActivity extends BaseActivity implements BaseQuickAdapt
     ImageView ivPicture;
 
     private OrderAbnormalAdapter mAdapter;
-    private String orderId;
+    private String acceptId;
     private String exceptionIds;
     private String path;
 
@@ -63,7 +63,7 @@ public class SignAbnormalActivity extends BaseActivity implements BaseQuickAdapt
     @Override
     public void initView() {
         titleBar.setTitle("签到异常反馈");
-        orderId = getIntent().getStringExtra("orderId");
+        acceptId = getIntent().getStringExtra("acceptId");
         mAdapter = new OrderAbnormalAdapter(new ArrayList<>());
         mAdapter.setOnItemClickListener(this);
         mRvReason.setLayoutManager(new GridLayoutManager(this, 2));
@@ -136,17 +136,17 @@ public class SignAbnormalActivity extends BaseActivity implements BaseQuickAdapt
                 }else {
                     showLoading();
                     HashMap<String, Object> map = new HashMap<>();
-                    map.put("orderId", orderId);
+                    map.put("acceptId", acceptId);
                     map.put("ids", exceptionIds);
                     map.put("shot", path);
                     if (Helper.isNotEmpty(desc)){
                         map.put("fixDesc", desc);
                     }
-                    OkGo.<ResponseData<String>>post(UrlConstant.ORDER_EXEPTION_SIGN)
+                    OkGo.<ResponseData<Object>>post(UrlConstant.ORDER_EXEPTION_SIGN)
                             .upJson(gson.toJson(map))
-                            .execute(new JsonCallback<ResponseData<String>>() {
+                            .execute(new JsonCallback<ResponseData<Object>>() {
                                 @Override
-                                public void onSuccess(ResponseData<String> response) {
+                                public void onSuccess(ResponseData<Object> response) {
                                     dismissLoading();
                                     if (response!=null){
                                         if (response.isSuccess()) {
@@ -160,7 +160,7 @@ public class SignAbnormalActivity extends BaseActivity implements BaseQuickAdapt
                                 }
 
                                 @Override
-                                public void onError(Response<ResponseData<String>> response) {
+                                public void onError(Response<ResponseData<Object>> response) {
                                     super.onError(response);
                                     dismissLoading();
                                 }

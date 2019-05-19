@@ -66,10 +66,10 @@ public class UpdateAlipayActivity extends BaseActivity {
                     return;
                 }
                 showLoading();
-                OkGo.<ResponseData<String>>post(UrlConstant.UPDATE_ALIPAY_ACCOUNT+aliAccount)
-                        .execute(new JsonCallback<ResponseData<String>>() {
+                OkGo.<ResponseData<Object>>post(UrlConstant.UPDATE_ALIPAY_ACCOUNT+aliAccount)
+                        .execute(new JsonCallback<ResponseData<Object>>() {
                                      @Override
-                                     public void onSuccess(ResponseData<String> response) {
+                                     public void onSuccess(ResponseData<Object> response) {
                                          dismissLoading();
                                          if (response!=null){
                                              if (response.isSuccess()){
@@ -85,7 +85,7 @@ public class UpdateAlipayActivity extends BaseActivity {
                                      }
 
                                      @Override
-                                     public void onError(Response<ResponseData<String>> response) {
+                                     public void onError(Response<ResponseData<Object>> response) {
                                          super.onError(response);
                                          dismissLoading();
                                      }

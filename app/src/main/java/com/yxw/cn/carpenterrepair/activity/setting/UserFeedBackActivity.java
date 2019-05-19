@@ -87,11 +87,11 @@ public class UserFeedBackActivity extends BaseActivity {
                         map.put("email", email);
                         map.put("mobile", tel);
                         map.put("feedType", 0);
-                        OkGo.<ResponseData<String>>post(UrlConstant.USER_FEEDBACK)
+                        OkGo.<ResponseData<Object>>post(UrlConstant.USER_FEEDBACK)
                                 .upJson(gson.toJson(map))
-                                .execute(new JsonCallback<ResponseData<String>>() {
+                                .execute(new JsonCallback<ResponseData<Object>>() {
                                     @Override
-                                    public void onSuccess(ResponseData<String> response) {
+                                    public void onSuccess(ResponseData<Object> response) {
                                         if (response!=null){
                                             if (response.isSuccess()){
                                                 toast("反馈成功");
