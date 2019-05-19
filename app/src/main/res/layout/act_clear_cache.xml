@@ -60,7 +60,6 @@
                 android:layout_below="@+id/tv3"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="8dp"
-                android:text="占据手机0.1%存储空间"
                 android:textColor="@color/text_gray"
                 android:textSize="@dimen/text_small" />
 

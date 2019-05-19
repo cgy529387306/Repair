@@ -5,11 +5,14 @@ import android.widget.TextView;
 
 import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
+import com.yxw.cn.carpenterrepair.contast.MessageConstant;
+import com.yxw.cn.carpenterrepair.util.CacheHelper;
+import com.yxw.cn.carpenterrepair.util.EventBusUtil;
+import com.yxw.cn.carpenterrepair.util.ToastUtil;
 import com.yxw.cn.carpenterrepair.view.TitleBar;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import com.yxw.cn.carpenterrepair.util.ToastUtil;
 
 /**
  * 清理缓存
@@ -31,15 +34,17 @@ public class ClearCacheActivity extends BaseActivity {
     @Override
     public void initView() {
         titleBar.setTitle("清理缓存");
+        used.setText(CacheHelper.getCacheSize(this));
     }
 
     @OnClick({ R.id.confirm})
     public void click(View view) {
         switch (view.getId()) {
             case R.id.confirm:
-                used.setText("0MB");
-                afterClear.setText("占据手机0%存储空间");
+                CacheHelper.cleanCache(ClearCacheActivity.this);
                 ToastUtil.show("清理缓存成功！");
+                used.setText(CacheHelper.getCacheSize(this));
+                EventBusUtil.post(MessageConstant.CLEAR_CACHE);
                 break;
         }
 

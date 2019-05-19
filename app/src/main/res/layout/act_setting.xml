@@ -133,6 +133,7 @@
                 android:text="清理缓存" />
 
             <TextView
+                android:id="@+id/tv_cache_size"
                 android:textColor="@color/text_gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -141,7 +142,7 @@
                 android:layout_gravity="center"
                 android:layout_marginRight="10dp"
                 android:textSize="@dimen/text_normal"
-                android:text="11.22MB" />
+                android:text="0.00MB" />
 
             <include layout="@layout/view_line_h" />
 
