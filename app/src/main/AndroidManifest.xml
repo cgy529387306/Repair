@@ -126,7 +126,7 @@
         <activity android:name=".activity.user.ServiceTimeActivity"/>
         <activity android:name=".activity.setting.ComplaintActivity"/>
         <activity android:name=".activity.LookImageActivity"/>
-
+        <activity android:name=".activity.MsgDetailActivity"/>
         <service
             android:name=".service.InitService"
             android:exported="false" />

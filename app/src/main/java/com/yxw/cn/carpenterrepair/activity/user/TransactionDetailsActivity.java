@@ -15,13 +15,11 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.adapter.TransactionDetailsAdapter;
-import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.entity.TradeListData;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
-import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 import com.yxw.cn.carpenterrepair.view.RecycleViewDivider;
 import com.yxw.cn.carpenterrepair.view.TitleBar;
 
@@ -80,9 +78,7 @@ public class TransactionDetailsActivity extends BaseActivity implements OnRefres
                                                  mRefreshLayout.finishLoadMoreWithNoMoreData();
                                              }
                                          }
-                                         mAdapter.notifyDataSetChanged();
                                          mAdapter.setEmptyView(R.layout.empty_data, (ViewGroup) mRecyclerView.getParent());
-                                         EventBusUtil.post(MessageConstant.WORKER_ORDERED_COUNT, mAdapter.getData().size());
                                      } else {
                                          toast(response.getMsg());
                                          if (p == 1) {

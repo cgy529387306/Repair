@@ -128,8 +128,8 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
                 .execute(new JsonCallback<ResponseData<OrderListData>>() {
                     @Override
                     public void onSuccess(ResponseData<OrderListData> response) {
-                        if (response!=null && response.getData()!=null){
-                            if (response.isSuccess()) {
+                        if (response!=null){
+                            if (response.isSuccess() && response.getData()!=null) {
                                 if (p == 1) {
                                     mPage = 2;
                                     mAdapter.setNewData(response.getData().getItems());
@@ -144,9 +144,7 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
                                         mRefreshLayout.finishLoadMoreWithNoMoreData();
                                     }
                                 }
-                                mAdapter.notifyDataSetChanged();
                                 mAdapter.setEmptyView(R.layout.empty_data, (ViewGroup) mRecyclerView.getParent());
-                                EventBusUtil.post(MessageConstant.WORKER_ORDERED_COUNT, mAdapter.getData().size());
                             } else {
                                 toast(response.getMsg());
                                 if (p == 1) {

@@ -10,17 +10,22 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.lzy.okgo.OkGo;
+import com.lzy.okgo.model.Response;
 import com.youth.banner.Banner;
 import com.youth.banner.loader.ImageLoader;
 import com.yxw.cn.carpenterrepair.BaseRefreshFragment;
 import com.yxw.cn.carpenterrepair.R;
+import com.yxw.cn.carpenterrepair.activity.MsgDetailActivity;
 import com.yxw.cn.carpenterrepair.activity.order.MyOrderActivity;
 import com.yxw.cn.carpenterrepair.adapter.HomeMsgAdapter;
 import com.yxw.cn.carpenterrepair.adapter.OrderTypeAdapter;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
+import com.yxw.cn.carpenterrepair.entity.BannerBean;
+import com.yxw.cn.carpenterrepair.entity.BannerListData;
 import com.yxw.cn.carpenterrepair.entity.CurrentUser;
-import com.yxw.cn.carpenterrepair.entity.OrderDetail;
+import com.yxw.cn.carpenterrepair.entity.NoticeListData;
 import com.yxw.cn.carpenterrepair.entity.OrderType;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
@@ -39,7 +44,7 @@ import butterknife.BindView;
  * 首页
  * Created by cgy on 2018/11/25
  */
-public class HomeFragment extends BaseRefreshFragment {
+public class HomeFragment extends BaseRefreshFragment implements BaseQuickAdapter.OnItemClickListener {
 
     @BindView(R.id.titlebar)
     TitleBar titlebar;
@@ -50,7 +55,8 @@ public class HomeFragment extends BaseRefreshFragment {
     private Banner mBanner;
 
     private HomeMsgAdapter mAdapter;
-
+    private int mPage = 2;
+    private boolean isNext = false;
 
 
     @Override
@@ -71,7 +77,7 @@ public class HomeFragment extends BaseRefreshFragment {
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.addItemDecoration(new RecycleViewDivider(LinearLayoutManager.VERTICAL,1,getResources().getColor(R.color.gray_divider)));
-        mAdapter = new HomeMsgAdapter(getImageList());
+        mAdapter = new HomeMsgAdapter(new ArrayList());
         mRecyclerView.setAdapter(mAdapter);
 
         //添加Header
@@ -81,10 +87,7 @@ public class HomeFragment extends BaseRefreshFragment {
         mAdapter.addHeaderView(header);
 
         mGridCate.setAdapter(new OrderTypeAdapter(getActivity(),getOrderTypeList()));
-        mBanner.setImageLoader(new GlideImageLoader());
-        mBanner.setImages(getImageList());
-        mBanner.start();
-
+        mAdapter.setOnItemClickListener(this);
         mGridCate.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -99,12 +102,6 @@ public class HomeFragment extends BaseRefreshFragment {
         });
     }
 
-    @Override
-    public void getData() {
-        super.getData();
-        getLunboData();
-    }
-
     private List<OrderType> getOrderTypeList(){
         List<OrderType> orderTypeList = new ArrayList<>();
         orderTypeList.add(new OrderType(0,R.drawable.icon_orders,"订单池"));
@@ -115,25 +112,27 @@ public class HomeFragment extends BaseRefreshFragment {
         return orderTypeList;
     }
 
-    private List<String> getImageList(){
-        List<String> dataLsit = new ArrayList<>();
-        dataLsit.add("https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1558272884&di=da63d7e99458ed81153d0181b4e9a163&src=http://pic40.photophoto.cn/20160731/1155116428420006_b.jpg");
-        dataLsit.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1558282603949&di=b7d884ed76be39e27be78642397757e2&imgtype=0&src=http%3A%2F%2Fwww.wkgogo.com%2Fuserfiles%2Fzzgg%2Fwk%2Ftask%2Fc%2F1%2F125%2F1%2F1.jpg");
-        dataLsit.add("https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1558272590&di=d83d8fca1a0ff5cd246ff3a23e7b1170&src=http://imgmall.tg.com.cn/group2/M00/70/42/CgooeFn0g_j3ubxeAAj7CpF4_w8737.jpg");
-        return dataLsit;
+    @Override
+    public void getData() {
+        super.getData();
+        getLunboData();
+        getNoticeData(1);
     }
 
     private void getLunboData(){
         Map<String, Object> map = new HashMap<>();
         map.put("pageIndex", 1);
         map.put("pageSize", 10);
-        OkGo.<ResponseData<Object>>post(UrlConstant.GET_LUNBO)
+        OkGo.<ResponseData<BannerListData>>post(UrlConstant.GET_LUNBO)
                 .upJson(gson.toJson(map))
-                .execute(new JsonCallback<ResponseData<Object>>() {
+                .execute(new JsonCallback<ResponseData<BannerListData>>() {
                     @Override
-                    public void onSuccess(ResponseData<Object> response) {
+                    public void onSuccess(ResponseData<BannerListData> response) {
                         if (response!=null){
-                            if (response.isSuccess()){
+                            if (response.isSuccess() && mBanner!=null && response.getData()!=null){
+                                mBanner.setImageLoader(new GlideImageLoader());
+                                mBanner.setImages(response.getData().getItems());
+                                mBanner.start();
                             }else{
                                 toast(response.getMsg());
                             }
@@ -142,22 +141,78 @@ public class HomeFragment extends BaseRefreshFragment {
                 });
     }
 
+    private void getNoticeData(int p){
+        Map<String, Object> map = new HashMap<>();
+        map.put("pageIndex", p);
+        map.put("pageSize", loadCount);
+        OkGo.<ResponseData<NoticeListData>>post(UrlConstant.GET_NOTICE)
+                .upJson(gson.toJson(map))
+                .execute(new JsonCallback<ResponseData<NoticeListData>>() {
+                    @Override
+                    public void onSuccess(ResponseData<NoticeListData> response) {
+                        if (response!=null){
+                            if (response.isSuccess() && response.getData()!=null) {
+                                if (p == 1) {
+                                    mPage = 2;
+                                    mAdapter.setNewData(response.getData().getItems());
+                                    mRefreshLayout.finishRefresh();
+                                } else {
+                                    mAdapter.addData(response.getData().getItems());
+                                    isNext = response.getData().isHasNext();
+                                    if (isNext) {
+                                        mPage++;
+                                        mRefreshLayout.finishLoadMore();
+                                    } else {
+                                        mRefreshLayout.finishLoadMoreWithNoMoreData();
+                                    }
+                                }
+                            } else {
+                                toast(response.getMsg());
+                                if (p == 1) {
+                                    mRefreshLayout.finishRefresh(false);
+                                } else {
+                                    mRefreshLayout.finishLoadMore(false);
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<ResponseData<NoticeListData>> response) {
+                        super.onError(response);
+                        if (p == 1) {
+                            mRefreshLayout.finishRefresh(false);
+                        } else {
+                            mRefreshLayout.finishLoadMore(false);
+                        }
+                    }
+                });
+    }
+
 
     @Override
     public void onRefresh() {
-        mRefreshLayout.finishRefresh(true);
+        super.onRefresh();
+        getNoticeData(1);
     }
 
     @Override
     public void onLoad() {
-        mRefreshLayout.finishLoadMore(true);
+        super.onLoad();
+        getNoticeData(mPage);
     }
 
+    @Override
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        if (mAdapter.getItem(position)!=null){
+            startActivity(MsgDetailActivity.class, mAdapter.getData().get(position));
+        }
+    }
 
     public class GlideImageLoader extends ImageLoader {
         @Override
         public void displayImage(Context context, Object path, ImageView imageView) {
-            ImageUtils.loadImageUrl(imageView,((String)path));
+            ImageUtils.loadImageUrl(imageView,((BannerBean)path).getUrl());
         }
     }
 

@@ -5,7 +5,6 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lzy.okgo.OkGo;
@@ -56,6 +55,8 @@ public class QuickLoginActivity extends BaseActivity {
     @Override
     public void initView() {
         titlebar.setTitle("验证码登录");
+        mEtTel.setText(SpUtil.getStr(SpConstant.LOGIN_MOBILE));
+        mEtTel.setSelection(mEtTel.getText().toString().length());
         mEtTel.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -74,9 +75,6 @@ public class QuickLoginActivity extends BaseActivity {
                 }
             }
         });
-        mEtTel.setText(SpUtil.getStr(SpConstant.LOGIN_MOBILE));
-        mEtTel.setSelection(mEtTel.getText().toString().length());
-
         mCountDownTextView.setNormalText("获取验证码")
                 .setCountDownText("重新获取", "")
                 .setCloseKeepCountDown(false)//关闭页面保持倒计时开关
