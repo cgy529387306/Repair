@@ -2,7 +2,7 @@ package com.yxw.cn.carpenterrepair.activity.main;
 
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.support.v4.app.FragmentManager;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.TextView;
@@ -38,8 +38,7 @@ public class MainActivity extends BaseActivity {
 
     private HomeFragment homeFragment;
     private UserFragment userFragment;
-    private FragmentManager fragmentManager;
-
+    private Fragment currentFragment;
     @Override
     protected int getLayoutResId() {
         return R.layout.act_main;
@@ -47,7 +46,8 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        fragmentManager = getSupportFragmentManager();
+        homeFragment = new HomeFragment();
+        userFragment = new UserFragment();
         showFragment(0);
         boolean isCheck = AppUtil.checkStatus(MainActivity.this);
         if (isCheck){
@@ -60,31 +60,16 @@ public class MainActivity extends BaseActivity {
     }
 
     private void showFragment(int page) {
-        FragmentTransaction ft = fragmentManager.beginTransaction();
-
-        // 想要显示一个fragment,先隐藏所有fragment，防止重叠
-        hideFragments(ft);
         switch (page) {
             case 0:
                 ImmersionBar.with(MainActivity.this).fitsSystemWindows(true).statusBarColor(R.color.white).statusBarDarkFont(true).init();
-                if (homeFragment != null)
-                    ft.show(homeFragment);
-                else {
-                    homeFragment = new HomeFragment();
-                    ft.add(R.id.main_container_content, homeFragment);
-                }
+                switchFragment(homeFragment).commit();
                 break;
             case 1:
                 ImmersionBar.with(MainActivity.this).fitsSystemWindows(true).statusBarColor(R.color.bg_personal).statusBarDarkFont(false).init();
-                if (userFragment != null) {
-                    ft.show(userFragment);
-                } else {
-                    userFragment = new UserFragment();
-                    ft.add(R.id.main_container_content, userFragment);
-                }
+                switchFragment(userFragment).commit();
                 break;
         }
-        ft.commit();
     }
 
     private static final long DOUBLE_CLICK_INTERVAL = 2000;
@@ -99,16 +84,6 @@ public class MainActivity extends BaseActivity {
         }
         finish();
     }
-
-
-    // 当fragment已被实例化，相当于发生过切换，就隐藏起来
-    public void hideFragments(FragmentTransaction ft) {
-        if (homeFragment != null)
-            ft.hide(homeFragment);
-        if (userFragment != null)
-            ft.hide(userFragment);
-    }
-
 
     @OnClick({R.id.tv_work, R.id.tv_personal})
     public void click(View view) {
@@ -169,6 +144,21 @@ public class MainActivity extends BaseActivity {
                 getUserInfo();
                 break;
         }
+    }
+
+    private  FragmentTransaction switchFragment(Fragment targetFragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        if (!targetFragment.isAdded()) {
+            //第一次使用switchFragment()时currentFragment为null，所以要判断一下
+            if (currentFragment != null) {
+                transaction.hide(currentFragment);
+            }
+            transaction.add(R.id.main_container_content, targetFragment,targetFragment.getClass().getName());
+        } else {
+            transaction.hide(currentFragment).show(targetFragment);
+        }
+        currentFragment = targetFragment;
+        return transaction;
     }
 
 

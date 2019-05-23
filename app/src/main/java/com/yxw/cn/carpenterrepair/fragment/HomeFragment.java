@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import com.lzy.okgo.OkGo;
 import com.youth.banner.Banner;
 import com.youth.banner.loader.ImageLoader;
 import com.yxw.cn.carpenterrepair.BaseRefreshFragment;
@@ -17,14 +18,20 @@ import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.activity.order.MyOrderActivity;
 import com.yxw.cn.carpenterrepair.adapter.HomeMsgAdapter;
 import com.yxw.cn.carpenterrepair.adapter.OrderTypeAdapter;
+import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.CurrentUser;
+import com.yxw.cn.carpenterrepair.entity.OrderDetail;
 import com.yxw.cn.carpenterrepair.entity.OrderType;
+import com.yxw.cn.carpenterrepair.entity.ResponseData;
+import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.util.ImageUtils;
 import com.yxw.cn.carpenterrepair.view.RecycleViewDivider;
 import com.yxw.cn.carpenterrepair.view.TitleBar;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 
@@ -92,6 +99,12 @@ public class HomeFragment extends BaseRefreshFragment {
         });
     }
 
+    @Override
+    public void getData() {
+        super.getData();
+        getLunboData();
+    }
+
     private List<OrderType> getOrderTypeList(){
         List<OrderType> orderTypeList = new ArrayList<>();
         orderTypeList.add(new OrderType(0,R.drawable.icon_orders,"订单池"));
@@ -108,6 +121,25 @@ public class HomeFragment extends BaseRefreshFragment {
         dataLsit.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1558282603949&di=b7d884ed76be39e27be78642397757e2&imgtype=0&src=http%3A%2F%2Fwww.wkgogo.com%2Fuserfiles%2Fzzgg%2Fwk%2Ftask%2Fc%2F1%2F125%2F1%2F1.jpg");
         dataLsit.add("https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1558272590&di=d83d8fca1a0ff5cd246ff3a23e7b1170&src=http://imgmall.tg.com.cn/group2/M00/70/42/CgooeFn0g_j3ubxeAAj7CpF4_w8737.jpg");
         return dataLsit;
+    }
+
+    private void getLunboData(){
+        Map<String, Object> map = new HashMap<>();
+        map.put("pageIndex", 1);
+        map.put("pageSize", 10);
+        OkGo.<ResponseData<Object>>post(UrlConstant.GET_LUNBO)
+                .upJson(gson.toJson(map))
+                .execute(new JsonCallback<ResponseData<Object>>() {
+                    @Override
+                    public void onSuccess(ResponseData<Object> response) {
+                        if (response!=null){
+                            if (response.isSuccess()){
+                            }else{
+                                toast(response.getMsg());
+                            }
+                        }
+                    }
+                });
     }
 
 
