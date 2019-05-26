@@ -21,7 +21,6 @@ import com.yxw.cn.carpenterrepair.entity.LoginInfo;
 import com.yxw.cn.carpenterrepair.entity.MessageEvent;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
-import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 import com.yxw.cn.carpenterrepair.util.SpUtil;
 
 import java.util.HashMap;
@@ -102,7 +101,6 @@ public class LoginActivity extends BaseActivity {
                                              headers.put("Authorization", "Bearer "+response.getData().getToken());
                                              OkGo.getInstance().addCommonHeaders(headers);
                                              startActivityFinish(MainActivity.class);
-                                             EventBusUtil.post(MessageConstant.LOGIN);
                                          }else {
                                              toast(response.getMsg());
                                          }
@@ -135,8 +133,6 @@ public class LoginActivity extends BaseActivity {
     public void onEvent(MessageEvent event) {
         super.onEvent(event);
         switch (event.getId()) {
-            case MessageConstant.LOGIN:
-                break;
             case MessageConstant.REGISTER:
                 initView();
                 break;

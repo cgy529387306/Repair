@@ -2,7 +2,6 @@ package com.yxw.cn.carpenterrepair.contast;
 
 public class MessageConstant {
 
-    public final static String LOGIN = "LOGIN";
     public final static String REGISTER= "REGISTER";
     public final static String LOGOUT= "LOGOUT";
     public final static String LOCATION= "LOCATION";

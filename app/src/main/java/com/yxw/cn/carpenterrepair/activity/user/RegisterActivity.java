@@ -1,7 +1,5 @@
 package com.yxw.cn.carpenterrepair.activity.user;
 
-import android.content.Intent;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -19,7 +17,6 @@ import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.SpConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
-import com.yxw.cn.carpenterrepair.entity.MessageEvent;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.util.AppUtil;
@@ -28,8 +25,6 @@ import com.yxw.cn.carpenterrepair.util.SpUtil;
 import com.yxw.cn.carpenterrepair.view.CountDownTextView;
 import com.yxw.cn.carpenterrepair.view.TitleBar;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -169,12 +164,6 @@ public class RegisterActivity extends BaseActivity {
                                                      SpUtil.putStr(SpConstant.LOGIN_MOBILE, mEtPhone.getText().toString().trim());
                                                      EventBusUtil.post(MessageConstant.REGISTER);
                                                      finish();
-//                                                     Intent intent = new Intent(RegisterActivity.this, ChooseCategoryActivity.class);
-//                                                     Bundle bundle = new Bundle();
-//                                                     bundle.putSerializable("cateList", (Serializable) new ArrayList<String>());
-//                                                     bundle.putBoolean("canBack",false);
-//                                                     intent.putExtras(bundle);
-//                                                     startActivity(intent);
                                                  }else{
                                                      toast(response.getMsg());
                                                  }
@@ -193,12 +182,4 @@ public class RegisterActivity extends BaseActivity {
         }
     }
 
-
-    @Override
-    public void onEvent(MessageEvent event) {
-        super.onEvent(event);
-        switch (event.getId()) {
-            case MessageConstant.LOGIN:
-        }
-    }
 }

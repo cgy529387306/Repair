@@ -13,16 +13,13 @@ import com.lzy.okgo.model.Response;
 import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.activity.main.MainActivity;
-import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.SpConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 import com.yxw.cn.carpenterrepair.entity.LoginInfo;
-import com.yxw.cn.carpenterrepair.entity.MessageEvent;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.util.AppUtil;
-import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 import com.yxw.cn.carpenterrepair.util.SpUtil;
 import com.yxw.cn.carpenterrepair.view.CountDownTextView;
 import com.yxw.cn.carpenterrepair.view.TitleBar;
@@ -152,7 +149,6 @@ public class QuickLoginActivity extends BaseActivity {
                                                      headers.put("Authorization", "Bearer "+response.getData().getToken());
                                                      OkGo.getInstance().addCommonHeaders(headers);
                                                      startActivityFinish(MainActivity.class);
-                                                     EventBusUtil.post(MessageConstant.LOGIN);
                                                  }else {
                                                      toast(response.getMsg());
                                                  }
@@ -172,13 +168,4 @@ public class QuickLoginActivity extends BaseActivity {
         }
     }
 
-    @Override
-    public void onEvent(MessageEvent event) {
-        super.onEvent(event);
-        switch (event.getId()) {
-            case MessageConstant.LOGIN:
-                finish();
-                break;
-        }
-    }
 }

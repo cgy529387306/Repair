@@ -63,6 +63,6 @@ public class UrlConstant {
 
     public final static String H5_URL_ABOUT = "http://39.98.73.166:8080/center/about_us.html";
     public final static String H5_URL_HELP = "http://39.98.73.166:8080/center/help.html";
-    public final static String CUSTOMER_TEL = "18650480850";
+    public final static String CUSTOMER_TEL = "0591-8888888";
 
 }
