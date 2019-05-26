@@ -88,7 +88,7 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/r3"
+            android:id="@+id/rl_rate"
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:background="#ffffff"

@@ -23,6 +23,16 @@ import java.io.FileOutputStream;
  */
 public class ImageUtils {
 
+    public static File getSaveFrontFile(Context context) {
+        File file = new File(context.getFilesDir(), "idCard_front.jpg");
+        return file;
+    }
+
+    public static File getSaveBackFile(Context context) {
+        File file = new File(context.getFilesDir(), "idCard_back.jpg");
+        return file;
+    }
+
     public static String saveBitMapToFile(Context context, String fileName, Bitmap bitmap) {
         if(null == context || null == bitmap) {
             return null;

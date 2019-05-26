@@ -5,24 +5,25 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
     <!-- 这个权限用于进行网络定位-->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <!-- 这个权限用于访问GPS定位-->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <!-- 用于访问wifi网络信息，wifi信息会用于进行网络定位-->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <!-- 获取运营商信息，用于支持提供运营商信息相关的接口-->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- 这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位-->
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"></uses-permission>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <!-- 用于读取手机当前的状态-->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <!-- 写入扩展存储，向扩展卡写入数据，用于写入离线定位数据-->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- 访问网络，网络定位需要上网-->
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- SD卡读取权限，用户写入离线定位数据-->
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
-        tools:ignore="ProtectedPermissions"></uses-permission>
+    <uses-permission
+        android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
+        tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS"
         tools:ignore="ProtectedPermissions" />
@@ -31,46 +32,18 @@
 
     <application
         android:name=".BaseApplication"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        tools:replace="icon"
-        android:theme="@style/AppTheme">
+        tools:replace="icon,android:allowBackup"
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
 
-        <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.yxw.cn.carpenterrepair.FileProvider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/rc_file_path" />
-        </provider>
 
-        <!--会话界面-->
-        <activity
-            android:name="com.yxw.cn.carpenterrepair.activity.setting.ConversationActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize">
-
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data
-                    android:host="com.yxw.cn.carpenterrepair"
-                    android:pathPrefix="/conversation/"
-                    android:scheme="rong" />
-            </intent-filter>
-        </activity>
-
-        //添加百度地图AK
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="9upQ0vxUKi75RMM2giGzTKSwkruch0h3" >
-        </meta-data>
+            android:value="9upQ0vxUKi75RMM2giGzTKSwkruch0h3" />
 
         <service android:name="com.baidu.location.f" android:enabled="true" android:process=":remote"> </service>
 
@@ -120,13 +93,14 @@
         <activity android:name=".activity.setting.ClearCacheActivity"/>
         <activity android:name=".activity.setting.SettingActivity"/>
         <activity android:name=".activity.setting.EvaluationActivity"/>
-
+        <activity android:name=".activity.setting.AboutActivity"/>
         <activity android:name=".activity.setting.CustomerServiceActivity"/>
-        <activity android:name=".activity.WebActivity"/>
-        <activity android:name=".activity.user.ServiceTimeActivity"/>
         <activity android:name=".activity.setting.ComplaintActivity"/>
+
+        <activity android:name=".activity.WebActivity"/>
         <activity android:name=".activity.LookImageActivity"/>
         <activity android:name=".activity.MsgDetailActivity"/>
+        <activity android:name=".activity.MsgListActivity"/>
         <service
             android:name=".service.InitService"
             android:exported="false" />

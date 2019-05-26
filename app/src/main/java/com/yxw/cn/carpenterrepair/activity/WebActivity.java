@@ -14,6 +14,7 @@ import android.webkit.WebViewClient;
 import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.entity.CurrentUser;
+import com.yxw.cn.carpenterrepair.view.ProgressWebView;
 import com.yxw.cn.carpenterrepair.view.TitleBar;
 
 import java.util.HashMap;
@@ -28,7 +29,7 @@ public class WebActivity extends BaseActivity {
     @BindView(R.id.titlebar)
     TitleBar titleBar;
     @BindView(R.id.webView)
-    WebView mWebView;
+    ProgressWebView mWebView;
 
     private String url;
 

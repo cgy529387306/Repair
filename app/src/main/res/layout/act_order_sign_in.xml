@@ -52,7 +52,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:text="(在签到范围内)"
+                    android:text="(在签到范围外，不能签到)"
                     android:textColor="#666666"
                     android:textSize="12sp" />
             </LinearLayout>

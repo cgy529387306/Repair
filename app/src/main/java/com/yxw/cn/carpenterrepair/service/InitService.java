@@ -7,9 +7,14 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.multidex.MultiDex;
+import android.util.Log;
 
 import com.baidu.mapapi.CoordType;
 import com.baidu.mapapi.SDKInitializer;
+import com.baidu.ocr.sdk.OCR;
+import com.baidu.ocr.sdk.OnResultListener;
+import com.baidu.ocr.sdk.exception.OCRError;
+import com.baidu.ocr.sdk.model.AccessToken;
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cookie.CookieJarImpl;
@@ -33,7 +38,6 @@ import com.yxw.cn.carpenterrepair.crash.CrashHandler;
 import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
-import com.yxw.cn.carpenterrepair.util.AppUtil;
 import com.yxw.cn.carpenterrepair.util.Helper;
 import com.yxw.cn.carpenterrepair.util.LocationUtils;
 
@@ -53,6 +57,10 @@ public class InitService extends IntentService {
     public Gson mGson = new Gson();
 
     public static final int REFRESH_TIME = 1*60*60*1000;
+
+    public static boolean hasGotToken = false;
+
+    public static String orcToken;
     /**
      * Instantiates a new Init service.
      */
@@ -108,11 +116,27 @@ public class InitService extends IntentService {
         OkGo.getInstance().setOkHttpClient(builder.build());
         Logger.addLogAdapter(new AndroidLogAdapter());
         CrashHandler.getInstance().init(BaseApplication.getInstance());
-        if (getApplicationInfo().packageName.equals(AppUtil.getCurProcessName(BaseApplication.getInstance())) ||
-                "io.rong.push".equals(AppUtil.getCurProcessName(BaseApplication.getInstance()))) {
-
-        }
+        initAccessTokenWithAkSk();
         setTimerTask();
+    }
+
+    /**
+     * 用明文ak，sk初始化
+     */
+    private void initAccessTokenWithAkSk() {
+        OCR.getInstance(this).initAccessTokenWithAkSk(new OnResultListener<AccessToken>() {
+            @Override
+            public void onResult(AccessToken result) {
+                hasGotToken = true;
+                orcToken = result.getAccessToken();
+            }
+
+            @Override
+            public void onError(OCRError error) {
+                error.printStackTrace();
+                Log.e("AK，SK方式获取token失败:",error.getMessage());
+            }
+        }, getApplicationContext(),  UrlConstant.AK, UrlConstant.SK);
     }
 
     public void refreshToken(){

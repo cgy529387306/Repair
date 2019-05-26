@@ -20,18 +20,15 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.model.Response;
 import com.yxw.cn.carpenterrepair.BaseApplication;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.activity.user.IdCardInfoActivity;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
-import com.yxw.cn.carpenterrepair.entity.Abnormal;
 import com.yxw.cn.carpenterrepair.entity.Category;
 import com.yxw.cn.carpenterrepair.entity.CityBean;
 import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 import com.yxw.cn.carpenterrepair.entity.LoginInfo;
 import com.yxw.cn.carpenterrepair.entity.OrderItem;
-import com.yxw.cn.carpenterrepair.entity.QueryListByMark;
 import com.yxw.cn.carpenterrepair.entity.ReasonBean;
 import com.yxw.cn.carpenterrepair.entity.RegionTree;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
@@ -43,19 +40,16 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class AppUtil {
 
-    public static List<QueryListByMark> timeList = new ArrayList<>();
     public static List<RegionTree> regionTreeList = new ArrayList<>();
     public static List<Category> categoryItemList = new ArrayList<>();
     public static List<CityBean> cityItemList = new ArrayList<>();
     public static List<ReasonBean> signReasonList = new ArrayList<>();
     public static List<ReasonBean> reservationReasonList = new ArrayList<>();
-    public static List<Abnormal> categoryItemList0 = new ArrayList<>();
     private static Gson gson = new Gson();
 
     public static String getVerName() {
@@ -177,28 +171,6 @@ public class AppUtil {
         Pattern p = Pattern.compile("^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$");
         Matcher m = p.matcher(str);
         return m.matches();
-    }
-
-    public static void initTimeData() {
-        Map<String, String> map = new HashMap<>();
-        map.put("mark", "ORDER_SEARCH_FRAME");
-        OkGo.<ResponseData<List<QueryListByMark>>>post(UrlConstant.QUERT_LIST_BY_MARK)
-                .upJson(gson.toJson(map))
-                .execute(new JsonCallback<ResponseData<List<QueryListByMark>>>() {
-
-                    @Override
-                    public void onSuccess(ResponseData<List<QueryListByMark>> response) {
-                        if (response.getData() != null && response.getData().size() > 0) {
-                            timeList.clear();
-                            timeList.addAll(response.getData());
-                        }
-                    }
-
-                    @Override
-                    public void onError(Response<ResponseData<List<QueryListByMark>>> response) {
-                        super.onError(response);
-                    }
-                });
     }
 
     public static void initRegionTreeData() {

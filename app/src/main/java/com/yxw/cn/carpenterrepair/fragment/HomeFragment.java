@@ -68,13 +68,6 @@ public class HomeFragment extends BaseRefreshFragment implements BaseQuickAdapte
     protected void initView() {
         titlebar.setTitle("工作台");
         titlebar.setLeftVisible(false);
-        titlebar.addAction(new TitleBar.ImageAction(R.drawable.icon_remind) {
-            @Override
-            public void performAction(View view) {
-
-            }
-        });
-
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.addItemDecoration(new RecycleViewDivider(LinearLayoutManager.VERTICAL,1,getResources().getColor(R.color.gray_divider)));
         mAdapter = new HomeMsgAdapter(new ArrayList());

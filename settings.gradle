@@ -1,1 +1,1 @@
-include ':app', ':IMKit', ':IMLib', ':lib'
+include ':app', ':ocr_ui'

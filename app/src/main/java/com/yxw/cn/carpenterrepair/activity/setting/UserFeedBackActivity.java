@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
+import com.lzy.okgo.model.Response;
 import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
@@ -87,11 +88,13 @@ public class UserFeedBackActivity extends BaseActivity {
                         map.put("email", email);
                         map.put("mobile", tel);
                         map.put("feedType", 0);
+                        showLoading();
                         OkGo.<ResponseData<Object>>post(UrlConstant.USER_FEEDBACK)
                                 .upJson(gson.toJson(map))
                                 .execute(new JsonCallback<ResponseData<Object>>() {
                                     @Override
                                     public void onSuccess(ResponseData<Object> response) {
+                                        dismissLoading();
                                         if (response!=null){
                                             if (response.isSuccess()){
                                                 toast("反馈成功");
@@ -100,6 +103,12 @@ public class UserFeedBackActivity extends BaseActivity {
                                                 toast(response.getMsg());
                                             }
                                         }
+                                    }
+
+                                    @Override
+                                    public void onError(Response<ResponseData<Object>> response) {
+                                        super.onError(response);
+                                        dismissLoading();
                                     }
                                 });
                 }

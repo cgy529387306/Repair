@@ -3,20 +3,8 @@ package com.yxw.cn.carpenterrepair.contast;
 public class UrlConstant {
 
     public final static int mRoleSign = 1;  // 1工程师端 3服务商端
-
-    public final static String URL_SHOPPING = "http://47.98.53.48:8080/mall/index";
-
-//    public final static String BASE_URL = "http://result.eolinker.com/LXY3SzS37282f67e2e5a56f813e0030bf70d292f0f69e16?uri=";
-    public final static String BASE_FILE_DOMIN = "http://114.115.137.33:880/";
-//    public final static String BASE_DOMIN = "http://114.115.137.33:80";
-    public final static String BASE_DOMIN = "http://39.98.73.166:8080";
-//    public final static String BASE_URL = BASE_DOMIN+"platform";
-//    public final static String BASE_URL = BASE_DOMIN+"/jxdj";
-    public final static String BASE_URL = BASE_DOMIN;
-//    public final static String BASE_URL = "http://47.98.53.48:8080";
-//    public final static String BASE_URL = "http://8080.port.doublev.cn";
-//    public final static String BASE_URL2 = "http://47.98.53.48:8080";
-
+    public final static String AK = "YZxIz9BCNyejHURWGXHTTG1F";
+    public final static String SK = "Ti8CVA67sykNwX6wYUbne1e5jozP427O";
 
     public final static String BASE_USER = "http://114.115.184.217:28010";
     public final static String BASE_SERVICE = "http://114.115.184.217:28020";
@@ -67,18 +55,14 @@ public class UrlConstant {
     public final static String ORDER_DETAIL_DJD = BASE_USER + "/ms60/api/fix/order/djdOrderDetails/";//查询订单详情信息(未接单的订单) orderId
     public final static String ORDER_DETAIL_YFP = BASE_USER + "/ms60/api/fix/order/yfpOrderDetails/";//查询订单详情信息（已接单或已分派后的订单）acceptId
 
-    public final static String GET_REGION_TREE = BASE_URL + "/api/region/tree";
-    public final static String GET_SERVICE_FEE = BASE_URL + "/api/region/serviceFee";
-    public final static String ORDER = BASE_URL + "/api/fix/order/submit";
 
 
 
+    public final static String USER_EVALUATE = BASE_USER + "/api/fix/userOrder/evaluate";
+    public final static String USER_COMPLAIN = BASE_USER + "/api/fix/userOrder/complain";
 
-    public final static String USER_EVALUATE = BASE_URL + "/api/fix/userOrder/evaluate";
-    public final static String USER_COMPLAIN = BASE_URL + "/api/fix/userOrder/complain";
-    public final static String QUERT_LIST_BY_MARK = BASE_URL + "/api/dicts/queryListByMarkWithAll";//通用 - 根据标识mark,获取数据字典
-    public final static String EDIT_TRAIT = BASE_URL + "/api/fix/shopUser/editTrait";//用户 - 个人资料-修改常驻地点和服务时间
-    public final static String RONG_CLOUD_TOKEN = BASE_URL + "/api/rongCloud/getToken";//3010 - 通用 - 融云即时通讯（佳信客服）-获取Token
-    public final static String RESERVATION_TIME = BASE_URL + "/api/fix/workerOrder/reservation";//2020 - 维修人员 - 预约上门时间
+    public final static String H5_URL_ABOUT = "http://39.98.73.166:8080/center/about_us.html";
+    public final static String H5_URL_HELP = "http://39.98.73.166:8080/center/help.html";
+    public final static String CUSTOMER_TEL = "18650480850";
 
 }

@@ -1,13 +1,17 @@
 package com.yxw.cn.carpenterrepair.fragment;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.TextView;
 
-import com.lzy.okgo.OkGo;
-import com.orhanobut.logger.Logger;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.yxw.cn.carpenterrepair.BaseFragment;
 import com.yxw.cn.carpenterrepair.R;
+import com.yxw.cn.carpenterrepair.activity.MsgListActivity;
 import com.yxw.cn.carpenterrepair.activity.WebActivity;
 import com.yxw.cn.carpenterrepair.activity.setting.SettingActivity;
 import com.yxw.cn.carpenterrepair.activity.setting.UserFeedBackActivity;
@@ -18,18 +22,12 @@ import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 import com.yxw.cn.carpenterrepair.entity.LoginInfo;
 import com.yxw.cn.carpenterrepair.entity.MessageEvent;
-import com.yxw.cn.carpenterrepair.entity.ResponseData3;
-import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.util.AppUtil;
 import com.yxw.cn.carpenterrepair.util.Helper;
-
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
-import io.rong.imkit.RongIM;
-import io.rong.imlib.RongIMClient;
 
 /**
  * 用户中心
@@ -73,7 +71,7 @@ public class UserFragment extends BaseFragment {
     }
 
 
-    @OnClick({R.id.ll_info, R.id.ll_withdrawal, R.id.tv_contact, R.id.tv_help, R.id.tv_feedback,R.id.tv_join,R.id.img_setting})
+    @OnClick({R.id.ll_info, R.id.ll_withdrawal, R.id.tv_contact, R.id.tv_help, R.id.tv_feedback,R.id.tv_join,R.id.img_setting,R.id.iv_msg})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_setting:
@@ -83,19 +81,32 @@ public class UserFragment extends BaseFragment {
                 startActivity(PersonInfoActivity.class);
                 break;
             case R.id.ll_withdrawal:
-                Bundle walletBundle = new Bundle();
-                walletBundle.putString("title", "钱包");
-                walletBundle.putString("carryAmount",mTvCarryAmount.getText().toString());
-                walletBundle.putString("deposit",mTvDeposit.getText().toString());
-                walletBundle.putString("settlementAmount",mTvSettlementAmount.getText().toString());
-                startActivity(WalletActivity.class, walletBundle);
+                if(CurrentUser.getInstance().isLogin() && CurrentUser.getInstance().getIdCardStatus()==3){
+                    Bundle walletBundle = new Bundle();
+                    walletBundle.putString("title", "钱包");
+                    walletBundle.putString("carryAmount",mTvCarryAmount.getText().toString());
+                    walletBundle.putString("deposit",mTvDeposit.getText().toString());
+                    walletBundle.putString("settlementAmount",mTvSettlementAmount.getText().toString());
+                    startActivity(WalletActivity.class, walletBundle);
+                }else{
+                    toast("工程师身份审核未通过!");
+                }
                 break;
             case R.id.tv_contact:
-//                startActivity(ConversationActivity.class);
+                new MaterialDialog.Builder(getActivity()).title("联系客服").content("确认拨打客服电话:"+UrlConstant.CUSTOMER_TEL+"?")
+                        .positiveText("确定").onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        Intent intent = new Intent(Intent.ACTION_DIAL);
+                        Uri data = Uri.parse("tel:" + UrlConstant.CUSTOMER_TEL);
+                        intent.setData(data);
+                        startActivity(intent);
+                    }
+                }).negativeText("取消").show();
                 break;
             case R.id.tv_help:
                 Bundle webBundle = new Bundle();
-                webBundle.putString("url", "http://jx.bdelay.com/worker/system/help.html");
+                webBundle.putString("url", UrlConstant.H5_URL_HELP);
                 webBundle.putString("title", "帮助中心");
                 startActivity(WebActivity.class, webBundle);
                 break;
@@ -103,7 +114,13 @@ public class UserFragment extends BaseFragment {
                 startActivity(UserFeedBackActivity.class);
                 break;
             case R.id.tv_join:
-//                startActivity(UserFeedBackActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("url", UrlConstant.H5_URL_ABOUT);
+                bundle.putString("title", "加入我们");
+                startActivity(WebActivity.class, bundle);
+                break;
+            case R.id.iv_msg:
+                startActivity(MsgListActivity.class);
                 break;
         }
     }
@@ -118,62 +135,4 @@ public class UserFragment extends BaseFragment {
         }
     }
 
-
-    private void getRongCloudToken(Map<String, String> map) {
-        Logger.d("getRongCloudToken");
-        OkGo.<ResponseData3>post(UrlConstant.RONG_CLOUD_TOKEN)
-                .upJson(gson.toJson(map))
-                .execute(new JsonCallback<ResponseData3>() {
-                             @Override
-                             public void onSuccess(ResponseData3 response) {
-                                 connect(response.getToken());
-                             }
-                         }
-                );
-    }
-
-    /**
-     * <p>连接服务器，在整个应用程序全局，只需要调用一次，需在 {@link #} 之后调用。</p>
-     * <p>如果调用此接口遇到连接失败，SDK 会自动启动重连机制进行最多10次重连，分别是1, 2, 4, 8, 16, 32, 64, 128, 256, 512秒后。
-     * 在这之后如果仍没有连接成功，还会在当检测到设备网络状态变化时再次进行重连。</p>
-     *
-     * @param token 从服务端获取的用户身份令牌（Token）。
-     * @return RongIM  客户端核心类的实例。
-     */
-    private void connect(String token) {
-        Logger.d("connect");
-        if (getContext().getApplicationInfo().packageName.equals(AppUtil.getCurProcessName(getContext().getApplicationContext()))) {
-            Logger.d("RongIM connect");
-
-            RongIM.connect(token, new RongIMClient.ConnectCallback() {
-
-                /**
-                 * Token 错误。可以从下面两点检查 1.  Token 是否过期，如果过期您需要向 App Server 重新请求一个新的 Token
-                 *                  2.  token 对应的 appKey 和工程里设置的 appKey 是否一致
-                 */
-                @Override
-                public void onTokenIncorrect() {
-                    Logger.d("onTokenIncorrect");
-                }
-
-                /**
-                 * 连接融云成功
-                 * @param userid 当前 token 对应的用户 id
-                 */
-                @Override
-                public void onSuccess(String userid) {
-                    Logger.d("onSuccess: " + userid);
-                }
-
-                /**
-                 * 连接融云失败
-                 * @param errorCode 错误码，可到官网 查看错误码对应的注释
-                 */
-                @Override
-                public void onError(RongIMClient.ErrorCode errorCode) {
-                    Logger.d("onError: " + errorCode.getValue() + " " + errorCode.getMessage());
-                }
-            });
-        }
-    }
 }
