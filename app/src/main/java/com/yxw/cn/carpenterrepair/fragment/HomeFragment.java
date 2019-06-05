@@ -114,17 +114,17 @@ public class HomeFragment extends BaseRefreshFragment implements BaseQuickAdapte
 
     private void getLunboData(){
         Map<String, Object> map = new HashMap<>();
-        map.put("pageIndex", 1);
-        map.put("pageSize", 10);
-        OkGo.<ResponseData<BannerListData>>post(UrlConstant.GET_LUNBO)
+        map.put("place", 1);//图片所属位置0：用户端 1：工程师端 2：服务商端，例:0、1、2
+        map.put("site", 2);//图片位置1：启动页 2：工作台轮播
+        OkGo.<ResponseData<List<BannerBean>>>post(UrlConstant.GET_LUNBO)
                 .upJson(gson.toJson(map))
-                .execute(new JsonCallback<ResponseData<BannerListData>>() {
+                .execute(new JsonCallback<ResponseData<List<BannerBean>>>() {
                     @Override
-                    public void onSuccess(ResponseData<BannerListData> response) {
+                    public void onSuccess(ResponseData<List<BannerBean>> response) {
                         if (response!=null){
                             if (response.isSuccess() && mBanner!=null && response.getData()!=null){
                                 mBanner.setImageLoader(new GlideImageLoader());
-                                mBanner.setImages(response.getData().getItems());
+                                mBanner.setImages(response.getData());
                                 mBanner.start();
                             }else{
                                 toast(response.getMsg());
@@ -205,7 +205,7 @@ public class HomeFragment extends BaseRefreshFragment implements BaseQuickAdapte
     public class GlideImageLoader extends ImageLoader {
         @Override
         public void displayImage(Context context, Object path, ImageView imageView) {
-            ImageUtils.loadImageUrl(imageView,((BannerBean)path).getUrl());
+            ImageUtils.loadImageUrl(imageView,((BannerBean)path).getPath());
         }
     }
 
