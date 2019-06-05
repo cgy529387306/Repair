@@ -75,6 +75,7 @@ public class CurrentUser extends LoginInfo{
             me.setDeposit(entity.getDeposit());
             me.setSettlementAmount(entity.getSettlementAmount());
             me.setBindingCode(entity.getBindingCode());
+            me.setIsRest(entity.getIsRest());
             json = JsonHelper.toJson(me);
             born = me != null;
         }

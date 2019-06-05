@@ -1,6 +1,7 @@
 package com.yxw.cn.carpenterrepair.fragment;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,6 +10,8 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.model.Response;
 import com.yxw.cn.carpenterrepair.BaseFragment;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.activity.MsgListActivity;
@@ -22,8 +25,14 @@ import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 import com.yxw.cn.carpenterrepair.entity.LoginInfo;
 import com.yxw.cn.carpenterrepair.entity.MessageEvent;
+import com.yxw.cn.carpenterrepair.entity.ResponseData;
+import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.util.AppUtil;
+import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 import com.yxw.cn.carpenterrepair.util.Helper;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -47,6 +56,8 @@ public class UserFragment extends BaseFragment {
     TextView mTvDeposit;
     @BindView(R.id.tv_settlement_amount)
     TextView mTvSettlementAmount;
+    @BindView(R.id.tv_user_state)
+    TextView mTvState;
 
     @Override
     protected int getLayout() {
@@ -67,13 +78,21 @@ public class UserFragment extends BaseFragment {
             mTvCarryAmount.setText(loginInfo.getCarryAmount());
             mTvDeposit.setText(loginInfo.getDeposit());
             mTvSettlementAmount.setText(loginInfo.getSettlementAmount());
+            Drawable drawableTop = getResources().getDrawable(loginInfo.getIsRest()==1?R.drawable.icon_rest:R.drawable.icon_work);
+            drawableTop.setBounds(0, 0, drawableTop.getMinimumWidth(), drawableTop.getMinimumHeight());
+            mTvState.setCompoundDrawablesWithIntrinsicBounds(null,
+                    drawableTop, null, null);
+            mTvState.setText(loginInfo.getIsRest()==1?"休息中":"工作中");
         }
     }
 
 
-    @OnClick({R.id.ll_info, R.id.ll_withdrawal, R.id.tv_contact, R.id.tv_help, R.id.tv_feedback,R.id.tv_join,R.id.img_setting,R.id.iv_msg})
+    @OnClick({R.id.tv_user_state,R.id.ll_info, R.id.ll_withdrawal, R.id.tv_contact, R.id.tv_help, R.id.tv_feedback,R.id.tv_join,R.id.img_setting,R.id.iv_msg})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.tv_user_state:
+                doChangeState();
+                break;
             case R.id.img_setting:
                 startActivity(SettingActivity.class);
                 break;
@@ -133,6 +152,34 @@ public class UserFragment extends BaseFragment {
                 notifyInfo();
                 break;
         }
+    }
+
+    private void doChangeState(){
+        showLoading();
+        Map<String, String> map = new HashMap<>();
+        int state = CurrentUser.getInstance().getIsRest()==0?1:0;
+        OkGo.<ResponseData<Object>>post(UrlConstant.CHANGE_USER_STATE+state)
+                .upJson(gson.toJson(map))
+                .execute(new JsonCallback<ResponseData<Object>>() {
+                             @Override
+                             public void onSuccess(ResponseData<Object> response) {
+                                 dismissLoading();
+                                 if (response!=null){
+                                     if (response.isSuccess()) {
+                                         EventBusUtil.post(MessageConstant.NOTIFY_GET_INFO);
+                                     }else{
+                                         toast(response.getMsg());
+                                     }
+                                 }
+                             }
+
+                             @Override
+                             public void onError(Response<ResponseData<Object>> response) {
+                                 super.onError(response);
+                                 dismissLoading();
+                             }
+                         }
+                );
     }
 
 }
