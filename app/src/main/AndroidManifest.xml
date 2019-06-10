@@ -38,7 +38,8 @@
         android:supportsRtl="true"
         tools:replace="icon,android:allowBackup"
         android:theme="@style/AppTheme"
-        tools:ignore="GoogleAppIndexingWarning">
+        android:usesCleartextTraffic="true"
+        tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
 
 
         <meta-data
