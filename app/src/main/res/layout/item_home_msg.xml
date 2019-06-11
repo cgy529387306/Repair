@@ -33,6 +33,8 @@
         android:layout_height="wrap_content"
         android:textColor="#C1C1C1"
         android:layout_marginTop="10dp"
+        android:maxLines="3"
+        android:ellipsize="end"
         android:text="您的账号昨天转入150元，戳我查看详细~"
         android:textSize="12sp"/>
 </LinearLayout>
