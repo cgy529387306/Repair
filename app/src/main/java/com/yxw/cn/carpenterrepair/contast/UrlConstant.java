@@ -6,8 +6,8 @@ public class UrlConstant {
     public final static String AK = "YZxIz9BCNyejHURWGXHTTG1F";
     public final static String SK = "Ti8CVA67sykNwX6wYUbne1e5jozP427O";
 
-    public final static String BASE_USER = "http://114.115.184.217:28010";
-    public final static String BASE_SERVICE = "http://114.115.184.217:28020";
+    public final static String BASE_USER = "http://39.98.73.166:28010";
+    public final static String BASE_SERVICE = "http://39.98.73.166:28020";
 
     public final static String LOGIN = BASE_USER + "/gateway/app/api/loginByPwd";
     public final static String QUICK_LOGIN = BASE_USER + "/gateway/app/api/loginByCode";
