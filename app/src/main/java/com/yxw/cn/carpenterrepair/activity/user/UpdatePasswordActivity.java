@@ -82,7 +82,7 @@ public class UpdatePasswordActivity extends BaseActivity {
                 } else {
                     showLoading();
                     Map<String, String> map = new HashMap<>();
-                    map.put("oldPassword", oldPassword.getText().toString().trim());
+                    map.put("password", oldPassword.getText().toString().trim());
                     map.put("newPassword", newPassword.getText().toString().trim());
                     OkGo.<ResponseData<Object>>post(UrlConstant.MODIFY_PASSWORD)
                             .upJson(gson.toJson(map))
