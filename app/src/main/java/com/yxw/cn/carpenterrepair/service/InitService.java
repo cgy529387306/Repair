@@ -119,6 +119,7 @@ public class InitService extends IntentService {
         Logger.addLogAdapter(new AndroidLogAdapter());
         CrashHandler.getInstance().init(BaseApplication.getInstance());
         initAccessTokenWithAkSk();
+        LocationUtils.instance().startLocation();
         setTimerTask();
     }
 
