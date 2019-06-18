@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Point;
 import android.os.Build;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Display;
 import android.view.KeyCharacterMap;
@@ -22,6 +23,7 @@ import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.yxw.cn.carpenterrepair.BaseApplication;
 import com.yxw.cn.carpenterrepair.R;
+import com.yxw.cn.carpenterrepair.activity.user.ChooseCategoryActivity;
 import com.yxw.cn.carpenterrepair.activity.user.IdCardInfoActivity;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.Category;
@@ -75,15 +77,18 @@ public class AppUtil {
         return versionCode;
     }
 
-    public static boolean checkStatus(Context context){
+    public static void checkStatus(Context context){
         LoginInfo loginInfo = CurrentUser.getInstance();
         Intent intent;
         if(loginInfo.getIdCardStatus() == 0 || loginInfo.getIdCardStatus() == 2){
             intent = new Intent(context,IdCardInfoActivity.class);
             context.startActivity(intent);
-            return false;
-        }else {
-            return true;
+        }else if (TextUtils.isEmpty(loginInfo.getCategory())){
+            intent = new Intent(context,ChooseCategoryActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("cateList", new ArrayList<>());
+            bundle.putBoolean("canBack",true);
+            context.startActivity(intent);
         }
     }
 

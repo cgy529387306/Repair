@@ -36,6 +36,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -166,6 +167,12 @@ public class UserFragment extends BaseFragment {
                                  dismissLoading();
                                  if (response!=null){
                                      if (response.isSuccess()) {
+                                         SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
+                                                 .setTitleText("提示")
+                                                 .setContentText("状态切换成功")
+                                                 .setConfirmText("确定");
+                                         sweetAlertDialog.setCancelable(true);
+                                         sweetAlertDialog.show();
                                          EventBusUtil.post(MessageConstant.NOTIFY_GET_INFO);
                                      }else{
                                          toast(response.getMsg());

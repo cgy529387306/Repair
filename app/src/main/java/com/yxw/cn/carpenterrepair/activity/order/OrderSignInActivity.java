@@ -1,7 +1,12 @@
 package com.yxw.cn.carpenterrepair.activity.order;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.location.Location;
+import android.net.Uri;
+import android.os.Build;
+import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,11 +31,6 @@ import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.Stroke;
 import com.baidu.mapapi.model.LatLng;
-import com.bumptech.glide.Glide;
-import com.luck.picture.lib.PictureSelector;
-import com.luck.picture.lib.config.PictureConfig;
-import com.luck.picture.lib.config.PictureMimeType;
-import com.luck.picture.lib.entity.LocalMedia;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.yxw.cn.carpenterrepair.BaseActivity;
@@ -43,10 +43,11 @@ import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.util.Base64Util;
 import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 import com.yxw.cn.carpenterrepair.util.Helper;
+import com.yxw.cn.carpenterrepair.util.ImageUtils;
 import com.yxw.cn.carpenterrepair.view.TitleBar;
 
+import java.io.File;
 import java.util.HashMap;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -115,19 +116,30 @@ public class OrderSignInActivity extends BaseActivity {
                 }
                 break;
             case R.id.iv_picture:
-                PictureSelector.create(this)
-                        .openGallery(PictureMimeType.ofImage())
-                        .selectionMode(PictureConfig.MULTIPLE)// 多选 or 单选 PictureConfig.MULTIPLE or PictureConfig.SINGLE
-                        .previewImage(true)// 是否可预览图片 true or false
-                        .isCamera(true)// 是否显示拍照按钮 true or false
-                        .imageFormat(PictureMimeType.PNG)// 拍照保存图片格式后缀,默认jpeg
-                        .enableCrop(false)// 是否裁剪 true or false
-                        .circleDimmedLayer(false)// 是否圆形裁剪 true or false
-                        .compress(true)// 是否压缩 true or false
-                        .minimumCompressSize(100)// 小于100kb的图片不压缩
-                        .forResult(11);
+                takePhoto();
                 break;
         }
+    }
+
+    private Uri mUri;
+    private final static int REQUEST_TAKE_PHOTO_CODE = 0x11;
+    private void takePhoto() {
+        // 步骤一：创建存储照片的文件
+        String path = getFilesDir() + File.separator + "images" + File.separator;
+        File file = new File(path, "test.jpg");
+        if(!file.getParentFile().exists())
+            file.getParentFile().mkdirs();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            //步骤二：Android 7.0及以上获取文件 Uri
+            mUri = FileProvider.getUriForFile(this, "com.yxw.cn.carpenterrepair", file);
+        } else {
+            //步骤三：获取文件Uri
+            mUri = Uri.fromFile(file);
+        }
+        //步骤四：调取系统拍照
+        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
+        startActivityForResult(intent, REQUEST_TAKE_PHOTO_CODE);
     }
 
     @Override
@@ -135,13 +147,14 @@ public class OrderSignInActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                case 11:
-                    List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
-                    if (selectList.size() > 0) {
-                        for (LocalMedia localMedia : selectList) {
-                            path = Base64Util.getBase64ImageStr(localMedia.getCompressPath());
-                            Glide.with(this).load(localMedia.getCompressPath()).into(ivPicture);
-                        }
+                case REQUEST_TAKE_PHOTO_CODE:
+                    Bitmap bm = null;
+                    try {
+                        bm = ImageUtils.decodeBitmapFromFile(mUri.getPath(),720,720);
+                        ivPicture.setImageBitmap(bm);
+                        path = Base64Util.getBase64ImageStr(ImageUtils.bitmap2Base64(bm));
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                     break;
             }

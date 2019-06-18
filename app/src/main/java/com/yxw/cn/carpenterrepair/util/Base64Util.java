@@ -2,9 +2,7 @@ package com.yxw.cn.carpenterrepair.util;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.text.TextUtils;
 import android.util.Base64;
-import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
@@ -37,6 +35,7 @@ public class Base64Util {
         // 加密
         return  Base64.encodeToString(data, Base64.DEFAULT);
     }
+
 
     //通过路径将图片转化为Bitmap
     public static String GetBitmap(String path) {

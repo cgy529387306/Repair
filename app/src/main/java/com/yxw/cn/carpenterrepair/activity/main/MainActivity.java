@@ -52,14 +52,12 @@ public class MainActivity extends BaseActivity {
         showFragment(0);
         PgyUpdateManager.setIsForced(false); //设置是否强制更新。true为强制更新；false为不强制更新（默认值）。
         PgyUpdateManager.register(this);
-        boolean isCheck = AppUtil.checkStatus(MainActivity.this);
-        if (isCheck){
-            getUserInfo();
-            AppUtil.initCategoryData();
-            AppUtil.initRegionTreeData();
-            AppUtil.initSignReasonData();
-            AppUtil.initReservationReasonData();
-        }
+        AppUtil.checkStatus(MainActivity.this);
+        getUserInfo();
+        AppUtil.initCategoryData();
+        AppUtil.initRegionTreeData();
+        AppUtil.initSignReasonData();
+        AppUtil.initReservationReasonData();
     }
 
     @Override
@@ -112,6 +110,7 @@ public class MainActivity extends BaseActivity {
 
                 break;
             case R.id.tv_personal:
+                getUserInfo();
                 showFragment(1);
                 tv_personal.setTextColor(Color.parseColor("#FF5E5E"));
                 tv_work.setTextColor(Color.parseColor("#666666"));
