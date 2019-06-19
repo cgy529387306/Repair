@@ -116,23 +116,10 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
             requestMap.put("customerBookingTime",mBookingTime);
         }
         if (mOrderStatus==0){
-            String locationLat = PreferencesHelper.getInstance().getString("latitude","0");
-            String locationLng = PreferencesHelper.getInstance().getString("longitude","0");
-            if ("0".equals(locationLat) || "0".equals(locationLng)){
-                LocationUtils.instance().requestLocation(new BDAbstractLocationListener() {
-                    @Override
-                    public void onReceiveLocation(BDLocation bdLocation) {
-                        if (bdLocation!=null){
-                            PreferencesHelper.getInstance().putString("latitude",bdLocation.getLatitude()+"");
-                            PreferencesHelper.getInstance().putString("longitude",bdLocation.getLongitude()+"");
-                            getOrderData(p);
-                        }
-                    }
-                });
-            }else{
-                requestMap.put("locationLat",locationLat);
-                requestMap.put("locationLng",locationLng);
-            }
+            String locationLat = PreferencesHelper.getInstance().getString("latitude","26.088114");
+            String locationLng = PreferencesHelper.getInstance().getString("longitude","119.310492");
+            requestMap.put("locationLat",locationLat);
+            requestMap.put("locationLng",locationLng);
         }
         requestMap.put("status",mOrderStatus);
         Map<String, Object> map = new HashMap<>();
