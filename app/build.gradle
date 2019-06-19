@@ -7,8 +7,8 @@ android {
         applicationId "com.yxw.cn.carpenterrepair"
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 115
-        versionName "1.1.5"
+        versionCode 116
+        versionName "1.1.6"
         multiDexEnabled true
         ndk {
             abiFilters "armeabi-v7a", "x86"
@@ -99,9 +99,4 @@ dependencies {
 
     // MD dialog
     implementation 'com.afollestad.material-dialogs:commons:0.9.6.0'
-    // 权限管理
-    implementation ('com.tbruyelle.rxpermissions:rxpermissions:0.7.0@aar')
-    // RxJava
-    implementation 'io.reactivex:rxjava:1.2.3'
-    implementation 'io.reactivex:rxandroid:1.2.1'
 }

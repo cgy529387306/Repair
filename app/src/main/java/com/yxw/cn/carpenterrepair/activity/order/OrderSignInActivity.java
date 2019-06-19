@@ -1,15 +1,7 @@
 package com.yxw.cn.carpenterrepair.activity.order;
 
-import android.Manifest;
-import android.content.ContentValues;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.location.Location;
-import android.net.Uri;
-import android.os.Build;
-import android.provider.MediaStore;
-import android.support.v4.content.FileProvider;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.baidu.idl.util.FileUtil;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -35,10 +26,13 @@ import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.Stroke;
 import com.baidu.mapapi.model.LatLng;
+import com.bumptech.glide.Glide;
+import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.config.PictureConfig;
+import com.luck.picture.lib.config.PictureMimeType;
+import com.luck.picture.lib.entity.LocalMedia;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
-import com.orhanobut.logger.Logger;
-import com.tbruyelle.rxpermissions.RxPermissions;
 import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
@@ -46,20 +40,16 @@ import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.OrderItem;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
-import com.yxw.cn.carpenterrepair.util.AppHelper;
 import com.yxw.cn.carpenterrepair.util.Base64Util;
 import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 import com.yxw.cn.carpenterrepair.util.Helper;
-import com.yxw.cn.carpenterrepair.util.ImageUtils;
 import com.yxw.cn.carpenterrepair.view.TitleBar;
 
-import java.io.File;
 import java.util.HashMap;
-import java.util.UUID;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import rx.functions.Action1;
 
 /**
  * 签到
@@ -125,63 +115,28 @@ public class OrderSignInActivity extends BaseActivity {
                 }
                 break;
             case R.id.iv_picture:
-                RxPermissions.getInstance(OrderSignInActivity.this)
-                        .request(new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE})
-                        .subscribe(new Action1<Boolean>() {
-                            @Override
-                            public void call(Boolean granted) {
-                                if (granted) {
-                                    try {
-                                        takePhoto();
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                } else {
-                                    toast("没有相机权限，您可以在应用设置中打开相机和位置信息权限");
-                                }
-                            }
-                        }, new Action1<Throwable>() {
-                            @Override
-                            public void call(Throwable throwable) {
-                            }
-                        });
+                PictureSelector.create(OrderSignInActivity.this)
+                        .openCamera(PictureMimeType.ofImage())
+                        .compress(true)// 是否压缩 true or false
+                        .minimumCompressSize(100)// 小于100kb的图片不压缩
+                        .forResult(PictureConfig.CHOOSE_REQUEST);
                 break;
         }
     }
 
-    private Uri mUri;
-    private final static int REQUEST_TAKE_PHOTO_CODE = 0x11;
-    private void takePhoto() {
-        // 步骤一：创建存储照片的文件
-        File file = new File(AppHelper.getExternalStoragePath()+File.separator, System.currentTimeMillis()+".jpg");
-        if(!file.getParentFile().exists())
-            file.getParentFile().mkdirs();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            //步骤二：Android 7.0及以上获取文件 Uri
-            mUri = FileProvider.getUriForFile(this, "com.yxw.cn.carpenterrepair", file);
-        } else {
-            //步骤三：获取文件Uri
-            mUri = Uri.fromFile(file);
-        }
-        //步骤四：调取系统拍照
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
-        startActivityForResult(intent, REQUEST_TAKE_PHOTO_CODE);
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                case REQUEST_TAKE_PHOTO_CODE:
-                    Bitmap bm = null;
-                    try {
-                        bm = ImageUtils.decodeBitmapFromFile(mUri.getPath(),720,720);
-                        ivPicture.setImageBitmap(bm);
-                        path = Base64Util.getBase64ImageStr(ImageUtils.bitmap2Base64(bm));
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                case PictureConfig.CHOOSE_REQUEST:
+                    List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
+                    if (selectList.size() > 0) {
+                        for (LocalMedia localMedia : selectList) {
+                            path = Base64Util.getBase64ImageStr(localMedia.getCompressPath());
+                            Glide.with(this).load(localMedia.getCompressPath()).into(ivPicture);
+                        }
                     }
                     break;
             }
