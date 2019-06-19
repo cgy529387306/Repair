@@ -1,5 +1,7 @@
 package com.yxw.cn.carpenterrepair.activity.order;
 
+import android.Manifest;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.location.Location;
@@ -7,6 +9,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baidu.idl.util.FileUtil;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -33,6 +37,8 @@ import com.baidu.mapapi.map.Stroke;
 import com.baidu.mapapi.model.LatLng;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
+import com.orhanobut.logger.Logger;
+import com.tbruyelle.rxpermissions.RxPermissions;
 import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
@@ -49,9 +55,11 @@ import com.yxw.cn.carpenterrepair.view.TitleBar;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import rx.functions.Action1;
 
 /**
  * 签到
@@ -117,7 +125,26 @@ public class OrderSignInActivity extends BaseActivity {
                 }
                 break;
             case R.id.iv_picture:
-                takePhoto();
+                RxPermissions.getInstance(OrderSignInActivity.this)
+                        .request(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE})
+                        .subscribe(new Action1<Boolean>() {
+                            @Override
+                            public void call(Boolean granted) {
+                                if (granted) {
+                                    try {
+                                        takePhoto();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                } else {
+                                    toast("没有相机权限，您可以在应用设置中打开相机和位置信息权限");
+                                }
+                            }
+                        }, new Action1<Throwable>() {
+                            @Override
+                            public void call(Throwable throwable) {
+                            }
+                        });
                 break;
         }
     }

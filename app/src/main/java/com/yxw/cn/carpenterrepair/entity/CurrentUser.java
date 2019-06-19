@@ -50,6 +50,9 @@ public class CurrentUser extends LoginInfo{
             if (Helper.isNotEmpty(entity.getRefreshToken())){
                 me.setRefreshToken(entity.getRefreshToken());
             }
+            if (Helper.isNotEmpty(entity.getCategory())){
+                me.setCategory(entity.getCategory());
+            }
             me.setLastLoginTime(entity.getLastLoginTime());
             me.setMobile(entity.getMobile());
             me.setAvatar(entity.getAvatar());

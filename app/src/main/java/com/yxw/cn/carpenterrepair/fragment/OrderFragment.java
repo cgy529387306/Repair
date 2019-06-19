@@ -9,6 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.baidu.location.BDAbstractLocationListener;
+import com.baidu.location.BDLocation;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
@@ -35,6 +37,7 @@ import com.yxw.cn.carpenterrepair.pop.ConfirmOrderPop;
 import com.yxw.cn.carpenterrepair.pop.ContactPop;
 import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 import com.yxw.cn.carpenterrepair.util.Helper;
+import com.yxw.cn.carpenterrepair.util.LocationUtils;
 import com.yxw.cn.carpenterrepair.util.PreferencesHelper;
 import com.yxw.cn.carpenterrepair.util.SpaceItemDecoration;
 import com.yxw.cn.carpenterrepair.util.TimePickerUtil;
@@ -113,10 +116,23 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
             requestMap.put("customerBookingTime",mBookingTime);
         }
         if (mOrderStatus==0){
-            String locationLat = PreferencesHelper.getInstance().getString("latitude","26.088114");
-            String locationLng = PreferencesHelper.getInstance().getString("longitude","119.310492");
-            requestMap.put("locationLat",locationLat);
-            requestMap.put("locationLng",locationLng);
+            String locationLat = PreferencesHelper.getInstance().getString("latitude","0");
+            String locationLng = PreferencesHelper.getInstance().getString("longitude","0");
+            if ("0".equals(locationLat) || "0".equals(locationLng)){
+                LocationUtils.instance().requestLocation(new BDAbstractLocationListener() {
+                    @Override
+                    public void onReceiveLocation(BDLocation bdLocation) {
+                        if (bdLocation!=null){
+                            PreferencesHelper.getInstance().putString("latitude",bdLocation.getLatitude()+"");
+                            PreferencesHelper.getInstance().putString("longitude",bdLocation.getLongitude()+"");
+                            getOrderData(p);
+                        }
+                    }
+                });
+            }else{
+                requestMap.put("locationLat",locationLat);
+                requestMap.put("locationLng",locationLng);
+            }
         }
         requestMap.put("status",mOrderStatus);
         Map<String, Object> map = new HashMap<>();
