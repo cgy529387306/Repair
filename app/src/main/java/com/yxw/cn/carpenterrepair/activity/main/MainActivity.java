@@ -23,6 +23,7 @@ import com.yxw.cn.carpenterrepair.fragment.UserFragment;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.util.AppUtil;
 import com.yxw.cn.carpenterrepair.util.EventBusUtil;
+import com.yxw.cn.carpenterrepair.util.LocationUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -58,6 +59,7 @@ public class MainActivity extends BaseActivity {
         AppUtil.initRegionTreeData();
         AppUtil.initSignReasonData();
         AppUtil.initReservationReasonData();
+        LocationUtils.instance().startLocation();
     }
 
     @Override

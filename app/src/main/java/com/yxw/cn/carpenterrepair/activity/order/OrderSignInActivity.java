@@ -40,6 +40,7 @@ import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.OrderItem;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
+import com.yxw.cn.carpenterrepair.util.AppHelper;
 import com.yxw.cn.carpenterrepair.util.Base64Util;
 import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 import com.yxw.cn.carpenterrepair.util.Helper;
@@ -125,8 +126,7 @@ public class OrderSignInActivity extends BaseActivity {
     private final static int REQUEST_TAKE_PHOTO_CODE = 0x11;
     private void takePhoto() {
         // 步骤一：创建存储照片的文件
-        String path = getFilesDir() + File.separator + "images" + File.separator;
-        File file = new File(path, "test.jpg");
+        File file = new File(AppHelper.getExternalStoragePath()+File.separator, System.currentTimeMillis()+".jpg");
         if(!file.getParentFile().exists())
             file.getParentFile().mkdirs();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -137,7 +137,7 @@ public class OrderSignInActivity extends BaseActivity {
             mUri = Uri.fromFile(file);
         }
         //步骤四：调取系统拍照
-        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
         startActivityForResult(intent, REQUEST_TAKE_PHOTO_CODE);
     }

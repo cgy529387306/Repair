@@ -209,4 +209,5 @@ public class ImageUtils {
         }
         return inSampleSize;
     }
+
 }

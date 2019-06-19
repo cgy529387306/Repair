@@ -14,6 +14,7 @@ import android.text.TextUtils;
 import android.view.Display;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.ImageView;
 
@@ -54,6 +55,24 @@ public class AppUtil {
     public static List<ReasonBean> reservationReasonList = new ArrayList<>();
     private static Gson gson = new Gson();
 
+    /**
+     * 防止控件被连续点击
+     * @param view
+     */
+    public static void disableViewDoubleClick(final View view) {
+        if(view == null) {
+            return;
+        }
+        view.setEnabled(false);
+        view.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                view.setEnabled(true);
+            }
+        }, 2000);
+    }
+
     public static String getVerName() {
         String verName = "";
         try {
@@ -87,7 +106,8 @@ public class AppUtil {
             intent = new Intent(context,ChooseCategoryActivity.class);
             Bundle bundle = new Bundle();
             bundle.putSerializable("cateList", new ArrayList<>());
-            bundle.putBoolean("canBack",true);
+            bundle.putBoolean("canBack",false);
+            intent.putExtras(bundle);
             context.startActivity(intent);
         }
     }

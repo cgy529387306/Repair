@@ -19,6 +19,7 @@ import com.yxw.cn.carpenterrepair.BaseRefreshFragment;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.activity.MsgDetailActivity;
 import com.yxw.cn.carpenterrepair.activity.order.MyOrderActivity;
+import com.yxw.cn.carpenterrepair.activity.user.IdCardInfoActivity;
 import com.yxw.cn.carpenterrepair.adapter.HomeMsgAdapter;
 import com.yxw.cn.carpenterrepair.adapter.OrderTypeAdapter;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
@@ -88,6 +89,9 @@ public class HomeFragment extends BaseRefreshFragment implements BaseQuickAdapte
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("type",getOrderTypeList().get(i));
                     startActivity(MyOrderActivity.class,bundle);
+                }else if(CurrentUser.getInstance().isLogin() && CurrentUser.getInstance().getIdCardStatus()==0){
+                    toast("工程师身份信息未提交!");
+                    startActivity(IdCardInfoActivity.class);
                 }else{
                     toast("工程师身份审核未通过!");
                 }

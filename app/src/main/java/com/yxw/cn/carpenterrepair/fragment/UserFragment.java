@@ -18,6 +18,7 @@ import com.yxw.cn.carpenterrepair.activity.MsgListActivity;
 import com.yxw.cn.carpenterrepair.activity.WebActivity;
 import com.yxw.cn.carpenterrepair.activity.setting.SettingActivity;
 import com.yxw.cn.carpenterrepair.activity.setting.UserFeedBackActivity;
+import com.yxw.cn.carpenterrepair.activity.user.IdCardInfoActivity;
 import com.yxw.cn.carpenterrepair.activity.user.PersonInfoActivity;
 import com.yxw.cn.carpenterrepair.activity.user.WalletActivity;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
@@ -108,6 +109,9 @@ public class UserFragment extends BaseFragment {
                     walletBundle.putString("deposit",mTvDeposit.getText().toString());
                     walletBundle.putString("settlementAmount",mTvSettlementAmount.getText().toString());
                     startActivity(WalletActivity.class, walletBundle);
+                }else if(CurrentUser.getInstance().isLogin() && CurrentUser.getInstance().getIdCardStatus()==0){
+                    toast("工程师身份信息未提交!");
+                    startActivity(IdCardInfoActivity.class);
                 }else{
                     toast("工程师身份审核未通过!");
                 }

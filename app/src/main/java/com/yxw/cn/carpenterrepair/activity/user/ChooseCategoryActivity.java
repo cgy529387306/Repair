@@ -167,7 +167,7 @@ public class ChooseCategoryActivity extends BaseActivity {
                                 if (mIsCanBack){
                                     finish();
                                 }else{
-                                    startActivityFinish(IdCardInfoActivity.class);
+                                    startActivityFinish(WaitCheckActivity.class);
                                 }
                             }else{
                                 toast(response.getMsg());
