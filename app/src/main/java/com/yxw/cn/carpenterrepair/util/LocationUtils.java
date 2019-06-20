@@ -32,7 +32,7 @@ public class LocationUtils {
         mLocationClient.registerLocationListener(new BDAbstractLocationListener() {
             @Override
             public void onReceiveLocation(BDLocation bdLocation) {
-                if (bdLocation!=null){
+                if (bdLocation!=null && bdLocation.getLatitude() != 4.9E-324 && bdLocation.getLongitude() != 4.9E-324){
                     PreferencesHelper.getInstance().putString("latitude",bdLocation.getLatitude()+"");
                     PreferencesHelper.getInstance().putString("longitude",bdLocation.getLongitude()+"");
                     EventBusUtil.post(MessageConstant.MY_LOCATION,bdLocation);

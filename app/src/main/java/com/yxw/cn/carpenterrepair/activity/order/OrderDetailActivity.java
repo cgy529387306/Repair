@@ -433,35 +433,36 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
     class MyLocationListener implements BDLocationListener {
         @Override
         public void onReceiveLocation(BDLocation location) {
+            if (location!=null && location.getLatitude() != 4.9E-324 && location.getLongitude() != 4.9E-324){
+                // 构造定位数据
+                MyLocationData locData = new MyLocationData.Builder()
+                        .accuracy(location.getRadius())
+                        // 此处设置开发者获取到的方向信息，顺时针0-360
+                        .direction(0).latitude(location.getLatitude())
+                        .longitude(location.getLongitude()).build();
+                // 设置定位数据
+                mBaiDuMap.setMyLocationData(locData);
 
-            // 构造定位数据
-            MyLocationData locData = new MyLocationData.Builder()
-                    .accuracy(location.getRadius())
-                    // 此处设置开发者获取到的方向信息，顺时针0-360
-                    .direction(0).latitude(location.getLatitude())
-                    .longitude(location.getLongitude()).build();
-            // 设置定位数据
-            mBaiDuMap.setMyLocationData(locData);
+                BitmapDescriptor currentMarker = BitmapDescriptorFactory
+                        .fromView(View.inflate(OrderDetailActivity.this, R.layout.view_location_icon_my, null));
+                MyLocationConfiguration config = new MyLocationConfiguration(
+                        MyLocationConfiguration.LocationMode.NORMAL, true, currentMarker);
+                mBaiDuMap.setMyLocationConfiguration(config);
 
-            BitmapDescriptor currentMarker = BitmapDescriptorFactory
-                    .fromView(View.inflate(OrderDetailActivity.this, R.layout.view_location_icon_my, null));
-            MyLocationConfiguration config = new MyLocationConfiguration(
-                    MyLocationConfiguration.LocationMode.NORMAL, true, currentMarker);
-            mBaiDuMap.setMyLocationConfiguration(config);
-
-            LatLng ll = new LatLng(location.getLatitude(),
-                    location.getLongitude());
-            MapStatus.Builder builder = new MapStatus.Builder();
-            builder.target(ll).zoom(14.0f);
-            mBaiDuMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
-            if (location.getLocType() == BDLocation.TypeServerError) {
-                Toast.makeText(OrderDetailActivity.this, "服务器错误，请检查", Toast.LENGTH_SHORT).show();
-            } else if (location.getLocType() == BDLocation.TypeNetWorkException) {
-                Toast.makeText(OrderDetailActivity.this, "网络错误，请检查", Toast.LENGTH_SHORT).show();
-            } else if (location.getLocType() == BDLocation.TypeCriteriaException) {
-                Toast.makeText(OrderDetailActivity.this, "请确认手机是否开启GPS", Toast.LENGTH_SHORT).show();
+                LatLng ll = new LatLng(location.getLatitude(),
+                        location.getLongitude());
+                MapStatus.Builder builder = new MapStatus.Builder();
+                builder.target(ll).zoom(14.0f);
+                mBaiDuMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
+                if (location.getLocType() == BDLocation.TypeServerError) {
+                    Toast.makeText(OrderDetailActivity.this, "服务器错误，请检查", Toast.LENGTH_SHORT).show();
+                } else if (location.getLocType() == BDLocation.TypeNetWorkException) {
+                    Toast.makeText(OrderDetailActivity.this, "网络错误，请检查", Toast.LENGTH_SHORT).show();
+                } else if (location.getLocType() == BDLocation.TypeCriteriaException) {
+                    Toast.makeText(OrderDetailActivity.this, "请确认手机是否开启GPS", Toast.LENGTH_SHORT).show();
+                }
+                mLocationClient.stop();
             }
-            mLocationClient.stop();
         }
     }
 

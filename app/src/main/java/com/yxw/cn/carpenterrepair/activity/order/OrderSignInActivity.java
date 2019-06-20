@@ -2,6 +2,8 @@ package com.yxw.cn.carpenterrepair.activity.order;
 
 import android.content.Intent;
 import android.location.Location;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,6 +37,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
+import com.yxw.cn.carpenterrepair.adapter.GridImageAdapter;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.OrderItem;
@@ -43,8 +46,10 @@ import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.util.Base64Util;
 import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 import com.yxw.cn.carpenterrepair.util.Helper;
+import com.yxw.cn.carpenterrepair.view.FullyGridLayoutManager;
 import com.yxw.cn.carpenterrepair.view.TitleBar;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -58,8 +63,6 @@ public class OrderSignInActivity extends BaseActivity {
 
     @BindView(R.id.titlebar)
     TitleBar titleBar;
-    @BindView(R.id.iv_picture)
-    ImageView ivPicture;
     @BindView(R.id.btn_confirm)
     Button btnConfirm;
     @BindView(R.id.et_remark)
@@ -70,15 +73,19 @@ public class OrderSignInActivity extends BaseActivity {
     TextView tvLocation;
     @BindView(R.id.mapView)
     MapView mMapView;
+    @BindView(R.id.recyclerView)
+    RecyclerView mRecyclerView;
 
     private OrderItem orderItem;
     private boolean flag;
-    private String path;
     private BDLocation mLocation;
     private int type;//0:签到 1:完成
     private BaiduMap mBaiDuMap;
     private LocationClient mLocationClient;
     private MyLocationListener mLocationListener;
+    private GridImageAdapter mImageAdapter;
+    private List<LocalMedia> mSelectImageList = new ArrayList<>();
+    private List<String> mImageList = new ArrayList<>();
 
     @Override
     protected int getLayoutResId() {
@@ -90,8 +97,41 @@ public class OrderSignInActivity extends BaseActivity {
         orderItem = (OrderItem) getIntent().getSerializableExtra("order");
         type = getIntent().getIntExtra("type", 0);
         initTitle();
+        initRecycleView();
         initMyLocation();
         initOrderLocation();
+    }
+
+    private void initRecycleView(){
+        FullyGridLayoutManager gridLayoutManager = new FullyGridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false);
+        mRecyclerView.setLayoutManager(gridLayoutManager);
+        mImageAdapter = new GridImageAdapter(this, new GridImageAdapter.onAddPicClickListener() {
+            @Override
+            public void onAddPicClick() {
+                //拍照
+                PictureSelector.create(OrderSignInActivity.this)
+                        .openCamera(PictureMimeType.ofImage())
+                        .compress(true)// 是否压缩 true or false
+                        .minimumCompressSize(100)// 小于100kb的图片不压缩
+                        .forResult(PictureConfig.CHOOSE_REQUEST);
+            }
+        });
+        mImageAdapter.setList(mSelectImageList);
+        mImageAdapter.setSelectMax(6);
+        mRecyclerView.setAdapter(mImageAdapter);
+        mImageAdapter.setOnItemClickListener(new GridImageAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position, View v) {
+                if (mSelectImageList.size() > 0 && mSelectImageList.size()>position) {
+                    LocalMedia media = mSelectImageList.get(position);
+                    String pictureType = media.getPictureType();
+                    int mediaType = PictureMimeType.pictureToVideo(pictureType);
+                    if (mediaType == 1){
+                        PictureSelector.create(OrderSignInActivity.this).externalPicturePreview(position, mSelectImageList);
+                    }
+                }
+            }
+        });
     }
 
     private void initTitle(){
@@ -104,7 +144,7 @@ public class OrderSignInActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.iv_picture, R.id.btn_confirm})
+    @OnClick({R.id.btn_confirm})
     public void click(View view) {
         switch (view.getId()) {
             case R.id.btn_confirm:
@@ -113,13 +153,6 @@ public class OrderSignInActivity extends BaseActivity {
                 } else {
                     toast("在签到范围外，不能签到!");
                 }
-                break;
-            case R.id.iv_picture:
-                PictureSelector.create(OrderSignInActivity.this)
-                        .openCamera(PictureMimeType.ofImage())
-                        .compress(true)// 是否压缩 true or false
-                        .minimumCompressSize(100)// 小于100kb的图片不压缩
-                        .forResult(PictureConfig.CHOOSE_REQUEST);
                 break;
         }
     }
@@ -131,13 +164,9 @@ public class OrderSignInActivity extends BaseActivity {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case PictureConfig.CHOOSE_REQUEST:
-                    List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
-                    if (selectList.size() > 0) {
-                        for (LocalMedia localMedia : selectList) {
-                            path = Base64Util.getBase64ImageStr(localMedia.getCompressPath());
-                            Glide.with(this).load(localMedia.getCompressPath()).into(ivPicture);
-                        }
-                    }
+                    List<LocalMedia> images = PictureSelector.obtainMultipleResult(data);
+                    mSelectImageList.addAll(images);
+                    mImageAdapter.setList(mSelectImageList);
                     break;
             }
         }
@@ -223,15 +252,19 @@ public class OrderSignInActivity extends BaseActivity {
     }
 
     private void confirmArrival() {
-        if (Helper.isEmpty(path)){
+        if (Helper.isEmpty(mSelectImageList)){
             toast("现场照片不能为空!");
             return;
+        }
+        mImageList.clear();
+        for (LocalMedia localMedia:mSelectImageList){
+            mImageList.add(Base64Util.getBase64ImageStr(localMedia.getCompressPath()));
         }
         HashMap<String, Object> map = new HashMap<>();
         map.put("acceptId", orderItem.getAcceptId());
         map.put("locationLat", mLocation.getLatitude());
         map.put("locationLng", mLocation.getLongitude());
-        map.put("shot", path);
+        map.put("shot", mImageList);
         map.put("remark", etRemark.getText().toString());
         if (type==1){
             map.put("smsCode", "888888");
@@ -265,44 +298,46 @@ public class OrderSignInActivity extends BaseActivity {
     class MyLocationListener implements BDLocationListener {
         @Override
         public void onReceiveLocation(BDLocation location) {
-            mLocation = location;
-            // 构造定位数据
-            MyLocationData locData = new MyLocationData.Builder()
-                    .accuracy(location.getRadius())
-                    // 此处设置开发者获取到的方向信息，顺时针0-360
-                    .direction(0).latitude(location.getLatitude())
-                    .longitude(location.getLongitude()).build();
-            // 设置定位数据
-            mBaiDuMap.setMyLocationData(locData);
-            // 设置自定义图标
-            BitmapDescriptor mCurrentMarker = BitmapDescriptorFactory
-                    .fromView(View.inflate(OrderSignInActivity.this, R.layout.view_location_icon_my, null));
-            MyLocationConfiguration config = new MyLocationConfiguration(
-                    MyLocationConfiguration.LocationMode.NORMAL, true, mCurrentMarker);
-            mBaiDuMap.setMyLocationConfiguration(config);
-            /**
-             * 绘制圆形
-             */
-            LatLng point = new LatLng(location.getLatitude(), location.getLongitude());//坐标参数（纬度，经度）
-            OverlayOptions oCircle = new CircleOptions().fillColor(0x90F8EFDE)
-                    .center(point).stroke(new Stroke(5, 0xAAF0D2C2))
-                    .radius(2000);
-            mBaiDuMap.addOverlay(oCircle);
-            LatLng ll = new LatLng(location.getLatitude(),
-                    location.getLongitude());
-            MapStatus.Builder builder = new MapStatus.Builder();
-            builder.target(ll).zoom(12.0f);
-            mBaiDuMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
-            tvLocation.setText(location.getAddrStr());
-            if (location.getLocType() == BDLocation.TypeServerError) {
-                Toast.makeText(OrderSignInActivity.this, "服务器错误，请检查", Toast.LENGTH_SHORT).show();
-            } else if (location.getLocType() == BDLocation.TypeNetWorkException) {
-                Toast.makeText(OrderSignInActivity.this, "网络错误，请检查", Toast.LENGTH_SHORT).show();
-            } else if (location.getLocType() == BDLocation.TypeCriteriaException) {
-                Toast.makeText(OrderSignInActivity.this, "请确认手机是否开启GPS", Toast.LENGTH_SHORT).show();
+            if (location!=null && location.getLatitude() != 4.9E-324 && location.getLongitude() != 4.9E-324){
+                mLocation = location;
+                // 构造定位数据
+                MyLocationData locData = new MyLocationData.Builder()
+                        .accuracy(location.getRadius())
+                        // 此处设置开发者获取到的方向信息，顺时针0-360
+                        .direction(0).latitude(location.getLatitude())
+                        .longitude(location.getLongitude()).build();
+                // 设置定位数据
+                mBaiDuMap.setMyLocationData(locData);
+                // 设置自定义图标
+                BitmapDescriptor mCurrentMarker = BitmapDescriptorFactory
+                        .fromView(View.inflate(OrderSignInActivity.this, R.layout.view_location_icon_my, null));
+                MyLocationConfiguration config = new MyLocationConfiguration(
+                        MyLocationConfiguration.LocationMode.NORMAL, true, mCurrentMarker);
+                mBaiDuMap.setMyLocationConfiguration(config);
+                /**
+                 * 绘制圆形
+                 */
+                LatLng point = new LatLng(location.getLatitude(), location.getLongitude());//坐标参数（纬度，经度）
+                OverlayOptions oCircle = new CircleOptions().fillColor(0x90F8EFDE)
+                        .center(point).stroke(new Stroke(5, 0xAAF0D2C2))
+                        .radius(2000);
+                mBaiDuMap.addOverlay(oCircle);
+                LatLng ll = new LatLng(location.getLatitude(),
+                        location.getLongitude());
+                MapStatus.Builder builder = new MapStatus.Builder();
+                builder.target(ll).zoom(12.0f);
+                mBaiDuMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
+                tvLocation.setText(location.getAddrStr());
+                if (location.getLocType() == BDLocation.TypeServerError) {
+                    Toast.makeText(OrderSignInActivity.this, "服务器错误，请检查", Toast.LENGTH_SHORT).show();
+                } else if (location.getLocType() == BDLocation.TypeNetWorkException) {
+                    Toast.makeText(OrderSignInActivity.this, "网络错误，请检查", Toast.LENGTH_SHORT).show();
+                } else if (location.getLocType() == BDLocation.TypeCriteriaException) {
+                    Toast.makeText(OrderSignInActivity.this, "请确认手机是否开启GPS", Toast.LENGTH_SHORT).show();
+                }
+                getDistance(mLocation.getLatitude(), mLocation.getLongitude(), orderItem.getLocationLat(), orderItem.getLocationLng());
+                mLocationClient.stop();
             }
-            getDistance(mLocation.getLatitude(), mLocation.getLongitude(), orderItem.getLocationLat(), orderItem.getLocationLng());
-            mLocationClient.stop();
         }
     }
 }
