@@ -45,13 +45,19 @@ public class CurrentUser extends LoginInfo{
         String json = "";
         if (entity != null) {
             if (Helper.isNotEmpty(entity.getToken())){
-                me.setRefreshToken(entity.getToken());
+                me.setToken(entity.getToken());
             }
             if (Helper.isNotEmpty(entity.getRefreshToken())){
                 me.setRefreshToken(entity.getRefreshToken());
             }
             if (Helper.isNotEmpty(entity.getCategory())){
                 me.setCategory(entity.getCategory());
+            }
+            if (Helper.isNotEmpty(entity.getResidentArea())){
+                me.setResidentArea(entity.getResidentArea());
+            }
+            if (Helper.isNotEmpty(entity.getResidentAreaName())){
+                me.setResidentAreaName(entity.getResidentAreaName());
             }
             me.setLastLoginTime(entity.getLastLoginTime());
             me.setMobile(entity.getMobile());
@@ -60,7 +66,6 @@ public class CurrentUser extends LoginInfo{
             me.setRealName(entity.getRealName());
             me.setUserId(entity.getUserId());
             me.setNickname(entity.getNickname());
-            me.setCategory(entity.getCategory());
             me.setExpire(entity.getExpire());
             me.setRole(entity.getRole());
             me.setRegisterTime(entity.getRegisterTime());
@@ -68,8 +73,6 @@ public class CurrentUser extends LoginInfo{
             me.setIdCardFront(entity.getIdCardFront());
             me.setIdCardBack(entity.getIdCardBack());
             me.setIdCardHand(entity.getIdCardHand());
-            me.setResidentArea(entity.getResidentArea());
-            me.setResidentAreaName(entity.getResidentAreaName());
             me.setServiceDate(entity.getServiceDate());
             me.setServiceTime(entity.getServiceTime());
             me.setIdCardStatus(entity.getIdCardStatus());

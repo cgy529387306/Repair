@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -35,7 +34,6 @@ import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 import com.yxw.cn.carpenterrepair.entity.LoginInfo;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
-import com.yxw.cn.carpenterrepair.util.AppHelper;
 import com.yxw.cn.carpenterrepair.util.AppUtil;
 import com.yxw.cn.carpenterrepair.util.Base64Util;
 import com.yxw.cn.carpenterrepair.util.ImageUtils;
@@ -78,6 +76,12 @@ public class IdCardInfoActivity extends BaseActivity {
     @Override
     public void initView() {
         titlebar.setTitle("身份证信息");
+        titlebar.setLeftClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         initOcrCamera();
         if (CurrentUser.getInstance().isLogin()){
             LoginInfo loginInfo = CurrentUser.getInstance();
@@ -274,5 +278,10 @@ public class IdCardInfoActivity extends BaseActivity {
                 }).show();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+
     }
 }

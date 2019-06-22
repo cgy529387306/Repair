@@ -11,12 +11,16 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.lzy.okgo.OkGo;
+import com.lzy.okgo.model.HttpHeaders;
 import com.lzy.okgo.model.Response;
 import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
+import com.yxw.cn.carpenterrepair.activity.main.MainActivity;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.SpConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
+import com.yxw.cn.carpenterrepair.entity.CurrentUser;
+import com.yxw.cn.carpenterrepair.entity.LoginInfo;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.util.AppUtil;
@@ -152,18 +156,27 @@ public class RegisterActivity extends BaseActivity {
                     map.put("smsCode", mEtCode.getText().toString().trim());
                     map.put("appSign", UrlConstant.mRoleSign);
                     showLoading();
-                    OkGo.<ResponseData<Object>>post(UrlConstant.REGISTER)
+                    OkGo.<ResponseData<LoginInfo>>post(UrlConstant.REGISTER)
                             .upJson(gson.toJson(map))
-                            .execute(new JsonCallback<ResponseData<Object>>() {
+                            .execute(new JsonCallback<ResponseData<LoginInfo>>() {
                                          @Override
-                                         public void onSuccess(ResponseData<Object> response) {
+                                         public void onSuccess(ResponseData<LoginInfo> response) {
                                              dismissLoading();
                                              if (response!=null){
                                                  if (response.isSuccess()) {
                                                      toast("注册成功");
                                                      SpUtil.putStr(SpConstant.LOGIN_MOBILE, mEtPhone.getText().toString().trim());
+                                                     CurrentUser.getInstance().login(response.getData());
+                                                     HttpHeaders headers = new HttpHeaders();
+                                                     headers.put("Authorization", "Bearer "+response.getData().getToken());
+                                                     OkGo.getInstance().addCommonHeaders(headers);
                                                      EventBusUtil.post(MessageConstant.REGISTER);
-                                                     finish();
+                                                     LoginInfo loginInfo = CurrentUser.getInstance();
+                                                     if(loginInfo.getIdCardStatus() == 0 || loginInfo.getIdCardStatus() == 2){
+                                                         startActivityFinish(IdCardInfoActivity.class);
+                                                     }else{
+                                                         startActivityFinish(MainActivity.class);
+                                                     }
                                                  }else{
                                                      toast(response.getMsg());
                                                  }
@@ -171,7 +184,7 @@ public class RegisterActivity extends BaseActivity {
                                          }
 
                                          @Override
-                                         public void onError(Response<ResponseData<Object>> response) {
+                                         public void onError(Response<ResponseData<LoginInfo>> response) {
                                              super.onError(response);
                                              dismissLoading();
                                          }

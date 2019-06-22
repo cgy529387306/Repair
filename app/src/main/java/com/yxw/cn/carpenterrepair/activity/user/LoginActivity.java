@@ -100,7 +100,12 @@ public class LoginActivity extends BaseActivity {
                                              HttpHeaders headers = new HttpHeaders();
                                              headers.put("Authorization", "Bearer "+response.getData().getToken());
                                              OkGo.getInstance().addCommonHeaders(headers);
-                                             startActivityFinish(MainActivity.class);
+                                             LoginInfo loginInfo = CurrentUser.getInstance();
+                                             if(loginInfo.getIdCardStatus() == 0 || loginInfo.getIdCardStatus() == 2){
+                                                 startActivityFinish(IdCardInfoActivity.class);
+                                             }else{
+                                                 startActivityFinish(MainActivity.class);
+                                             }
                                          }else {
                                              toast(response.getMsg());
                                          }
@@ -134,7 +139,7 @@ public class LoginActivity extends BaseActivity {
         super.onEvent(event);
         switch (event.getId()) {
             case MessageConstant.REGISTER:
-                initView();
+                finish();
                 break;
         }
     }

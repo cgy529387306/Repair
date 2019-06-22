@@ -4,12 +4,10 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Point;
 import android.os.Build;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Display;
 import android.view.KeyCharacterMap;
@@ -24,14 +22,11 @@ import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.yxw.cn.carpenterrepair.BaseApplication;
 import com.yxw.cn.carpenterrepair.R;
-import com.yxw.cn.carpenterrepair.activity.user.ChooseCategoryActivity;
-import com.yxw.cn.carpenterrepair.activity.user.IdCardInfoActivity;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.Category;
 import com.yxw.cn.carpenterrepair.entity.CityBean;
 import com.yxw.cn.carpenterrepair.entity.CurrentUser;
-import com.yxw.cn.carpenterrepair.entity.LoginInfo;
 import com.yxw.cn.carpenterrepair.entity.OrderItem;
 import com.yxw.cn.carpenterrepair.entity.ReasonBean;
 import com.yxw.cn.carpenterrepair.entity.RegionTree;
@@ -95,22 +90,6 @@ public class AppUtil {
             e.printStackTrace();
         }
         return versionCode;
-    }
-
-    public static void checkStatus(Context context){
-        LoginInfo loginInfo = CurrentUser.getInstance();
-        Intent intent;
-        if(loginInfo.getIdCardStatus() == 0 || loginInfo.getIdCardStatus() == 2){
-            intent = new Intent(context,IdCardInfoActivity.class);
-            context.startActivity(intent);
-        }else if (TextUtils.isEmpty(loginInfo.getCategory())){
-            intent = new Intent(context,ChooseCategoryActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("cateList", new ArrayList<>());
-            bundle.putBoolean("canBack",false);
-            intent.putExtras(bundle);
-            context.startActivity(intent);
-        }
     }
 
     public static String getOrderDetailAddress(UserOrder.ListBean order){
@@ -208,7 +187,7 @@ public class AppUtil {
                         if (response!=null){
                             if (response.isSuccess() && response.getData()!=null){
                                 AppUtil.regionTreeList = response.getData();
-                                if (CurrentUser.getInstance().isLogin() && Helper.isEmpty(CurrentUser.getInstance().getResidentArea())){
+                                if (Helper.isNotEmpty(AppUtil.regionTreeList) && CurrentUser.getInstance().isLogin() && Helper.isEmpty(CurrentUser.getInstance().getResidentArea())){
                                     EventBusUtil.post(MessageConstant.SELECT_AREA);
                                 }
                             }

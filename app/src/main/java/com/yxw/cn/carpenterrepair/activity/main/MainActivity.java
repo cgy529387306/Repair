@@ -55,7 +55,6 @@ public class MainActivity extends BaseActivity {
         PgyUpdateManager.setIsForced(false); //设置是否强制更新。true为强制更新；false为不强制更新（默认值）。
         PgyUpdateManager.register(this);
         getUserInfo();
-        AppUtil.checkStatus(MainActivity.this);
         AppUtil.initCategoryData();
         AppUtil.initRegionTreeData();
         AppUtil.initSignReasonData();
