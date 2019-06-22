@@ -5,9 +5,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
@@ -17,6 +15,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
+import com.yxw.cn.carpenterrepair.adapter.GridImageAdapter;
 import com.yxw.cn.carpenterrepair.adapter.OrderAbnormalAdapter;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
@@ -27,6 +26,7 @@ import com.yxw.cn.carpenterrepair.util.AppUtil;
 import com.yxw.cn.carpenterrepair.util.Base64Util;
 import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 import com.yxw.cn.carpenterrepair.util.Helper;
+import com.yxw.cn.carpenterrepair.view.FullyGridLayoutManager;
 import com.yxw.cn.carpenterrepair.view.TitleBar;
 
 import java.util.ArrayList;
@@ -47,14 +47,15 @@ public class SignAbnormalActivity extends BaseActivity implements BaseQuickAdapt
     RecyclerView mRvReason;
     @BindView(R.id.et_remark)
     EditText etRemark;
-    @BindView(R.id.iv_picture)
-    ImageView ivPicture;
+    @BindView(R.id.recyclerView)
+    RecyclerView mRecyclerView;
 
     private OrderAbnormalAdapter mAdapter;
     private String acceptId;
     private String exceptionIds;
-    private String path;
-
+    private GridImageAdapter mImageAdapter;
+    private List<LocalMedia> mSelectImageList = new ArrayList<>();
+    private List<String> mImageList = new ArrayList<>();
     @Override
     protected int getLayoutResId() {
         return R.layout.act_sign_abnormal;
@@ -68,6 +69,39 @@ public class SignAbnormalActivity extends BaseActivity implements BaseQuickAdapt
         mAdapter.setOnItemClickListener(this);
         mRvReason.setLayoutManager(new GridLayoutManager(this, 2));
         mRvReason.setAdapter(mAdapter);
+        initRecycleView();
+    }
+
+    private void initRecycleView(){
+        FullyGridLayoutManager gridLayoutManager = new FullyGridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false);
+        mRecyclerView.setLayoutManager(gridLayoutManager);
+        mImageAdapter = new GridImageAdapter(this, new GridImageAdapter.onAddPicClickListener() {
+            @Override
+            public void onAddPicClick() {
+                //拍照
+                PictureSelector.create(SignAbnormalActivity.this)
+                        .openCamera(PictureMimeType.ofImage())
+                        .compress(true)// 是否压缩 true or false
+                        .minimumCompressSize(100)// 小于100kb的图片不压缩
+                        .forResult(PictureConfig.CHOOSE_REQUEST);
+            }
+        });
+        mImageAdapter.setList(mSelectImageList);
+        mImageAdapter.setSelectMax(6);
+        mRecyclerView.setAdapter(mImageAdapter);
+        mImageAdapter.setOnItemClickListener(new GridImageAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position, View v) {
+                if (mSelectImageList.size() > 0 && mSelectImageList.size()>position) {
+                    LocalMedia media = mSelectImageList.get(position);
+                    String pictureType = media.getPictureType();
+                    int mediaType = PictureMimeType.pictureToVideo(pictureType);
+                    if (mediaType == 1){
+                        PictureSelector.create(SignAbnormalActivity.this).externalPicturePreview(position, mSelectImageList);
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -111,61 +145,49 @@ public class SignAbnormalActivity extends BaseActivity implements BaseQuickAdapt
     }
 
 
-    @OnClick({R.id.iv_picture,R.id.cancel, R.id.confirm})
+    @OnClick({R.id.cancel, R.id.confirm})
     public void click(View view) {
         switch (view.getId()) {
-            case R.id.iv_picture:
-                PictureSelector.create(this)
-                        .openGallery(PictureMimeType.ofImage())
-                        .selectionMode(PictureConfig.MULTIPLE)// 多选 or 单选 PictureConfig.MULTIPLE or PictureConfig.SINGLE
-                        .previewImage(true)// 是否可预览图片 true or false
-                        .isCamera(true)// 是否显示拍照按钮 true or false
-                        .imageFormat(PictureMimeType.PNG)// 拍照保存图片格式后缀,默认jpeg
-                        .enableCrop(false)// 是否裁剪 true or false
-                        .circleDimmedLayer(false)// 是否圆形裁剪 true or false
-                        .compress(true)// 是否压缩 true or false
-                        .minimumCompressSize(100)// 小于100kb的图片不压缩
-                        .forResult(11);
-                break;
             case R.id.confirm:
                 String desc = etRemark.getText().toString().trim();
                 if (Helper.isEmpty(exceptionIds)) {
                     toast("请先选择异常原因");
-                }else if (Helper.isEmpty(exceptionIds)) {
-                    toast("请先上传图片");
-                }else {
-                    showLoading();
-                    HashMap<String, Object> map = new HashMap<>();
-                    map.put("acceptId", acceptId);
-                    map.put("ids", exceptionIds);
-                    map.put("shot", path);
-                    if (Helper.isNotEmpty(desc)){
-                        map.put("fixDesc", desc);
-                    }
-                    OkGo.<ResponseData<Object>>post(UrlConstant.ORDER_EXEPTION_SIGN)
-                            .upJson(gson.toJson(map))
-                            .execute(new JsonCallback<ResponseData<Object>>() {
-                                @Override
-                                public void onSuccess(ResponseData<Object> response) {
-                                    dismissLoading();
-                                    if (response!=null){
-                                        if (response.isSuccess()) {
-                                            toast("异常反馈成功");
-                                            SignAbnormalActivity.this.finish();
-                                            EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
-                                        }else{
-                                            toast(response.getMsg());
-                                        }
+                }
+                showLoading();
+                mImageList.clear();
+                for (LocalMedia localMedia:mSelectImageList){
+                    mImageList.add(Base64Util.getBase64ImageStr(localMedia.getCompressPath()));
+                }
+                HashMap<String, Object> map = new HashMap<>();
+                map.put("acceptId", acceptId);
+                map.put("ids", exceptionIds);
+                map.put("shot", mImageList);
+                if (Helper.isNotEmpty(desc)){
+                    map.put("fixDesc", desc);
+                }
+                OkGo.<ResponseData<Object>>post(UrlConstant.ORDER_EXEPTION_SIGN)
+                        .upJson(gson.toJson(map))
+                        .execute(new JsonCallback<ResponseData<Object>>() {
+                            @Override
+                            public void onSuccess(ResponseData<Object> response) {
+                                dismissLoading();
+                                if (response!=null){
+                                    if (response.isSuccess()) {
+                                        toast("异常反馈成功");
+                                        SignAbnormalActivity.this.finish();
+                                        EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
+                                    }else{
+                                        toast(response.getMsg());
                                     }
                                 }
+                            }
 
-                                @Override
-                                public void onError(Response<ResponseData<Object>> response) {
-                                    super.onError(response);
-                                    dismissLoading();
-                                }
-                            });
-                }
+                            @Override
+                            public void onError(Response<ResponseData<Object>> response) {
+                                super.onError(response);
+                                dismissLoading();
+                            }
+                        });
                 break;
             case R.id.cancel:
                 this.finish();
@@ -187,14 +209,10 @@ public class SignAbnormalActivity extends BaseActivity implements BaseQuickAdapt
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                case 11:
-                    List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
-                    if (selectList.size() > 0) {
-                        for (LocalMedia localMedia : selectList) {
-                            path = Base64Util.getBase64ImageStr(localMedia.getCompressPath());
-                            Glide.with(this).load(localMedia.getCompressPath()).into(ivPicture);
-                        }
-                    }
+                case PictureConfig.CHOOSE_REQUEST:
+                    List<LocalMedia> images = PictureSelector.obtainMultipleResult(data);
+                    mSelectImageList.addAll(images);
+                    mImageAdapter.setList(mSelectImageList);
                     break;
             }
         }

@@ -26,6 +26,7 @@ import com.yxw.cn.carpenterrepair.BaseApplication;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.activity.user.ChooseCategoryActivity;
 import com.yxw.cn.carpenterrepair.activity.user.IdCardInfoActivity;
+import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.Category;
 import com.yxw.cn.carpenterrepair.entity.CityBean;
@@ -207,6 +208,9 @@ public class AppUtil {
                         if (response!=null){
                             if (response.isSuccess() && response.getData()!=null){
                                 AppUtil.regionTreeList = response.getData();
+                                if (CurrentUser.getInstance().isLogin() && Helper.isEmpty(CurrentUser.getInstance().getResidentArea())){
+                                    EventBusUtil.post(MessageConstant.SELECT_AREA);
+                                }
                             }
                         }
                     }
