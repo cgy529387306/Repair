@@ -29,9 +29,19 @@ public class LoginInfo {
     private int idCardStatus;//身份证状态 0未上传 1已上传 2审核未通过 3审核通过
     private String carryAmount;//可提现金额
     private String deposit;//押金
+
+    public String getIdCardNo() {
+        return idCardNo == null ? "" : idCardNo;
+    }
+
+    public void setIdCardNo(String idCardNo) {
+        this.idCardNo = idCardNo;
+    }
+
     private String settlementAmount;//待结算金额
     private String bindingCode;
     private int isRest;//是否休息(0工作中1休息中）
+    private String idCardNo;
 
 
     public String getToken() {
