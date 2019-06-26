@@ -23,7 +23,6 @@ import com.lzy.okgo.interceptor.HttpLoggingInterceptor;
 import com.lzy.okgo.model.HttpHeaders;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
-import com.pgyersdk.crash.PgyCrashManager;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreator;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreator;
@@ -39,6 +38,7 @@ import com.yxw.cn.carpenterrepair.crash.CrashHandler;
 import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
+import com.yxw.cn.carpenterrepair.util.AppHelper;
 import com.yxw.cn.carpenterrepair.util.Helper;
 import com.yxw.cn.carpenterrepair.util.LocationUtils;
 
@@ -119,6 +119,7 @@ public class InitService extends IntentService {
         CrashHandler.getInstance().init(BaseApplication.getInstance());
         initAccessTokenWithAkSk();
         setTimerTask();
+        setVersion();
     }
 
     /**
@@ -190,6 +191,19 @@ public class InitService extends IntentService {
             }
         }
     };
+
+    public void setVersion(){
+        OkGo.<ResponseData<Object>>post(UrlConstant.UPDATE_VERSION+ AppHelper.getCurrentVersionName())
+                .execute(new JsonCallback<ResponseData<Object>>() {
+                             @Override
+                             public void onSuccess(ResponseData<Object> response) {
+                                 if (response!=null && response.isSuccess()){
+                                     Log.d("setVersion","version:"+AppHelper.getCurrentVersionName());
+                                 }
+                             }
+                         }
+                );
+    }
 
 
 

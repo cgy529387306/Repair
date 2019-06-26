@@ -1,5 +1,6 @@
 package com.yxw.cn.carpenterrepair.activity.main;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
@@ -21,9 +22,9 @@ import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.fragment.HomeFragment;
 import com.yxw.cn.carpenterrepair.fragment.UserFragment;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
+import com.yxw.cn.carpenterrepair.service.SyncLocationService;
 import com.yxw.cn.carpenterrepair.util.AppUtil;
 import com.yxw.cn.carpenterrepair.util.EventBusUtil;
-import com.yxw.cn.carpenterrepair.util.LocationUtils;
 import com.yxw.cn.carpenterrepair.util.RegionPickerUtil;
 
 import butterknife.BindView;
@@ -42,6 +43,7 @@ public class MainActivity extends BaseActivity {
     private HomeFragment homeFragment;
     private UserFragment userFragment;
     private Fragment currentFragment;
+    private Intent mSyncIntent;
     @Override
     protected int getLayoutResId() {
         return R.layout.act_main;
@@ -49,6 +51,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        mSyncIntent = new Intent(this, SyncLocationService.class);
         homeFragment = new HomeFragment();
         userFragment = new UserFragment();
         showFragment(0);
@@ -59,13 +62,14 @@ public class MainActivity extends BaseActivity {
         AppUtil.initRegionTreeData();
         AppUtil.initSignReasonData();
         AppUtil.initReservationReasonData();
-        LocationUtils.instance().startLocation();
+        startService(mSyncIntent);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         PgyUpdateManager.unregister();
+        stopService(mSyncIntent);
     }
 
     private void showFragment(int page) {

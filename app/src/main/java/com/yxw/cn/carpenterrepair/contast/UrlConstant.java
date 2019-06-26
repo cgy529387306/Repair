@@ -30,6 +30,8 @@ public class UrlConstant {
     public final static String APPLY_WITHDRAWAL = BASE_USER + "/ms70/api/user/info/destoonFinanceCash";//用户提现申请
     public final static String APPLY_WITHDRAWAL_LIST = BASE_USER + "/ms70/api/fix/user/transaction/record/findAll";//交易明细
     public final static String CHANGE_USER_STATE = BASE_USER + "/ms70/api/user/info/updateRest/";
+    public final static String UPDATE_LOCATION = BASE_USER + "/ms70/api/user/info/updateCurrent";
+    public final static String UPDATE_VERSION = BASE_USER + "/ms70/api/user/info/updateSoftVersion/";
 
     public final static String GET_CODE = BASE_SERVICE + "/ms20/api/validateCode/code/ingnore-internal/getCode";
     public final static String GET_CODE_REGISTER = BASE_SERVICE + "/ms20/api/validateCode/code/ingnore-internal/getRegisterCode";

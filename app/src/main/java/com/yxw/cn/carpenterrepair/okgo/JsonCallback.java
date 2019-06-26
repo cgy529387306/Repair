@@ -1,6 +1,7 @@
 package com.yxw.cn.carpenterrepair.okgo;
 
 import android.content.Intent;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
@@ -72,7 +73,8 @@ public abstract class JsonCallback<T> extends AbsCallback<T> {
     @Override
     public void onError(com.lzy.okgo.model.Response<T> response) {
         super.onError(response);
-        ToastUtil.show("服务器异常");
+        Log.e("requestError",response!=null&&response.getException()!=null&& response.getException().getMessage()!=null
+                ?response.getException().getMessage():"服务异常");
     }
 
     @Override

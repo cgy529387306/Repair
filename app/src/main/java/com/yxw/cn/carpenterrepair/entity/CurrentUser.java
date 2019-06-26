@@ -83,6 +83,7 @@ public class CurrentUser extends LoginInfo{
             me.setSettlementAmount(entity.getSettlementAmount());
             me.setBindingCode(entity.getBindingCode());
             me.setIsRest(entity.getIsRest());
+            me.setRefreshTime(entity.getRefreshTime());
             json = JsonHelper.toJson(me);
             born = me != null;
         }

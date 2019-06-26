@@ -29,6 +29,15 @@ public class LoginInfo {
     private int idCardStatus;//身份证状态 0未上传 1已上传 2审核未通过 3审核通过
     private String carryAmount;//可提现金额
     private String deposit;//押金
+    private long refreshTime;
+
+    public long getRefreshTime() {
+        return refreshTime;
+    }
+
+    public void setRefreshTime(long refreshTime) {
+        this.refreshTime = refreshTime;
+    }
 
     public String getIdCardNo() {
         return idCardNo == null ? "" : idCardNo;
