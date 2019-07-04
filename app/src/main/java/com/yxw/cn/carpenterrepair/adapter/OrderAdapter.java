@@ -46,7 +46,7 @@ public class OrderAdapter extends BaseQuickAdapter<OrderItem, BaseViewHolder> {
         double price = orderStatus<=30?item.getTotalPrice():item.getFee();
         helper.setText(R.id.tv_ordre_name, item.getCategoryPName()+"/"+item.getCategoryCName())
                 .setText(R.id.tv_order_no,item.getOrderSn())
-                .setText(R.id.tv_order_time, Helper.long2DateString(item.getCustomerBookingTime()))
+                .setText(R.id.tv_order_time, item.getCustomerBookingTime())
                 .setText(R.id.tv_order_address, item.getAddress())
                 .setText(R.id.tv_order_content, item.getFaultDesc())
                 .setText(R.id.tv_order_state, AppUtil.getOrderStatus(item.getOrderStatus()))

@@ -17,6 +17,7 @@ import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.activity.main.MainActivity;
 import com.yxw.cn.carpenterrepair.activity.user.LoginActivity;
 import com.yxw.cn.carpenterrepair.entity.CurrentUser;
+import com.yxw.cn.carpenterrepair.util.MyTaskUtil;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -31,6 +32,7 @@ public class SplashActivity extends Activity{
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_splash);
+        MyTaskUtil.refreshToken();
     }
 
 

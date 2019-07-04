@@ -83,7 +83,7 @@ public class OrderItem implements Serializable {
     private String userId;
     private String faultDesc;
     private String serviceId;
-    private long customerBookingTime;
+    private String customerBookingTime;
 
 
     public String getAcceptId() {
@@ -398,11 +398,12 @@ public class OrderItem implements Serializable {
         this.serviceId = serviceId;
     }
 
-    public long getCustomerBookingTime() {
-        return customerBookingTime;
+
+    public String getCustomerBookingTime() {
+        return customerBookingTime == null ? "" : customerBookingTime;
     }
 
-    public void setCustomerBookingTime(long customerBookingTime) {
+    public void setCustomerBookingTime(String customerBookingTime) {
         this.customerBookingTime = customerBookingTime;
     }
 }

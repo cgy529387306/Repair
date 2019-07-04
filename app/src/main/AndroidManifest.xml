@@ -73,7 +73,7 @@
             android:launchMode="singleTask"/>
 
         <activity android:name=".activity.user.LoginActivity"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTop"/>
         <activity android:name=".activity.user.QuickLoginActivity"/>
         <activity android:name=".activity.user.ForgetPasswordActivity"/>
         <activity android:name=".activity.user.RegisterActivity"/>
@@ -118,9 +118,6 @@
         <activity android:name=".activity.MsgListActivity"/>
         <service
             android:name=".service.InitService"
-            android:exported="false" />
-        <service
-            android:name=".service.SyncLocationService"
             android:exported="false" />
     </application>
 </manifest>

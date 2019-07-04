@@ -16,9 +16,13 @@ public class LocationUtils {
 
     private LocationClient mLocationClient;
 
-    public static final LocationUtils instance() {
+    public static LocationUtils instance() {
         if (instance == null) {
-            instance = new LocationUtils();
+            synchronized(LocationUtils.class){
+                if (instance == null){
+                    instance = new LocationUtils();
+                }
+            }
         }
         return instance;
     }
@@ -36,6 +40,7 @@ public class LocationUtils {
                     PreferencesHelper.getInstance().putString("latitude",bdLocation.getLatitude()+"");
                     PreferencesHelper.getInstance().putString("longitude",bdLocation.getLongitude()+"");
                     EventBusUtil.post(MessageConstant.MY_LOCATION,bdLocation);
+                    MyTaskUtil.refreshLocation(bdLocation);
                 }
             }
         });
