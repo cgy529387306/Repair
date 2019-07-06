@@ -64,13 +64,18 @@ public class TransactionDetailsActivity extends BaseActivity implements OnRefres
                              public void onSuccess(ResponseData<TradeListData> response) {
                                  if (response != null && response.getData() != null) {
                                      if (response.isSuccess()) {
+                                         isNext = response.getData().isHasNext();
                                          if (p == 1) {
-                                             mPage = 2;
                                              mAdapter.setNewData(response.getData().getItems());
+                                             mAdapter.setEmptyView(R.layout.empty_data, (ViewGroup) mRecyclerView.getParent());
                                              mRefreshLayout.finishRefresh();
+                                             if (isNext){
+                                                 mPage = 2;
+                                             }else{
+                                                 mRefreshLayout.finishLoadMoreWithNoMoreData();
+                                             }
                                          } else {
                                              mAdapter.addData(response.getData().getItems());
-                                             isNext = response.getData().isHasNext();
                                              if (isNext) {
                                                  mPage++;
                                                  mRefreshLayout.finishLoadMore();
@@ -78,7 +83,6 @@ public class TransactionDetailsActivity extends BaseActivity implements OnRefres
                                                  mRefreshLayout.finishLoadMoreWithNoMoreData();
                                              }
                                          }
-                                         mAdapter.setEmptyView(R.layout.empty_data, (ViewGroup) mRecyclerView.getParent());
                                      } else {
                                          toast(response.getMsg());
                                          if (p == 1) {

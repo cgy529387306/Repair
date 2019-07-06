@@ -93,13 +93,18 @@ public class FinishedFragment extends BaseRefreshFragment implements BaseQuickAd
                     public void onSuccess(ResponseData<OrderListData> response) {
                         if (response!=null){
                             if (response.isSuccess() && response.getData()!=null) {
+                                isNext = response.getData().isHasNext();
                                 if (p == 1) {
-                                    mPage = 2;
                                     mAdapter.setNewData(response.getData().getItems());
+                                    mAdapter.setEmptyView(R.layout.empty_data, (ViewGroup) mRecyclerView.getParent());
                                     mRefreshLayout.finishRefresh();
+                                    if (isNext){
+                                        mPage = 2;
+                                    }else{
+                                        mRefreshLayout.finishLoadMoreWithNoMoreData();
+                                    }
                                 } else {
                                     mAdapter.addData(response.getData().getItems());
-                                    isNext = response.getData().isHasNext();
                                     if (isNext) {
                                         mPage++;
                                         mRefreshLayout.finishLoadMore();
@@ -107,7 +112,6 @@ public class FinishedFragment extends BaseRefreshFragment implements BaseQuickAd
                                         mRefreshLayout.finishLoadMoreWithNoMoreData();
                                     }
                                 }
-                                mAdapter.setEmptyView(R.layout.empty_data, (ViewGroup) mRecyclerView.getParent());
                             } else {
                                 toast(response.getMsg());
                                 if (p == 1) {

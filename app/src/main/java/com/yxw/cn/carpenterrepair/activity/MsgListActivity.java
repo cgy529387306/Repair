@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.lzy.okgo.OkGo;
@@ -62,13 +63,18 @@ public class MsgListActivity extends BaseActivity implements OnRefreshListener, 
                     public void onSuccess(ResponseData<NoticeListData> response) {
                         if (response!=null){
                             if (response.isSuccess() && response.getData()!=null) {
+                                isNext = response.getData().isHasNext();
                                 if (p == 1) {
-                                    mPage = 2;
                                     mAdapter.setNewData(response.getData().getItems());
+                                    mAdapter.setEmptyView(R.layout.empty_data, (ViewGroup) mRecyclerView.getParent());
                                     mRefreshLayout.finishRefresh();
+                                    if (isNext){
+                                        mPage = 2;
+                                    }else{
+                                        mRefreshLayout.finishLoadMoreWithNoMoreData();
+                                    }
                                 } else {
                                     mAdapter.addData(response.getData().getItems());
-                                    isNext = response.getData().isHasNext();
                                     if (isNext) {
                                         mPage++;
                                         mRefreshLayout.finishLoadMore();

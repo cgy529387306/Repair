@@ -9,8 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.baidu.location.BDAbstractLocationListener;
-import com.baidu.location.BDLocation;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
@@ -37,7 +35,6 @@ import com.yxw.cn.carpenterrepair.pop.ConfirmOrderPop;
 import com.yxw.cn.carpenterrepair.pop.ContactPop;
 import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 import com.yxw.cn.carpenterrepair.util.Helper;
-import com.yxw.cn.carpenterrepair.util.LocationUtils;
 import com.yxw.cn.carpenterrepair.util.PreferencesHelper;
 import com.yxw.cn.carpenterrepair.util.SpaceItemDecoration;
 import com.yxw.cn.carpenterrepair.util.TimePickerUtil;
@@ -133,13 +130,18 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
                     public void onSuccess(ResponseData<OrderListData> response) {
                         if (response!=null){
                             if (response.isSuccess() && response.getData()!=null) {
+                                isNext = response.getData().isHasNext();
                                 if (p == 1) {
-                                    mPage = 2;
                                     mAdapter.setNewData(response.getData().getItems());
+                                    mAdapter.setEmptyView(R.layout.empty_data, (ViewGroup) mRecyclerView.getParent());
                                     mRefreshLayout.finishRefresh();
+                                    if (isNext){
+                                        mPage = 2;
+                                    }else{
+                                        mRefreshLayout.finishLoadMoreWithNoMoreData();
+                                    }
                                 } else {
                                     mAdapter.addData(response.getData().getItems());
-                                    isNext = response.getData().isHasNext();
                                     if (isNext) {
                                         mPage++;
                                         mRefreshLayout.finishLoadMore();
@@ -147,7 +149,6 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
                                         mRefreshLayout.finishLoadMoreWithNoMoreData();
                                     }
                                 }
-                                mAdapter.setEmptyView(R.layout.empty_data, (ViewGroup) mRecyclerView.getParent());
                             } else {
                                 toast(response.getMsg());
                                 if (p == 1) {

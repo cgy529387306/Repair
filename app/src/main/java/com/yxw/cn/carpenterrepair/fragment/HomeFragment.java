@@ -144,7 +144,7 @@ public class HomeFragment extends BaseRefreshFragment implements BaseQuickAdapte
 
     private void getNoticeData(int p){
         Map<String, Object> requestMap = new HashMap<>();
-        requestMap.put("site",2);
+        requestMap.put("site",1);
         Map<String, Object> map = new HashMap<>();
         map.put("filter", requestMap);
         map.put("pageIndex", p);
@@ -156,13 +156,17 @@ public class HomeFragment extends BaseRefreshFragment implements BaseQuickAdapte
                     public void onSuccess(ResponseData<NoticeListData> response) {
                         if (response!=null){
                             if (response.isSuccess() && response.getData()!=null) {
+                                isNext = response.getData().isHasNext();
                                 if (p == 1) {
-                                    mPage = 2;
                                     mAdapter.setNewData(response.getData().getItems());
                                     mRefreshLayout.finishRefresh();
+                                    if (isNext){
+                                        mPage = 2;
+                                    }else{
+                                        mRefreshLayout.finishLoadMoreWithNoMoreData();
+                                    }
                                 } else {
                                     mAdapter.addData(response.getData().getItems());
-                                    isNext = response.getData().isHasNext();
                                     if (isNext) {
                                         mPage++;
                                         mRefreshLayout.finishLoadMore();
