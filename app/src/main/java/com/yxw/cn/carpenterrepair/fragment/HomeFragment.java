@@ -19,12 +19,12 @@ import com.yxw.cn.carpenterrepair.BaseRefreshFragment;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.activity.MsgDetailActivity;
 import com.yxw.cn.carpenterrepair.activity.order.MyOrderActivity;
+import com.yxw.cn.carpenterrepair.activity.order.MyOrderFinishActivity;
 import com.yxw.cn.carpenterrepair.activity.user.IdCardInfoActivity;
 import com.yxw.cn.carpenterrepair.adapter.HomeMsgAdapter;
 import com.yxw.cn.carpenterrepair.adapter.OrderTypeAdapter;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.BannerBean;
-import com.yxw.cn.carpenterrepair.entity.BannerListData;
 import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 import com.yxw.cn.carpenterrepair.entity.NoticeListData;
 import com.yxw.cn.carpenterrepair.entity.OrderType;
@@ -86,9 +86,13 @@ public class HomeFragment extends BaseRefreshFragment implements BaseQuickAdapte
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 if(CurrentUser.getInstance().isLogin() && CurrentUser.getInstance().getIdCardStatus()==3){
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("type",getOrderTypeList().get(i));
-                    startActivity(MyOrderActivity.class,bundle);
+                    if (i == 4) {
+                        startActivity(MyOrderFinishActivity.class);
+                    }else{
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("type",getOrderTypeList().get(i));
+                        startActivity(MyOrderActivity.class,bundle);
+                    }
                 }else if(CurrentUser.getInstance().isLogin() && CurrentUser.getInstance().getIdCardStatus()==0){
                     toast("工程师身份信息未提交!");
                     startActivity(IdCardInfoActivity.class);

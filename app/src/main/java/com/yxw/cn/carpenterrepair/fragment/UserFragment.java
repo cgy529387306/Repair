@@ -171,9 +171,11 @@ public class UserFragment extends BaseFragment {
                                  dismissLoading();
                                  if (response!=null){
                                      if (response.isSuccess()) {
+                                         AppUtil.vibrate(getActivity(),1000);
+                                         String hint = state==1?"您已切换成休息状态":"您已切换成工作状态";
                                          SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
                                                  .setTitleText("提示")
-                                                 .setContentText("状态切换成功")
+                                                 .setContentText(hint)
                                                  .setConfirmText("确定");
                                          sweetAlertDialog.setCancelable(true);
                                          sweetAlertDialog.show();
