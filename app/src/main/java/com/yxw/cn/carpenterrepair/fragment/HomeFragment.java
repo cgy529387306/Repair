@@ -143,7 +143,10 @@ public class HomeFragment extends BaseRefreshFragment implements BaseQuickAdapte
     }
 
     private void getNoticeData(int p){
+        Map<String, Object> requestMap = new HashMap<>();
+        requestMap.put("site",2);
         Map<String, Object> map = new HashMap<>();
+        map.put("filter", requestMap);
         map.put("pageIndex", p);
         map.put("pageSize", loadCount);
         OkGo.<ResponseData<NoticeListData>>post(UrlConstant.GET_NOTICE)
