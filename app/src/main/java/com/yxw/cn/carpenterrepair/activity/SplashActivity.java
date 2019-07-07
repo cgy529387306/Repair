@@ -12,29 +12,37 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.view.WindowManager;
 
+import com.google.gson.Gson;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.model.HttpHeaders;
+import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.activity.main.MainActivity;
 import com.yxw.cn.carpenterrepair.activity.user.LoginActivity;
+import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.CurrentUser;
-import com.yxw.cn.carpenterrepair.util.MyTaskUtil;
+import com.yxw.cn.carpenterrepair.entity.ResponseData;
+import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
+import com.yxw.cn.carpenterrepair.util.Helper;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
-
 
 public class SplashActivity extends Activity{
 
     private SweetAlertDialog dialog;
     private Handler handler = new Handler();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_splash);
-        MyTaskUtil.refreshToken();
     }
-
 
     private void requestPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
@@ -61,7 +69,7 @@ public class SplashActivity extends Activity{
                     }, 22);
 
         } else {
-            init();
+            refreshToken();
         }
     }
 
@@ -125,7 +133,7 @@ public class SplashActivity extends Activity{
                         == PackageManager.PERMISSION_GRANTED
                         && ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                         == PackageManager.PERMISSION_GRANTED) {
-                    init();
+                    refreshToken();
                 }
             }
         }
@@ -137,17 +145,6 @@ public class SplashActivity extends Activity{
         requestPermission();
     }
 
-    private void init(){
-        handler.postDelayed(() -> {
-            if (CurrentUser.getInstance().isLogin()){
-                startActivity(new Intent(SplashActivity.this,MainActivity.class));
-                finish();
-            }else{
-                startActivity(new Intent(SplashActivity.this,LoginActivity.class));
-                finish();
-            }
-        }, 2000);
-    }
 
     @Override
     protected void onDestroy() {
@@ -155,6 +152,44 @@ public class SplashActivity extends Activity{
         if (handler != null) {
             handler.removeCallbacksAndMessages(null);
             handler = null;
+        }
+    }
+
+    private void refreshToken(){
+        if (CurrentUser.getInstance().isLogin() && Helper.isNotEmpty(CurrentUser.getInstance().getRefreshToken())){
+            Map<String, Object> map = new HashMap<>();
+            map.put("refreshToken", CurrentUser.getInstance().getRefreshToken());
+            OkGo.<ResponseData<String>>post(UrlConstant.REFRESH_TOKEN)
+                    .upJson(new Gson().toJson(map))
+                    .execute(new JsonCallback<ResponseData<String>>() {
+                                 @Override
+                                 public void onSuccess(ResponseData<String> response) {
+                                     if (response!=null){
+                                         if (response.isSuccess()) {
+                                             HttpHeaders headers = new HttpHeaders();
+                                             CurrentUser.getInstance().setToken(response.getData());
+                                             headers.put("Authorization", "Bearer "+ response.getData());
+                                             OkGo.getInstance().addCommonHeaders(headers);
+                                             startActivity(new Intent(SplashActivity.this,MainActivity.class));
+                                             finish();
+                                         }
+                                     }
+                                 }
+
+                                 @Override
+                                 public void onError(Response<ResponseData<String>> response) {
+                                     super.onError(response);
+                                     startActivity(new Intent(SplashActivity.this,LoginActivity.class));
+                                     finish();
+                                 }
+                             }
+                    );
+        }else{
+            handler.postDelayed(() -> {
+                startActivity(new Intent(SplashActivity.this,LoginActivity.class));
+                finish();
+            }, 1000);
+
         }
     }
 }

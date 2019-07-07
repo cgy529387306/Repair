@@ -87,8 +87,8 @@ public class MyTaskUtil {
         SimpleTimerTask refreshTokenTask = new SimpleTimerTask(REFRESH_TIME) {
             @Override
             public void run() {
-                LocationUtils.instance().startLocation();
                 MyTaskUtil.refreshToken();
+                LocationUtils.instance().startLocation();
             }
         };
         SimpleTimerTaskHandler refreshTokenHandler = SimpleTimerTaskHandler.getInstance();

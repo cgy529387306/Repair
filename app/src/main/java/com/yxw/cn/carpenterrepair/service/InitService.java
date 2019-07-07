@@ -78,8 +78,6 @@ public class InitService extends IntentService {
         MultiDex.install(BaseApplication.getInstance());
         SDKInitializer.initialize(BaseApplication.getInstance());
         SDKInitializer.setCoordType(CoordType.BD09LL);
-        LocationUtils.instance().startLocation();
-
         OkGo.getInstance().init(BaseApplication.getInstance());
         //Builder
         OkHttpClient.Builder builder = new OkHttpClient.Builder();

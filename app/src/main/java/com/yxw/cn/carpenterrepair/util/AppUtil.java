@@ -134,6 +134,17 @@ public class AppUtil {
         }
     }
 
+    public static String getOrderFinishedStatus(int orderStatus) {
+        //待接单 待预约 待上门 待完成 已完成
+        if (orderStatus==100){
+            return "已审核";
+        }else if (orderStatus==110){
+            return "已结算";
+        }else {
+            return "待审核";
+        }
+    }
+
     public static void showPic(Context context, ImageView mIv, String url) {
         RequestOptions options = new RequestOptions()
 //                .placeholder(R.mipmap.launcher)
