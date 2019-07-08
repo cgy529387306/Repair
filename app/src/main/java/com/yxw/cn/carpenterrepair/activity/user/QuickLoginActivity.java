@@ -54,6 +54,7 @@ public class QuickLoginActivity extends BaseActivity {
         titlebar.setTitle("验证码登录");
         mEtTel.setText(SpUtil.getStr(SpConstant.LOGIN_MOBILE));
         mEtTel.setSelection(mEtTel.getText().toString().length());
+        validPhone();
         mEtTel.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -65,11 +66,7 @@ public class QuickLoginActivity extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (AppUtil.isPhone(s.toString())) {
-                    mCountDownTextView.setBackgroundResource(R.drawable.corner_red);
-                } else {
-                    mCountDownTextView.setBackgroundResource(R.drawable.corner_gray);
-                }
+                validPhone();
             }
         });
         mCountDownTextView.setNormalText("获取验证码")
@@ -118,6 +115,16 @@ public class QuickLoginActivity extends BaseActivity {
                         }
                     }
                 });
+    }
+
+    private void validPhone(){
+        if (AppUtil.isPhone(mEtTel.getText().toString())) {
+            mCountDownTextView.setEnabled(true);
+            mCountDownTextView.setBackgroundResource(R.drawable.corner_red);
+        } else {
+            mCountDownTextView.setEnabled(false);
+            mCountDownTextView.setBackgroundResource(R.drawable.corner_gray);
+        }
     }
 
     @OnClick({R.id.tv_login})

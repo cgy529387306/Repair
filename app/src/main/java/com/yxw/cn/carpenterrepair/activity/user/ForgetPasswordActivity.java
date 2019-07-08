@@ -14,10 +14,12 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
+import com.yxw.cn.carpenterrepair.contast.SpConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.util.AppUtil;
+import com.yxw.cn.carpenterrepair.util.SpUtil;
 import com.yxw.cn.carpenterrepair.view.CountDownTextView;
 import com.yxw.cn.carpenterrepair.view.TitleBar;
 
@@ -53,6 +55,9 @@ public class ForgetPasswordActivity extends BaseActivity {
     @Override
     public void initView() {
         titlebar.setTitle("忘记密码");
+        mEtPhone.setText(SpUtil.getStr(SpConstant.LOGIN_MOBILE));
+        mEtPhone.setSelection(mEtPhone.getText().toString().length());
+        validPhone();
         mEtPhone.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -64,11 +69,7 @@ public class ForgetPasswordActivity extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (AppUtil.isPhone(s.toString())) {
-                    mCountDownTextView.setBackgroundResource(R.drawable.corner_red);
-                } else {
-                    mCountDownTextView.setBackgroundResource(R.drawable.corner_gray);
-                }
+                validPhone();
             }
         });
         mCountDownTextView.setNormalText("获取验证码")
@@ -117,6 +118,14 @@ public class ForgetPasswordActivity extends BaseActivity {
                         }
                     }
                 });
+    }
+
+    private void validPhone() {
+        if (AppUtil.isPhone(mEtPhone.getText().toString())) {
+            mCountDownTextView.setBackgroundResource(R.drawable.corner_red);
+        } else {
+            mCountDownTextView.setBackgroundResource(R.drawable.corner_gray);
+        }
     }
 
     @OnClick({R.id.iv_show, R.id.btn_submit})

@@ -179,6 +179,7 @@ public class SplashActivity extends Activity{
                                  @Override
                                  public void onError(Response<ResponseData<String>> response) {
                                      super.onError(response);
+                                     CurrentUser.getInstance().loginOut();
                                      startActivity(new Intent(SplashActivity.this,LoginActivity.class));
                                      finish();
                                  }
