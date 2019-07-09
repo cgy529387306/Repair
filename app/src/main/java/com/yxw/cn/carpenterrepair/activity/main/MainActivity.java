@@ -21,6 +21,7 @@ import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.fragment.HomeFragment;
 import com.yxw.cn.carpenterrepair.fragment.UserFragment;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
+import com.yxw.cn.carpenterrepair.util.ActivityManager;
 import com.yxw.cn.carpenterrepair.util.AppUtil;
 import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 import com.yxw.cn.carpenterrepair.util.MyTaskUtil;
@@ -92,6 +93,7 @@ public class MainActivity extends BaseActivity {
             mLastClickTimeMills = System.currentTimeMillis();
             return;
         }
+        ActivityManager.getInstance().closeAllActivity();
         finish();
     }
 
