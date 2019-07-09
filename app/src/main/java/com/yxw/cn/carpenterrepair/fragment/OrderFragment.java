@@ -110,7 +110,11 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
     private void getOrderData(int p) {
         Map<String, Object> requestMap = new HashMap<>();
         if (mOrderType!=2){
-            requestMap.put("customerBookingTime",mBookingTime);
+            if (mOrderStatus == 2 || mOrderStatus == 3){
+                requestMap.put("bookingStartTime",mBookingTime);
+            }else{
+                requestMap.put("customerBookingTime",mBookingTime);
+            }
         }
         if (mOrderStatus==0){
             String locationLat = PreferencesHelper.getInstance().getString("latitude","26.088114");

@@ -84,7 +84,7 @@ public class OrderItem implements Serializable {
     private String faultDesc;
     private String serviceId;
     private String customerBookingTime;
-
+    private String solution;
 
     public String getAcceptId() {
         return acceptId == null ? "" : acceptId;
@@ -405,5 +405,13 @@ public class OrderItem implements Serializable {
 
     public void setCustomerBookingTime(String customerBookingTime) {
         this.customerBookingTime = customerBookingTime;
+    }
+
+    public String getSolution() {
+        return solution == null ? "" : solution;
+    }
+
+    public void setSolution(String solution) {
+        this.solution = solution;
     }
 }

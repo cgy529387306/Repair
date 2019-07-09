@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:layout_width="250dp"
-        android:layout_height="153dp"
+        android:layout_height="102dp"
         android:layout_gravity="center"
         android:orientation="vertical"
         android:background="@drawable/corner_white">
@@ -29,6 +29,7 @@
             android:id="@+id/tv_update_time"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:visibility="gone"
             android:text="修改时间"
             android:gravity="center"
             android:textColor="#FF333333"
@@ -36,6 +37,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:visibility="gone"
             android:background="#FFD8D8D8"/>
         <TextView
             android:id="@+id/tv_confirm"

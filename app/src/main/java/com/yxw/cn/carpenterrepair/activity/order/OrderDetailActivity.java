@@ -97,8 +97,16 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
     TextView tvCreateTime;
     @BindView(R.id.tv_booking_time)
     TextView tvBookingTime;
-    @BindView(R.id.tv_desc)
-    TextView tvDesc;
+
+    @BindView(R.id.tv_fixDesc)
+    TextView tvFixDesc;
+    @BindView(R.id.tv_faultDesc)
+    TextView tvFaultDesc;
+    @BindView(R.id.tv_solution)
+    TextView tvSolution;
+    @BindView(R.id.tv_remark)
+    TextView tvRemark;
+
     @BindView(R.id.tv_operate0)
     TextView tvOperate0;
     @BindView(R.id.tv_operate1)
@@ -202,7 +210,10 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
             tvTitle.setText(orderItem.getCategoryPName());
             tvTitle2.setText(orderItem.getCategoryCName());
             tvBookingTime.setText(orderItem.getBookingStartTime());
-            tvDesc.setText(orderItem.getFixDesc());
+            tvFaultDesc.setText(orderItem.getFaultDesc());
+            tvFixDesc.setText(orderItem.getFixDesc());
+            tvSolution.setText(orderItem.getSolution());
+            tvRemark.setText(orderItem.getRemark());
             initOrderStatus();
             initOrderLocation();
         }
