@@ -17,6 +17,8 @@ import com.bigkoo.pickerview.view.TimePickerView;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.listerner.OnChooseDateListener;
 import com.yxw.cn.carpenterrepair.listerner.OnChooseTimeListener;
+import com.yxw.cn.carpenterrepair.timepicker.CustomTimePickerView;
+import com.yxw.cn.carpenterrepair.timepicker.CustomTimePikerBuilder;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -173,7 +175,7 @@ public class TimePickerUtil {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.HOUR_OF_DAY,1);
         calendar.set(Calendar.MINUTE,0);
-        TimePickerView pvTime = new TimePickerBuilder(context, new OnTimeSelectListener() {
+        CustomTimePickerView pvTime = new CustomTimePikerBuilder(context, new OnTimeSelectListener() {
             @Override
             public void onTimeSelect(Date date, View v) {
                 if (date.getTime()<new Date().getTime()){
