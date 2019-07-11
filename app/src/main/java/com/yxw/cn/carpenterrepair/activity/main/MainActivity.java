@@ -60,6 +60,7 @@ public class MainActivity extends BaseActivity {
         AppUtil.initRegionTreeData();
         AppUtil.initSignReasonData();
         AppUtil.initReservationReasonData();
+        AppUtil.initReturnData();
         MyTaskUtil.setVersion();
         MyTaskUtil.doTimeTask();
     }

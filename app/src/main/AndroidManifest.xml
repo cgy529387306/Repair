@@ -135,6 +135,8 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".activity.order.AppointAbnormalActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".activity.order.CancelOrderActivity"
+            android:screenOrientation="portrait"/>
 
         <activity android:name=".activity.setting.UserFeedBackActivity"
             android:screenOrientation="portrait"/>

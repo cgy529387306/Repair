@@ -15,6 +15,7 @@ import com.lzy.okgo.model.Response;
 import com.yxw.cn.carpenterrepair.BaseRefreshFragment;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.activity.order.AppointAbnormalActivity;
+import com.yxw.cn.carpenterrepair.activity.order.CancelOrderActivity;
 import com.yxw.cn.carpenterrepair.activity.order.MyOrder1Activity;
 import com.yxw.cn.carpenterrepair.activity.order.MyOrderActivity;
 import com.yxw.cn.carpenterrepair.activity.order.OrderDetailActivity;
@@ -33,7 +34,6 @@ import com.yxw.cn.carpenterrepair.listerner.OnChooseDateListener;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.pop.ConfirmOrderPop;
 import com.yxw.cn.carpenterrepair.pop.ContactPop;
-import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 import com.yxw.cn.carpenterrepair.util.Helper;
 import com.yxw.cn.carpenterrepair.util.PreferencesHelper;
 import com.yxw.cn.carpenterrepair.util.SpaceItemDecoration;
@@ -204,6 +204,13 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
     }
 
     @Override
+    public void onOrderCancel(OrderItem orderItem) {
+        Bundle bundle = new Bundle();
+        bundle.putString("acceptId",orderItem.getAcceptId());
+        startActivity(CancelOrderActivity.class,bundle);
+    }
+
+    @Override
     public void onAbnormal(OrderItem orderItem,int type) {
         if (type==0){
             Bundle bundle = new Bundle();
@@ -222,45 +229,6 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
             mContactPop = new ContactPop(getActivity(),this,orderItem);
         }
         mContactPop.showPopupWindow(mRecyclerView);
-    }
-
-    @Override
-    public void onTurnReservation(OrderItem orderItem) {
-        TimePickerUtil.showYearPicker(getActivity(), new OnChooseDateListener() {
-            @Override
-            public void getDate(Date date) {
-                String startTime = TimeUtil.dateToString(date, "yyyy-MM-dd HH:mm:00");
-                String endTime = TimeUtil.getAfterHourTime(date);
-                showLoading();
-                HashMap<String, Object> map = new HashMap<>();
-                map.put("acceptId", orderItem.getAcceptId());
-                map.put("bookingStartTime", startTime);
-                map.put("bookingEndTime", endTime);
-                OkGo.<ResponseData<Object>>post(UrlConstant.ORDER_TURN_RESERVATION)
-                        .upJson(gson.toJson(map))
-                        .execute(new JsonCallback<ResponseData<Object>>() {
-                            @Override
-                            public void onSuccess(ResponseData<Object> response) {
-                                dismissLoading();
-                                if (response!=null){
-                                    if (response.isSuccess()) {
-                                        toast("改约成功");
-                                        EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
-                                    }else{
-                                        toast(response.getMsg());
-                                    }
-                                }
-                            }
-
-                            @Override
-                            public void onError(Response<ResponseData<Object>> response) {
-                                super.onError(response);
-                                dismissLoading();
-                            }
-                        });
-
-            }
-        });
     }
 
     @Override

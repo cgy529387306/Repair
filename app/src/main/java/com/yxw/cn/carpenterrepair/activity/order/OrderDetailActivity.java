@@ -522,7 +522,17 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
                     tvRestTime.setText("预约时间已过期");
                 }
             }
-            tvOperate0.setVisibility(View.GONE);
+            tvOperate0.setVisibility(View.VISIBLE);
+            tvOperate0.setText("取消订单");
+            tvOperate0.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("acceptId",orderItem.getAcceptId());
+                    startActivity(CancelOrderActivity.class,bundle);
+                    finish();
+                }
+            });
             tvOperate1.setVisibility(View.VISIBLE);
             tvOperate1.setText("异常反馈");
             tvOperate1.setOnClickListener(new View.OnClickListener() {
@@ -547,7 +557,6 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
                 }
             });
         }else if (orderStatus<=55){
-            //待上门
             //待上门
             tvRestTime.setVisibility(View.VISIBLE);
             if (Helper.isEmpty(orderItem.getBookingStartTime())){
@@ -577,49 +586,7 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
                     tvRestTime.setText("服务时间已过期");
                 }
             }
-            tvOperate0.setVisibility(View.VISIBLE);
-            tvOperate0.setText("改约");
-            tvOperate0.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    TimePickerUtil.showYearPicker(OrderDetailActivity.this, new OnChooseDateListener() {
-                        @Override
-                        public void getDate(Date date) {
-                            String startTime = TimeUtil.dateToString(date, "yyyy-MM-dd HH:mm:00");
-                            String endTime = TimeUtil.getAfterHourTime(date);
-                            showLoading();
-                            HashMap<String, Object> map = new HashMap<>();
-                            map.put("acceptId", orderItem.getAcceptId());
-                            map.put("bookingStartTime", startTime);
-                            map.put("bookingEndTime", endTime);
-                            OkGo.<ResponseData<Object>>post(UrlConstant.ORDER_TURN_RESERVATION)
-                                    .upJson(gson.toJson(map))
-                                    .execute(new JsonCallback<ResponseData<Object>>() {
-                                        @Override
-                                        public void onSuccess(ResponseData<Object> response) {
-                                            dismissLoading();
-                                            if (response!=null){
-                                                if (response.isSuccess()) {
-                                                    toast("改约成功");
-                                                    EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
-                                                }else{
-                                                    toast(response.getMsg());
-                                                }
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onError(Response<ResponseData<Object>> response) {
-                                            super.onError(response);
-                                            dismissLoading();
-                                        }
-                                    });
-
-                        }
-                    });
-                }
-            });
-
+            tvOperate0.setVisibility(View.GONE);
             tvOperate1.setVisibility(View.VISIBLE);
             tvOperate1.setText("异常反馈");
             tvOperate1.setOnClickListener(new View.OnClickListener() {

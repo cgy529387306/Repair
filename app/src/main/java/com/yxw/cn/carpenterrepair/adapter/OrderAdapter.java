@@ -7,9 +7,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.entity.OrderItem;
-import com.yxw.cn.carpenterrepair.util.AppHelper;
 import com.yxw.cn.carpenterrepair.util.AppUtil;
-import com.yxw.cn.carpenterrepair.util.Helper;
 import com.yxw.cn.carpenterrepair.util.TimeUtil;
 
 import java.util.List;
@@ -23,9 +21,9 @@ public class OrderAdapter extends BaseQuickAdapter<OrderItem, BaseViewHolder> {
 
     public interface OnOrderOperateListener{
         void onOrderTaking(OrderItem orderItem);//接单
+        void onOrderCancel(OrderItem orderItem);//取消订单
         void onAbnormal(OrderItem orderItem,int type);//异常反馈
         void onContact(OrderItem orderItem);//联系用户
-        void onTurnReservation(OrderItem orderItem);//改约
         void onSign(OrderItem orderItem);//签到
         void onFinish(OrderItem orderItem);//服务完成
         void onView(OrderItem orderItem);//查看
@@ -68,7 +66,14 @@ public class OrderAdapter extends BaseQuickAdapter<OrderItem, BaseViewHolder> {
             if (TimeUtil.reFreshTime2(item.getReceiveTime())!=null){
                 tvRestTime.setText(String.format("预约倒计时：%s", TimeUtil.reFreshTime2(item.getReceiveTime())));
             }
-            tvOperate0.setVisibility(View.GONE);
+            tvOperate0.setVisibility(View.VISIBLE);
+            tvOperate0.setText("取消订单");
+            tvOperate0.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mOperateListener.onOrderCancel(item);
+                }
+            });
             tvOperate1.setVisibility(View.VISIBLE);
             tvOperate1.setText("异常反馈");
             tvOperate1.setOnClickListener(new View.OnClickListener() {
@@ -93,15 +98,7 @@ public class OrderAdapter extends BaseQuickAdapter<OrderItem, BaseViewHolder> {
             }else{
                 tvRestTime.setText("服务时间已过期");
             }
-            tvOperate0.setVisibility(View.VISIBLE);
-            tvOperate0.setText("改约");
-            tvOperate0.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mOperateListener.onTurnReservation(item);
-                }
-            });
-
+            tvOperate0.setVisibility(View.GONE);
             tvOperate1.setVisibility(View.VISIBLE);
             tvOperate1.setText("异常反馈");
             tvOperate1.setOnClickListener(new View.OnClickListener() {

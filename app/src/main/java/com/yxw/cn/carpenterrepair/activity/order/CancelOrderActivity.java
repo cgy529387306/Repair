@@ -4,7 +4,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.lzy.okgo.OkGo;
@@ -16,17 +15,13 @@ import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.ReasonBean;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
-import com.yxw.cn.carpenterrepair.listerner.OnChooseDateListener;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.util.AppUtil;
 import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 import com.yxw.cn.carpenterrepair.util.Helper;
-import com.yxw.cn.carpenterrepair.util.TimePickerUtil;
-import com.yxw.cn.carpenterrepair.util.TimeUtil;
 import com.yxw.cn.carpenterrepair.view.TitleBar;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -36,12 +31,10 @@ import butterknife.OnClick;
 /**
  * 预约异常
  */
-public class AppointAbnormalActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener {
+public class CancelOrderActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener {
 
     @BindView(R.id.titlebar)
     TitleBar titleBar;
-    @BindView(R.id.tv_time)
-    TextView tvTime;
     @BindView(R.id.rv_reason)
     RecyclerView mRvReason;
     @BindView(R.id.et_remark)
@@ -51,17 +44,15 @@ public class AppointAbnormalActivity extends BaseActivity implements BaseQuickAd
     private String acceptId;
     private String exceptionIds;
 
-    private String startTime;
-    private String endTime;
 
     @Override
     protected int getLayoutResId() {
-        return R.layout.act_appoint_abnormal;
+        return R.layout.act_cancel_order;
     }
 
     @Override
     public void initView() {
-        titleBar.setTitle("预约异常反馈");
+        titleBar.setTitle("取消订单");
         acceptId = getIntent().getStringExtra("acceptId");
         mAdapter = new OrderAbnormalAdapter(new ArrayList<>());
         mAdapter.setOnItemClickListener(this);
@@ -71,17 +62,17 @@ public class AppointAbnormalActivity extends BaseActivity implements BaseQuickAd
 
     @Override
     public void getData() {
-        getReservationReasonData();
+        getReturnData();
     }
 
-    private void getReservationReasonData(){
-        if (AppUtil.reservationReasonList != null && AppUtil.reservationReasonList.size() > 0) {
-            exceptionIds = AppUtil.reservationReasonList.get(0).getDictId();
-            mAdapter.setNewData(AppUtil.reservationReasonList);
+    private void getReturnData(){
+        if (AppUtil.returnReasonList != null && AppUtil.returnReasonList.size() > 0) {
+            exceptionIds = AppUtil.returnReasonList.get(0).getDictId();
+            mAdapter.setNewData(AppUtil.returnReasonList);
         } else{
             showLoading();
             HashMap<String,String> map = new HashMap<>();
-            map.put("dictKey","TURN_RESERVATION_REASON");
+            map.put("dictKey","TURN_CANCELORDR_REASON");
             OkGo.<ResponseData<List<ReasonBean>>>post(UrlConstant.GET_EXCEPTION_REASON)
                     .upJson(gson.toJson(map))
                     .execute(new JsonCallback<ResponseData<List<ReasonBean>>>() {
@@ -91,9 +82,9 @@ public class AppointAbnormalActivity extends BaseActivity implements BaseQuickAd
                             dismissLoading();
                             if (response!=null){
                                 if (response.isSuccess() && response.getData()!=null){
-                                    if (AppUtil.reservationReasonList != null && AppUtil.reservationReasonList.size() > 0) {
-                                        exceptionIds = AppUtil.reservationReasonList.get(0).getDictId();
-                                        mAdapter.setNewData(AppUtil.reservationReasonList);
+                                    if (AppUtil.returnReasonList != null && AppUtil.returnReasonList.size() > 0) {
+                                        exceptionIds = AppUtil.returnReasonList.get(0).getDictId();
+                                        mAdapter.setNewData(AppUtil.returnReasonList);
                                     }
                                 }
                             }
@@ -109,36 +100,22 @@ public class AppointAbnormalActivity extends BaseActivity implements BaseQuickAd
     }
 
 
-    @OnClick({R.id.rl_time, R.id.cancel, R.id.confirm})
+    @OnClick({R.id.cancel, R.id.confirm})
     public void click(View view) {
         switch (view.getId()) {
-            case R.id.rl_time:
-                TimePickerUtil.showYearPicker(this, new OnChooseDateListener() {
-                    @Override
-                    public void getDate(Date date) {
-                        startTime = TimeUtil.dateToString(date, "yyyy-MM-dd HH:mm:00");
-                        endTime = TimeUtil.getAfterHourTime(date);
-                        tvTime.setText(startTime);
-                    }
-                });
-                break;
             case R.id.confirm:
                 String desc = etRemark.getText().toString().trim();
-                if (Helper.isEmpty(startTime)) {
-                    toast("请先选择再次预约时间！");
-                } else if (Helper.isEmpty(exceptionIds)) {
-                    toast("请先选择异常原因");
+                if (Helper.isEmpty(exceptionIds)) {
+                    toast("请先选择取消订单原因");
                 } else {
                     showLoading();
                     HashMap<String, Object> map = new HashMap<>();
                     map.put("acceptId", acceptId);
-                    map.put("bookingStartTime", startTime);
-                    map.put("bookingEndTime", endTime);
                     map.put("ids", exceptionIds);
                     if (Helper.isNotEmpty(desc)){
                         map.put("fixDesc", desc);
                     }
-                    OkGo.<ResponseData<Object>>post(UrlConstant.ORDER_EXEPTION_APPOINT)
+                    OkGo.<ResponseData<Object>>post(UrlConstant.ORDER_RETURN)
                             .upJson(gson.toJson(map))
                             .execute(new JsonCallback<ResponseData<Object>>() {
                                 @Override
@@ -146,8 +123,8 @@ public class AppointAbnormalActivity extends BaseActivity implements BaseQuickAd
                                     dismissLoading();
                                     if (response!=null){
                                         if (response.isSuccess()) {
-                                            toast("异常反馈成功");
-                                            AppointAbnormalActivity.this.finish();
+                                            toast("取消成功");
+                                            CancelOrderActivity.this.finish();
                                             EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
                                         }else{
                                             toast(response.getMsg());

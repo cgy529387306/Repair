@@ -57,8 +57,7 @@ public class UrlConstant {
     public final static String ORDER_DETAIL_DFP = BASE_USER + "/ms60/api/fix/order/dfpOrderDetails/";//查询订单详情信息（待分派的订单）serviceId
     public final static String ORDER_DETAIL_DJD = BASE_USER + "/ms60/api/fix/order/djdOrderDetails/";//查询订单详情信息(未接单的订单) orderId
     public final static String ORDER_DETAIL_YFP = BASE_USER + "/ms60/api/fix/order/yfpOrderDetails/";//查询订单详情信息（已接单或已分派后的订单）acceptId
-
-
+    public final static String ORDER_RETURN = BASE_USER + "/ms60/api/fix/order/accept/engineerReturn";//查询订单详情信息（已接单或已分派后的订单）acceptId
 
 
     public final static String USER_EVALUATE = BASE_USER + "/api/fix/userOrder/evaluate";
