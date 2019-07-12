@@ -29,7 +29,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- * 预约异常
+ * 取消订单
  */
 public class CancelOrderActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener {
 
