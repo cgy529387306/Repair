@@ -522,26 +522,16 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
                     tvRestTime.setText("预约时间已过期");
                 }
             }
-            tvOperate0.setVisibility(View.VISIBLE);
-            tvOperate0.setText("取消订单");
-            tvOperate0.setOnClickListener(new View.OnClickListener() {
+            tvOperate0.setVisibility(View.GONE);
+            tvOperate1.setVisibility(View.VISIBLE);
+            tvOperate1.setText("取消订单");
+            tvOperate1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Bundle bundle = new Bundle();
                     bundle.putString("acceptId",orderItem.getAcceptId());
                     startActivity(CancelOrderActivity.class,bundle);
                     finish();
-                }
-            });
-            tvOperate1.setVisibility(View.VISIBLE);
-            tvOperate1.setText("异常反馈");
-            tvOperate1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("type",0);
-                    bundle.putString("acceptId",orderItem.getAcceptId());
-                    startActivity(AppointAbnormalActivity.class,bundle);
                 }
             });
 
@@ -586,7 +576,17 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
                     tvRestTime.setText("服务时间已过期");
                 }
             }
-            tvOperate0.setVisibility(View.GONE);
+            tvOperate0.setVisibility(View.VISIBLE);
+            tvOperate0.setText("改约");
+            tvOperate0.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("type",0);
+                    bundle.putString("acceptId",orderItem.getAcceptId());
+                    startActivity(AppointAbnormalActivity.class,bundle);
+                }
+            });
             tvOperate1.setVisibility(View.VISIBLE);
             tvOperate1.setText("异常反馈");
             tvOperate1.setOnClickListener(new View.OnClickListener() {

@@ -34,7 +34,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- * 预约异常
+ * 预约异常（改约）
  */
 public class AppointAbnormalActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener {
 
@@ -61,7 +61,7 @@ public class AppointAbnormalActivity extends BaseActivity implements BaseQuickAd
 
     @Override
     public void initView() {
-        titleBar.setTitle("预约异常反馈");
+        titleBar.setTitle("改约");
         acceptId = getIntent().getStringExtra("acceptId");
         mAdapter = new OrderAbnormalAdapter(new ArrayList<>());
         mAdapter.setOnItemClickListener(this);
@@ -127,7 +127,7 @@ public class AppointAbnormalActivity extends BaseActivity implements BaseQuickAd
                 if (Helper.isEmpty(startTime)) {
                     toast("请先选择再次预约时间！");
                 } else if (Helper.isEmpty(exceptionIds)) {
-                    toast("请先选择异常原因");
+                    toast("请先选择改约原因");
                 } else {
                     showLoading();
                     HashMap<String, Object> map = new HashMap<>();
@@ -146,7 +146,7 @@ public class AppointAbnormalActivity extends BaseActivity implements BaseQuickAd
                                     dismissLoading();
                                     if (response!=null){
                                         if (response.isSuccess()) {
-                                            toast("异常反馈成功");
+                                            toast("改约成功");
                                             AppointAbnormalActivity.this.finish();
                                             EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
                                         }else{
