@@ -25,6 +25,8 @@ import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.util.AppUtil;
 import com.yxw.cn.carpenterrepair.util.EventBusUtil;
+import com.yxw.cn.carpenterrepair.util.Helper;
+import com.yxw.cn.carpenterrepair.util.PreferencesHelper;
 import com.yxw.cn.carpenterrepair.util.SpUtil;
 import com.yxw.cn.carpenterrepair.view.CountDownTextView;
 import com.yxw.cn.carpenterrepair.view.TitleBar;
@@ -34,6 +36,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.jpush.android.api.JPushInterface;
 
 /**
  * 注册
@@ -155,6 +158,11 @@ public class RegisterActivity extends BaseActivity {
                     map.put("password", mEtPassword.getText().toString().trim());
                     map.put("smsCode", mEtCode.getText().toString().trim());
                     map.put("appSign", UrlConstant.mRoleSign);
+                    String rid = PreferencesHelper.getInstance().getString(SpConstant.REGISTER_ID);
+                    if (Helper.isEmpty(rid)){
+                        rid = JPushInterface.getRegistrationID(getApplicationContext());
+                    }
+                    map.put("regId", rid);
                     showLoading();
                     OkGo.<ResponseData<LoginInfo>>post(UrlConstant.REGISTER)
                             .upJson(gson.toJson(map))

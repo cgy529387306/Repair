@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.WindowManager;
 
 import com.google.gson.Gson;
@@ -20,15 +21,18 @@ import com.orhanobut.logger.Logger;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.activity.main.MainActivity;
 import com.yxw.cn.carpenterrepair.activity.user.LoginActivity;
+import com.yxw.cn.carpenterrepair.contast.SpConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.util.Helper;
+import com.yxw.cn.carpenterrepair.util.PreferencesHelper;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.jpush.android.api.JPushInterface;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class SplashActivity extends Activity{
@@ -42,6 +46,7 @@ public class SplashActivity extends Activity{
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_splash);
+        getRegisterId();
     }
 
     private void requestPermission() {
@@ -191,6 +196,14 @@ public class SplashActivity extends Activity{
                 finish();
             }, 1000);
 
+        }
+    }
+
+    private void getRegisterId(){
+        String regId = JPushInterface.getRegistrationID(getApplicationContext());
+        if (Helper.isNotEmpty(regId)) {
+            PreferencesHelper.getInstance().putString(SpConstant.REGISTER_ID, regId);
+            Log.d("jpush rid:",regId);
         }
     }
 }

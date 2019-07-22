@@ -34,6 +34,7 @@ import com.yxw.cn.carpenterrepair.util.LocationUtils;
 
 import java.util.logging.Level;
 
+import cn.jpush.android.api.JPushInterface;
 import okhttp3.OkHttpClient;
 
 public class InitService extends IntentService {
@@ -75,6 +76,9 @@ public class InitService extends IntentService {
      */
     private void loadInit() {
         Log.d("loadInit","start loadInit");
+        JPushInterface.setDebugMode(true); 	// 设置开启日志,发布时请关闭日志
+        JPushInterface.init(this);
+
         MultiDex.install(BaseApplication.getInstance());
         SDKInitializer.initialize(BaseApplication.getInstance());
         SDKInitializer.setCoordType(CoordType.BD09LL);

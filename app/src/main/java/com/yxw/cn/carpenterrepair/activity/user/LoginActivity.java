@@ -21,6 +21,8 @@ import com.yxw.cn.carpenterrepair.entity.LoginInfo;
 import com.yxw.cn.carpenterrepair.entity.MessageEvent;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
+import com.yxw.cn.carpenterrepair.util.Helper;
+import com.yxw.cn.carpenterrepair.util.PreferencesHelper;
 import com.yxw.cn.carpenterrepair.util.SpUtil;
 
 import java.util.HashMap;
@@ -28,6 +30,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.jpush.android.api.JPushInterface;
 
 /**
  * 登录
@@ -86,6 +89,11 @@ public class LoginActivity extends BaseActivity {
             map.put("userName", mEtTel.getText().toString().trim());
             map.put("password", mEtPassword.getText().toString().trim());
             map.put("appSign", UrlConstant.mRoleSign);
+            String rid = PreferencesHelper.getInstance().getString(SpConstant.REGISTER_ID);
+            if (Helper.isEmpty(rid)){
+                rid = JPushInterface.getRegistrationID(getApplicationContext());
+            }
+            map.put("regId", rid);
             OkGo.<ResponseData<LoginInfo>>post(UrlConstant.LOGIN)
                     .upJson(gson.toJson(map))
                     .execute(new JsonCallback<ResponseData<LoginInfo>>() {
