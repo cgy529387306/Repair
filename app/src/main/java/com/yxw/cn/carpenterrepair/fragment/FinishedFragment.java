@@ -13,17 +13,13 @@ import com.lzy.okgo.model.Response;
 import com.yxw.cn.carpenterrepair.BaseRefreshFragment;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.activity.order.OrderDetailActivity;
-import com.yxw.cn.carpenterrepair.adapter.OrderAdapter;
 import com.yxw.cn.carpenterrepair.adapter.OrderFinishedAdapter;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.MessageEvent;
-import com.yxw.cn.carpenterrepair.entity.OrderItem;
 import com.yxw.cn.carpenterrepair.entity.OrderListData;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
-import com.yxw.cn.carpenterrepair.pop.ConfirmOrderPop;
-import com.yxw.cn.carpenterrepair.pop.ContactPop;
 import com.yxw.cn.carpenterrepair.util.SpaceItemDecoration;
 
 import java.util.ArrayList;
@@ -96,7 +92,7 @@ public class FinishedFragment extends BaseRefreshFragment implements BaseQuickAd
                                 isNext = response.getData().isHasNext();
                                 if (p == 1) {
                                     mAdapter.setNewData(response.getData().getItems());
-                                    mAdapter.setEmptyView(R.layout.empty_data, (ViewGroup) mRecyclerView.getParent());
+                                    mAdapter.setEmptyView(R.layout.empty_order, (ViewGroup) mRecyclerView.getParent());
                                     mRefreshLayout.finishRefresh();
                                     if (isNext){
                                         mPage = 2;

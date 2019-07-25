@@ -30,7 +30,7 @@ import java.util.Map;
 import butterknife.BindView;
 
 /**
- * 交易明细
+ * 提现明细
  */
 public class TransactionDetailsActivity extends BaseActivity implements OnRefreshListener, OnLoadMoreListener {
 
@@ -110,7 +110,7 @@ public class TransactionDetailsActivity extends BaseActivity implements OnRefres
 
     @Override
     public void initView() {
-        titleBar.setTitle("交易明细");
+        titleBar.setTitle("提现明细");
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.addItemDecoration(new RecycleViewDivider(LinearLayoutManager.VERTICAL,1,getResources().getColor(R.color.gray_divider)));
         mRefreshLayout.setOnRefreshListener(this);

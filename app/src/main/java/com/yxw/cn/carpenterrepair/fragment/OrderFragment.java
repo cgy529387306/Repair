@@ -137,7 +137,7 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
                                 isNext = response.getData().isHasNext();
                                 if (p == 1) {
                                     mAdapter.setNewData(response.getData().getItems());
-                                    mAdapter.setEmptyView(R.layout.empty_data, (ViewGroup) mRecyclerView.getParent());
+                                    mAdapter.setEmptyView(R.layout.empty_order, (ViewGroup) mRecyclerView.getParent());
                                     mRefreshLayout.finishRefresh();
                                     if (isNext){
                                         mPage = 2;

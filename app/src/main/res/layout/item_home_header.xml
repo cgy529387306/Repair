@@ -9,7 +9,7 @@
     <com.youth.banner.Banner
         android:id="@+id/bannerView"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="180dp"
         app:is_auto_play="true"/>
     <com.yxw.cn.carpenterrepair.view.NestedGridView
         android:id="@+id/gridCate"
