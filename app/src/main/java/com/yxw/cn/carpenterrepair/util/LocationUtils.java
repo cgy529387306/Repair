@@ -29,10 +29,6 @@ public class LocationUtils {
 
     private LocationUtils() {//单例模式私有化构造
         mLocationClient = new LocationClient(BaseApplication.getInstance());
-        initOption();
-    }
-
-    public void startLocation() {
         mLocationClient.registerLocationListener(new BDAbstractLocationListener() {
             @Override
             public void onReceiveLocation(BDLocation bdLocation) {
@@ -44,14 +40,13 @@ public class LocationUtils {
                 }
             }
         });
-        mLocationClient.start();
+        initOption();
     }
 
-    public void requestLocation(BDAbstractLocationListener locationListener) {
-        mLocationClient.registerLocationListener(locationListener);
+    public void startLocation() {
         mLocationClient.start();
+        mLocationClient.requestLocation();//发送请求
     }
-
 
     private void initOption() {
         LocationClientOption option = new LocationClientOption();

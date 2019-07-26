@@ -97,6 +97,8 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
     TextView tvCreateTime;
     @BindView(R.id.tv_booking_time)
     TextView tvBookingTime;
+    @BindView(R.id.tv_time_type)
+    TextView tvTimeType;
 
     @BindView(R.id.tv_fixDesc)
     TextView tvFixDesc;
@@ -214,6 +216,7 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
             tvFixDesc.setText(orderItem.getFixDesc());
             tvSolution.setText(orderItem.getSolution());
             tvRemark.setText(orderItem.getRemark());
+            tvTimeType.setText(orderStatus<=40?"服务时间":"上门时间");
             initOrderStatus();
             initOrderLocation();
         }

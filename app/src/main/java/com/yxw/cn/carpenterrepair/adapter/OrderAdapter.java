@@ -44,6 +44,7 @@ public class OrderAdapter extends BaseQuickAdapter<OrderItem, BaseViewHolder> {
         double price = orderStatus<=30?item.getTotalPrice():item.getFee();
         helper.setText(R.id.tv_ordre_name, item.getCategoryPName()+"/"+item.getCategoryCName())
                 .setText(R.id.tv_order_no,item.getOrderSn())
+                .setText(R.id.tv_time_type, orderStatus<=40?"服务时间":"上门时间")
                 .setText(R.id.tv_order_time, orderStatus<=40?item.getCustomerBookingTime():item.getBookingStartTime())
                 .setText(R.id.tv_order_address, item.getAddress())
                 .setText(R.id.tv_order_content, item.getFaultDesc())
