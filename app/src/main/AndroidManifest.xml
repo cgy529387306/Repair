@@ -171,6 +171,9 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".activity.MsgListActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".activity.user.RegisterStepActivity"
+            android:screenOrientation="portrait"/>
+
         <service
             android:name=".service.InitService"
             android:exported="false" />

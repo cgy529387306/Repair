@@ -67,7 +67,7 @@ public class LoginActivity extends BaseActivity {
                 doLogin();
                 break;
             case R.id.tv_register:
-                startActivity(RegisterActivity.class);
+                startActivity(RegisterStepActivity.class);
                 break;
             case R.id.tv_forget_password:
                 startActivity(ForgetPasswordActivity.class);
