@@ -177,6 +177,4 @@ public class MainActivity extends BaseActivity {
         currentFragment = targetFragment;
         return transaction;
     }
-
-
 }

@@ -64,12 +64,16 @@ public class PersonInfoActivity extends BaseActivity {
     TextView mTvResident;
     @BindView(R.id.tv_service_provider)
     TextView mTvServiceProvider;
+    @BindView(R.id.tv_person_code)
+    TextView mTvPersonCode;
     @BindView(R.id.rv_category)
     RecyclerView mRvCate;
     @BindView(R.id.ll_good)
     LinearLayout mLlGood;
     @BindView(R.id.img_back)
     ImageView mImgBack;
+    @BindView(R.id.iv_gender)
+    ImageView mIvGender;
 
     private List<String> mCateList = new ArrayList<String>();
     private MyCategoryAdapter mCateAdapter;
@@ -136,12 +140,8 @@ public class PersonInfoActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.ll_idCardNo:// 身份证号码
-
                 break;
             case R.id.ll_idCardStatus: //身份证认证
-                if (loginInfo!=null && (loginInfo.getIdCardStatus()==0 || loginInfo.getIdCardStatus()==2)){
-                    startActivity(IdCardInfoActivity.class);
-                }
                 break;
             case R.id.iv_avatar:
                 PictureSelector.create(this)
@@ -235,9 +235,6 @@ public class PersonInfoActivity extends BaseActivity {
         switch (event.getId()) {
             case MessageConstant.NOTIFY_UPDATE_INFO:
                 notifyInfo();
-                break;
-            case MessageConstant.MY_CATEGORY:
-                mCateAdapter.notifyDataSetChanged();
                 break;
         }
     }

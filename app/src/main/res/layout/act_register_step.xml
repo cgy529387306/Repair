@@ -19,7 +19,7 @@
            android:gravity="center_horizontal"
            android:orientation="vertical">
            <TextView
-               android:id="@+id/tv_step1"
+               android:id="@+id/lb_step1"
                android:layout_width="28dp"
                android:layout_height="28dp"
                android:gravity="center"
@@ -28,7 +28,7 @@
                android:textColor="@color/white"
                android:background="@drawable/circle_red_step"/>
            <TextView
-               android:id="@+id/tv_step1_phone"
+               android:id="@+id/tv_step1"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:layout_marginTop="7dp"
@@ -38,6 +38,7 @@
                android:textColor="#333333" />
        </LinearLayout>
         <View
+            android:id="@+id/line1"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="1dp"
@@ -49,7 +50,7 @@
             android:gravity="center_horizontal"
             android:orientation="vertical">
             <TextView
-                android:id="@+id/tv_step2"
+                android:id="@+id/lb_step2"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:gravity="center"
@@ -58,7 +59,7 @@
                 android:textColor="@color/white"
                 android:background="@drawable/circle_grey_step"/>
             <TextView
-                android:id="@+id/tv_step2_card"
+                android:id="@+id/tv_step2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="7dp"
@@ -68,6 +69,7 @@
                 android:textColor="#BBBBBB" />
         </LinearLayout>
         <View
+            android:id="@+id/line2"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="1dp"
@@ -79,7 +81,7 @@
             android:gravity="center_horizontal"
             android:orientation="vertical">
             <TextView
-                android:id="@+id/tv_step3"
+                android:id="@+id/lb_step3"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:gravity="center"
@@ -88,7 +90,7 @@
                 android:textColor="@color/white"
                 android:background="@drawable/circle_grey_step"/>
             <TextView
-                android:id="@+id/tv_step3_info"
+                android:id="@+id/tv_step3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="7dp"
@@ -103,15 +105,4 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"/>
-    <Button
-        android:id="@+id/tv_next"
-        android:layout_width="match_parent"
-        android:layout_height="46dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/bg_btn_red"
-        android:textSize="@dimen/text_normal"
-        android:text="下一步"
-        android:textColor="#ffffff" />
 </LinearLayout>

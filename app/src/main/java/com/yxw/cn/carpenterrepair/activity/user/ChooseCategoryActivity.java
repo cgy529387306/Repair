@@ -13,14 +13,13 @@ import com.lzy.okgo.model.Response;
 import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.adapter.CategoryAdapter;
-import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.Category;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.util.AppUtil;
-import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 import com.yxw.cn.carpenterrepair.util.Helper;
+import com.yxw.cn.carpenterrepair.util.MyTaskUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -162,7 +161,7 @@ public class ChooseCategoryActivity extends BaseActivity {
                         dismissLoading();
                         if (response!=null){
                             if (response.isSuccess()){
-                                EventBusUtil.post(MessageConstant.NOTIFY_GET_INFO);
+                                MyTaskUtil.getUserInfo();
                                 toast("保存成功");
                                 if (mIsCanBack){
                                     finish();

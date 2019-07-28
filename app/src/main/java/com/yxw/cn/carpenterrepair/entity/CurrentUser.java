@@ -59,12 +59,16 @@ public class CurrentUser extends LoginInfo{
             if (Helper.isNotEmpty(entity.getResidentAreaName())){
                 me.setResidentAreaName(entity.getResidentAreaName());
             }
-            me.setIdCardNo(entity.getIdCardNo());
+            if (Helper.isNotEmpty(entity.getRealName())){
+                me.setRealName(entity.getRealName());
+            }
+            if (Helper.isNotEmpty(entity.getIdCardNo())){
+                me.setIdCardNo(entity.getIdCardNo());
+            }
             me.setLastLoginTime(entity.getLastLoginTime());
             me.setMobile(entity.getMobile());
             me.setAvatar(entity.getAvatar());
             me.setUserName(entity.getUserName());
-            me.setRealName(entity.getRealName());
             me.setUserId(entity.getUserId());
             me.setNickname(entity.getNickname());
             me.setExpire(entity.getExpire());

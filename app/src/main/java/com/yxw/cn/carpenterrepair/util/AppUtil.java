@@ -69,7 +69,7 @@ public class AppUtil {
             public void run() {
                 view.setEnabled(true);
             }
-        }, 2000);
+        }, 1500);
     }
 
     public static String getVerName() {

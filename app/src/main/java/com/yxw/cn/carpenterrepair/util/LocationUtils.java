@@ -35,6 +35,7 @@ public class LocationUtils {
                 if (bdLocation!=null && bdLocation.getLatitude() != 4.9E-324 && bdLocation.getLongitude() != 4.9E-324){
                     PreferencesHelper.getInstance().putString("latitude",bdLocation.getLatitude()+"");
                     PreferencesHelper.getInstance().putString("longitude",bdLocation.getLongitude()+"");
+                    PreferencesHelper.getInstance().putString("city",bdLocation.getCity()+"-"+bdLocation.getDistrict());
                     EventBusUtil.post(MessageConstant.MY_LOCATION,bdLocation);
                     MyTaskUtil.refreshLocation(bdLocation);
                 }

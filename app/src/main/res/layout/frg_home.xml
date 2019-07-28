@@ -3,10 +3,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <com.yxw.cn.carpenterrepair.view.TitleBar
-        android:id="@+id/titlebar"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp" />
+        android:layout_height="48dp">
+        <TextView
+            android:id="@+id/tv_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLength="10"
+            android:visibility="gone"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="12dp"
+            android:drawablePadding="5dp"
+            android:drawableLeft="@drawable/icon_home_location"
+            android:text="福州-鼓楼"
+            android:textColor="#333333"
+            android:textSize="13sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="工作台"
+            android:textColor="@color/text_black"
+            android:textSize="18sp"/>
+    </FrameLayout>
     <include
         android:layout_width="match_parent"
         android:layout_height="match_parent"

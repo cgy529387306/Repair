@@ -7,14 +7,12 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:visibility="gone"/>
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/main_container_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottom"
-        android:orientation="vertical">
-
-    </LinearLayout>
+        android:orientation="vertical"/>
 
     <LinearLayout
         android:background="@color/white"
