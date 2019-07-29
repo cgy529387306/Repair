@@ -16,6 +16,7 @@ android:background="#F8F8F8">
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:gravity="center_vertical"
+        android:visibility="gone"
         android:paddingLeft="14dp"
         android:paddingTop="10dp"
         android:paddingRight="14dp"
@@ -47,6 +48,7 @@ android:background="#F8F8F8">
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
+        android:visibility="gone"
         android:layout_marginLeft="14dp"
         android:background="@color/bg_gray" />
     <LinearLayout
@@ -93,6 +95,7 @@ android:background="#F8F8F8">
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:gravity="center_vertical"
+        android:visibility="gone"
         android:paddingLeft="14dp"
         android:paddingTop="10dp"
         android:paddingRight="14dp"
@@ -123,6 +126,7 @@ android:background="#F8F8F8">
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
+        android:visibility="gone"
         android:layout_marginLeft="14dp"
         android:background="@color/bg_gray" />
     <LinearLayout

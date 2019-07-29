@@ -15,12 +15,12 @@ import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.yxw.cn.carpenterrepair.R;
-import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.RegionTree;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.listerner.OnChooseAddrListener;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -169,7 +169,7 @@ public class RegionPickerUtil {
                              public void onSuccess(ResponseData<Object> response) {
                                  if (response != null){
                                      if (response.isSuccess()) {
-                                         EventBusUtil.post(MessageConstant.NOTIFY_GET_INFO);
+                                         MyTaskUtil.getUserInfo();
                                      } else {
                                          ToastUtil.show(response.getMsg());
                                      }

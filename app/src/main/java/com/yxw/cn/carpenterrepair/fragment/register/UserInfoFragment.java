@@ -110,6 +110,7 @@ public class UserInfoFragment extends BaseFragment {
                 startActivity(intent);
                 break;
             case R.id.ll_resident:
+                AppUtil.disableViewDoubleClick(view);
                 RegionPickerUtil.showPicker(getActivity(), mTvResident, true);
                 break;
             case R.id.ll_service_provider:
@@ -121,7 +122,7 @@ public class UserInfoFragment extends BaseFragment {
                 break;
             case R.id.btn_confirm:
                 AppUtil.disableViewDoubleClick(view);
-                if (Helper.isEmpty(CurrentUser.getInstance().getResidentAreaName())){
+                if (Helper.isEmpty(CurrentUser.getInstance().getResidentArea())){
                     ToastUtil.show("请选择常驻地址");
                     return;
                 }

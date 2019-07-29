@@ -1,7 +1,6 @@
 package com.yxw.cn.carpenterrepair.activity.user;
 
 import android.graphics.Color;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
@@ -9,10 +8,11 @@ import android.widget.TextView;
 
 import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
-import com.yxw.cn.carpenterrepair.entity.CurrentUser;
+import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.fragment.register.IdCardFragment;
 import com.yxw.cn.carpenterrepair.fragment.register.RegisterFragment;
 import com.yxw.cn.carpenterrepair.fragment.register.UserInfoFragment;
+import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 import com.yxw.cn.carpenterrepair.view.TitleBar;
 
 import butterknife.BindView;
@@ -55,10 +55,17 @@ public class RegisterStepActivity extends BaseActivity {
     @Override
     public void initView() {
         titlebar.setTitle("注册");
+        titlebar.setLeftClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+        int step = getIntent().getIntExtra("step",0);
         mRegisterFragment = new RegisterFragment();
         mIdCardFragment = new IdCardFragment();
         mUserInfoFragment = new UserInfoFragment();
-        showFragment(0);
+        showFragment(step);
     }
 
 
@@ -136,12 +143,7 @@ public class RegisterStepActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        CurrentUser.getInstance().loginOut();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                finish();
-            }
-        },500);
+        EventBusUtil.post(MessageConstant.REGISTER_OUT);
+        super.onBackPressed();
     }
 }
