@@ -22,6 +22,7 @@ import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 import com.yxw.cn.carpenterrepair.entity.LoginInfo;
 import com.yxw.cn.carpenterrepair.entity.MessageEvent;
 import com.yxw.cn.carpenterrepair.util.AppUtil;
+import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 import com.yxw.cn.carpenterrepair.util.Helper;
 import com.yxw.cn.carpenterrepair.util.RegionPickerUtil;
 import com.yxw.cn.carpenterrepair.util.SpUtil;
@@ -128,6 +129,7 @@ public class UserInfoFragment extends BaseFragment {
                     ToastUtil.show("请选择擅长项目");
                     return;
                 }
+                EventBusUtil.post(MessageConstant.REGISTER);
                 SpUtil.putStr(SpConstant.LOGIN_MOBILE, CurrentUser.getInstance().getMobile());
                 startActivity(MainActivity.class);
                 getActivity().finish();
