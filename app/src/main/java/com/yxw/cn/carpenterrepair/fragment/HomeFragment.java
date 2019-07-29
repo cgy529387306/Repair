@@ -121,6 +121,7 @@ public class HomeFragment extends BaseRefreshFragment implements BaseQuickAdapte
         getLunboData();
         getNoticeData(1);
         LocationUtils.instance().startLocation();
+        showLoading();
     }
 
     private void getLunboData(){
@@ -132,6 +133,7 @@ public class HomeFragment extends BaseRefreshFragment implements BaseQuickAdapte
                 .execute(new JsonCallback<ResponseData<List<BannerBean>>>() {
                     @Override
                     public void onSuccess(ResponseData<List<BannerBean>> response) {
+                        dismissLoading();
                         if (response!=null){
                             if (response.isSuccess() && mBanner!=null && response.getData()!=null){
                                 mBanner.setImageLoader(new GlideImageLoader());
@@ -157,6 +159,7 @@ public class HomeFragment extends BaseRefreshFragment implements BaseQuickAdapte
                 .execute(new JsonCallback<ResponseData<NoticeListData>>() {
                     @Override
                     public void onSuccess(ResponseData<NoticeListData> response) {
+                        dismissLoading();
                         if (response!=null){
                             if (response.isSuccess() && response.getData()!=null) {
                                 isNext = response.getData().isHasNext();
@@ -233,7 +236,7 @@ public class HomeFragment extends BaseRefreshFragment implements BaseQuickAdapte
         switch (event.getId()) {
             case MessageConstant.MY_LOCATION:
                 String city = PreferencesHelper.getInstance().getString("city","");
-                if (Helper.isEmpty(city)){
+                if (Helper.isEmpty(city)||city.contains("null")){
                     mTvLocation.setVisibility(View.GONE);
                 }else{
                     mTvLocation.setVisibility(View.VISIBLE);

@@ -30,6 +30,10 @@ public class LoginInfo {
     private String carryAmount;//可提现金额
     private String deposit;//押金
     private long refreshTime;
+    private String sex;
+    private String pName;
+    private String jobNumber;
+
 
     public long getRefreshTime() {
         return refreshTime;
@@ -284,5 +288,29 @@ public class LoginInfo {
 
     public void setIsRest(int isRest) {
         this.isRest = isRest;
+    }
+
+    public String getSex() {
+        return sex == null ? "" : sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public String getpName() {
+        return pName == null ? "" : pName;
+    }
+
+    public void setpName(String pName) {
+        this.pName = pName;
+    }
+
+    public String getJobNumber() {
+        return jobNumber == null ? "" : jobNumber;
+    }
+
+    public void setJobNumber(String jobNumber) {
+        this.jobNumber = jobNumber;
     }
 }

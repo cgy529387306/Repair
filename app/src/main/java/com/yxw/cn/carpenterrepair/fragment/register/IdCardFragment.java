@@ -68,7 +68,7 @@ public class IdCardFragment extends BaseFragment {
     private String idCardBack = null;
     private String icCardBoth = null;
     private static final int REQUEST_CODE_CAMERA = 102;
-    private String mName,mIdcardNo;
+    private String mName,mIdCardNo,mGender;
     @Override
     protected int getLayout() {
         return R.layout.frg_id_card_info;
@@ -160,6 +160,8 @@ public class IdCardFragment extends BaseFragment {
                 AppUtil.disableViewDoubleClick(view);
                 if (idCardBack == null || idCardFront == null || icCardBoth == null) {
                     toast("请上传齐全证件图片！");
+                } else if (Helper.isEmpty(mIdCardNo) || Helper.isEmpty(mName)){
+                    toast("身份证正面照片上传错误，请重新上传");
                 }else {
                     showLoading();
                     Gson gson = new Gson();
@@ -176,10 +178,11 @@ public class IdCardFragment extends BaseFragment {
                                     if (response!=null){
                                         if (response.isSuccess()){
                                             try {
-                                                if (getActivity() instanceof RegisterStepActivity && Helper.isNotEmpty(mIdcardNo) && Helper.isNotEmpty(mName)){
+                                                if (getActivity() instanceof RegisterStepActivity){
                                                     toast("提交成功");
                                                     CurrentUser.getInstance().setRealName(mName);
-                                                    CurrentUser.getInstance().setIdCardNo(mIdcardNo);
+                                                    CurrentUser.getInstance().setIdCardNo(mIdCardNo);
+                                                    CurrentUser.getInstance().setSex(mGender);
                                                     CurrentUser.getInstance().login(CurrentUser.getInstance());
                                                     EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_INFO);
                                                     ((RegisterStepActivity)getActivity()).goToNext();
@@ -249,7 +252,8 @@ public class IdCardFragment extends BaseFragment {
             public void onResult(IDCardResult result) {
                 if (result != null) {
                     mName = result.getName().toString();
-                    mIdcardNo = result.getIdNumber().toString();
+                    mIdCardNo = result.getIdNumber().toString();
+                    mGender = result.getGender().toString();
                 }
             }
 

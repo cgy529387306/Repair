@@ -65,6 +65,11 @@ public class CurrentUser extends LoginInfo{
             if (Helper.isNotEmpty(entity.getIdCardNo())){
                 me.setIdCardNo(entity.getIdCardNo());
             }
+            if (Helper.isNotEmpty(entity.getSex())){
+                me.setSex(entity.getSex());
+            }
+            me.setJobNumber(entity.getJobNumber());
+            me.setpName(entity.getpName());
             me.setLastLoginTime(entity.getLastLoginTime());
             me.setMobile(entity.getMobile());
             me.setAvatar(entity.getAvatar());

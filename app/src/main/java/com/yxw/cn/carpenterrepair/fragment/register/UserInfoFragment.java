@@ -17,12 +17,14 @@ import com.yxw.cn.carpenterrepair.activity.user.JoinServiceProviderActivity;
 import com.yxw.cn.carpenterrepair.activity.user.ServiceProviderEmptyActivity;
 import com.yxw.cn.carpenterrepair.adapter.MyCategoryAdapter;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
+import com.yxw.cn.carpenterrepair.contast.SpConstant;
 import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 import com.yxw.cn.carpenterrepair.entity.LoginInfo;
 import com.yxw.cn.carpenterrepair.entity.MessageEvent;
 import com.yxw.cn.carpenterrepair.util.AppUtil;
 import com.yxw.cn.carpenterrepair.util.Helper;
 import com.yxw.cn.carpenterrepair.util.RegionPickerUtil;
+import com.yxw.cn.carpenterrepair.util.SpUtil;
 import com.yxw.cn.carpenterrepair.util.ToastUtil;
 
 import java.io.Serializable;
@@ -77,7 +79,7 @@ public class UserInfoFragment extends BaseFragment {
                 loginInfo = CurrentUser.getInstance();
                 mTvName.setText(loginInfo.getRealName());
                 mTvPhone.setText(loginInfo.getMobile());
-                mTvServiceProvider.setText(TextUtils.isEmpty(loginInfo.getParentId())?"":"服务商ID"+loginInfo.getParentId());
+                mTvServiceProvider.setText(TextUtils.isEmpty(loginInfo.getpName())?"":"服务商"+loginInfo.getpName());
                 mTvIdCardNo.setText(loginInfo.getIdCardNo());
                 mTvResident.setText(loginInfo.getResidentAreaName());
                 if (Helper.isNotEmpty(loginInfo.getCategory())){
@@ -126,6 +128,7 @@ public class UserInfoFragment extends BaseFragment {
                     ToastUtil.show("请选择擅长项目");
                     return;
                 }
+                SpUtil.putStr(SpConstant.LOGIN_MOBILE, CurrentUser.getInstance().getMobile());
                 startActivity(MainActivity.class);
                 getActivity().finish();
                 break;

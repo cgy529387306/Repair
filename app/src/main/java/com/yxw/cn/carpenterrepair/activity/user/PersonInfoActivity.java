@@ -105,9 +105,11 @@ public class PersonInfoActivity extends BaseActivity {
                 mTvName.setText(loginInfo.getRealName());
                 mTvPhone.setText(loginInfo.getMobile());
                 mTvIdCardStatus.setText(AppUtil.getIdCardStatus(loginInfo.getIdCardStatus()));
-                mTvServiceProvider.setText(TextUtils.isEmpty(loginInfo.getParentId())?"":"服务商ID"+loginInfo.getParentId());
+                mTvServiceProvider.setText(TextUtils.isEmpty(loginInfo.getpName())?"":"服务商"+loginInfo.getpName());
                 mTvIdCardNo.setText(loginInfo.getIdCardNo());
                 mTvResident.setText(loginInfo.getResidentAreaName());
+                mIvGender.setImageResource("女".equals(loginInfo.getSex())?R.drawable.icon_gender_female:R.drawable.icon_gender_man);
+                mTvPersonCode.setText(loginInfo.getJobNumber());
                 if (Helper.isNotEmpty(loginInfo.getCategory())){
                     String[] dataArray = loginInfo.getCategory().split(",");
                     if (Helper.isNotEmpty(dataArray)){

@@ -167,7 +167,6 @@ public class RegisterFragment extends BaseFragment {
                                              if (response!=null){
                                                  if (response.isSuccess()) {
                                                      toast("注册成功,请上传身份证照片");
-                                                     SpUtil.putStr(SpConstant.LOGIN_MOBILE, mEtPhone.getText().toString().trim());
                                                      CurrentUser.getInstance().login(response.getData());
                                                      HttpHeaders headers = new HttpHeaders();
                                                      headers.put("Authorization", "Bearer "+response.getData().getToken());
