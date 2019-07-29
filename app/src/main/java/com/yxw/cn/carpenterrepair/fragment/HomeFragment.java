@@ -144,6 +144,12 @@ public class HomeFragment extends BaseRefreshFragment implements BaseQuickAdapte
                             }
                         }
                     }
+
+                    @Override
+                    public void onError(Response<ResponseData<List<BannerBean>>> response) {
+                        super.onError(response);
+                        dismissLoading();
+                    }
                 });
     }
 
@@ -194,6 +200,7 @@ public class HomeFragment extends BaseRefreshFragment implements BaseQuickAdapte
                     @Override
                     public void onError(Response<ResponseData<NoticeListData>> response) {
                         super.onError(response);
+                        dismissLoading();
                         if (p == 1) {
                             mRefreshLayout.finishRefresh(false);
                         } else {
@@ -208,6 +215,7 @@ public class HomeFragment extends BaseRefreshFragment implements BaseQuickAdapte
     public void onRefresh() {
         super.onRefresh();
         getNoticeData(1);
+        LocationUtils.instance().startLocation();
     }
 
     @Override

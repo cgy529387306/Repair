@@ -27,6 +27,7 @@ import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.util.Helper;
+import com.yxw.cn.carpenterrepair.util.LocationUtils;
 import com.yxw.cn.carpenterrepair.util.PreferencesHelper;
 
 import java.util.HashMap;
@@ -47,6 +48,7 @@ public class SplashActivity extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_splash);
         getRegisterId();
+        LocationUtils.instance().startLocation();
     }
 
     private void requestPermission() {
