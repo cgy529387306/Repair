@@ -13,6 +13,7 @@ public class MessageConstant {
     public final static String NOTIFY_UPDATE_ORDER= "NOTIFY_UPDATE_ORDER";
     public final static String CLEAR_CACHE= "CLEAR_CACHE";
     public final static String SELECT_AREA = "SELECT_AREA";
+    public final static String GET_MSG_COUNT= "GET_MSG_COUNT";
 
     public final static String MY_CATEGORY= "MY_CATEGORY";
     public final static String WORKER_UNORDER_COUNT= "WORKER_UNORDER_COUNT";

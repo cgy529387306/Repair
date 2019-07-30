@@ -19,12 +19,14 @@ import com.youth.banner.loader.ImageLoader;
 import com.yxw.cn.carpenterrepair.BaseRefreshFragment;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.activity.MsgDetailActivity;
+import com.yxw.cn.carpenterrepair.activity.MsgListActivity;
 import com.yxw.cn.carpenterrepair.activity.order.MyOrderActivity;
 import com.yxw.cn.carpenterrepair.activity.order.MyOrderFinishActivity;
 import com.yxw.cn.carpenterrepair.activity.user.IdCardInfoActivity;
 import com.yxw.cn.carpenterrepair.adapter.HomeMsgAdapter;
 import com.yxw.cn.carpenterrepair.adapter.OrderTypeAdapter;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
+import com.yxw.cn.carpenterrepair.contast.SpConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.BannerBean;
 import com.yxw.cn.carpenterrepair.entity.CurrentUser;
@@ -45,6 +47,8 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
+import butterknife.OnClick;
+import q.rorbin.badgeview.QBadgeView;
 
 /**
  * 首页
@@ -55,6 +59,8 @@ public class HomeFragment extends BaseRefreshFragment implements BaseQuickAdapte
     TextView mTvLocation;
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
+    @BindView(R.id.iv_msg)
+    ImageView mIvMsg;
 
     private GridView mGridCate;
     private Banner mBanner;
@@ -103,6 +109,17 @@ public class HomeFragment extends BaseRefreshFragment implements BaseQuickAdapte
                 }
             }
         });
+    }
+
+    @OnClick({R.id.iv_msg})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.iv_msg:
+                startActivity(MsgListActivity.class);
+                break;
+            default:
+                break;
+        }
     }
 
     private List<OrderType> getOrderTypeList(){
@@ -168,6 +185,10 @@ public class HomeFragment extends BaseRefreshFragment implements BaseQuickAdapte
                         dismissLoading();
                         if (response!=null){
                             if (response.isSuccess() && response.getData()!=null) {
+                                SpConstant.UNREAD_MSG_COUNT = response.getData().getTotalCount();
+                                if (SpConstant.UNREAD_MSG_COUNT<=0){
+                                    new QBadgeView(mContext).bindTarget(mIvMsg).setBadgeNumber(SpConstant.UNREAD_MSG_COUNT);
+                                }
                                 isNext = response.getData().isHasNext();
                                 if (p == 1) {
                                     mAdapter.setNewData(response.getData().getItems());
@@ -249,6 +270,12 @@ public class HomeFragment extends BaseRefreshFragment implements BaseQuickAdapte
                 }else{
                     mTvLocation.setVisibility(View.VISIBLE);
                     mTvLocation.setText(city);
+                }
+                break;
+            case MessageConstant.GET_MSG_COUNT:
+                mAdapter.notifyDataSetChanged();
+                if (SpConstant.UNREAD_MSG_COUNT<=0){
+                    new QBadgeView(mContext).bindTarget(mIvMsg).setBadgeNumber(SpConstant.UNREAD_MSG_COUNT);
                 }
                 break;
         }
