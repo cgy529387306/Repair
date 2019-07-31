@@ -485,14 +485,15 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
 
     private void initOrderStatus(){
         int orderStatus = orderItem.getOrderStatus();
-        if (orderStatus<=20 || orderStatus==27){
+        if (orderStatus==20 || orderStatus==25 || orderStatus==27){
             //待接单
             tvRestTime.setVisibility(View.GONE);
             tvOperate0.setVisibility(View.GONE);
+            tvOperate1.setVisibility(View.GONE);
+            tvOperate2.setVisibility(View.VISIBLE);
             if (orderStatus == 27){
-                tvOperate1.setVisibility(View.VISIBLE);
-                tvOperate1.setText("确认接单");
-                tvOperate1.setOnClickListener(new View.OnClickListener() {
+                tvOperate2.setText("确认接单");
+                tvOperate2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         new MaterialDialog.Builder(OrderDetailActivity.this).title("确认接单").content("是否接取该订单?")
@@ -510,16 +511,14 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
                     }
                 });
             }else{
-                tvOperate1.setVisibility(View.GONE);
+                tvOperate2.setText("我要接单");
+                tvOperate2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showOrderTakingDialog(orderItem);
+                    }
+                });
             }
-            tvOperate2.setVisibility(View.VISIBLE);
-            tvOperate2.setText("我要接单");
-            tvOperate2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showOrderTakingDialog(orderItem);
-                }
-            });
         }else if (orderStatus<=40){
             //待预约
             tvRestTime.setVisibility(View.VISIBLE);

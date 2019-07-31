@@ -12,6 +12,7 @@ import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.fragment.register.IdCardFragment;
 import com.yxw.cn.carpenterrepair.fragment.register.RegisterFragment;
 import com.yxw.cn.carpenterrepair.fragment.register.UserInfoFragment;
+import com.yxw.cn.carpenterrepair.util.AppUtil;
 import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 import com.yxw.cn.carpenterrepair.view.TitleBar;
 
@@ -66,6 +67,8 @@ public class RegisterStepActivity extends BaseActivity {
         mIdCardFragment = new IdCardFragment();
         mUserInfoFragment = new UserInfoFragment();
         showFragment(step);
+        AppUtil.initCategoryData();
+        AppUtil.initRegionTreeData();
     }
 
 

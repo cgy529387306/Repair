@@ -124,8 +124,14 @@ public class AppUtil {
 
     public static String getOrderStatus(int orderStatus) {
         //待接单 待预约 待上门 待完成 已完成
-        if (orderStatus<=20 || orderStatus==27){
-            return orderStatus==27?"待确认":"待接单";
+        if (orderStatus<=20 || orderStatus==25 || orderStatus==27){
+            if (orderStatus==27){
+                return "待确认";
+            }else if (orderStatus == 25){
+                return "取消接单";
+            }else{
+                return "待接单";
+            }
         }else if (orderStatus<=40){
             return "待预约";
         }else if (orderStatus<=55){
@@ -383,7 +389,7 @@ public class AppUtil {
      */
     public static String getDetailId(OrderItem orderItem){
         int orderStatus = orderItem.getOrderStatus();
-        if (orderStatus<=25){
+        if (orderStatus<=27){
             return orderItem.getOrderId();
         }else if (orderStatus<=30){
             return orderItem.getServiceId();
@@ -394,7 +400,7 @@ public class AppUtil {
 
     public static String getDetailUrl(OrderItem orderItem){
         int orderStatus = orderItem.getOrderStatus();
-        if (orderStatus<=25){
+        if (orderStatus<=27){
             return UrlConstant.ORDER_DETAIL_DJD;
         }else if (orderStatus<=30){
             return UrlConstant.ORDER_DETAIL_DFP;

@@ -26,6 +26,7 @@ import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
+import com.yxw.cn.carpenterrepair.util.AppUtil;
 import com.yxw.cn.carpenterrepair.util.Helper;
 import com.yxw.cn.carpenterrepair.util.LocationUtils;
 import com.yxw.cn.carpenterrepair.util.PreferencesHelper;
@@ -177,8 +178,10 @@ public class SplashActivity extends Activity{
                                              CurrentUser.getInstance().setToken(response.getData());
                                              headers.put("Authorization", "Bearer "+ response.getData());
                                              OkGo.getInstance().addCommonHeaders(headers);
-                                             startActivity(new Intent(SplashActivity.this,MainActivity.class));
-                                             finish();
+                                             handler.postDelayed(() -> {
+                                                 startActivity(new Intent(SplashActivity.this,MainActivity.class));
+                                                 finish();
+                                             }, 1000);
                                          }
                                      }
                                  }
@@ -196,7 +199,7 @@ public class SplashActivity extends Activity{
             handler.postDelayed(() -> {
                 startActivity(new Intent(SplashActivity.this,LoginActivity.class));
                 finish();
-            }, 1000);
+            }, 2000);
 
         }
     }
