@@ -29,8 +29,8 @@
         <ImageView
             android:id="@+id/iv_msg"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginRight="12dp"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
             android:layout_gravity="center_vertical|right"
             android:src="@drawable/icon_msg_red"/>
     </FrameLayout>

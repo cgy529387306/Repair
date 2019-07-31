@@ -3,12 +3,15 @@ package com.yxw.cn.carpenterrepair.fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
@@ -34,6 +37,7 @@ import com.yxw.cn.carpenterrepair.listerner.OnChooseDateListener;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.pop.ConfirmOrderPop;
 import com.yxw.cn.carpenterrepair.pop.ContactPop;
+import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 import com.yxw.cn.carpenterrepair.util.Helper;
 import com.yxw.cn.carpenterrepair.util.PreferencesHelper;
 import com.yxw.cn.carpenterrepair.util.SpaceItemDecoration;
@@ -196,6 +200,53 @@ public class OrderFragment extends BaseRefreshFragment implements BaseQuickAdapt
             startActivity(OrderDetailActivity.class, mAdapter.getData().get(position));
         }
     }
+
+    @Override
+    public void onOrderConfirm(OrderItem orderItem) {
+        new MaterialDialog.Builder(getActivity()).title("确认接单").content("是否接取该订单?")
+                .positiveText("是").onPositive(new MaterialDialog.SingleButtonCallback() {
+            @Override
+            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                confirmReceiveOrder(orderItem,1);
+            }
+        }).negativeText("否").onNegative(new MaterialDialog.SingleButtonCallback() {
+            @Override
+            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                confirmReceiveOrder(orderItem,0);
+            }
+        }).show();
+    }
+
+    private void confirmReceiveOrder(OrderItem orderItem,int type){
+        showLoading();
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("orderId", orderItem.getOrderId());
+        map.put("type", type);
+        OkGo.<ResponseData<Object>>post(UrlConstant.ORDER_CONFIRM_RECEIVE)
+                .upJson(gson.toJson(map))
+                .execute(new JsonCallback<ResponseData<Object>>() {
+                    @Override
+                    public void onSuccess(ResponseData<Object> response) {
+                        dismissLoading();
+                        if (response!=null){
+                            if (response.isSuccess()) {
+                                toast("操作成功");
+                                EventBusUtil.post(MessageConstant.NOTIFY_UPDATE_ORDER);
+                            }else{
+                                toast(response.getMsg());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<ResponseData<Object>> response) {
+                        super.onError(response);
+                        dismissLoading();
+                    }
+                });
+    }
+
+
 
     @Override
     public void onOrderTaking(OrderItem orderItem) {

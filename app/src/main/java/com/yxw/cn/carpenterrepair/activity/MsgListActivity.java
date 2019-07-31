@@ -18,7 +18,9 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.adapter.HomeMsgAdapter;
+import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
+import com.yxw.cn.carpenterrepair.entity.MessageEvent;
 import com.yxw.cn.carpenterrepair.entity.NoticeListData;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
@@ -134,6 +136,16 @@ public class MsgListActivity extends BaseActivity implements OnRefreshListener, 
             Bundle bundle = new Bundle();
             bundle.putSerializable("data",mAdapter.getData().get(position));
             startActivity(MsgDetailActivity.class, bundle);
+        }
+    }
+
+    @Override
+    public void onEvent(MessageEvent event) {
+        super.onEvent(event);
+        switch (event.getId()) {
+            case MessageConstant.GET_MSG_COUNT:
+                mAdapter.notifyDataSetChanged();
+                break;
         }
     }
 }

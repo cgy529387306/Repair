@@ -29,6 +29,7 @@ import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.Category;
 import com.yxw.cn.carpenterrepair.entity.CityBean;
 import com.yxw.cn.carpenterrepair.entity.CurrentUser;
+import com.yxw.cn.carpenterrepair.entity.NoticeBean;
 import com.yxw.cn.carpenterrepair.entity.OrderItem;
 import com.yxw.cn.carpenterrepair.entity.ReasonBean;
 import com.yxw.cn.carpenterrepair.entity.RegionTree;
@@ -39,6 +40,7 @@ import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -122,14 +124,14 @@ public class AppUtil {
 
     public static String getOrderStatus(int orderStatus) {
         //待接单 待预约 待上门 待完成 已完成
-        if (orderStatus<=20){
-            return "待接单";
+        if (orderStatus<=20 || orderStatus==27){
+            return orderStatus==27?"待确认":"待接单";
         }else if (orderStatus<=40){
             return "待预约";
         }else if (orderStatus<=55){
             return "待上门";
         }else if (orderStatus<90){
-            return "待完成";
+            return orderStatus==85?"审核不通过":"待完成";
         }else{
             return "已完成";
         }
@@ -409,5 +411,6 @@ public class AppUtil {
             e.printStackTrace();
         }
     }
+
 
 }

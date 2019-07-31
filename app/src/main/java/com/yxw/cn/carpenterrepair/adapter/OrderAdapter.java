@@ -20,6 +20,7 @@ public class OrderAdapter extends BaseQuickAdapter<OrderItem, BaseViewHolder> {
     private OnOrderOperateListener mOperateListener;
 
     public interface OnOrderOperateListener{
+        void onOrderConfirm(OrderItem orderItem);//确认接单
         void onOrderTaking(OrderItem orderItem);//接单
         void onOrderCancel(OrderItem orderItem);//取消订单
         void onAbnormal(OrderItem orderItem,int type);//异常反馈
@@ -50,10 +51,21 @@ public class OrderAdapter extends BaseQuickAdapter<OrderItem, BaseViewHolder> {
                 .setText(R.id.tv_order_content, item.getFaultDesc())
                 .setText(R.id.tv_order_state, AppUtil.getOrderStatus(item.getOrderStatus()))
                 .setText(R.id.tv_price,String.valueOf(price));
-        if (orderStatus<=20){
+        if (orderStatus<=20 || orderStatus==27){
             //待接单
             tvOperate0.setVisibility(View.GONE);
-            tvOperate1.setVisibility(View.GONE);
+            if (orderStatus == 27){
+                tvOperate1.setVisibility(View.VISIBLE);
+                tvOperate1.setText("确认接单");
+                tvOperate1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mOperateListener.onOrderConfirm(item);
+                    }
+                });
+            }else{
+                tvOperate1.setVisibility(View.GONE);
+            }
             tvOperate2.setVisibility(View.VISIBLE);
             tvOperate2.setText("我要接单");
             tvOperate2.setOnClickListener(new View.OnClickListener() {

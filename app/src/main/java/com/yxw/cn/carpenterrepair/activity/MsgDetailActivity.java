@@ -7,7 +7,9 @@ import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.SpConstant;
 import com.yxw.cn.carpenterrepair.entity.NoticeBean;
+import com.yxw.cn.carpenterrepair.util.AppUtil;
 import com.yxw.cn.carpenterrepair.util.EventBusUtil;
+import com.yxw.cn.carpenterrepair.util.MsgUtils;
 import com.yxw.cn.carpenterrepair.util.SpUtil;
 import com.yxw.cn.carpenterrepair.view.TitleBar;
 
@@ -37,12 +39,8 @@ public class MsgDetailActivity extends BaseActivity {
         super.initView();
         titleBar.setTitle("消息详情");
         NoticeBean noticeBean = (NoticeBean) getIntent().getSerializableExtra("data");
-        boolean isRead = SpUtil.getBoolean("msg"+noticeBean.getNoticeId(),false);
-        if (!isRead){
-            SpConstant.UNREAD_MSG_COUNT--;
-            SpUtil.putBoolean("msg"+noticeBean.getNoticeId(),true);
-            EventBusUtil.post(MessageConstant.GET_MSG_COUNT);
-        }
+        MsgUtils.deleteMsg(noticeBean.getNoticeId());
+        EventBusUtil.post(MessageConstant.GET_MSG_COUNT);
         mTvTitle.setText(noticeBean.getTitle());
         mTvTime.setText(noticeBean.getCreateTime());
         mTvContent.setText(noticeBean.getContent());

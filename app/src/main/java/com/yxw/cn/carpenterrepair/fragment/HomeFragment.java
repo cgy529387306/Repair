@@ -26,7 +26,6 @@ import com.yxw.cn.carpenterrepair.activity.user.IdCardInfoActivity;
 import com.yxw.cn.carpenterrepair.adapter.HomeMsgAdapter;
 import com.yxw.cn.carpenterrepair.adapter.OrderTypeAdapter;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
-import com.yxw.cn.carpenterrepair.contast.SpConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.BannerBean;
 import com.yxw.cn.carpenterrepair.entity.CurrentUser;
@@ -38,6 +37,7 @@ import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.util.Helper;
 import com.yxw.cn.carpenterrepair.util.ImageUtils;
 import com.yxw.cn.carpenterrepair.util.LocationUtils;
+import com.yxw.cn.carpenterrepair.util.MsgUtils;
 import com.yxw.cn.carpenterrepair.util.PreferencesHelper;
 import com.yxw.cn.carpenterrepair.view.RecycleViewDivider;
 
@@ -48,6 +48,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import q.rorbin.badgeview.Badge;
 import q.rorbin.badgeview.QBadgeView;
 
 /**
@@ -64,6 +65,7 @@ public class HomeFragment extends BaseRefreshFragment implements BaseQuickAdapte
 
     private GridView mGridCate;
     private Banner mBanner;
+    private Badge mMsgBadge;
 
     private HomeMsgAdapter mAdapter;
     private int mPage = 2;
@@ -77,6 +79,7 @@ public class HomeFragment extends BaseRefreshFragment implements BaseQuickAdapte
 
     @Override
     protected void initView() {
+        mMsgBadge = new QBadgeView(mContext).bindTarget(mIvMsg);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.addItemDecoration(new RecycleViewDivider(LinearLayoutManager.VERTICAL,1,getResources().getColor(R.color.gray_divider)));
         mAdapter = new HomeMsgAdapter(new ArrayList());
@@ -185,11 +188,9 @@ public class HomeFragment extends BaseRefreshFragment implements BaseQuickAdapte
                         dismissLoading();
                         if (response!=null){
                             if (response.isSuccess() && response.getData()!=null) {
-                                SpConstant.UNREAD_MSG_COUNT = response.getData().getTotalCount();
-                                if (SpConstant.UNREAD_MSG_COUNT<=0){
-                                    new QBadgeView(mContext).bindTarget(mIvMsg).setBadgeNumber(SpConstant.UNREAD_MSG_COUNT);
-                                }
                                 isNext = response.getData().isHasNext();
+                                MsgUtils.saveMsg(response.getData().getItems());
+                                initMsgBadge();
                                 if (p == 1) {
                                     mAdapter.setNewData(response.getData().getItems());
                                     mRefreshLayout.finishRefresh();
@@ -274,10 +275,17 @@ public class HomeFragment extends BaseRefreshFragment implements BaseQuickAdapte
                 break;
             case MessageConstant.GET_MSG_COUNT:
                 mAdapter.notifyDataSetChanged();
-                if (SpConstant.UNREAD_MSG_COUNT<=0){
-                    new QBadgeView(mContext).bindTarget(mIvMsg).setBadgeNumber(SpConstant.UNREAD_MSG_COUNT);
-                }
+                initMsgBadge();
                 break;
+        }
+    }
+
+    private void initMsgBadge(){
+        int msgCount = MsgUtils.getMsgCount();
+        if (msgCount==0){
+            mMsgBadge.hide(false);
+        }else{
+            mMsgBadge.setBadgeNumber(msgCount);
         }
     }
 

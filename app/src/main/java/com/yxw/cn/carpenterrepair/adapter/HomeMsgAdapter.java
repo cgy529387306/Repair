@@ -7,6 +7,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.entity.NoticeBean;
+import com.yxw.cn.carpenterrepair.util.AppUtil;
+import com.yxw.cn.carpenterrepair.util.MsgUtils;
 import com.yxw.cn.carpenterrepair.util.SpUtil;
 
 import java.util.List;
@@ -24,12 +26,11 @@ public class HomeMsgAdapter extends BaseQuickAdapter<NoticeBean, BaseViewHolder>
 
     @Override
     protected void convert(BaseViewHolder helper, NoticeBean item) {
-        boolean isRead = SpUtil.getBoolean("msg"+item.getNoticeId(),false);
         helper.setText(R.id.tv_time,item.getCreateTime());
         helper.setText(R.id.tv_content,item.getContent());
         TextView tvTitle = helper.getView(R.id.tv_title);
         tvTitle.setText(item.getTitle());
-        tvTitle.setTextColor(isRead? Color.parseColor("#999999"):Color.parseColor("#333333"));
+        tvTitle.setTextColor(MsgUtils.hasRead(item.getNoticeId()) ? Color.parseColor("#999999"):Color.parseColor("#333333"));
     }
 }
 
