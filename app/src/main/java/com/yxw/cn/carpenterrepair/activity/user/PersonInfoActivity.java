@@ -173,6 +173,7 @@ public class PersonInfoActivity extends BaseActivity {
                 startActivity(intent);
                 break;
             case R.id.ll_resident:
+                AppUtil.disableViewDoubleClick(view);
                 RegionPickerUtil.showPicker(this, mTvResident, true);
                 break;
             case R.id.ll_service_provider:
