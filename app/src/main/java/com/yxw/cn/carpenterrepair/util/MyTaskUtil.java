@@ -49,7 +49,8 @@ public class MyTaskUtil {
     }
 
     public static void refreshLocation(BDLocation bdLocation){
-        if (CurrentUser.getInstance().isLogin()){
+        if (CurrentUser.getInstance().isLogin() && Helper.isNotEmpty(CurrentUser.getInstance().getToken())
+               && Helper.isNotEmpty(CurrentUser.getInstance().getUserId())){
             Map<String, Object> requestMap = new HashMap<>();
             requestMap.put("userId", CurrentUser.getInstance().getUserId());
             requestMap.put("currentLat", bdLocation.getLatitude());

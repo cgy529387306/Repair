@@ -49,7 +49,6 @@ public class SplashActivity extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_splash);
         getRegisterId();
-        LocationUtils.instance().startLocation();
     }
 
     private void requestPermission() {
