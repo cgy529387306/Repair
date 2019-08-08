@@ -118,7 +118,7 @@ public class UserInfoFragment extends BaseFragment {
 
 
     private void doRegister(){
-        if (Helper.isEmpty(CurrentUser.getInstance().getResidentArea())){
+        if (Helper.isEmpty(mTvResident.getTag())){
             ToastUtil.show("请选择常驻地址");
             return;
         }
@@ -133,6 +133,7 @@ public class UserInfoFragment extends BaseFragment {
         map.put("idCardFront", Base64Util.getBase64ImageStr(IdCardFragment.idCardFront));
         map.put("idCardBack", Base64Util.getBase64ImageStr(IdCardFragment.idCardBack));
         map.put("idCardHand", Base64Util.getBase64ImageStr(IdCardFragment.icCardBoth));
+        map.put("residentArea", (String) mTvResident.getTag());
         StringBuilder sb = new StringBuilder();
         for (int i=0; i<mCategoryList.size();i++){
             Category category = mCategoryList.get(i);
@@ -193,4 +194,6 @@ public class UserInfoFragment extends BaseFragment {
             mCateAdapter.setNewData(mCateList);
         }
     }
+
+
 }

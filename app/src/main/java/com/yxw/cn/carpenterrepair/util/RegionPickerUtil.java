@@ -44,10 +44,10 @@ public class RegionPickerUtil {
     public static ArrayList<List<List<String>>> allDistrictList = new ArrayList<>();
     public static OptionsPickerView pvCustomOptions;
 
-    public static void showPicker(Context context, TextView textView, boolean showDistrict) {
+    public static void showPicker(Context context, TextView textView, boolean isSave) {
         if (AppUtil.regionTreeList != null && AppUtil.regionTreeList.size() > 0) {
             handlerData();
-            show(context, textView, showDistrict);
+            show(context, textView, isSave);
         } else {
             OkGo.<ResponseData<List<RegionTree>>>post(UrlConstant.GET_ALL_REGION)
                     .execute(new JsonCallback<ResponseData<List<RegionTree>>>() {
@@ -59,7 +59,7 @@ public class RegionPickerUtil {
                                     AppUtil.regionTreeList.clear();
                                     AppUtil.regionTreeList.addAll(response.getData());
                                     handlerData();
-                                    show(context, textView, showDistrict);
+                                    show(context, textView, isSave);
                                 }
                             }
                         }
@@ -75,7 +75,7 @@ public class RegionPickerUtil {
         return districtList.get(provinceIndex).get(cityIndex).get(districtIndex);
     }
 
-    public static void show(Context context, TextView textView, boolean showDistrict) {
+    public static void show(Context context, TextView textView, boolean isSave) {
         pvCustomOptions = new OptionsPickerBuilder(context, new OnOptionsSelectListener() {
             @Override
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
@@ -84,14 +84,12 @@ public class RegionPickerUtil {
                     agencyId = AppUtil.regionTreeList.get(options1).getChildren().get(options2).getChildren().get(options3).getAgencyId();
                 }
                 String address; //  如果是直辖市或者特别行政区只设置市和区/县
-                if (showDistrict) {
-                    address = provinceBeanList.get(options1) + ">" + cityList.get(options1).get(options2) + ">" + districtList.get(options1).get(options2).get(options3);
-                } else {
-                    address = provinceBeanList.get(options1) + ">" + cityList.get(options1).get(options2);
-                }
+                address = provinceBeanList.get(options1) + ">" + cityList.get(options1).get(options2) + ">" + districtList.get(options1).get(options2).get(options3);
                 textView.setText(address);
                 textView.setTag(agencyId + "");
-                doSaveCity(agencyId + "");
+                if (isSave){
+                    doSaveCity(agencyId + "");
+                }
             }
         }).setSubmitText("确定")//确定按钮文字
                 .setCancelText("取消")//取消按钮文字
@@ -130,11 +128,7 @@ public class RegionPickerUtil {
                     }
                 }).build();
 
-        if (showDistrict) {
-            pvCustomOptions.setPicker(provinceBeanList, cityList, districtList);//添加数据源
-        } else {
-            pvCustomOptions.setPicker(provinceBeanList, cityList);//添加数据源
-        }
+        pvCustomOptions.setPicker(provinceBeanList, cityList, districtList);//添加数据源
         String area = textView.getText().toString();
         try {
             if (!TextUtils.isEmpty(area)) {

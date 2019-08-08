@@ -42,7 +42,7 @@ public class UrlConstant {
     public final static String GET_CODE = BASE_SERVICE + "/ms20/api/validateCode/code/ingnore-internal/getCode";
     public final static String GET_CODE_REGISTER = BASE_SERVICE + "/ms20/api/validateCode/code/ingnore-internal/getRegisterCode";
     public final static String GET_ALL_CATEGORY = BASE_USER + "/ms20/api/sys/dicts/ingnore-authority/categoryList";//获取项目分类列表
-    public final static String GET_ALL_REGION = BASE_USER + "/ms20/api/sys/region/ingnore-authority/getRegionList";//获取所有地区接口
+    public final static String GET_ALL_REGION = BASE_USER + "/ms20/api/sys/region/ingnore-authority/allRegionTree";//获取所有地区接口
     public final static String GET_EXCEPTION_REASON = BASE_USER + "/ms20/api/sys/dicts/findDictsByKey";//查询数据字典
     public final static String GET_LUNBO = BASE_USER + "/ms20/api/fix/app/picture/findAllList";//app轮播图分页查询
     public final static String GET_NOTICE = BASE_USER + "/ms20/api/fix/app/notice/findNotice";//公告列表
