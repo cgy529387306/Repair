@@ -11,21 +11,15 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.model.HttpHeaders;
 import com.lzy.okgo.model.Response;
 import com.yxw.cn.carpenterrepair.BaseFragment;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.activity.user.RegisterStepActivity;
-import com.yxw.cn.carpenterrepair.contast.SpConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
-import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 import com.yxw.cn.carpenterrepair.entity.LoginInfo;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.util.AppUtil;
-import com.yxw.cn.carpenterrepair.util.Helper;
-import com.yxw.cn.carpenterrepair.util.PreferencesHelper;
-import com.yxw.cn.carpenterrepair.util.SpUtil;
 import com.yxw.cn.carpenterrepair.view.CountDownTextView;
 
 import java.util.HashMap;
@@ -33,7 +27,6 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import cn.jpush.android.api.JPushInterface;
 
 /**
  * 注册
@@ -51,6 +44,8 @@ public class RegisterFragment extends BaseFragment {
     @BindView(R.id.bt_code)
     CountDownTextView mCountDownTextView;
 
+    public static String mPhone;
+    public static String mPassword;
     @Override
     protected int getLayout() {
         return R.layout.frg_register;
@@ -148,17 +143,13 @@ public class RegisterFragment extends BaseFragment {
                     toast("新密码为6到16个字符或数字！");
                 } else {
                     Map<String, Object> map = new HashMap<>();
-                    map.put("userName", mEtPhone.getText().toString().trim());
-                    map.put("password", mEtPassword.getText().toString().trim());
+                    String phone = mEtPhone.getText().toString().trim();
+                    String password = mEtPassword.getText().toString().trim();
+                    map.put("userName", phone);
                     map.put("smsCode", mEtCode.getText().toString().trim());
                     map.put("appSign", UrlConstant.mRoleSign);
-                    String rid = PreferencesHelper.getInstance().getString(SpConstant.REGISTER_ID);
-                    if (Helper.isEmpty(rid)){
-                        rid = JPushInterface.getRegistrationID(getActivity());
-                    }
-                    map.put("regId", rid);
                     showLoading();
-                    OkGo.<ResponseData<LoginInfo>>post(UrlConstant.REGISTER)
+                    OkGo.<ResponseData<LoginInfo>>post(UrlConstant.REGISTER_VALID)
                             .upJson(gson.toJson(map))
                             .execute(new JsonCallback<ResponseData<LoginInfo>>() {
                                          @Override
@@ -166,14 +157,9 @@ public class RegisterFragment extends BaseFragment {
                                              dismissLoading();
                                              if (response!=null){
                                                  if (response.isSuccess()) {
-                                                     toast("注册成功,请上传身份证照片");
-                                                     CurrentUser.getInstance().login(response.getData());
-                                                     HttpHeaders headers = new HttpHeaders();
-                                                     headers.put("Authorization", "Bearer "+response.getData().getToken());
-                                                     OkGo.getInstance().addCommonHeaders(headers);
-                                                     if (getActivity() instanceof RegisterStepActivity){
-                                                         ((RegisterStepActivity)getActivity()).goToNext();
-                                                     }
+                                                     mPhone = phone;
+                                                     mPassword = password;
+                                                     ((RegisterStepActivity)getActivity()).goToNext();
                                                  }else{
                                                      toast(response.getMsg());
                                                  }

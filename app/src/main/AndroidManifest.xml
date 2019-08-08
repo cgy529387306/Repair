@@ -115,6 +115,8 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".activity.user.ChooseCategoryActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".activity.user.ChooseCategoryActivity1"
+            android:screenOrientation="portrait"/>
         <activity android:name=".activity.user.UpdateAlipayActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".activity.user.SelectCityActivity"

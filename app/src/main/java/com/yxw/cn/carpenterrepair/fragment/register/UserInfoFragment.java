@@ -1,5 +1,6 @@
 package com.yxw.cn.carpenterrepair.fragment.register;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -9,21 +10,32 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.model.HttpHeaders;
+import com.lzy.okgo.model.Response;
 import com.yxw.cn.carpenterrepair.BaseFragment;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.activity.main.MainActivity;
 import com.yxw.cn.carpenterrepair.activity.user.ChooseCategoryActivity;
+import com.yxw.cn.carpenterrepair.activity.user.ChooseCategoryActivity1;
 import com.yxw.cn.carpenterrepair.activity.user.JoinServiceProviderActivity;
+import com.yxw.cn.carpenterrepair.activity.user.RegisterStepActivity;
 import com.yxw.cn.carpenterrepair.activity.user.ServiceProviderEmptyActivity;
 import com.yxw.cn.carpenterrepair.adapter.MyCategoryAdapter;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.SpConstant;
+import com.yxw.cn.carpenterrepair.contast.UrlConstant;
+import com.yxw.cn.carpenterrepair.entity.Category;
 import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 import com.yxw.cn.carpenterrepair.entity.LoginInfo;
 import com.yxw.cn.carpenterrepair.entity.MessageEvent;
+import com.yxw.cn.carpenterrepair.entity.ResponseData;
+import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.util.AppUtil;
+import com.yxw.cn.carpenterrepair.util.Base64Util;
 import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 import com.yxw.cn.carpenterrepair.util.Helper;
+import com.yxw.cn.carpenterrepair.util.PreferencesHelper;
 import com.yxw.cn.carpenterrepair.util.RegionPickerUtil;
 import com.yxw.cn.carpenterrepair.util.SpUtil;
 import com.yxw.cn.carpenterrepair.util.ToastUtil;
@@ -31,10 +43,13 @@ import com.yxw.cn.carpenterrepair.util.ToastUtil;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.jpush.android.api.JPushInterface;
 
 /**
  * 录入用户信息
@@ -56,9 +71,8 @@ public class UserInfoFragment extends BaseFragment {
     LinearLayout mLlGood;
 
     private List<String> mCateList = new ArrayList<String>();
+    private List<Category> mCategoryList = new ArrayList<Category>();
     private MyCategoryAdapter mCateAdapter;
-    private LoginInfo loginInfo;
-
 
     @Override
     protected int getLayout() {
@@ -71,81 +85,112 @@ public class UserInfoFragment extends BaseFragment {
         mRvCate.setNestedScrollingEnabled(false);
         mRvCate.setLayoutManager(new GridLayoutManager(getActivity(), 4));
         mRvCate.setAdapter(mCateAdapter);
-        notifyInfo();
     }
 
-    public void notifyInfo() {
-        if (CurrentUser.getInstance().isLogin()) {
-            try {
-                loginInfo = CurrentUser.getInstance();
-                mTvName.setText(loginInfo.getRealName());
-                mTvPhone.setText(loginInfo.getMobile());
-                mTvServiceProvider.setText(TextUtils.isEmpty(loginInfo.getpName())?"":"服务商"+loginInfo.getpName());
-                mTvIdCardNo.setText(loginInfo.getIdCardNo());
-                mTvResident.setText(loginInfo.getResidentAreaName());
-                if (Helper.isNotEmpty(loginInfo.getCategory())){
-                    String[] dataArray = loginInfo.getCategory().split(",");
-                    if (Helper.isNotEmpty(dataArray)){
-                        mCateList = Arrays.asList(dataArray);
-                        mCateAdapter.setNewData(mCateList);
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            loginInfo = new LoginInfo();
-        }
-    }
 
     @OnClick({ R.id.ll_good, R.id.ll_resident, R.id.ll_service_provider,R.id.btn_confirm})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_good:
-                Intent intent = new Intent(getActivity(), ChooseCategoryActivity.class);
+                Intent intent = new Intent(getActivity(), ChooseCategoryActivity1.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("cateList", (Serializable) mCateList);
-                bundle.putBoolean("canBack",true);
                 intent.putExtras(bundle);
-                startActivity(intent);
+                startActivityForResult(intent,1001);
                 break;
             case R.id.ll_resident:
                 AppUtil.disableViewDoubleClick(view);
                 RegionPickerUtil.showPicker(getActivity(), mTvResident, true);
                 break;
             case R.id.ll_service_provider:
-                if (loginInfo!=null && !TextUtils.isEmpty(loginInfo.getParentId())){
-                    startActivity(JoinServiceProviderActivity.class);
-                }else{
-                    startActivity(ServiceProviderEmptyActivity.class);
-                }
+//                if (loginInfo!=null && !TextUtils.isEmpty(loginInfo.getParentId())){
+//                    startActivity(JoinServiceProviderActivity.class);
+//                }else{
+//                    startActivity(ServiceProviderEmptyActivity.class);
+//                }
                 break;
             case R.id.btn_confirm:
                 AppUtil.disableViewDoubleClick(view);
-                if (Helper.isEmpty(CurrentUser.getInstance().getResidentArea())){
-                    ToastUtil.show("请选择常驻地址");
-                    return;
-                }
-                if (Helper.isEmpty(CurrentUser.getInstance().getCategory())){
-                    ToastUtil.show("请选择擅长项目");
-                    return;
-                }
-                EventBusUtil.post(MessageConstant.REGISTER);
-                SpUtil.putStr(SpConstant.LOGIN_MOBILE, CurrentUser.getInstance().getMobile());
-                startActivity(MainActivity.class);
-                getActivity().finish();
+                doRegister();
                 break;
         }
+    }
+
+
+    private void doRegister(){
+        if (Helper.isEmpty(CurrentUser.getInstance().getResidentArea())){
+            ToastUtil.show("请选择常驻地址");
+            return;
+        }
+        if (Helper.isEmpty(mCategoryList)){
+            ToastUtil.show("请选择擅长项目");
+            return;
+        }
+        Map<String, Object> map = new HashMap<>();
+        map.put("userName", RegisterFragment.mPhone);
+        map.put("password", RegisterFragment.mPassword);
+        map.put("appSign", UrlConstant.mRoleSign);
+        map.put("idCardFront", Base64Util.getBase64ImageStr(IdCardFragment.idCardFront));
+        map.put("idCardBack", Base64Util.getBase64ImageStr(IdCardFragment.idCardBack));
+        map.put("idCardHand", Base64Util.getBase64ImageStr(IdCardFragment.icCardBoth));
+        StringBuilder sb = new StringBuilder();
+        for (int i=0; i<mCategoryList.size();i++){
+            Category category = mCategoryList.get(i);
+            if (i == mCategoryList.size()-1){
+                sb.append(category.getName());
+            }else{
+                sb.append(category.getName()).append(",");
+            }
+        }
+        map.put("category",sb.toString());
+        String rid = PreferencesHelper.getInstance().getString(SpConstant.REGISTER_ID);
+        if (Helper.isEmpty(rid)){
+            rid = JPushInterface.getRegistrationID(getActivity());
+        }
+        map.put("regId", rid);
+        showLoading();
+        OkGo.<ResponseData<LoginInfo>>post(UrlConstant.REGISTER_VALID)
+                .upJson(gson.toJson(map))
+                .execute(new JsonCallback<ResponseData<LoginInfo>>() {
+                             @Override
+                             public void onSuccess(ResponseData<LoginInfo> response) {
+                                 dismissLoading();
+                                 if (response!=null){
+                                     if (response.isSuccess()) {
+                                         toast("注册成功");
+                                         CurrentUser.getInstance().login(response.getData());
+                                         HttpHeaders headers = new HttpHeaders();
+                                         headers.put("Authorization", "Bearer "+response.getData().getToken());
+                                         OkGo.getInstance().addCommonHeaders(headers);
+                                         SpUtil.putStr(SpConstant.LOGIN_MOBILE, CurrentUser.getInstance().getMobile());
+                                         EventBusUtil.post(MessageConstant.REGISTER);
+                                         startActivity(MainActivity.class);
+                                         getActivity().finish();
+                                     }else{
+                                         toast(response.getMsg());
+                                     }
+                                 }
+                             }
+
+                             @Override
+                             public void onError(Response<ResponseData<LoginInfo>> response) {
+                                 super.onError(response);
+                                 dismissLoading();
+                             }
+                         }
+                );
     }
 
     @Override
-    public void onEvent(MessageEvent event) {
-        super.onEvent(event);
-        switch (event.getId()) {
-            case MessageConstant.NOTIFY_UPDATE_INFO:
-                notifyInfo();
-                break;
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            mCategoryList = (List<Category>) data.getSerializableExtra("cateList");
+            mCateList.clear();
+            for (Category category:mCategoryList){
+                mCateList.add(category.getName());
+            }
+            mCateAdapter.setNewData(mCateList);
         }
     }
-
 }

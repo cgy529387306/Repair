@@ -17,6 +17,9 @@ public class UrlConstant {
     public final static String REGISTER = BASE_USER + "/gateway/app/api/register";
     public final static String REFRESH_TOKEN = BASE_USER + "/gateway/app/refreshToken";
 
+    public final static String REGISTER_VALID = BASE_USER + "/ms70/api/user/auth/ingnore-authority/registerValidation";
+    public final static String REGISTER_INFO = BASE_USER + "/ms70/api/user/auth/ingnore-authority/completeUserInfoRegister";
+
     public final static String FORGET_PASSWORD = BASE_USER + "/ms70/api/user/auth/forgetPwd";//忘记密码
     public final static String MODIFY_PASSWORD = BASE_USER + "/ms70/api/user/info/updatePwd";
     public final static String CHANGE_AVATAR = BASE_USER + "/ms70/api/user/info/updateAvatar";
@@ -38,8 +41,8 @@ public class UrlConstant {
 
     public final static String GET_CODE = BASE_SERVICE + "/ms20/api/validateCode/code/ingnore-internal/getCode";
     public final static String GET_CODE_REGISTER = BASE_SERVICE + "/ms20/api/validateCode/code/ingnore-internal/getRegisterCode";
-    public final static String GET_ALL_CATEGORY = BASE_USER + "/ms20/api/sys/dicts/categoryList";//获取项目分类列表
-    public final static String GET_ALL_REGION = BASE_USER + "/ms20/api/sys/region/allRegionTree";//获取所有地区接口
+    public final static String GET_ALL_CATEGORY = BASE_USER + "/ms20/api/sys/dicts/ingnore-authority/categoryList";//获取项目分类列表
+    public final static String GET_ALL_REGION = BASE_USER + "/ms20/api/sys/region/ingnore-authority/getRegionList";//获取所有地区接口
     public final static String GET_EXCEPTION_REASON = BASE_USER + "/ms20/api/sys/dicts/findDictsByKey";//查询数据字典
     public final static String GET_LUNBO = BASE_USER + "/ms20/api/fix/app/picture/findAllList";//app轮播图分页查询
     public final static String GET_NOTICE = BASE_USER + "/ms20/api/fix/app/notice/findNotice";//公告列表

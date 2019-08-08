@@ -144,6 +144,7 @@ public class QuickLoginActivity extends BaseActivity {
                     map.put("userName", mEtTel.getText().toString());
                     map.put("smsCode", mEtPassword.getText().toString().trim());
                     map.put("appSign", UrlConstant.mRoleSign);
+                    map.put("lastLoginSystem", "Android");
                     String rid = PreferencesHelper.getInstance().getString(SpConstant.REGISTER_ID);
                     if (Helper.isEmpty(rid)){
                         rid = JPushInterface.getRegistrationID(getApplicationContext());

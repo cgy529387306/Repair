@@ -90,6 +90,7 @@ public class LoginActivity extends BaseActivity {
             map.put("userName", mEtTel.getText().toString().trim());
             map.put("password", mEtPassword.getText().toString().trim());
             map.put("appSign", UrlConstant.mRoleSign);
+            map.put("lastLoginSystem", "Android");
             String rid = PreferencesHelper.getInstance().getString(SpConstant.REGISTER_ID);
             if (Helper.isEmpty(rid)){
                 rid = JPushInterface.getRegistrationID(getApplicationContext());

@@ -62,7 +62,7 @@ public class RegisterStepActivity extends BaseActivity {
                 onBackPressed();
             }
         });
-        int step = getIntent().getIntExtra("step",0);
+        int step = getIntent().getIntExtra("step",2);
         mRegisterFragment = new RegisterFragment();
         mIdCardFragment = new IdCardFragment();
         mUserInfoFragment = new UserInfoFragment();
