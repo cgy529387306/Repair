@@ -7,6 +7,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -70,6 +71,8 @@ public class UserInfoFragment extends BaseFragment {
     RecyclerView mRvCate;
     @BindView(R.id.ll_good)
     LinearLayout mLlGood;
+    @BindView(R.id.btn_confirm)
+    Button mBtnConfirm;
 
     private List<String> mCateList = new ArrayList<String>();
     private List<Category> mCategoryList = new ArrayList<Category>();
@@ -112,7 +115,6 @@ public class UserInfoFragment extends BaseFragment {
 //                }
                 break;
             case R.id.btn_confirm:
-                AppUtil.disableViewDoubleClick(view);
                 doRegister();
                 break;
         }
@@ -129,6 +131,7 @@ public class UserInfoFragment extends BaseFragment {
             return;
         }
         showLoading();
+        mBtnConfirm.setEnabled(false);
         Map<String, Object> map = new HashMap<>();
         map.put("userName", RegisterFragment.mPhone);
         map.put("password", RegisterFragment.mPassword);
@@ -158,6 +161,7 @@ public class UserInfoFragment extends BaseFragment {
                              @Override
                              public void onSuccess(ResponseData<Object> response) {
                                  dismissLoading();
+                                 mBtnConfirm.setEnabled(true);
                                  if (response!=null){
                                      if (response.isSuccess()) {
                                          toast("注册成功");
@@ -175,6 +179,7 @@ public class UserInfoFragment extends BaseFragment {
                              public void onError(Response<ResponseData<Object>> response) {
                                  super.onError(response);
                                  dismissLoading();
+                                 mBtnConfirm.setEnabled(true);
                              }
                          }
                 );
