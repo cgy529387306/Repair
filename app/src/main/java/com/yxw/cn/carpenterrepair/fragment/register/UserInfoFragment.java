@@ -20,6 +20,7 @@ import com.yxw.cn.carpenterrepair.activity.user.ChooseCategoryActivity;
 import com.yxw.cn.carpenterrepair.activity.user.ChooseCategoryActivity1;
 import com.yxw.cn.carpenterrepair.activity.user.JoinServiceProviderActivity;
 import com.yxw.cn.carpenterrepair.activity.user.RegisterStepActivity;
+import com.yxw.cn.carpenterrepair.activity.user.RegisterSuccessActivity;
 import com.yxw.cn.carpenterrepair.activity.user.ServiceProviderEmptyActivity;
 import com.yxw.cn.carpenterrepair.adapter.MyCategoryAdapter;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
@@ -85,6 +86,7 @@ public class UserInfoFragment extends BaseFragment {
         mRvCate.setNestedScrollingEnabled(false);
         mRvCate.setLayoutManager(new GridLayoutManager(getActivity(), 4));
         mRvCate.setAdapter(mCateAdapter);
+        mTvPhone.setText(RegisterFragment.mPhone==null?"":RegisterFragment.mPhone);
     }
 
 
@@ -100,7 +102,7 @@ public class UserInfoFragment extends BaseFragment {
                 break;
             case R.id.ll_resident:
                 AppUtil.disableViewDoubleClick(view);
-                RegionPickerUtil.showPicker(getActivity(), mTvResident, true);
+                RegionPickerUtil.showPicker(getActivity(), mTvResident, false);
                 break;
             case R.id.ll_service_provider:
 //                if (loginInfo!=null && !TextUtils.isEmpty(loginInfo.getParentId())){
@@ -126,6 +128,7 @@ public class UserInfoFragment extends BaseFragment {
             ToastUtil.show("请选择擅长项目");
             return;
         }
+        showLoading();
         Map<String, Object> map = new HashMap<>();
         map.put("userName", RegisterFragment.mPhone);
         map.put("password", RegisterFragment.mPassword);
@@ -149,23 +152,18 @@ public class UserInfoFragment extends BaseFragment {
             rid = JPushInterface.getRegistrationID(getActivity());
         }
         map.put("regId", rid);
-        showLoading();
-        OkGo.<ResponseData<LoginInfo>>post(UrlConstant.REGISTER_VALID)
+        OkGo.<ResponseData<Object>>post(UrlConstant.REGISTER_INFO)
                 .upJson(gson.toJson(map))
-                .execute(new JsonCallback<ResponseData<LoginInfo>>() {
+                .execute(new JsonCallback<ResponseData<Object>>() {
                              @Override
-                             public void onSuccess(ResponseData<LoginInfo> response) {
+                             public void onSuccess(ResponseData<Object> response) {
                                  dismissLoading();
                                  if (response!=null){
                                      if (response.isSuccess()) {
                                          toast("注册成功");
-                                         CurrentUser.getInstance().login(response.getData());
-                                         HttpHeaders headers = new HttpHeaders();
-                                         headers.put("Authorization", "Bearer "+response.getData().getToken());
-                                         OkGo.getInstance().addCommonHeaders(headers);
-                                         SpUtil.putStr(SpConstant.LOGIN_MOBILE, CurrentUser.getInstance().getMobile());
+                                         SpUtil.putStr(SpConstant.LOGIN_MOBILE, RegisterFragment.mPhone);
+                                         startActivity(RegisterSuccessActivity.class);
                                          EventBusUtil.post(MessageConstant.REGISTER);
-                                         startActivity(MainActivity.class);
                                          getActivity().finish();
                                      }else{
                                          toast(response.getMsg());
@@ -174,7 +172,7 @@ public class UserInfoFragment extends BaseFragment {
                              }
 
                              @Override
-                             public void onError(Response<ResponseData<LoginInfo>> response) {
+                             public void onError(Response<ResponseData<Object>> response) {
                                  super.onError(response);
                                  dismissLoading();
                              }

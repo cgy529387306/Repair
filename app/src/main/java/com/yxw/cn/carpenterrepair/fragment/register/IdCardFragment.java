@@ -57,36 +57,10 @@ public class IdCardFragment extends BaseFragment {
 
     @Override
     public void initView() {
-        initOcrCamera();
-        if (CurrentUser.getInstance().isLogin()){
-            LoginInfo loginInfo = CurrentUser.getInstance();
-            tv_status.setVisibility(loginInfo.getIdCardStatus()==2?View.VISIBLE:View.GONE);
-        }
+
     }
 
-    private void initOcrCamera(){
-        CameraNativeHelper.init(getActivity(), OCR.getInstance(getActivity()).getLicense(),
-                new CameraNativeHelper.CameraNativeInitCallback() {
-                    @Override
-                    public void onError(int errorCode, Throwable e) {
-                        String msg;
-                        switch (errorCode) {
-                            case CameraView.NATIVE_SOLOAD_FAIL:
-                                msg = "加载so失败，请确保apk中存在ui部分的so";
-                                break;
-                            case CameraView.NATIVE_AUTH_FAIL:
-                                msg = "授权本地质量控制token获取失败";
-                                break;
-                            case CameraView.NATIVE_INIT_FAIL:
-                                msg = "本地质量控制";
-                                break;
-                            default:
-                                msg = String.valueOf(errorCode);
-                        }
-                        Log.e("CameraNativeHelper:","本地质量控制初始化错误，错误原因： " + msg);
-                    }
-                });
-    }
+
 
     @OnClick({R.id.iv_idCard_front, R.id.iv_idCard_back,R.id.iv_idCard_both, R.id.confirm})
     public void onClick(View view) {

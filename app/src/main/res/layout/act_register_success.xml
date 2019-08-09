@@ -28,7 +28,7 @@
         android:textColor="#666666"
         android:textSize="14sp"
         android:gravity="center"
-        android:text="成为匠修工程师还差最后一步，您还需上传身份证信息，等待审核通过之后才能接单哦。" />
+        android:text="成为匠修工程师还差最后一步，等待审核通过之后才能接单哦。" />
 
     <Button
         android:id="@+id/btn_perfect"
@@ -37,7 +37,7 @@
         android:layout_margin="70dp"
         android:background="@drawable/bg_btn_red"
         android:textSize="16sp"
-        android:text="上传身份证信息"
+        android:text="好的"
         android:layout_above="@+id/tv_perfect_detail"
         android:textColor="#ffffff" />
 

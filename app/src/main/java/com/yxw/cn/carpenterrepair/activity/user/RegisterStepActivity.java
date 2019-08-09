@@ -3,9 +3,13 @@ package com.yxw.cn.carpenterrepair.activity.user;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.baidu.ocr.sdk.OCR;
+import com.baidu.ocr.ui.camera.CameraNativeHelper;
+import com.baidu.ocr.ui.camera.CameraView;
 import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
@@ -62,11 +66,12 @@ public class RegisterStepActivity extends BaseActivity {
                 onBackPressed();
             }
         });
-        int step = getIntent().getIntExtra("step",2);
+        int step = getIntent().getIntExtra("step",0);
         mRegisterFragment = new RegisterFragment();
         mIdCardFragment = new IdCardFragment();
         mUserInfoFragment = new UserInfoFragment();
         showFragment(step);
+        initOcrCamera();
         AppUtil.initCategoryData();
         AppUtil.initRegionTreeData();
     }
@@ -148,5 +153,39 @@ public class RegisterStepActivity extends BaseActivity {
     public void onBackPressed() {
         EventBusUtil.post(MessageConstant.REGISTER_OUT);
         super.onBackPressed();
+    }
+
+    private void initOcrCamera(){
+        CameraNativeHelper.init(this, OCR.getInstance(this).getLicense(),
+                new CameraNativeHelper.CameraNativeInitCallback() {
+                    @Override
+                    public void onError(int errorCode, Throwable e) {
+                        String msg;
+                        switch (errorCode) {
+                            case CameraView.NATIVE_SOLOAD_FAIL:
+                                msg = "加载so失败，请确保apk中存在ui部分的so";
+                                break;
+                            case CameraView.NATIVE_AUTH_FAIL:
+                                msg = "授权本地质量控制token获取失败";
+                                break;
+                            case CameraView.NATIVE_INIT_FAIL:
+                                msg = "本地质量控制";
+                                break;
+                            default:
+                                msg = String.valueOf(errorCode);
+                        }
+                        Log.e("CameraNativeHelper:","本地质量控制初始化错误，错误原因： " + msg);
+                    }
+                });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RegisterFragment.mPhone = null;
+        RegisterFragment.mPassword = null;
+        IdCardFragment.idCardFront = null;
+        IdCardFragment.idCardBack = null;
+        IdCardFragment.icCardBoth = null;
     }
 }

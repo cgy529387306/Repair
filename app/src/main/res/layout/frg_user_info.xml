@@ -171,6 +171,7 @@ android:background="#F8F8F8">
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
+        android:visibility="gone"
         android:gravity="center_vertical"
         android:paddingLeft="14dp"
         android:paddingTop="10dp"
@@ -202,6 +203,7 @@ android:background="#F8F8F8">
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_marginLeft="14dp"
+        android:visibility="gone"
         android:background="@color/bg_gray" />
     <LinearLayout
         android:id="@+id/ll_good"

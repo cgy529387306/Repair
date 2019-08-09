@@ -157,7 +157,7 @@ public class LoginActivity extends BaseActivity {
         super.onEvent(event);
         switch (event.getId()) {
             case MessageConstant.REGISTER:
-                finish();
+                initView();
                 break;
             case MessageConstant.REGISTER_OUT:
                 CurrentUser.getInstance().loginOut();
