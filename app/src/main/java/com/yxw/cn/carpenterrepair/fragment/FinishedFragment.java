@@ -17,9 +17,11 @@ import com.yxw.cn.carpenterrepair.adapter.OrderFinishedAdapter;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.MessageEvent;
+import com.yxw.cn.carpenterrepair.entity.OrderCount;
 import com.yxw.cn.carpenterrepair.entity.OrderListData;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
+import com.yxw.cn.carpenterrepair.util.EventBusUtil;
 import com.yxw.cn.carpenterrepair.util.SpaceItemDecoration;
 
 import java.util.ArrayList;
@@ -89,6 +91,8 @@ public class FinishedFragment extends BaseRefreshFragment implements BaseQuickAd
                     public void onSuccess(ResponseData<OrderListData> response) {
                         if (response!=null){
                             if (response.isSuccess() && response.getData()!=null) {
+                                OrderCount orderCount = new OrderCount(response.getData().getTotalCount(),mState);
+                                EventBusUtil.post(MessageConstant.UPDATE_ORDER_COUNT,orderCount);
                                 isNext = response.getData().isHasNext();
                                 if (p == 1) {
                                     mAdapter.setNewData(response.getData().getItems());

@@ -35,6 +35,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
+import com.yxw.cn.carpenterrepair.adapter.RemarkAdapter;
 import com.yxw.cn.carpenterrepair.adapter.UserOrderDetailAdapter;
 import com.yxw.cn.carpenterrepair.adapter.UserOrderPicAdapter;
 import com.yxw.cn.carpenterrepair.adapter.UserOrderStatusAdapter;
@@ -122,8 +123,8 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
     RecyclerView orderRv;
     @BindView(R.id.rv_order_status)
     RecyclerView statusRv;
-    @BindView(R.id.rv_pic)
-    RecyclerView picRv;
+    @BindView(R.id.rv_remark)
+    RecyclerView remarkRv;
     @BindView(R.id.mapView)
     MapView mMapView;
     @BindView(R.id.ll_bottom)
@@ -135,11 +136,9 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
     private String orderStatus;
     private String orderAddress;
     private String city;
-    private List<UserOrder.ListBean.OrderItemsBean> orderList;
     private UserOrderDetailAdapter orderAdapter;
-    private List<UserOrder.ListBean.PicListBean> picList;
-    private UserOrderPicAdapter picAdapter;
     private UserOrderStatusAdapter statusAdapter;
+    private RemarkAdapter remarkAdapter;
     private boolean mStop;
     private int connectFlag = 0;
     private TitleBar.TextAction textAction;
@@ -163,37 +162,19 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
             finish();
             return;
         }
+
         orderId = orderItem.getOrderId();
-        orderList = new ArrayList<>();
-        orderAdapter = new UserOrderDetailAdapter(orderList);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this) {
-            @Override
-            public boolean canScrollVertically() {
-                return false;
-            }
-        };
-        orderRv.setLayoutManager(layoutManager);
+        orderRv.setLayoutManager(new LinearLayoutManager(this));
+        orderRv.setNestedScrollingEnabled(false);
+        orderAdapter = new UserOrderDetailAdapter(new ArrayList<>());
         orderRv.setAdapter(orderAdapter);
 
-        picList = new ArrayList<>();
-        picAdapter = new UserOrderPicAdapter(picList);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 4) {
-            @Override
-            public boolean canScrollVertically() {
-                return false;
-            }
-        };
-        picRv.setLayoutManager(gridLayoutManager);
-        picRv.setAdapter(picAdapter);
+        remarkRv.setLayoutManager(new LinearLayoutManager(this));
+        remarkRv.setNestedScrollingEnabled(false);
+        remarkAdapter = new RemarkAdapter(new ArrayList<>());
+        remarkRv.setAdapter(remarkAdapter);
 
-        statusRv.setLayoutManager(new LinearLayoutManager(this){
-            @Override
-            public boolean canScrollVertically() {
-                //解决ScrollView里存在多个RecyclerView时滑动卡顿的问题
-                //如果你的RecyclerView是水平滑动的话可以重写canScrollHorizontally方法
-                return false;
-            }
-        });
+        statusRv.setLayoutManager(new LinearLayoutManager(this));
         statusRv.setNestedScrollingEnabled(false);
         statusAdapter = new UserOrderStatusAdapter(new ArrayList<>());
         statusRv.setAdapter(statusAdapter);
@@ -230,6 +211,7 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
             tvTitle.setText(orderDetail.getCategoryName());
             tvTitle2.setText(orderDetail.getCategoryNameJoint());
             statusAdapter.setNewData(orderDetail.getFixOrderTimelineViewRespIOList());
+            remarkAdapter.setNewData(orderDetail.getRemarkList());
         }
     }
 

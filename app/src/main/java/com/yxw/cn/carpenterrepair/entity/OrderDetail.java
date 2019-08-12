@@ -10,6 +10,7 @@ public class OrderDetail extends OrderItem implements Serializable{
     private String categoryNameJoint;
 //    private List<?> fixOrderPicViewRespIOList;
     private List<OrderStatusLineBean> fixOrderTimelineViewRespIOList;
+    private List<RemarkBean> remarkList;
 
 
     public String getCategoryName() {
@@ -45,5 +46,16 @@ public class OrderDetail extends OrderItem implements Serializable{
 
     public void setFixOrderTimelineViewRespIOList(List<OrderStatusLineBean> fixOrderTimelineViewRespIOList) {
         this.fixOrderTimelineViewRespIOList = fixOrderTimelineViewRespIOList;
+    }
+
+    public List<RemarkBean> getRemarkList() {
+        if (remarkList == null) {
+            return new ArrayList<>();
+        }
+        return remarkList;
+    }
+
+    public void setRemarkList(List<RemarkBean> remarkList) {
+        this.remarkList = remarkList;
     }
 }

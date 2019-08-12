@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 
 import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
+import com.yxw.cn.carpenterrepair.contast.MessageConstant;
+import com.yxw.cn.carpenterrepair.entity.MessageEvent;
+import com.yxw.cn.carpenterrepair.entity.OrderCount;
 import com.yxw.cn.carpenterrepair.entity.OrderType;
 import com.yxw.cn.carpenterrepair.fragment.OrderFragment;
 import com.yxw.cn.carpenterrepair.view.TitleBar;
@@ -76,6 +79,34 @@ public class MyOrder1Activity extends BaseActivity{
         mViewPager.setOffscreenPageLimit(mFragmentList.size());
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
         mTabLayout.setupWithViewPager(mViewPager);
+    }
+
+    @Override
+    public void onEvent(MessageEvent event) {
+        super.onEvent(event);
+        switch (event.getId()) {
+            case MessageConstant.UPDATE_ORDER_COUNT:
+                refreshCount(event);
+                break;
+        }
+    }
+
+    private void refreshCount(MessageEvent event){
+        try {
+            OrderCount orderCount = (OrderCount) event.getData();
+            if (orderCount.getType() == 0){
+                TabLayout.Tab tab = mTabLayout.getTabAt(orderCount.getType());
+                tab.setText(orderCount.getCount()>0?"今天("+orderCount.getCount()+")":"今天");
+            }else if (orderCount.getType() == 1){
+                TabLayout.Tab tab = mTabLayout.getTabAt(orderCount.getType());
+                tab.setText(orderCount.getCount()>0?"明天("+orderCount.getCount()+")":"明天");
+            }else if (orderCount.getType() == 2){
+                TabLayout.Tab tab = mTabLayout.getTabAt(orderCount.getType());
+                tab.setText(orderCount.getCount()>0?"全部("+orderCount.getCount()+")":"全部");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 
