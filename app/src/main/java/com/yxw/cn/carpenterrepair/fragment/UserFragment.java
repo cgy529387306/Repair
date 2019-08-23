@@ -20,6 +20,7 @@ import com.yxw.cn.carpenterrepair.activity.setting.SettingActivity;
 import com.yxw.cn.carpenterrepair.activity.setting.UserFeedBackActivity;
 import com.yxw.cn.carpenterrepair.activity.user.IdCardInfoActivity;
 import com.yxw.cn.carpenterrepair.activity.user.PersonInfoActivity;
+import com.yxw.cn.carpenterrepair.activity.user.PromoteActivity;
 import com.yxw.cn.carpenterrepair.activity.user.WalletActivity;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
@@ -89,7 +90,7 @@ public class UserFragment extends BaseFragment {
     }
 
 
-    @OnClick({R.id.tv_user_state,R.id.ll_info, R.id.ll_withdrawal, R.id.tv_contact, R.id.tv_help, R.id.tv_feedback,R.id.tv_join,R.id.img_setting,R.id.iv_msg})
+    @OnClick({R.id.tv_user_state,R.id.ll_info, R.id.ll_withdrawal, R.id.tv_contact, R.id.tv_help, R.id.tv_feedback,R.id.tv_join,R.id.img_setting,R.id.iv_msg,R.id.tv_promote})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_user_state:
@@ -145,6 +146,9 @@ public class UserFragment extends BaseFragment {
                 break;
             case R.id.iv_msg:
                 startActivity(MsgListActivity.class);
+                break;
+            case R.id.tv_promote:
+                startActivity(PromoteActivity.class);
                 break;
         }
     }

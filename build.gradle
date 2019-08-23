@@ -4,7 +4,7 @@ buildscript {
     
     repositories {
         google()
-        jcenter()
+        jcenter(){url "http://jcenter.bintray.com/"}
         mavenCentral()
         maven { url "https://raw.githubusercontent.com/Pgyer/mvn_repo_pgyer/master" }
     }
@@ -20,7 +20,7 @@ buildscript {
 allprojects {
     repositories {
         google()
-        jcenter()
+        jcenter(){url "http://jcenter.bintray.com/"}
         mavenCentral()
         maven { url "https://raw.githubusercontent.com/Pgyer/mvn_repo_pgyer/master" }
         maven { url 'https://www.jitpack.io' }

@@ -317,6 +317,47 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:id="@+id/tv_promote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/icon_tuiguang"
+            android:drawablePadding="10dp"
+            android:gravity="center"
+            android:text="推广码"
+            android:layout_marginLeft="30dp"
+            android:textColor="#6D7077"
+            android:textSize="12sp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="加入我们"
+            android:drawableLeft="@drawable/icon_join"
+            android:drawablePadding="10dp"
+            android:visibility="invisible"
+            android:gravity="center"
+            android:layout_marginLeft="30dp"
+            android:textColor="#6D7077"
+            android:textSize="12sp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp">
 
         <ImageView
