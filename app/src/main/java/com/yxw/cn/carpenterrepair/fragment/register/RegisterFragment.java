@@ -39,6 +39,8 @@ public class RegisterFragment extends BaseFragment {
     EditText mEtCode;
     @BindView(R.id.et_password)
     EditText mEtPassword;
+    @BindView(R.id.et_invite_code)
+    EditText mEtInviteCode;
     @BindView(R.id.iv_show)
     ImageView mIvShow;
     @BindView(R.id.bt_code)
@@ -46,6 +48,7 @@ public class RegisterFragment extends BaseFragment {
 
     public static String mPhone;
     public static String mPassword;
+    public static String mInviteCode;
     @Override
     protected int getLayout() {
         return R.layout.frg_register;
@@ -145,6 +148,7 @@ public class RegisterFragment extends BaseFragment {
                     Map<String, Object> map = new HashMap<>();
                     String phone = mEtPhone.getText().toString().trim();
                     String password = mEtPassword.getText().toString().trim();
+                    String inviteCode = mEtInviteCode.getText().toString().trim();
                     map.put("userName", phone);
                     map.put("smsCode", mEtCode.getText().toString().trim());
                     map.put("appSign", UrlConstant.mRoleSign);
@@ -159,6 +163,7 @@ public class RegisterFragment extends BaseFragment {
                                                  if (response.isSuccess()) {
                                                      mPhone = phone;
                                                      mPassword = password;
+                                                     mInviteCode = inviteCode;
                                                      ((RegisterStepActivity)getActivity()).goToNext();
                                                  }else{
                                                      toast(response.getMsg());
