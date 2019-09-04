@@ -6,6 +6,7 @@ public class ResponseData<T> {
     private int status;
     private T data;
     private boolean success;
+    private int dicts;
 
     public String getMsg() {
         return msg == null ? "" : msg;
@@ -37,5 +38,13 @@ public class ResponseData<T> {
 
     public void setSuccess(boolean success) {
         this.success = success;
+    }
+
+    public int getDicts() {
+        return dicts;
+    }
+
+    public void setDicts(int dicts) {
+        this.dicts = dicts;
     }
 }

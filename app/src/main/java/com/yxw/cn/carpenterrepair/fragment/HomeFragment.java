@@ -37,7 +37,6 @@ import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.util.Helper;
 import com.yxw.cn.carpenterrepair.util.ImageUtils;
 import com.yxw.cn.carpenterrepair.util.LocationUtils;
-import com.yxw.cn.carpenterrepair.util.MsgUtils;
 import com.yxw.cn.carpenterrepair.util.PreferencesHelper;
 import com.yxw.cn.carpenterrepair.view.RecycleViewDivider;
 
@@ -187,10 +186,9 @@ public class HomeFragment extends BaseRefreshFragment implements BaseQuickAdapte
                     public void onSuccess(ResponseData<NoticeListData> response) {
                         dismissLoading();
                         if (response!=null){
+                            initMsgBadge(response);
                             if (response.isSuccess() && response.getData()!=null) {
                                 isNext = response.getData().isHasNext();
-                                MsgUtils.saveMsg(response.getData().getItems());
-                                initMsgBadge();
                                 if (p == 1) {
                                     mAdapter.setNewData(response.getData().getItems());
                                     mRefreshLayout.finishRefresh();
@@ -274,14 +272,13 @@ public class HomeFragment extends BaseRefreshFragment implements BaseQuickAdapte
                 }
                 break;
             case MessageConstant.GET_MSG_COUNT:
-                mAdapter.notifyDataSetChanged();
-                initMsgBadge();
+                onRefresh();
                 break;
         }
     }
 
-    private void initMsgBadge(){
-        int msgCount = MsgUtils.getMsgCount();
+    private void initMsgBadge(ResponseData responseData){
+        int msgCount = responseData.getDicts();
         if (msgCount==0){
             mMsgBadge.hide(false);
         }else{

@@ -20,6 +20,7 @@ public class NoticeBean implements Serializable {
     private String createTime;
     private String createUser;
     private int isShow;//状态 0：隐藏 1：显示
+    private int isRead;// 1：已读 0：未读
     private String noticeId;
     private String remark;
     private String title;
@@ -96,5 +97,13 @@ public class NoticeBean implements Serializable {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public int getIsRead() {
+        return isRead;
+    }
+
+    public void setIsRead(int isRead) {
+        this.isRead = isRead;
     }
 }
