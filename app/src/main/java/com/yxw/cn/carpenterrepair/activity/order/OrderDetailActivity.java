@@ -149,6 +149,7 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
     private ContactPop mContactPop;
     private ConfirmOrderPop mConfirmOrderPop;
     private Disposable mDisposable;
+
     @Override
     protected int getLayoutResId() {
         return R.layout.act_order_detail;
@@ -158,12 +159,16 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
     public void initView() {
         titleBar.setTitle("订单详情");
         orderItem = (OrderItem) getIntent().getSerializableExtra("data");
-        if (orderItem==null){
+        if (orderItem!=null){
+            orderId = orderItem.getOrderId();
+        }else{
+            orderId = getIntent().getStringExtra("orderId");
+        }
+        if (Helper.isEmpty(orderId)){
+            toast("订单不存在");
             finish();
-            return;
         }
 
-        orderId = orderItem.getOrderId();
         orderRv.setLayoutManager(new LinearLayoutManager(this));
         orderRv.setNestedScrollingEnabled(false);
         orderAdapter = new UserOrderDetailAdapter(new ArrayList<>());

@@ -55,7 +55,10 @@ public class MsgListActivity extends BaseActivity implements OnRefreshListener, 
 
 
     private void getOrderData(int p) {
+        Map<String, Object> requestMap = new HashMap<>();
+        requestMap.put("site",1);
         Map<String, Object> map = new HashMap<>();
+        map.put("filter", requestMap);
         map.put("pageIndex", p);
         map.put("pageSize", loadCount);
         OkGo.<ResponseData<NoticeListData>>post(UrlConstant.GET_NOTICE)
