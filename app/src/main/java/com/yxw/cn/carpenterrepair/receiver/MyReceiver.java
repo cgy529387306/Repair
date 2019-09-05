@@ -12,6 +12,9 @@ import com.yxw.cn.carpenterrepair.activity.user.LoginActivity;
 import com.yxw.cn.carpenterrepair.activity.user.PersonInfoActivity;
 import com.yxw.cn.carpenterrepair.contast.SpConstant;
 import com.yxw.cn.carpenterrepair.entity.CurrentUser;
+import com.yxw.cn.carpenterrepair.entity.Order;
+import com.yxw.cn.carpenterrepair.entity.OrderItem;
+import com.yxw.cn.carpenterrepair.util.AppUtil;
 import com.yxw.cn.carpenterrepair.util.Helper;
 import com.yxw.cn.carpenterrepair.util.JsonHelper;
 import com.yxw.cn.carpenterrepair.util.PreferencesHelper;
@@ -62,34 +65,41 @@ public class MyReceiver extends BroadcastReceiver {
 
 
 	private void openNotification(Context context, Bundle bundle){
-		String content = bundle.getString(JPushInterface.EXTRA_MESSAGE);
-		String extra = bundle.getString(JPushInterface.EXTRA_EXTRA);
-		Log.d(TAG,content);
-		Log.d(TAG,extra);
-		PushExtras pushExtras = JsonHelper.fromJson(extra,PushExtras.class);
-		Intent intent;
-		if (pushExtras!=null){
-			if(CurrentUser.getInstance().isLogin()){
-				String orderId = pushExtras.getId();
-				if ("4".equals(pushExtras.getMessageType())){
-					//订单池列表-全部
-					intent = new Intent(context, MainActivity.class);
-				}else if ("6".equals(pushExtras.getMessageType())){
-					//用户信息页
-					intent = new Intent(context, PersonInfoActivity.class);
+		try {
+			String content = bundle.getString(JPushInterface.EXTRA_MESSAGE);
+			String extra = bundle.getString(JPushInterface.EXTRA_EXTRA);
+			Log.d(TAG,content);
+			Log.d(TAG,extra);
+			PushExtras pushExtras = JsonHelper.fromJson(extra,PushExtras.class);
+			Intent intent;
+			if (pushExtras!=null){
+				if(CurrentUser.getInstance().isLogin()){
+					String orderId = pushExtras.getId();
+					if ("4".equals(pushExtras.getMessageType())){
+						//订单池列表-全部
+						intent = new Intent(context, MainActivity.class);
+					}else if ("6".equals(pushExtras.getMessageType())){
+						//用户信息页
+						intent = new Intent(context, PersonInfoActivity.class);
+					}else{
+						//订单详情
+						OrderItem orderItem = new OrderItem();
+						orderItem.setOrderStatus(Integer.parseInt(pushExtras.getOrderStatus()));
+						OrderItem newOrder = AppUtil.setDetailId(orderItem,orderId);
+						intent = new Intent(context, OrderDetailActivity.class);
+						intent.putExtra("data",newOrder);
+					}
 				}else{
-					//订单详情
-					intent = new Intent(context, OrderDetailActivity.class);
-					intent.putExtra("orderId",orderId);
+					intent = new Intent(context,LoginActivity.class);
 				}
 			}else{
-				intent = new Intent(context,LoginActivity.class);
+				intent = new Intent(context,CurrentUser.getInstance().isLogin()?MainActivity.class:LoginActivity.class);
 			}
-		}else{
-			intent = new Intent(context,CurrentUser.getInstance().isLogin()?MainActivity.class:LoginActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			context.startActivity(intent);
+		}catch (Exception e){
+			e.printStackTrace();
 		}
-		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		context.startActivity(intent);
 	}
 
 

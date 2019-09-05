@@ -10,6 +10,7 @@ public class PushExtras {
 
     private String messageType;
 
+    private String orderStatus;
 
     public String getId() {
         return id == null ? "" : id;
@@ -25,5 +26,13 @@ public class PushExtras {
 
     public void setMessageType(String messageType) {
         this.messageType = messageType;
+    }
+
+    public String getOrderStatus() {
+        return orderStatus==null?"0":orderStatus;
+    }
+
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
     }
 }

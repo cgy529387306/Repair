@@ -29,7 +29,6 @@ import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.Category;
 import com.yxw.cn.carpenterrepair.entity.CityBean;
 import com.yxw.cn.carpenterrepair.entity.CurrentUser;
-import com.yxw.cn.carpenterrepair.entity.NoticeBean;
 import com.yxw.cn.carpenterrepair.entity.OrderItem;
 import com.yxw.cn.carpenterrepair.entity.ReasonBean;
 import com.yxw.cn.carpenterrepair.entity.RegionTree;
@@ -40,7 +39,6 @@ import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -396,6 +394,24 @@ public class AppUtil {
         }else{
             return orderItem.getAcceptId();
         }
+    }
+
+
+    /**
+     * 获取id
+     * @param orderItem
+     * @return
+     */
+    public static OrderItem setDetailId(OrderItem orderItem,String id){
+        int orderStatus = orderItem.getOrderStatus();
+        if (orderStatus<=27){
+            orderItem.setOrderId(id);
+        }else if (orderStatus<=30){
+            orderItem.setServiceId(id);
+        }else{
+            orderItem.setAcceptId(id);
+        }
+        return orderItem;
     }
 
     public static String getDetailUrl(OrderItem orderItem){

@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -37,16 +36,15 @@ import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.adapter.RemarkAdapter;
 import com.yxw.cn.carpenterrepair.adapter.UserOrderDetailAdapter;
-import com.yxw.cn.carpenterrepair.adapter.UserOrderPicAdapter;
 import com.yxw.cn.carpenterrepair.adapter.UserOrderStatusAdapter;
 import com.yxw.cn.carpenterrepair.contast.MessageConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
+import com.yxw.cn.carpenterrepair.entity.CurrentUser;
 import com.yxw.cn.carpenterrepair.entity.MessageEvent;
 import com.yxw.cn.carpenterrepair.entity.OperateResult;
 import com.yxw.cn.carpenterrepair.entity.OrderDetail;
 import com.yxw.cn.carpenterrepair.entity.OrderItem;
 import com.yxw.cn.carpenterrepair.entity.ResponseData;
-import com.yxw.cn.carpenterrepair.entity.UserOrder;
 import com.yxw.cn.carpenterrepair.listerner.OnChooseDateListener;
 import com.yxw.cn.carpenterrepair.okgo.JsonCallback;
 import com.yxw.cn.carpenterrepair.pop.ConfirmOrderPop;
@@ -62,7 +60,6 @@ import com.yxw.cn.carpenterrepair.view.TitleBar;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -132,7 +129,6 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
 
     private OrderDetail orderDetail;
     private OrderItem orderItem;
-    private String orderId;
     private String orderStatus;
     private String orderAddress;
     private String city;
@@ -159,12 +155,7 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
     public void initView() {
         titleBar.setTitle("订单详情");
         orderItem = (OrderItem) getIntent().getSerializableExtra("data");
-        if (orderItem!=null){
-            orderId = orderItem.getOrderId();
-        }else{
-            orderId = getIntent().getStringExtra("orderId");
-        }
-        if (Helper.isEmpty(orderId)){
+        if (Helper.isEmpty(orderItem)){
             toast("订单不存在");
             finish();
         }
@@ -206,6 +197,9 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
             tvSolution.setText(orderItem.getSolution());
             tvRemark.setText(orderItem.getRemark());
             tvTimeType.setText(orderStatus<=40?"服务时间":"上门时间");
+            boolean isShowOperate = orderItem.getOrderStatus()<40 || (Helper.isNotEmpty(orderItem.getOperaterId()) && orderItem.getOperaterId().equals(CurrentUser.getInstance().getUserId()));
+            llBottom.setVisibility(isShowOperate?View.VISIBLE:View.GONE);
+
             initOrderStatus();
             initOrderLocation();
         }
