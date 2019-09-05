@@ -158,6 +158,7 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
         if (Helper.isEmpty(orderItem)){
             toast("订单不存在");
             finish();
+            return;
         }
 
         orderRv.setLayoutManager(new LinearLayoutManager(this));
