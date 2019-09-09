@@ -12,7 +12,6 @@ import com.yxw.cn.carpenterrepair.activity.user.LoginActivity;
 import com.yxw.cn.carpenterrepair.activity.user.PersonInfoActivity;
 import com.yxw.cn.carpenterrepair.contast.SpConstant;
 import com.yxw.cn.carpenterrepair.entity.CurrentUser;
-import com.yxw.cn.carpenterrepair.entity.Order;
 import com.yxw.cn.carpenterrepair.entity.OrderItem;
 import com.yxw.cn.carpenterrepair.util.AppUtil;
 import com.yxw.cn.carpenterrepair.util.Helper;
@@ -66,9 +65,7 @@ public class MyReceiver extends BroadcastReceiver {
 
 	private void openNotification(Context context, Bundle bundle){
 		try {
-			String content = bundle.getString(JPushInterface.EXTRA_MESSAGE);
 			String extra = bundle.getString(JPushInterface.EXTRA_EXTRA);
-			Log.d(TAG,content);
 			Log.d(TAG,extra);
 			PushExtras pushExtras = JsonHelper.fromJson(extra,PushExtras.class);
 			Intent intent;
