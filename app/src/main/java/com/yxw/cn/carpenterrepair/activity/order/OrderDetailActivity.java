@@ -198,8 +198,6 @@ public class OrderDetailActivity extends BaseActivity implements ContactPop.Sele
             tvSolution.setText(orderItem.getSolution());
             tvRemark.setText(orderItem.getRemark());
             tvTimeType.setText(orderStatus<=40?"服务时间":"上门时间");
-            boolean isShowOperate = orderItem.getOrderStatus()<40 || (Helper.isNotEmpty(orderItem.getOperaterId()) && orderItem.getOperaterId().equals(CurrentUser.getInstance().getUserId()));
-            llBottom.setVisibility(isShowOperate?View.VISIBLE:View.GONE);
 
             initOrderStatus();
             initOrderLocation();
