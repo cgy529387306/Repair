@@ -35,7 +35,7 @@
             android:paddingTop="4dp"
             android:paddingRight="8dp"
             android:paddingBottom="4dp"
-            android:text="匠修为您服务"
+            android:text="智匠为您服务"
             android:textColor="@color/text_gray"
             android:textSize="12dp" />
 
@@ -55,7 +55,7 @@
                 android:layout_marginLeft="16dp"
                 android:padding="16dp"
                 android:background="@color/white"
-                android:text="您好，匠修终于见到您了，为给您带来更好的服务体验，请在结束后为匠修的服务做出评价（#…。…#）"
+                android:text="您好，智匠终于见到您了，为给您带来更好的服务体验，请在结束后为智匠的服务做出评价（#…。…#）"
                 android:textColor="@color/text_black"
                 android:textSize="14dp" />
         </LinearLayout>

@@ -1,6 +1,5 @@
 package com.yxw.cn.carpenterrepair.activity.user;
 
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -109,21 +108,8 @@ public class LoginActivity extends BaseActivity {
                                              HttpHeaders headers = new HttpHeaders();
                                              headers.put("Authorization", "Bearer "+response.getData().getToken());
                                              OkGo.getInstance().addCommonHeaders(headers);
-                                             LoginInfo loginInfo = CurrentUser.getInstance();
-                                             if(loginInfo.getIdCardStatus() == 0 || loginInfo.getIdCardStatus() == 2){
-                                                 toast("登录成功，请上传身份证照片");
-                                                 Bundle bundle = new Bundle();
-                                                 bundle.putInt("step",1);
-                                                 startActivity(RegisterStepActivity.class,bundle);
-                                             }else if (Helper.isEmpty(loginInfo.getResidentArea()) || Helper.isEmpty(loginInfo.getCategory())){
-                                                 toast("登录成功，请完善用户信息");
-                                                 Bundle bundle = new Bundle();
-                                                 bundle.putInt("step",2);
-                                                 startActivity(RegisterStepActivity.class,bundle);
-                                             }else {
-                                                 toast("登录成功");
-                                                 startActivityFinish(MainActivity.class);
-                                             }
+                                             toast("登录成功");
+                                             startActivityFinish(MainActivity.class);
                                          }else {
                                              toast(response.getMsg());
                                          }

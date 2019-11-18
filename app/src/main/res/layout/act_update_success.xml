@@ -28,7 +28,7 @@
         android:textColor="#666666"
         android:textSize="14sp"
         android:gravity="center"
-        android:text="您的擅长项目将在匠修审核无误后修改" />
+        android:text="您的擅长项目将在智匠审核无误后修改" />
 
     <Button
         android:id="@+id/btn_perfect"

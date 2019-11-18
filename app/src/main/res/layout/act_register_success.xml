@@ -28,7 +28,7 @@
         android:textColor="#666666"
         android:textSize="14sp"
         android:gravity="center"
-        android:text="成为匠修工程师还差最后一步，等待审核通过之后才能接单哦。" />
+        android:text="成为智匠工程师还差最后一步，等待审核通过之后才能接单哦。" />
 
     <Button
         android:id="@+id/btn_perfect"
