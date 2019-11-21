@@ -69,7 +69,7 @@
             android:value="8CIPd6OtMa21d9CzGFqOVcwFOOaGLxfm" />
         <meta-data
             android:name="PGYER_APPID"
-            android:value="f9c75926be12b807641608cadb9464d5" />
+            android:value="8753ff603ee3072c917c7571a98f54a3" />
         <service android:name="com.baidu.location.f" android:enabled="true" android:process=":remote"> </service>
 
         <activity android:name=".activity.SplashActivity"
