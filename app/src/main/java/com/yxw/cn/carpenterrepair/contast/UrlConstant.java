@@ -73,8 +73,9 @@ public class UrlConstant {
     public final static String USER_EVALUATE = BASE_USER + "/api/fix/userOrder/evaluate";
     public final static String USER_COMPLAIN = BASE_USER + "/api/fix/userOrder/complain";
 
-    public final static String H5_URL_ABOUT = "http://39.98.73.166:8080/center/about_us.html";
-    public final static String H5_URL_HELP = "http://39.98.73.166:8080/center/help.html";
+    public final static String H5_URL_ABOUT = "https://www.hmjx123.com/static/center/about_us.html";
+    public final static String H5_URL_HELP = "https://www.hmjx123.com/static/center/help.html";
+    public final static String H5_URL_AGREEMENT = "https://www.hmjx123.com/static/safe/safe.html";
     public final static String CUSTOMER_TEL = "13763878621";
 
 }

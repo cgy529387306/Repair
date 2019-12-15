@@ -48,37 +48,19 @@
                     android:textSize="14sp" />
 
                 <TextView
-                    android:id="@+id/distance"
+                    android:id="@+id/tv_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:text="(在签到范围外，不能签到)"
+                    android:text="福建省仓山区金山大道"
                     android:textColor="#666666"
                     android:textSize="12sp" />
             </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:background="#E4E4E4" />
-
-            <TextView
-                android:id="@+id/tv_location"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="福建省仓山区金山大道"
-                android:textColor="#666666"
-                android:textSize="12sp" />
-
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:overScrollMode="never"/>
-
-
             <RelativeLayout
                 android:layout_margin="15dp"
                 android:background="@drawable/corner_gray_rect"

@@ -1,5 +1,6 @@
 package com.yxw.cn.carpenterrepair.activity.user;
 
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -12,6 +13,7 @@ import com.lzy.okgo.model.HttpHeaders;
 import com.lzy.okgo.model.Response;
 import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
+import com.yxw.cn.carpenterrepair.activity.WebActivity;
 import com.yxw.cn.carpenterrepair.activity.main.MainActivity;
 import com.yxw.cn.carpenterrepair.contast.SpConstant;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
@@ -130,7 +132,7 @@ public class QuickLoginActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.tv_login})
+    @OnClick({R.id.tv_login,R.id.tv_agreement})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_login:
@@ -180,6 +182,12 @@ public class QuickLoginActivity extends BaseActivity {
 
                             );
                 }
+                break;
+            case R.id.tv_agreement:
+                Bundle webBundle = new Bundle();
+                webBundle.putString("url", UrlConstant.H5_URL_AGREEMENT);
+                webBundle.putString("title", "用户协议");
+                startActivity(WebActivity.class, webBundle);
                 break;
         }
     }

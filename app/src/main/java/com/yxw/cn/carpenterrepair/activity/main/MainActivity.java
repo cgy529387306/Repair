@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.gyf.immersionbar.ImmersionBar;
 import com.lzy.okgo.OkGo;
+import com.pgyersdk.crash.PgyCrashManager;
 import com.pgyersdk.update.PgyUpdateManager;
 import com.yxw.cn.carpenterrepair.BaseActivity;
 import com.yxw.cn.carpenterrepair.R;
@@ -55,6 +56,7 @@ public class MainActivity extends BaseActivity {
         showFragment(0);
         PgyUpdateManager.setIsForced(false); //设置是否强制更新。true为强制更新；false为不强制更新（默认值）。
         PgyUpdateManager.register(this);
+        PgyCrashManager.register(this);
         getUserInfo();
         AppUtil.initCategoryData();
         AppUtil.initRegionTreeData();
@@ -69,6 +71,7 @@ public class MainActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         PgyUpdateManager.unregister();
+        PgyCrashManager.unregister();
     }
 
     private void showFragment(int page) {

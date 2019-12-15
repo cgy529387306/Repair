@@ -1,5 +1,6 @@
 package com.yxw.cn.carpenterrepair.fragment.register;
 
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -14,6 +15,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.yxw.cn.carpenterrepair.BaseFragment;
 import com.yxw.cn.carpenterrepair.R;
+import com.yxw.cn.carpenterrepair.activity.WebActivity;
 import com.yxw.cn.carpenterrepair.activity.user.RegisterStepActivity;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
 import com.yxw.cn.carpenterrepair.entity.LoginInfo;
@@ -122,7 +124,7 @@ public class RegisterFragment extends BaseFragment {
                 });
     }
 
-    @OnClick({R.id.iv_show, R.id.tv_register})
+    @OnClick({R.id.iv_show, R.id.tv_register,R.id.tv_agreement})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_show:
@@ -179,6 +181,12 @@ public class RegisterFragment extends BaseFragment {
                                      }
                             );
                 }
+                break;
+            case R.id.tv_agreement:
+                Bundle webBundle = new Bundle();
+                webBundle.putString("url", UrlConstant.H5_URL_AGREEMENT);
+                webBundle.putString("title", "用户协议");
+                startActivity(WebActivity.class, webBundle);
                 break;
         }
     }

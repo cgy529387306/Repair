@@ -60,7 +60,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:textSize="@dimen/text_normal"
-                android:text="关于智匠" />
+                android:text="关于达奇" />
 
             <TextView
                 android:id="@+id/tv_version"

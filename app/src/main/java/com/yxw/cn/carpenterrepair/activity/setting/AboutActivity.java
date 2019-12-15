@@ -26,8 +26,8 @@ public class AboutActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        titleBar.setTitle("关于智匠");
-        tvVersion.setText(String.format("智匠 V%s", AppUtil.getVerName()));
+        titleBar.setTitle("关于达奇");
+        tvVersion.setText(String.format("达奇 V%s", AppUtil.getVerName()));
     }
 
 
