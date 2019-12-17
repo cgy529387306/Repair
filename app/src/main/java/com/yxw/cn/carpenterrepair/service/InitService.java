@@ -26,6 +26,7 @@ import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.yxw.cn.carpenterrepair.BaseApplication;
 import com.yxw.cn.carpenterrepair.R;
 import com.yxw.cn.carpenterrepair.contast.UrlConstant;
@@ -95,6 +96,8 @@ public class InitService extends IntentService {
         OkGo.getInstance().setOkHttpClient(builder.build());
         Logger.addLogAdapter(new AndroidLogAdapter());
         CrashHandler.getInstance().init(BaseApplication.getInstance());
+        //参数3：是否开启调试模式，调试模式下会输出'CrashReport'tag的日志
+        CrashReport.initCrashReport(getApplicationContext(), "867a51081f", true);
         initAccessTokenWithAkSk();
     }
 

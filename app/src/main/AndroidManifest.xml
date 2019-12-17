@@ -70,6 +70,9 @@
         <meta-data
             android:name="PGYER_APPID"
             android:value="8753ff603ee3072c917c7571a98f54a3" />
+        <meta-data
+            android:name="BUGLY_AREA"
+            android:value="overseas" />
         <service android:name="com.baidu.location.f" android:enabled="true" android:process=":remote"> </service>
 
         <activity android:name=".activity.SplashActivity"
@@ -179,7 +182,8 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".activity.user.RegisterStepActivity"
             android:screenOrientation="portrait"/>
-
+        <activity android:name=".BuglyTestActivity"
+            android:screenOrientation="portrait"/>
         <service
             android:name=".service.InitService"
             android:exported="false" />
