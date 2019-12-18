@@ -132,11 +132,6 @@ public class MainActivity extends BaseActivity {
                 Drawable drawable9 = getResources().getDrawable(R.drawable.personal_on);
                 drawable9.setBounds(0, 0, drawable9.getMinimumWidth(), drawable9.getMinimumHeight());
                 tv_personal.setCompoundDrawables(null, drawable9, null, null);
-//                String test = null;
-//                test.substring(1);
-                for (int i = 0;i<100000000;i++){
-                    String test = String.valueOf(i);
-                }
                 break;
         }
     }
