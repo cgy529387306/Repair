@@ -380,7 +380,7 @@
         android:paddingTop="8dp"
         android:paddingRight="16dp"
         android:paddingBottom="8dp"
-        android:text="关注微信公众号“达奇”，实时掌握订单状态。"
+        android:text="关注微信公众号“智匠”，实时掌握订单状态。"
         android:textColor="@color/white"
         android:textSize="11dp" />
 

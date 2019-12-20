@@ -28,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:text="达奇已用空间"
+                android:text="智匠已用空间"
                 android:textColor="@color/text_gray"
                 android:textSize="@dimen/text_small" />
 

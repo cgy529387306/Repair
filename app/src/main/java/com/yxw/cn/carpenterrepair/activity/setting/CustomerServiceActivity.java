@@ -29,7 +29,7 @@ public class CustomerServiceActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        titlebar.setTitle("达奇客服");
+        titlebar.setTitle("智匠客服");
         Glide.with(this).load(R.mipmap.launcher).apply(RequestOptions.circleCropTransform()).into(mIvLeft);
         Glide.with(this).load(R.mipmap.launcher).apply(RequestOptions.circleCropTransform()).into(mIvRight);
     }

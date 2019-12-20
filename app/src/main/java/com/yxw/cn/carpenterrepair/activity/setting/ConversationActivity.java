@@ -7,7 +7,7 @@ import com.yxw.cn.carpenterrepair.view.TitleBar;
 import butterknife.BindView;
 
 /**
- * 达奇客服
+ * 智匠客服
  */
 public class ConversationActivity extends BaseActivity {
 
@@ -21,7 +21,7 @@ public class ConversationActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        titlebar.setTitle("达奇客服");
+        titlebar.setTitle("智匠客服");
 //        if (RongIM.getInstance() != null) {
 //            RongIM.getInstance().startPrivateChat(this, "KEFU154510079986682", "标题");
 //        }

@@ -93,7 +93,7 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:gravity="top"
-                    android:hint="您的评价会让达奇工程师做的更好"
+                    android:hint="您的评价会让智匠工程师做的更好"
                     android:lines="3"
                     android:maxLength="50"
                     android:textSize="14dp" />

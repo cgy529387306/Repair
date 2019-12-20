@@ -141,7 +141,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="8dp"
-                    android:text="《达奇用户协议》"
+                    android:text="《智匠用户协议》"
                     android:textColor="#E82B2D"
                     android:textSize="12sp"/>
         </LinearLayout>
